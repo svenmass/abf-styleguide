@@ -174,26 +174,32 @@ document.addEventListener('DOMContentLoaded', function() {
             const element = entry.target;
             const ratio = entry.intersectionRatio;
             
+            // Check if element was already fully activated
+            const isFullyActivated = element.dataset.fullyActivated === 'true';
+            
             // Debug-Info
             if (Math.random() < 0.1) { // Nur gelegentlich loggen
-                console.log('📊 Parallax Ratio:', ratio.toFixed(2));
+                console.log('📊 Parallax Ratio:', ratio.toFixed(2), 'Already activated:', isFullyActivated);
             }
             
             if (ratio >= 0.9) {
                 // Element ist 90% oder mehr sichtbar - Vollständig eingeblendet
                 element.style.transform = 'scale(1)';
                 element.style.opacity = '1';
-            } else if (ratio > 0) {
-                // Element ist teilweise sichtbar - Dramatische Transformation
+                element.dataset.fullyActivated = 'true'; // Für immer markieren!
+                console.log('🎯 Element fully activated - will stay this way!');
+            } else if (ratio > 0 && !isFullyActivated) {
+                // Element ist teilweise sichtbar UND noch nicht vollständig aktiviert
                 const scale = 0.6 + (ratio / 0.9) * 0.4; // 0.6 bis 1.0 (größerer Effekt!)
                 const opacity = 0.3 + (ratio / 0.9) * 0.7; // 0.3 bis 1.0 (stärkerer Kontrast!)
                 element.style.transform = 'scale(' + scale + ')';
                 element.style.opacity = opacity;
-            } else {
-                // Element ist nicht sichtbar - Stark reduziert
+            } else if (ratio === 0 && !isFullyActivated) {
+                // Element ist nicht sichtbar UND noch nicht vollständig aktiviert
                 element.style.transform = 'scale(0.6)';
                 element.style.opacity = '0.3';
             }
+            // Falls isFullyActivated = true: NICHTS ÄNDERN! Bleibt bei scale(1) + opacity(1)
         });
     }, observerOptions);
     
