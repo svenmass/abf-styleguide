@@ -5,6 +5,16 @@
 
 // Get the block ID
 $block_id = 'parallax-grid-' . $block['id'];
+
+// Convert color choices to CSS variables
+if (!function_exists('convert_color_to_css_var')) {
+    function convert_color_to_css_var($color_choice) {
+        if (!$color_choice || $color_choice === 'inherit') {
+            return 'inherit';
+        }
+        return "var(--color-{$color_choice})";
+    }
+}
 ?>
 
 <div class="block-parallax-grid" id="<?php echo esc_attr($block_id); ?>">
@@ -12,7 +22,17 @@ $block_id = 'parallax-grid-' . $block['id'];
         
         <?php 
         $elements = get_field('parallax_elements');
-        if ($elements && is_array($elements)):
+        
+        // Debug: Check if elements exist
+        if (empty($elements) || !is_array($elements)) {
+            // Show placeholder if no elements configured
+            echo '<div style="padding: 40px; text-align: center; background: #f0f0f0; color: #666;">Parallax Grid Block: Bitte konfiguriere die 6 Grid-Elemente im Editor.</div>';
+        } else {
+            // Ensure we have exactly 6 elements
+            while (count($elements) < 6) {
+                $elements[] = array(); // Add empty element
+            }
+            
             for ($i = 0; $i < 6; $i++): 
                 $element = isset($elements[$i]) ? $elements[$i] : array();
                 $element_number = $i + 1;
@@ -53,14 +73,6 @@ $block_id = 'parallax-grid-' . $block['id'];
                 }
             }
             $element_style = !empty($style_parts) ? ' style="' . implode('; ', $style_parts) . '"' : '';
-            
-            // Convert color choices to CSS variables
-            function convert_color_to_css_var($color_choice) {
-                if (!$color_choice || $color_choice === 'inherit') {
-                    return 'inherit';
-                }
-                return "var(--color-{$color_choice})";
-            }
             ?>
             
             <div class="parallax-element parallax-element-<?php echo $element_number; ?>" data-element="<?php echo $element_number; ?>"<?php echo $element_style; ?>>
@@ -130,20 +142,23 @@ $block_id = 'parallax-grid-' . $block['id'];
                 
             </div>
             
-        <?php endfor; ?>
-        <?php endif; ?>
+            <?php endfor; ?>
+        <?php } ?>
         
     </div>
 </div>
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Parallax effect using Intersection Observer
-    const elements = document.querySelectorAll('#<?php echo esc_js($block_id); ?> .parallax-element');
+<?php
+// Enqueue JavaScript für Parallax-Effekt
+wp_add_inline_script('jquery', '
+document.addEventListener("DOMContentLoaded", function() {
+    const elements = document.querySelectorAll("#' . esc_js($block_id) . ' .parallax-element");
+    
+    if (elements.length === 0) return;
     
     const observerOptions = {
         threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
-        rootMargin: '0px'
+        rootMargin: "0px"
     };
     
     const observer = new IntersectionObserver((entries) => {
@@ -152,32 +167,27 @@ document.addEventListener('DOMContentLoaded', function() {
             const ratio = entry.intersectionRatio;
             
             if (ratio >= 0.7) {
-                // Element is 70% or more visible - scale to 100%
-                element.style.transform = 'scale(1)';
-                element.style.opacity = '1';
+                element.style.transform = "scale(1)";
+                element.style.opacity = "1";
             } else if (ratio > 0) {
-                // Element is partially visible - scale between 80% and 100%
-                const scale = 0.8 + (ratio / 0.7) * 0.2; // 0.8 to 1.0
-                const opacity = 0.6 + (ratio / 0.7) * 0.4; // 0.6 to 1.0
-                element.style.transform = `scale(${scale})`;
+                const scale = 0.8 + (ratio / 0.7) * 0.2;
+                const opacity = 0.6 + (ratio / 0.7) * 0.4;
+                element.style.transform = "scale(" + scale + ")";
                 element.style.opacity = opacity;
             } else {
-                // Element is not visible - scale to 80%
-                element.style.transform = 'scale(0.8)';
-                element.style.opacity = '0.6';
+                element.style.transform = "scale(0.8)";
+                element.style.opacity = "0.6";
             }
         });
     }, observerOptions);
     
-    // Start observing all elements
     elements.forEach(element => {
-        // Set initial state
-        element.style.transform = 'scale(0.8)';
-        element.style.opacity = '0.6';
-        element.style.transition = 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease-out';
-        element.style.transformOrigin = 'center';
-        
+        element.style.transform = "scale(0.8)";
+        element.style.opacity = "0.6";
+        element.style.transition = "transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease-out";
+        element.style.transformOrigin = "center";
         observer.observe(element);
     });
 });
-</script> 
+');
+?> 
