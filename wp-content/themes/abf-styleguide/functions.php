@@ -19,4 +19,8 @@ if (class_exists('ACF')) {
 // Load modular PHP files
 require_once get_template_directory() . '/inc/autoload.php';
 
+// --- TEST: Minimalbeispiel für ACF Block + Field Group (mit JSX im Content-Bereich) ---
+// (entfernt)
+// --- ENDE TEST ---
+
 

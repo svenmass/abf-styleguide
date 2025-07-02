@@ -7,17 +7,11 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-/**
- * Register Hero Block Fields
- */
-function abf_hero_block_fields() {
-    if (!function_exists('acf_add_local_field_group')) {
-        return;
-    }
-    
+// Hero Block Felder - wird automatisch beim require_once registriert
+if (function_exists('acf_add_local_field_group')) {
     acf_add_local_field_group(array(
-        'key' => 'group_hero_block_fields',
-        'title' => 'Hero Block Felder',
+        'key' => 'group_hero_block',
+        'title' => 'Hero Block',
         'fields' => array(
             array(
                 'key' => 'field_hero_title',
@@ -26,11 +20,6 @@ function abf_hero_block_fields() {
                 'type' => 'text',
                 'instructions' => 'Gib hier den Haupttitel für den Hero-Bereich ein',
                 'required' => 1,
-                'wrapper' => array(
-                    'width' => '',
-                    'class' => '',
-                    'id' => '',
-                ),
             ),
             array(
                 'key' => 'field_hero_text',
@@ -39,11 +28,6 @@ function abf_hero_block_fields() {
                 'type' => 'wysiwyg',
                 'instructions' => 'Gib hier den Beschreibungstext ein',
                 'required' => 0,
-                'wrapper' => array(
-                    'width' => '',
-                    'class' => '',
-                    'id' => '',
-                ),
                 'default_value' => '',
                 'tabs' => 'all',
                 'toolbar' => 'full',
@@ -57,11 +41,6 @@ function abf_hero_block_fields() {
                 'type' => 'image',
                 'instructions' => 'Wähle ein Hintergrundbild aus (optional)',
                 'required' => 0,
-                'wrapper' => array(
-                    'width' => '',
-                    'class' => '',
-                    'id' => '',
-                ),
                 'return_format' => 'array',
                 'preview_size' => 'medium',
                 'library' => 'all',
@@ -75,8 +54,6 @@ function abf_hero_block_fields() {
                 'required' => 0,
                 'wrapper' => array(
                     'width' => '50',
-                    'class' => '',
-                    'id' => '',
                 ),
             ),
             array(
@@ -88,8 +65,6 @@ function abf_hero_block_fields() {
                 'required' => 0,
                 'wrapper' => array(
                     'width' => '50',
-                    'class' => '',
-                    'id' => '',
                 ),
             ),
             array(
@@ -99,12 +74,10 @@ function abf_hero_block_fields() {
                 'type' => 'select',
                 'instructions' => 'Wähle eine Farbe für den Button',
                 'required' => 0,
-                'wrapper' => array(
-                    'width' => '',
-                    'class' => '',
-                    'id' => '',
+                'choices' => array(
+                    'primary' => 'Primärfarbe',
+                    'secondary' => 'Sekundärfarbe',
                 ),
-                'choices' => abf_get_color_choices(),
                 'default_value' => 'primary',
                 'allow_null' => 0,
                 'multiple' => 0,
@@ -130,7 +103,4 @@ function abf_hero_block_fields() {
         'active' => true,
         'description' => 'Felder für den Hero-Block',
     ));
-}
-
-// Register fields when ACF is ready
-add_action('acf/init', 'abf_hero_block_fields'); 
+} 

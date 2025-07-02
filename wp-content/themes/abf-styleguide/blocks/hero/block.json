@@ -7,9 +7,9 @@
     "keywords": ["hero", "banner", "header", "title"],
     "supports": {
         "align": ["wide", "full"],
-        "mode": false,
         "jsx": true
     },
+    "mode": "edit",
     "example": {
         "attributes": {
             "mode": "preview",
