@@ -24,14 +24,26 @@
         min-height: 400px;
         max-height: 600px;
         
+        // Im Editor: 100% statt 100vw verwenden
+        width: 100% !important;
+        max-width: 100% !important;
+        
         .container-home {
             height: 100%;
             max-height: unset;
+            
+            // Im Editor: 100% statt 100vw verwenden
+            width: 100% !important;
+            max-width: 100% !important;
         }
         
         .hero-content {
             // Im Editor: content etwas höher positionieren
             top: 40%;
+            
+            // Im Editor: Breite anpassen
+            width: calc(100% - 32px) !important;
+            max-width: calc(100% - 32px) !important;
         }
         
         .hero-plus {
