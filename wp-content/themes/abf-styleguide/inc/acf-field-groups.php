@@ -20,6 +20,11 @@ function abf_register_block_field_groups() {
         acf_get_cache('acf_get_field_groups')->flush();
     }
     
+    // Force ACF to reload field groups
+    if (function_exists('acf_get_field_groups')) {
+        acf_get_field_groups();
+    }
+    
     // Hero Block Field Group
     acf_add_local_field_group(array(
         'key' => 'group_hero_block',
@@ -154,6 +159,17 @@ add_action('acf/init', 'abf_register_block_field_groups', 20);
 
 // Also register on theme activation
 add_action('after_switch_theme', 'abf_register_block_field_groups');
+
+/**
+ * Force load field groups when editing blocks
+ */
+function abf_force_load_block_fields() {
+    if (is_admin() && function_exists('acf_get_field_groups')) {
+        // Force ACF to load field groups
+        acf_get_field_groups();
+    }
+}
+add_action('admin_init', 'abf_force_load_block_fields');
 
 /**
  * Get color choices for select fields

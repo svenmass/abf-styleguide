@@ -8,6 +8,11 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+// Ensure ACF fields are loaded for this block
+if (function_exists('acf_get_field_groups')) {
+    acf_get_field_groups();
+}
+
 // Get block data
 $title = get_field('title');
 $text = get_field('text');
