@@ -202,20 +202,35 @@ document.addEventListener('DOMContentLoaded', function() {
                 element.style.transform = 'scale(' + scale + ')';
                 element.style.opacity = opacity;
             } else if (ratio === 0) {
-                // Element ist nicht sichtbar - jetzt richtungsabhängig!
+                // Element ist nicht sichtbar - SMARTE Richtungslogik!
                 const wasFullyVisible = element.dataset.wasFullyVisible === 'true';
                 
-                if (scrollDirection === 'down' && wasFullyVisible) {
-                    // Nach unten scrollen + war schon vollständig sichtbar → BLEIBT groß!
-                    element.style.transform = 'scale(1)';
-                    element.style.opacity = '1';
-                    console.log('⬇️ Nach unten: Element bleibt groß');
-                } else if (scrollDirection === 'up') {
-                    // Nach oben scrollen → wird wieder klein!
-                    element.style.transform = 'scale(0.6)';
-                    element.style.opacity = '0.3';
-                    element.dataset.wasFullyVisible = 'false'; // Reset für nächstes Mal
-                    console.log('⬆️ Nach oben: Element wird klein');
+                if (wasFullyVisible) {
+                    // Element war schon mal vollständig sichtbar
+                    if (scrollDirection === 'down') {
+                        // Nach unten scrollen → Element bleibt IMMER groß!
+                        element.style.transform = 'scale(1)';
+                        element.style.opacity = '1';
+                        console.log('⬇️ Nach unten: Element bleibt groß (außerhalb Viewport)');
+                    } else if (scrollDirection === 'up') {
+                        // Nach oben scrollen → Element wird erst klein wenn es wieder erscheint
+                        // ABER: Erst checken ob es wirklich von oben wieder reinkommt
+                        const elementRect = element.getBoundingClientRect();
+                        const elementTop = elementRect.top;
+                        
+                        if (elementTop > window.innerHeight) {
+                            // Element ist unterhalb des Viewports → bleibt groß
+                            element.style.transform = 'scale(1)';
+                            element.style.opacity = '1';
+                            console.log('⬆️ Nach oben: Element unterhalb Viewport, bleibt groß');
+                        } else {
+                            // Element ist oberhalb des Viewports → wird klein (zurück zum Anfang!)
+                            element.style.transform = 'scale(0.6)';
+                            element.style.opacity = '0.3';
+                            element.dataset.wasFullyVisible = 'false'; // Reset
+                            console.log('⬆️ Nach oben: Element oberhalb Viewport, wird klein');
+                        }
+                    }
                 } else {
                     // Noch nie vollständig sichtbar gewesen → normal klein
                     element.style.transform = 'scale(0.6)';
