@@ -15,6 +15,11 @@ function abf_register_block_field_groups() {
         return;
     }
     
+    // Clear ACF cache to ensure fields are loaded
+    if (function_exists('acf_get_cache')) {
+        acf_get_cache('acf_get_field_groups')->flush();
+    }
+    
     // Hero Block Field Group
     acf_add_local_field_group(array(
         'key' => 'group_hero_block',
@@ -140,8 +145,14 @@ function abf_register_block_field_groups() {
         'active' => true,
         'description' => 'Felder für den Hero-Block',
     ));
+    
+    // Debug: Log field group registration
+    error_log('ABF: Hero Block Field Group registered');
 }
-add_action('acf/init', 'abf_register_block_field_groups');
+add_action('acf/init', 'abf_register_block_field_groups', 20);
+
+// Also register on theme activation
+add_action('after_switch_theme', 'abf_register_block_field_groups');
 
 /**
  * Get color choices for select fields
