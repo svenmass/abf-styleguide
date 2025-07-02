@@ -148,17 +148,25 @@ if (!function_exists('convert_color_to_css_var')) {
     </div>
 </div>
 
-<?php
-// Enqueue JavaScript für Parallax-Effekt
-wp_add_inline_script('jquery', '
-document.addEventListener("DOMContentLoaded", function() {
-    const elements = document.querySelectorAll("#' . esc_js($block_id) . ' .parallax-element");
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('🎬 Parallax Grid: Script geladen');
     
-    if (elements.length === 0) return;
+    const blockId = '<?php echo esc_js($block_id); ?>';
+    const elements = document.querySelectorAll('#' + blockId + ' .parallax-element');
     
+    console.log('🔍 Parallax Grid: Gefundene Elemente:', elements.length);
+    console.log('🎯 Block ID:', blockId);
+    
+    if (elements.length === 0) {
+        console.warn('⚠️ Parallax Grid: Keine .parallax-element gefunden!');
+        return;
+    }
+    
+    // Intersection Observer Setup
     const observerOptions = {
         threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
-        rootMargin: "0px"
+        rootMargin: '0px'
     };
     
     const observer = new IntersectionObserver((entries) => {
@@ -166,28 +174,43 @@ document.addEventListener("DOMContentLoaded", function() {
             const element = entry.target;
             const ratio = entry.intersectionRatio;
             
+            // Debug-Info
+            if (Math.random() < 0.1) { // Nur gelegentlich loggen
+                console.log('📊 Parallax Ratio:', ratio.toFixed(2));
+            }
+            
             if (ratio >= 0.7) {
-                element.style.transform = "scale(1)";
-                element.style.opacity = "1";
+                // Element ist 70% oder mehr sichtbar
+                element.style.transform = 'scale(1)';
+                element.style.opacity = '1';
             } else if (ratio > 0) {
-                const scale = 0.8 + (ratio / 0.7) * 0.2;
-                const opacity = 0.6 + (ratio / 0.7) * 0.4;
-                element.style.transform = "scale(" + scale + ")";
+                // Element ist teilweise sichtbar
+                const scale = 0.8 + (ratio / 0.7) * 0.2; // 0.8 bis 1.0
+                const opacity = 0.6 + (ratio / 0.7) * 0.4; // 0.6 bis 1.0
+                element.style.transform = 'scale(' + scale + ')';
                 element.style.opacity = opacity;
             } else {
-                element.style.transform = "scale(0.8)";
-                element.style.opacity = "0.6";
+                // Element ist nicht sichtbar
+                element.style.transform = 'scale(0.8)';
+                element.style.opacity = '0.6';
             }
         });
     }, observerOptions);
     
-    elements.forEach(element => {
-        element.style.transform = "scale(0.8)";
-        element.style.opacity = "0.6";
-        element.style.transition = "transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease-out";
-        element.style.transformOrigin = "center";
+    // Alle Elemente beobachten
+    elements.forEach((element, index) => {
+        console.log('🎨 Setup Element ' + (index + 1) + ':', element);
+        
+        // Initiale Styles setzen
+        element.style.transform = 'scale(0.8)';
+        element.style.opacity = '0.6';
+        element.style.transition = 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease-out';
+        element.style.transformOrigin = 'center';
+        
+        // Observer starten
         observer.observe(element);
     });
+    
+    console.log('✅ Parallax Grid: Setup abgeschlossen!');
 });
-');
-?> 
+</script> 
