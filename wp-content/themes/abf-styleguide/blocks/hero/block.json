@@ -1,0 +1,25 @@
+{
+    "name": "acf/hero",
+    "title": "Hero Section",
+    "description": "A hero section with title, text and optional background image",
+    "category": "abf-blocks",
+    "icon": "align-wide",
+    "keywords": ["hero", "banner", "header", "title"],
+    "supports": {
+        "align": ["wide", "full"],
+        "mode": false,
+        "jsx": true
+    },
+    "example": {
+        "attributes": {
+            "mode": "preview",
+            "data": {
+                "title": "Welcome to our website",
+                "text": "This is a sample hero section with title and description text.",
+                "background_image": null,
+                "button_text": "Learn More",
+                "button_link": "#"
+            }
+        }
+    }
+} 

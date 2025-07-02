@@ -1,1 +1,57 @@
-[{"name":"Mintgr\u00fcn","color":"#81d742"},{"name":"rot","color":"#dd3333"},{"name":"blau","color":"#1e73be"}]
+{
+    "colors": [
+        {
+            "name": "ABF Gr\u00fcn",
+            "value": "#66a98c"
+        },
+        {
+            "name": "ABF Rot",
+            "value": "#c50d14"
+        },
+        {
+            "name": "Hellgrau",
+            "value": "#cccccc"
+        },
+        {
+            "name": "Antrazit",
+            "value": "#575756"
+        },
+        {
+            "name": "Hellblau (apotheke)",
+            "value": "#7cc1e3"
+        },
+        {
+            "name": "Dunkelblau (Apotheke)",
+            "value": "#00678a"
+        },
+        {
+            "name": "Teal (Apotheke)",
+            "value": "#009eae"
+        },
+        {
+            "name": "Gr\u00fcn (Apotheke)",
+            "value": "#b1b622"
+        },
+        {
+            "name": "Gelb (Apotheke)",
+            "value": "#ffea47"
+        },
+        {
+            "name": "Olive (Apotheke)",
+            "value": "#88855a"
+        },
+        {
+            "name": "Nude (Apotheke)",
+            "value": "#ffd5b4"
+        },
+        {
+            "name": "Aubergine (Apotheke)",
+            "value": "#8c2761"
+        },
+        {
+            "name": "Sand (Apotheke)",
+            "value": "#c39a47"
+        }
+    ],
+    "updated": "2025-07-02 14:45:45"
+}

@@ -1,6 +1,153 @@
-@use "./variables";
+// =============================================================================
+// MAIN SCSS FILE
+// =============================================================================
+
+// Import variables first
+@import 'variables';
+
+// Import all SCSS modules
+@import 'typography';
+@import 'layout';
+@import 'components';
+
+// =============================================================================
+// CSS CUSTOM PROPERTIES (DYNAMIC COLORS)
+// =============================================================================
+
+:root {
+    // Dynamic colors will be loaded from colors.json via PHP
+    // These are fallback values
+    --color-primary: #{$color-primary};
+    --color-secondary: #{$color-secondary};
+    --color-success: #{$color-success};
+    --color-danger: #{$color-danger};
+    --color-warning: #{$color-warning};
+    --color-info: #{$color-info};
+}
+
+// =============================================================================
+// BASE RESET
+// =============================================================================
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+}
 
 body {
-  font-family: Arial, sans-serif;
-  background-color: variables.$background-color;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+// =============================================================================
+// WORDPRESS SPECIFIC STYLES
+// =============================================================================
+
+// WordPress admin bar
+.admin-bar {
+    .site-header {
+        top: 32px;
+    }
+}
+
+// WordPress content
+.wp-content {
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+    
+    .alignleft {
+        float: left;
+        margin-right: $spacing-md;
+        margin-bottom: $spacing-md;
+    }
+    
+    .alignright {
+        float: right;
+        margin-left: $spacing-md;
+        margin-bottom: $spacing-md;
+    }
+    
+    .aligncenter {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: $spacing-md;
+    }
+}
+
+// WordPress comments
+.comment-list {
+    list-style: none;
+    padding: 0;
+    
+    .comment {
+        margin-bottom: $spacing-md;
+        padding: $spacing-md;
+        background: #f8f9fa;
+        border-radius: 4px;
+    }
+}
+
+// =============================================================================
+// RESPONSIVE UTILITIES
+// =============================================================================
+
+// Hide elements on specific breakpoints
+@media (max-width: #{$breakpoint-mobile - 1px}) {
+    .d-mobile-none {
+        display: none !important;
+    }
+}
+
+@media (min-width: #{$breakpoint-mobile}) and (max-width: #{$breakpoint-tablet - 1px}) {
+    .d-tablet-none {
+        display: none !important;
+    }
+}
+
+@media (min-width: #{$breakpoint-tablet}) and (max-width: #{$breakpoint-desktop - 1px}) {
+    .d-desktop-none {
+        display: none !important;
+    }
+}
+
+@media (min-width: $breakpoint-desktop) {
+    .d-large-none {
+        display: none !important;
+    }
+}
+
+// =============================================================================
+// PRINT STYLES
+// =============================================================================
+
+@media print {
+    .no-print {
+        display: none !important;
+    }
+    
+    body {
+        font-size: 12pt;
+        line-height: 1.5;
+    }
+    
+    h1, h2, h3, h4, h5, h6 {
+        page-break-after: avoid;
+    }
+    
+    a {
+        text-decoration: underline;
+        color: black !important;
+    }
 }

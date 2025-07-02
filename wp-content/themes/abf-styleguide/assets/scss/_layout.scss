@@ -1,0 +1,270 @@
+// =============================================================================
+// LAYOUT STYLES
+// =============================================================================
+
+// =============================================================================
+// CONTAINERS
+// =============================================================================
+
+// Home container (fullwidth)
+.container-home {
+    width: $container-home;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0;
+}
+
+// Content container (limited width)
+.container-content {
+    width: 100%;
+    max-width: $container-content;
+    margin: 0 auto;
+    padding: 0 $spacing-sm;
+    
+    @media (min-width: $breakpoint-tablet) {
+        padding: 0 $spacing-md;
+    }
+    
+    @media (min-width: $breakpoint-desktop) {
+        padding: 0 $spacing-lg;
+    }
+}
+
+// =============================================================================
+// SPACING SYSTEM
+// =============================================================================
+
+// Margin utilities
+.m-0 { margin: 0 !important; }
+.m-xs { margin: $spacing-xs !important; }
+.m-sm { margin: $spacing-sm !important; }
+.m-md { margin: $spacing-md !important; }
+.m-lg { margin: $spacing-lg !important; }
+
+.mt-0 { margin-top: 0 !important; }
+.mt-xs { margin-top: $spacing-xs !important; }
+.mt-sm { margin-top: $spacing-sm !important; }
+.mt-md { margin-top: $spacing-md !important; }
+.mt-lg { margin-top: $spacing-lg !important; }
+
+.mb-0 { margin-bottom: 0 !important; }
+.mb-xs { margin-bottom: $spacing-xs !important; }
+.mb-sm { margin-bottom: $spacing-sm !important; }
+.mb-md { margin-bottom: $spacing-md !important; }
+.mb-lg { margin-bottom: $spacing-lg !important; }
+
+.ml-0 { margin-left: 0 !important; }
+.ml-xs { margin-left: $spacing-xs !important; }
+.ml-sm { margin-left: $spacing-sm !important; }
+.ml-md { margin-left: $spacing-md !important; }
+.ml-lg { margin-left: $spacing-lg !important; }
+
+.mr-0 { margin-right: 0 !important; }
+.mr-xs { margin-right: $spacing-xs !important; }
+.mr-sm { margin-right: $spacing-sm !important; }
+.mr-md { margin-right: $spacing-md !important; }
+.mr-lg { margin-right: $spacing-lg !important; }
+
+// Padding utilities
+.p-0 { padding: 0 !important; }
+.p-xs { padding: $spacing-xs !important; }
+.p-sm { padding: $spacing-sm !important; }
+.p-md { padding: $spacing-md !important; }
+.p-lg { padding: $spacing-lg !important; }
+
+.pt-0 { padding-top: 0 !important; }
+.pt-xs { padding-top: $spacing-xs !important; }
+.pt-sm { padding-top: $spacing-sm !important; }
+.pt-md { padding-top: $spacing-md !important; }
+.pt-lg { padding-top: $spacing-lg !important; }
+
+.pb-0 { padding-bottom: 0 !important; }
+.pb-xs { padding-bottom: $spacing-xs !important; }
+.pb-sm { padding-bottom: $spacing-sm !important; }
+.pb-md { padding-bottom: $spacing-md !important; }
+.pb-lg { padding-bottom: $spacing-lg !important; }
+
+.pl-0 { padding-left: 0 !important; }
+.pl-xs { padding-left: $spacing-xs !important; }
+.pl-sm { padding-left: $spacing-sm !important; }
+.pl-md { padding-left: $spacing-md !important; }
+.pl-lg { padding-left: $spacing-lg !important; }
+
+.pr-0 { padding-right: 0 !important; }
+.pr-xs { padding-right: $spacing-xs !important; }
+.pr-sm { padding-right: $spacing-sm !important; }
+.pr-md { padding-right: $spacing-md !important; }
+.pr-lg { padding-right: $spacing-lg !important; }
+
+// =============================================================================
+// FLEXBOX UTILITIES
+// =============================================================================
+
+.d-flex {
+    display: flex !important;
+}
+
+.d-inline-flex {
+    display: inline-flex !important;
+}
+
+.flex-row {
+    flex-direction: row !important;
+}
+
+.flex-column {
+    flex-direction: column !important;
+}
+
+.flex-wrap {
+    flex-wrap: wrap !important;
+}
+
+.flex-nowrap {
+    flex-wrap: nowrap !important;
+}
+
+.justify-content-start {
+    justify-content: flex-start !important;
+}
+
+.justify-content-end {
+    justify-content: flex-end !important;
+}
+
+.justify-content-center {
+    justify-content: center !important;
+}
+
+.justify-content-between {
+    justify-content: space-between !important;
+}
+
+.justify-content-around {
+    justify-content: space-around !important;
+}
+
+.align-items-start {
+    align-items: flex-start !important;
+}
+
+.align-items-end {
+    align-items: flex-end !important;
+}
+
+.align-items-center {
+    align-items: center !important;
+}
+
+.align-items-baseline {
+    align-items: baseline !important;
+}
+
+.align-items-stretch {
+    align-items: stretch !important;
+}
+
+.flex-grow-0 {
+    flex-grow: 0 !important;
+}
+
+.flex-grow-1 {
+    flex-grow: 1 !important;
+}
+
+.flex-shrink-0 {
+    flex-shrink: 0 !important;
+}
+
+.flex-shrink-1 {
+    flex-shrink: 1 !important;
+}
+
+// =============================================================================
+// DISPLAY UTILITIES
+// =============================================================================
+
+.d-none {
+    display: none !important;
+}
+
+.d-block {
+    display: block !important;
+}
+
+.d-inline {
+    display: inline !important;
+}
+
+.d-inline-block {
+    display: inline-block !important;
+}
+
+// Responsive display utilities
+@media (min-width: $breakpoint-mobile) {
+    .d-sm-none { display: none !important; }
+    .d-sm-block { display: block !important; }
+    .d-sm-inline { display: inline !important; }
+    .d-sm-inline-block { display: inline-block !important; }
+    .d-sm-flex { display: flex !important; }
+}
+
+@media (min-width: $breakpoint-tablet) {
+    .d-md-none { display: none !important; }
+    .d-md-block { display: block !important; }
+    .d-md-inline { display: inline !important; }
+    .d-md-inline-block { display: inline-block !important; }
+    .d-md-flex { display: flex !important; }
+}
+
+@media (min-width: $breakpoint-desktop) {
+    .d-lg-none { display: none !important; }
+    .d-lg-block { display: block !important; }
+    .d-lg-inline { display: inline !important; }
+    .d-lg-inline-block { display: inline-block !important; }
+    .d-lg-flex { display: flex !important; }
+}
+
+// =============================================================================
+// POSITIONING
+// =============================================================================
+
+.position-static {
+    position: static !important;
+}
+
+.position-relative {
+    position: relative !important;
+}
+
+.position-absolute {
+    position: absolute !important;
+}
+
+.position-fixed {
+    position: fixed !important;
+}
+
+.position-sticky {
+    position: sticky !important;
+}
+
+// =============================================================================
+// WIDTH & HEIGHT
+// =============================================================================
+
+.w-100 {
+    width: 100% !important;
+}
+
+.h-100 {
+    height: 100% !important;
+}
+
+.mw-100 {
+    max-width: 100% !important;
+}
+
+.mh-100 {
+    max-height: 100% !important;
+} 
