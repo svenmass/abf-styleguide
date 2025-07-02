@@ -16,6 +16,10 @@ $button_text = get_field('button_text');
 $button_link = get_field('button_link');
 $button_color = get_field('button_color');
 
+// Fallback for old field names
+if (!$title) $title = get_field('color_name');
+if (!$text) $text = get_field('color_value');
+
 // Block classes
 $block_classes = array('block-hero');
 if ($background_image) {
@@ -51,7 +55,8 @@ $container_class = is_front_page() ? 'container-home' : 'container-content';
                 <?php if ($button_text && $button_link): ?>
                     <div class="hero-button">
                         <a href="<?php echo esc_url($button_link); ?>" 
-                           class="btn <?php echo $button_color ? 'btn-' . esc_attr($button_color) : 'btn-primary'; ?>">
+                           class="btn <?php echo $button_color ? 'btn-' . esc_attr($button_color) : 'btn-primary'; ?>"
+                           style="<?php echo $button_color && $button_color !== 'primary' && $button_color !== 'secondary' ? 'background-color: var(--color-' . esc_attr($button_color) . ');' : ''; ?>">
                             <?php echo esc_html($button_text); ?>
                         </a>
                     </div>

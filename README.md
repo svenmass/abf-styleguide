@@ -112,6 +112,7 @@ Farben werden über WordPress Admin → Theme Settings definiert und in `colors.
 - [x] SCSS-System mit Variablen, Typografie, Layout und Komponenten
 - [x] Dynamische Farben aus Theme-Settings
 - [x] ACF Block-System mit automatischer Registrierung
+- [x] ACF Field Groups für Blocks (Hero-Block)
 - [x] Responsive Design mit Breakpoints
 - [x] Button-Komponenten mit dynamischen Farben
 - [x] Container-System (Home: Fullwidth, Content: 840px)
@@ -121,7 +122,6 @@ Farben werden über WordPress Admin → Theme Settings definiert und in `colors.
 
 ### Offene Punkte
 - [ ] Weitere ACF Blocks erstellen
-- [ ] ACF Field Groups für Blocks erstellen
 - [ ] Weitere Komponenten (Cards, Forms, etc.)
 - [ ] Performance Optimierungen
 - [ ] Gutenberg Editor Styles erweitern
