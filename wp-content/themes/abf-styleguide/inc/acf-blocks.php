@@ -27,6 +27,12 @@ function abf_register_acf_blocks() {
         if (file_exists($block_json)) {
             $block_data = json_decode(file_get_contents($block_json), true);
             
+            // Load block fields if they exist
+            $fields_file = $block_dir . '/fields.php';
+            if (file_exists($fields_file)) {
+                require_once $fields_file;
+            }
+            
             // Register block
             acf_register_block_type(array(
                 'name' => $block_data['name'] ?? 'acf/' . $block_name,
@@ -40,6 +46,7 @@ function abf_register_acf_blocks() {
                 'enqueue_style' => $block_dir . '/style.css',
                 'enqueue_script' => $block_dir . '/script.js',
                 'example' => $block_data['example'] ?? array(),
+                'mode' => 'edit', // Force edit mode to show fields
             ));
         }
     }
