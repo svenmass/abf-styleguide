@@ -56,22 +56,6 @@ function abf_register_acf_blocks() {
         ),
         'mode'              => 'edit',
     ));
-    
-    // Register Hero Block
-    acf_register_block_type(array(
-        'name'              => 'hero',
-        'title'             => __('Hero Block'),
-        'description'       => __('Ein Hero-Bereich mit Titel und Text'),
-        'render_template'   => get_template_directory() . '/blocks/hero/template.php',
-        'category'          => 'abf-blocks',
-        'icon'              => 'align-wide',
-        'keywords'          => array('hero', 'banner', 'header'),
-        'supports'          => array(
-            'jsx' => true,
-            'align' => array('wide', 'full'),
-        ),
-        'mode'              => 'edit',
-    ));
 }
 
 /**
@@ -195,95 +179,6 @@ function abf_register_acf_field_groups() {
         'hide_on_screen' => '',
         'active' => true,
         'description' => 'Felder für den Headline-Block',
-    ));
-    
-    // Hero Block Field Group
-    acf_add_local_field_group(array(
-        'key' => 'group_hero_block',
-        'title' => 'Hero Block Felder',
-        'fields' => array(
-            array(
-                'key' => 'field_hero_title',
-                'label' => 'Haupttitel',
-                'name' => 'title',
-                'type' => 'text',
-                'instructions' => 'Gib hier den Haupttitel für den Hero-Bereich ein',
-                'required' => 1,
-            ),
-            array(
-                'key' => 'field_hero_text',
-                'label' => 'Beschreibungstext',
-                'name' => 'text',
-                'type' => 'wysiwyg',
-                'instructions' => 'Gib hier den Beschreibungstext ein',
-                'required' => 0,
-                'default_value' => '',
-                'tabs' => 'all',
-                'toolbar' => 'full',
-                'media_upload' => 0,
-                'delay' => 0,
-            ),
-            array(
-                'key' => 'field_hero_background_image',
-                'label' => 'Hintergrundbild',
-                'name' => 'background_image',
-                'type' => 'image',
-                'instructions' => 'Wähle ein Hintergrundbild (optional)',
-                'required' => 0,
-                'return_format' => 'array',
-                'preview_size' => 'medium',
-                'library' => 'all',
-            ),
-            array(
-                'key' => 'field_hero_button_text',
-                'label' => 'Button Text',
-                'name' => 'button_text',
-                'type' => 'text',
-                'instructions' => 'Text für den Call-to-Action Button',
-                'required' => 0,
-                'wrapper' => array('width' => '50'),
-            ),
-            array(
-                'key' => 'field_hero_button_link',
-                'label' => 'Button Link',
-                'name' => 'button_link',
-                'type' => 'url',
-                'instructions' => 'Link für den Button',
-                'required' => 0,
-                'wrapper' => array('width' => '50'),
-            ),
-            array(
-                'key' => 'field_hero_button_color',
-                'label' => 'Button Farbe',
-                'name' => 'button_color',
-                'type' => 'select',
-                'instructions' => 'Wähle eine Farbe für den Button',
-                'required' => 0,
-                'choices' => $color_choices,
-                'default_value' => 'primary',
-                'allow_null' => 0,
-                'multiple' => 0,
-                'ui' => 0,
-                'return_format' => 'value',
-            ),
-        ),
-        'location' => array(
-            array(
-                array(
-                    'param' => 'block',
-                    'operator' => '==',
-                    'value' => 'acf/hero',
-                ),
-            ),
-        ),
-        'menu_order' => 0,
-        'position' => 'normal',
-        'style' => 'default',
-        'label_placement' => 'top',
-        'instruction_placement' => 'label',
-        'hide_on_screen' => '',
-        'active' => true,
-        'description' => 'Felder für den Hero-Block',
     ));
 }
 
