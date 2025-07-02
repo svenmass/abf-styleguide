@@ -163,6 +163,16 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
     }
     
+    // Scroll-Richtung tracken
+    let lastScrollY = window.scrollY;
+    let scrollDirection = 'down';
+    
+    window.addEventListener('scroll', function() {
+        const currentScrollY = window.scrollY;
+        scrollDirection = currentScrollY > lastScrollY ? 'down' : 'up';
+        lastScrollY = currentScrollY;
+    });
+    
     // Intersection Observer Setup
     const observerOptions = {
         threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
@@ -174,32 +184,44 @@ document.addEventListener('DOMContentLoaded', function() {
             const element = entry.target;
             const ratio = entry.intersectionRatio;
             
-            // Check if element was already fully activated
-            const isFullyActivated = element.dataset.fullyActivated === 'true';
-            
             // Debug-Info
             if (Math.random() < 0.1) { // Nur gelegentlich loggen
-                console.log('📊 Parallax Ratio:', ratio.toFixed(2), 'Already activated:', isFullyActivated);
+                console.log('📊 Parallax Ratio:', ratio.toFixed(2), 'Scroll-Richtung:', scrollDirection);
             }
             
             if (ratio >= 0.9) {
                 // Element ist 90% oder mehr sichtbar - Vollständig eingeblendet
                 element.style.transform = 'scale(1)';
                 element.style.opacity = '1';
-                element.dataset.fullyActivated = 'true'; // Für immer markieren!
-                console.log('🎯 Element fully activated - will stay this way!');
-            } else if (ratio > 0 && !isFullyActivated) {
-                // Element ist teilweise sichtbar UND noch nicht vollständig aktiviert
+                element.dataset.wasFullyVisible = 'true'; // Merken dass es mal vollständig war
+                console.log('🎯 Element vollständig sichtbar!');
+            } else if (ratio > 0) {
+                // Element ist teilweise sichtbar - Dramatische Transformation
                 const scale = 0.6 + (ratio / 0.9) * 0.4; // 0.6 bis 1.0 (größerer Effekt!)
                 const opacity = 0.3 + (ratio / 0.9) * 0.7; // 0.3 bis 1.0 (stärkerer Kontrast!)
                 element.style.transform = 'scale(' + scale + ')';
                 element.style.opacity = opacity;
-            } else if (ratio === 0 && !isFullyActivated) {
-                // Element ist nicht sichtbar UND noch nicht vollständig aktiviert
-                element.style.transform = 'scale(0.6)';
-                element.style.opacity = '0.3';
+            } else if (ratio === 0) {
+                // Element ist nicht sichtbar - jetzt richtungsabhängig!
+                const wasFullyVisible = element.dataset.wasFullyVisible === 'true';
+                
+                if (scrollDirection === 'down' && wasFullyVisible) {
+                    // Nach unten scrollen + war schon vollständig sichtbar → BLEIBT groß!
+                    element.style.transform = 'scale(1)';
+                    element.style.opacity = '1';
+                    console.log('⬇️ Nach unten: Element bleibt groß');
+                } else if (scrollDirection === 'up') {
+                    // Nach oben scrollen → wird wieder klein!
+                    element.style.transform = 'scale(0.6)';
+                    element.style.opacity = '0.3';
+                    element.dataset.wasFullyVisible = 'false'; // Reset für nächstes Mal
+                    console.log('⬆️ Nach oben: Element wird klein');
+                } else {
+                    // Noch nie vollständig sichtbar gewesen → normal klein
+                    element.style.transform = 'scale(0.6)';
+                    element.style.opacity = '0.3';
+                }
             }
-            // Falls isFullyActivated = true: NICHTS ÄNDERN! Bleibt bei scale(1) + opacity(1)
         });
     }, observerOptions);
     
