@@ -24,6 +24,7 @@ function abf_register_block_field_groups() {
     acf_add_local_field_group(array(
         'key' => 'group_hero_block',
         'title' => 'Hero Block',
+        'name' => 'hero_block',
         'fields' => array(
             array(
                 'key' => 'field_hero_title',
