@@ -184,58 +184,64 @@ document.addEventListener('DOMContentLoaded', function() {
             const element = entry.target;
             const ratio = entry.intersectionRatio;
             
+            // Einfache Flags pro Element
+            if (!element.dataset.isLocked) element.dataset.isLocked = 'false';
+            if (!element.dataset.lockDirection) element.dataset.lockDirection = '';
+            if (!element.dataset.justUnlocked) element.dataset.justUnlocked = 'false';
+            
             // Debug-Info
-            if (Math.random() < 0.1) { // Nur gelegentlich loggen
-                console.log('📊 Parallax Ratio:', ratio.toFixed(2), 'Scroll-Richtung:', scrollDirection);
+            if (Math.random() < 0.05) { // Nur gelegentlich loggen
+                console.log('📊 Ratio:', ratio.toFixed(2), 'Locked:', element.dataset.isLocked, 'Direction:', scrollDirection);
             }
             
-            if (ratio >= 0.9) {
-                // Element ist 90% oder mehr sichtbar - Vollständig eingeblendet
+            if (ratio >= 0.9 && element.dataset.isLocked === 'false') {
+                // Element ist 90% sichtbar UND noch nicht gelockt → jetzt locken!
                 element.style.transform = 'scale(1)';
                 element.style.opacity = '1';
-                element.dataset.wasFullyVisible = 'true'; // Merken dass es mal vollständig war
-                console.log('🎯 Element vollständig sichtbar!');
+                element.dataset.isLocked = 'true'; // Element ist jetzt "gelockt"
+                element.dataset.lockDirection = scrollDirection; // In welche Richtung gelockt
+                console.log('🔒 Element GELOCKT bei 100% in Richtung:', scrollDirection);
             } else if (ratio > 0) {
-                // Element ist teilweise sichtbar - Dramatische Transformation
-                const scale = 0.6 + (ratio / 0.9) * 0.4; // 0.6 bis 1.0 (größerer Effekt!)
-                const opacity = 0.3 + (ratio / 0.9) * 0.7; // 0.3 bis 1.0 (stärkerer Kontrast!)
-                element.style.transform = 'scale(' + scale + ')';
-                element.style.opacity = opacity;
+                // Element ist sichtbar
+                if (element.dataset.isLocked === 'false') {
+                    // Noch nicht gelockt → normaler Parallax
+                    const scale = 0.6 + (ratio / 0.9) * 0.4;
+                    const opacity = 0.3 + (ratio / 0.9) * 0.7;
+                    element.style.transform = 'scale(' + scale + ')';
+                    element.style.opacity = opacity;
+                } else if (element.dataset.justUnlocked === 'true') {
+                    // Gerade entsperrt → Parallax wieder aktivieren!
+                    const scale = 0.6 + (ratio / 0.9) * 0.4;
+                    const opacity = 0.3 + (ratio / 0.9) * 0.7;
+                    element.style.transform = 'scale(' + scale + ')';
+                    element.style.opacity = opacity;
+                    console.log('🔄 Entsperrt → Parallax reaktiviert');
+                }
+                // Falls gelockt UND nicht gerade entsperrt → ändere NICHTS!
             } else if (ratio === 0) {
-                // Element ist nicht sichtbar - PRÄZISE Position-basierte Logik!
-                const wasFullyVisible = element.dataset.wasFullyVisible === 'true';
-                
-                if (wasFullyVisible) {
-                    // Element war schon mal vollständig sichtbar
-                    const elementRect = element.getBoundingClientRect();
-                    const elementTop = elementRect.top;
-                    const elementBottom = elementRect.bottom;
-                    
-                    if (elementTop < 0 && elementBottom < 0) {
-                        // Element ist OBERHALB des Viewports (bereits vorbei gescrollt)
-                        if (scrollDirection === 'up') {
-                            // Nach oben scrollen + Element oberhalb → wird wieder klein (Seitenanfang!)
-                            element.style.transform = 'scale(0.6)';
-                            element.style.opacity = '0.3';
-                            element.dataset.wasFullyVisible = 'false'; // Reset
-                            console.log('⬆️ Element oberhalb + nach oben → wird klein');
-                        } else {
-                            // Nach unten scrollen + Element oberhalb → bleibt groß!
-                            element.style.transform = 'scale(1)';
-                            element.style.opacity = '1';
-                            console.log('⬇️ Element oberhalb + nach unten → bleibt groß');
-                        }
-                    } else if (elementTop > window.innerHeight) {
-                        // Element ist UNTERHALB des Viewports (noch nicht erreicht)
-                        // Bleibt IMMER groß, egal in welche Richtung gescrollt wird
+                // Element nicht sichtbar
+                if (element.dataset.isLocked === 'true') {
+                    // Element ist gelockt
+                    if (scrollDirection === element.dataset.lockDirection) {
+                        // Gleiche Richtung → bleibt groß!
                         element.style.transform = 'scale(1)';
                         element.style.opacity = '1';
-                        console.log('📍 Element unterhalb Viewport → bleibt groß');
+                        element.dataset.justUnlocked = 'false'; // Reset justUnlocked
+                        console.log('✅ Gleiche Richtung → bleibt groß');
+                    } else {
+                        // Andere Richtung → entsperre und mache klein!
+                        element.style.transform = 'scale(0.6)';
+                        element.style.opacity = '0.3';
+                        element.dataset.isLocked = 'false';
+                        element.dataset.lockDirection = '';
+                        element.dataset.justUnlocked = 'true'; // Markiere als gerade entsperrt
+                        console.log('🔓 Richtungswechsel → entsperrt und klein');
                     }
                 } else {
-                    // Noch nie vollständig sichtbar gewesen → normal klein
+                    // Nicht gelockt → normal klein
                     element.style.transform = 'scale(0.6)';
                     element.style.opacity = '0.3';
+                    element.dataset.justUnlocked = 'false'; // Reset
                 }
             }
         });
