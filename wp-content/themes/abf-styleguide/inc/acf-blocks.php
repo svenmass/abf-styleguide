@@ -8,6 +8,333 @@ if (!defined('ABSPATH')) {
 }
 
 /**
+ * Generate fields for a single parallax grid element
+ */
+function abf_get_parallax_element_fields($element_number) {
+    // Define color choices directly to avoid recursion
+    $color_choices = array(
+        'inherit' => 'Standard (inherit)',
+        'primary' => 'Primärfarbe',
+        'secondary' => 'Sekundärfarbe',
+        'white' => 'Weiß',
+        'black' => 'Schwarz',
+    );
+    $prefix = "element_{$element_number}_";
+    $label_prefix = "Element {$element_number} - ";
+    
+    return array(
+        // Tab for this element
+        array(
+            'key' => "field_{$prefix}tab",
+            'label' => "Element {$element_number}",
+            'name' => '',
+            'type' => 'tab',
+            'instructions' => '',
+            'placement' => 'top',
+        ),
+        
+        // Background Settings
+        array(
+            'key' => "field_{$prefix}background_type",
+            'label' => $label_prefix . 'Hintergrund Typ',
+            'name' => $prefix . 'background_type',
+            'type' => 'radio',
+            'instructions' => 'Wähle zwischen Farbe oder Bild',
+            'required' => 1,
+            'choices' => array(
+                'color' => 'Hintergrundfarbe',
+                'image' => 'Hintergrund-Bild',
+            ),
+            'default_value' => 'color',
+            'layout' => 'horizontal',
+        ),
+        array(
+            'key' => "field_{$prefix}background_color",
+            'label' => $label_prefix . 'Hintergrundfarbe',
+            'name' => $prefix . 'background_color',
+            'type' => 'color_picker',
+            'instructions' => 'Wähle eine Hintergrundfarbe',
+            'required' => 0,
+            'default_value' => '#000000',
+            'conditional_logic' => array(
+                array(
+                    array(
+                        'field' => "field_{$prefix}background_type",
+                        'operator' => '==',
+                        'value' => 'color',
+                    ),
+                ),
+            ),
+        ),
+        array(
+            'key' => "field_{$prefix}background_image",
+            'label' => $label_prefix . 'Hintergrund-Bild',
+            'name' => $prefix . 'background_image',
+            'type' => 'image',
+            'instructions' => 'Wähle ein Hintergrund-Bild',
+            'required' => 0,
+            'return_format' => 'id',
+            'conditional_logic' => array(
+                array(
+                    array(
+                        'field' => "field_{$prefix}background_type",
+                        'operator' => '==',
+                        'value' => 'image',
+                    ),
+                ),
+            ),
+        ),
+        
+        // Headline Settings
+        array(
+            'key' => "field_{$prefix}headline_text",
+            'label' => $label_prefix . 'Headline',
+            'name' => $prefix . 'headline_text',
+            'type' => 'textarea',
+            'instructions' => 'Gib hier die Hauptüberschrift ein (optional)',
+            'required' => 0,
+            'rows' => 2,
+        ),
+        array(
+            'key' => "field_{$prefix}headline_tag",
+            'label' => $label_prefix . 'Headline Tag',
+            'name' => $prefix . 'headline_tag',
+            'type' => 'select',
+            'instructions' => 'HTML-Tag für die Headline',
+            'choices' => array(
+                'h1' => 'H1',
+                'h2' => 'H2',
+                'h3' => 'H3',
+                'h4' => 'H4',
+                'h5' => 'H5',
+                'h6' => 'H6',
+            ),
+            'default_value' => 'h2',
+            'wrapper' => array('width' => '25'),
+        ),
+        array(
+            'key' => "field_{$prefix}headline_weight",
+            'label' => $label_prefix . 'Headline Gewicht',
+            'name' => $prefix . 'headline_weight',
+            'type' => 'select',
+            'instructions' => 'Schriftgewicht',
+            'choices' => array(
+                '300' => 'Light (300)',
+                '400' => 'Regular (400)',
+                '700' => 'Bold (700)',
+            ),
+            'default_value' => '400',
+            'wrapper' => array('width' => '25'),
+        ),
+        array(
+            'key' => "field_{$prefix}headline_size",
+            'label' => $label_prefix . 'Headline Größe',
+            'name' => $prefix . 'headline_size',
+            'type' => 'number',
+            'instructions' => 'Schriftgröße in Pixeln',
+            'default_value' => 24,
+            'min' => 12,
+            'max' => 72,
+            'wrapper' => array('width' => '25'),
+        ),
+        array(
+            'key' => "field_{$prefix}headline_color",
+            'label' => $label_prefix . 'Headline Farbe',
+            'name' => $prefix . 'headline_color',
+            'type' => 'select',
+            'instructions' => 'Textfarbe der Headline',
+            'choices' => $color_choices,
+            'default_value' => 'inherit',
+            'wrapper' => array('width' => '25'),
+        ),
+        
+        // Subline Settings
+        array(
+            'key' => "field_{$prefix}subline_text",
+            'label' => $label_prefix . 'Subline',
+            'name' => $prefix . 'subline_text',
+            'type' => 'textarea',
+            'instructions' => 'Gib hier die Unterüberschrift ein (optional)',
+            'required' => 0,
+            'rows' => 2,
+        ),
+        array(
+            'key' => "field_{$prefix}subline_tag",
+            'label' => $label_prefix . 'Subline Tag',
+            'name' => $prefix . 'subline_tag',
+            'type' => 'select',
+            'instructions' => 'HTML-Tag für die Subline',
+            'choices' => array(
+                'h1' => 'H1',
+                'h2' => 'H2',
+                'h3' => 'H3',
+                'h4' => 'H4',
+                'h5' => 'H5',
+                'h6' => 'H6',
+                'p' => 'Paragraph',
+            ),
+            'default_value' => 'p',
+            'wrapper' => array('width' => '25'),
+        ),
+        array(
+            'key' => "field_{$prefix}subline_weight",
+            'label' => $label_prefix . 'Subline Gewicht',
+            'name' => $prefix . 'subline_weight',
+            'type' => 'select',
+            'instructions' => 'Schriftgewicht',
+            'choices' => array(
+                '300' => 'Light (300)',
+                '400' => 'Regular (400)',
+                '700' => 'Bold (700)',
+            ),
+            'default_value' => '400',
+            'wrapper' => array('width' => '25'),
+        ),
+        array(
+            'key' => "field_{$prefix}subline_size",
+            'label' => $label_prefix . 'Subline Größe',
+            'name' => $prefix . 'subline_size',
+            'type' => 'number',
+            'instructions' => 'Schriftgröße in Pixeln',
+            'default_value' => 16,
+            'min' => 12,
+            'max' => 48,
+            'wrapper' => array('width' => '25'),
+        ),
+        array(
+            'key' => "field_{$prefix}subline_color",
+            'label' => $label_prefix . 'Subline Farbe',
+            'name' => $prefix . 'subline_color',
+            'type' => 'select',
+            'instructions' => 'Textfarbe der Subline',
+            'choices' => $color_choices,
+            'default_value' => 'inherit',
+            'wrapper' => array('width' => '25'),
+        ),
+        
+        // Button Settings
+        array(
+            'key' => "field_{$prefix}show_button",
+            'label' => $label_prefix . 'Button anzeigen',
+            'name' => $prefix . 'show_button',
+            'type' => 'true_false',
+            'instructions' => 'Soll ein Button angezeigt werden?',
+            'default_value' => 0,
+        ),
+        array(
+            'key' => "field_{$prefix}button_text",
+            'label' => $label_prefix . 'Button Text',
+            'name' => $prefix . 'button_text',
+            'type' => 'text',
+            'instructions' => 'Text für den Button',
+            'conditional_logic' => array(
+                array(
+                    array(
+                        'field' => "field_{$prefix}show_button",
+                        'operator' => '==',
+                        'value' => '1',
+                    ),
+                ),
+            ),
+            'wrapper' => array('width' => '50'),
+        ),
+        array(
+            'key' => "field_{$prefix}button_url",
+            'label' => $label_prefix . 'Button URL',
+            'name' => $prefix . 'button_url',
+            'type' => 'url',
+            'instructions' => 'Ziel-URL für den Button',
+            'conditional_logic' => array(
+                array(
+                    array(
+                        'field' => "field_{$prefix}show_button",
+                        'operator' => '==',
+                        'value' => '1',
+                    ),
+                ),
+            ),
+            'wrapper' => array('width' => '50'),
+        ),
+        array(
+            'key' => "field_{$prefix}button_bg_color",
+            'label' => $label_prefix . 'Button Hintergrund',
+            'name' => $prefix . 'button_bg_color',
+            'type' => 'select',
+            'instructions' => 'Hintergrundfarbe des Buttons',
+            'choices' => $color_choices,
+            'default_value' => 'primary',
+            'conditional_logic' => array(
+                array(
+                    array(
+                        'field' => "field_{$prefix}show_button",
+                        'operator' => '==',
+                        'value' => '1',
+                    ),
+                ),
+            ),
+            'wrapper' => array('width' => '25'),
+        ),
+        array(
+            'key' => "field_{$prefix}button_text_color",
+            'label' => $label_prefix . 'Button Text',
+            'name' => $prefix . 'button_text_color',
+            'type' => 'select',
+            'instructions' => 'Textfarbe des Buttons',
+            'choices' => $color_choices,
+            'default_value' => 'inherit',
+            'conditional_logic' => array(
+                array(
+                    array(
+                        'field' => "field_{$prefix}show_button",
+                        'operator' => '==',
+                        'value' => '1',
+                    ),
+                ),
+            ),
+            'wrapper' => array('width' => '25'),
+        ),
+        array(
+            'key' => "field_{$prefix}button_hover_bg_color",
+            'label' => $label_prefix . 'Button Hover BG',
+            'name' => $prefix . 'button_hover_bg_color',
+            'type' => 'select',
+            'instructions' => 'Hover-Hintergrundfarbe',
+            'choices' => $color_choices,
+            'default_value' => 'secondary',
+            'conditional_logic' => array(
+                array(
+                    array(
+                        'field' => "field_{$prefix}show_button",
+                        'operator' => '==',
+                        'value' => '1',
+                    ),
+                ),
+            ),
+            'wrapper' => array('width' => '25'),
+        ),
+        array(
+            'key' => "field_{$prefix}button_hover_text_color",
+            'label' => $label_prefix . 'Button Hover Text',
+            'name' => $prefix . 'button_hover_text_color',
+            'type' => 'select',
+            'instructions' => 'Hover-Textfarbe',
+            'choices' => $color_choices,
+            'default_value' => 'inherit',
+            'conditional_logic' => array(
+                array(
+                    array(
+                        'field' => "field_{$prefix}show_button",
+                        'operator' => '==',
+                        'value' => '1',
+                    ),
+                ),
+            ),
+            'wrapper' => array('width' => '25'),
+        ),
+    );
+}
+
+/**
  * Get dynamic color choices for ACF fields
  */
 function abf_get_color_choices() {
@@ -66,6 +393,21 @@ function abf_register_acf_blocks() {
         'category'          => 'abf-blocks',
         'icon'              => 'format-image',
         'keywords'          => array('hero', 'header', 'video', 'background', 'headline'),
+        'supports'          => array(
+            'jsx' => true,
+        ),
+        'mode'              => 'auto',
+    ));
+
+    // Register Parallax Grid Block
+    acf_register_block_type(array(
+        'name'              => 'parallax-grid',
+        'title'             => __('Parallax Grid'),
+        'description'       => __('Ein bildschirmfüllender Block mit 6 Elementen in parallax Grid-Layout'),
+        'render_template'   => get_template_directory() . '/blocks/parallax-grid/template.php',
+        'category'          => 'abf-blocks',
+        'icon'              => 'grid-view',
+        'keywords'          => array('parallax', 'grid', 'gallery', 'mosaic'),
         'supports'          => array(
             'jsx' => true,
         ),
@@ -478,6 +820,37 @@ function abf_register_acf_field_groups() {
         'hide_on_screen' => '',
         'active' => true,
         'description' => 'Felder für den Hero-Block',
+    ));
+
+    // Generate fields for all 6 parallax grid elements
+    $parallax_fields = array();
+    for ($i = 1; $i <= 6; $i++) {
+        $element_fields = abf_get_parallax_element_fields($i);
+        $parallax_fields = array_merge($parallax_fields, $element_fields);
+    }
+
+    // Parallax Grid Block Field Group
+    acf_add_local_field_group(array(
+        'key' => 'group_parallax_grid_block',
+        'title' => 'Parallax Grid Block Felder',
+        'fields' => $parallax_fields,
+        'location' => array(
+            array(
+                array(
+                    'param' => 'block',
+                    'operator' => '==',
+                    'value' => 'acf/parallax-grid',
+                ),
+            ),
+        ),
+        'menu_order' => 0,
+        'position' => 'normal',
+        'style' => 'default',
+        'label_placement' => 'top',
+        'instruction_placement' => 'label',
+        'hide_on_screen' => '',
+        'active' => true,
+        'description' => 'Felder für den Parallax Grid Block mit 6 konfigurierbaren Elementen',
     ));
 }
 
