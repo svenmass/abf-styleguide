@@ -179,20 +179,20 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.log('📊 Parallax Ratio:', ratio.toFixed(2));
             }
             
-            if (ratio >= 0.7) {
-                // Element ist 70% oder mehr sichtbar
+            if (ratio >= 0.9) {
+                // Element ist 90% oder mehr sichtbar - Vollständig eingeblendet
                 element.style.transform = 'scale(1)';
                 element.style.opacity = '1';
             } else if (ratio > 0) {
-                // Element ist teilweise sichtbar
-                const scale = 0.8 + (ratio / 0.7) * 0.2; // 0.8 bis 1.0
-                const opacity = 0.6 + (ratio / 0.7) * 0.4; // 0.6 bis 1.0
+                // Element ist teilweise sichtbar - Dramatische Transformation
+                const scale = 0.6 + (ratio / 0.9) * 0.4; // 0.6 bis 1.0 (größerer Effekt!)
+                const opacity = 0.3 + (ratio / 0.9) * 0.7; // 0.3 bis 1.0 (stärkerer Kontrast!)
                 element.style.transform = 'scale(' + scale + ')';
                 element.style.opacity = opacity;
             } else {
-                // Element ist nicht sichtbar
-                element.style.transform = 'scale(0.8)';
-                element.style.opacity = '0.6';
+                // Element ist nicht sichtbar - Stark reduziert
+                element.style.transform = 'scale(0.6)';
+                element.style.opacity = '0.3';
             }
         });
     }, observerOptions);
@@ -201,10 +201,10 @@ document.addEventListener('DOMContentLoaded', function() {
     elements.forEach((element, index) => {
         console.log('🎨 Setup Element ' + (index + 1) + ':', element);
         
-        // Initiale Styles setzen
-        element.style.transform = 'scale(0.8)';
-        element.style.opacity = '0.6';
-        element.style.transition = 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease-out';
+        // Initiale Styles setzen - DRAMATISCHER EFFEKT!
+        element.style.transform = 'scale(0.6)';
+        element.style.opacity = '0.3';
+        element.style.transition = 'transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease-out';
         element.style.transformOrigin = 'center';
         
         // Observer starten
