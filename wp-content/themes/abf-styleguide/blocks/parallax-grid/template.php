@@ -10,32 +10,37 @@ $block_id = 'parallax-grid-' . $block['id'];
 <div class="block-parallax-grid" id="<?php echo esc_attr($block_id); ?>">
     <div class="parallax-grid-container">
         
-        <?php for ($i = 1; $i <= 6; $i++): ?>
-            <?php
-            // Get fields for current element
-            $background_type = get_field("element_{$i}_background_type");
-            $background_color = get_field("element_{$i}_background_color");
-            $background_image = get_field("element_{$i}_background_image");
-            
-            $headline_text = get_field("element_{$i}_headline_text");
-            $headline_tag = get_field("element_{$i}_headline_tag") ?: 'h2';
-            $headline_weight = get_field("element_{$i}_headline_weight");
-            $headline_size = get_field("element_{$i}_headline_size");
-            $headline_color = get_field("element_{$i}_headline_color");
-            
-            $subline_text = get_field("element_{$i}_subline_text");
-            $subline_tag = get_field("element_{$i}_subline_tag") ?: 'p';
-            $subline_weight = get_field("element_{$i}_subline_weight");
-            $subline_size = get_field("element_{$i}_subline_size");
-            $subline_color = get_field("element_{$i}_subline_color");
-            
-            $show_button = get_field("element_{$i}_show_button");
-            $button_text = get_field("element_{$i}_button_text");
-            $button_url = get_field("element_{$i}_button_url");
-            $button_bg_color = get_field("element_{$i}_button_bg_color");
-            $button_text_color = get_field("element_{$i}_button_text_color");
-            $button_hover_bg_color = get_field("element_{$i}_button_hover_bg_color");
-            $button_hover_text_color = get_field("element_{$i}_button_hover_text_color");
+        <?php 
+        $elements = get_field('parallax_elements');
+        if ($elements && is_array($elements)):
+            for ($i = 0; $i < 6; $i++): 
+                $element = isset($elements[$i]) ? $elements[$i] : array();
+                $element_number = $i + 1;
+                
+                // Get fields for current element
+                $background_type = $element['background_type'] ?? 'color';
+                $background_color = $element['background_color'] ?? '#000000';
+                $background_image = $element['background_image'] ?? null;
+                
+                $headline_text = $element['headline_text'] ?? '';
+                $headline_tag = $element['headline_tag'] ?? 'h2';
+                $headline_weight = $element['headline_weight'] ?? '400';
+                $headline_size = $element['headline_size'] ?? 24;
+                $headline_color = $element['headline_color'] ?? 'inherit';
+                
+                $subline_text = $element['subline_text'] ?? '';
+                $subline_tag = $element['subline_tag'] ?? 'p';
+                $subline_weight = $element['subline_weight'] ?? '400';
+                $subline_size = $element['subline_size'] ?? 16;
+                $subline_color = $element['subline_color'] ?? 'inherit';
+                
+                $show_button = $element['show_button'] ?? false;
+                $button_text = $element['button_text'] ?? '';
+                $button_url = $element['button_url'] ?? '';
+                $button_bg_color = $element['button_bg_color'] ?? 'primary';
+                $button_text_color = $element['button_text_color'] ?? 'inherit';
+                $button_hover_bg_color = $element['button_hover_bg_color'] ?? 'secondary';
+                $button_hover_text_color = $element['button_hover_text_color'] ?? 'inherit';
             
             // Build style string for background
             $style_parts = [];
@@ -58,7 +63,7 @@ $block_id = 'parallax-grid-' . $block['id'];
             }
             ?>
             
-            <div class="parallax-element parallax-element-<?php echo $i; ?>" data-element="<?php echo $i; ?>"<?php echo $element_style; ?>>
+            <div class="parallax-element parallax-element-<?php echo $element_number; ?>" data-element="<?php echo $element_number; ?>"<?php echo $element_style; ?>>
                 
                 <?php if ($background_type === 'image' && $background_image): ?>
                     <div class="parallax-background-image"></div>
@@ -107,8 +112,8 @@ $block_id = 'parallax-grid-' . $block['id'];
                         
                         <?php if ($button_hover_css): ?>
                             <style>
-                                .parallax-element-<?php echo $i; ?> .parallax-button:hover,
-                                .parallax-element-<?php echo $i; ?> .parallax-button:focus {
+                                .parallax-element-<?php echo $element_number; ?> .parallax-button:hover,
+                                .parallax-element-<?php echo $element_number; ?> .parallax-button:focus {
                                     <?php echo $button_hover_css; ?> !important;
                                 }
                             </style>
@@ -126,6 +131,7 @@ $block_id = 'parallax-grid-' . $block['id'];
             </div>
             
         <?php endfor; ?>
+        <?php endif; ?>
         
     </div>
 </div>
