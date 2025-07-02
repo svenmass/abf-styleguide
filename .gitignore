@@ -1,9 +1,40 @@
+# WordPress Core
+wp-content/themes/twenty*
+wp-content/plugins/akismet/
+wp-content/plugins/hello.php
+wp-content/uploads/
+
+# WordPress Language Files (außer eigene)
+wp-content/languages/plugins/
+wp-content/languages/themes/twenty*
+
+# WordPress Core Upgrade
+wp-content/upgrade/
+
+# WordPress Cache
+wp-content/cache/
+
 # Node modules
 node_modules/
 
+# macOS
+.DS_Store
+
+# IDEs
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# Docker volumes
+db_data/
+
+# Nur unser eigenes Theme behalten
+!wp-content/themes/abf-styleguide/
+
 # Logs
 logs
-*.log
 npm-debug.log*
 
 # Dependency directories
@@ -26,9 +57,6 @@ yarn.lock
 
 # dotenv environment variables file
 .env
-
-# MacOS files
-.DS_Store
 
 # Vite output
 dist/ 
