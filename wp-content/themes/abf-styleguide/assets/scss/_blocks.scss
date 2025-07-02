@@ -1,0 +1,238 @@
+// =============================================================================
+// BLOCK STYLES
+// =============================================================================
+
+// =============================================================================
+// HEADLINE BLOCK
+// =============================================================================
+
+.block-headline {
+    .headline-text {
+        margin: 0;
+    }
+}
+
+// =============================================================================
+// HERO BLOCK
+// =============================================================================
+
+.block-hero {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    max-width: 100vw;
+    max-height: 100vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-sizing: border-box;
+    
+    .container-home {
+        position: relative;
+        width: 100vw;
+        height: 100vh;
+        max-width: 100vw;
+        max-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        z-index: 2;
+        margin: 0 !important;
+        padding: 0 !important;
+        box-sizing: border-box;
+    }
+}
+
+// Hero Background
+.hero-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+.hero-background-image,
+.hero-background-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+}
+
+// Hero Logo
+.hero-logo {
+    position: absolute;
+    top: $spacing-md;
+    left: $spacing-md;
+    z-index: 3;
+    height: 50px;
+    width: auto;
+    
+    svg {
+        height: 50px;
+        width: auto;
+    }
+}
+
+// Hero Plus Icon
+.hero-plus {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    z-index: 3;
+    height: 40vh;
+    width: auto;
+    opacity: 0.7;
+    
+    svg {
+        height: 40vh;
+        width: auto;
+        max-height: 40vh;
+    }
+}
+
+// Hero Content
+.hero-content {
+    position: absolute;
+    top: 50vh;
+    left: $spacing-md;
+    transform: translateY(-50%);
+    z-index: 4;
+    text-align: left;
+    max-width: 90%;
+    width: calc(100% - #{$spacing-md * 2});
+}
+
+.hero-headline {
+    margin: 0 0 $spacing-md 0;
+    text-align: left;
+    font-family: $font-family-primary;
+}
+
+.hero-subline {
+    margin: 0 0 $spacing-lg 0;
+    text-align: left;
+    font-family: $font-family-primary;
+}
+
+.hero-button-wrapper {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.hero-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: $font-family-primary;
+    font-weight: $font-weight-regular;
+    font-size: $font-size-body;
+    line-height: $line-height-base;
+    padding: $button-padding-y $button-padding-x;
+    border: none;
+    border-radius: $button-border-radius;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: var(--color-primary, $color-primary);
+    color: white;
+    
+    &:hover,
+    &:focus {
+        text-decoration: none;
+        outline: none;
+    }
+}
+
+// =============================================================================
+// RESPONSIVE BLOCK STYLES
+// =============================================================================
+
+// Mobile (bis 575px)
+@media (max-width: #{$breakpoint-mobile - 1px}) {
+    .hero-logo {
+        top: $spacing-sm;
+        left: $spacing-sm;
+    }
+    
+    .hero-plus {
+        height: 30vh;
+        
+        svg {
+            height: 30vh;
+        }
+    }
+    
+    .hero-content {
+        left: $spacing-sm;
+        max-width: calc(100% - #{$spacing-sm * 2});
+        width: calc(100% - #{$spacing-sm * 2});
+    }
+    
+    .hero-headline {
+        font-size: 28px !important;
+        margin-bottom: $spacing-sm;
+    }
+    
+    .hero-subline {
+        font-size: 18px !important;
+        margin-bottom: $spacing-md;
+    }
+    
+    .hero-button {
+        padding: 14px 32px;
+        font-size: 16px;
+    }
+}
+
+// Tablet (576px bis 1199px)
+@media (min-width: $breakpoint-mobile) and (max-width: #{$breakpoint-desktop - 1px}) {
+    .hero-logo {
+        top: $spacing-md;
+        left: $spacing-md;
+    }
+    
+    .hero-plus {
+        height: 35vh;
+        
+        svg {
+            height: 35vh;
+        }
+    }
+    
+    .hero-content {
+        left: $spacing-md;
+        max-width: calc(100% - #{$spacing-md * 2});
+        width: calc(100% - #{$spacing-md * 2});
+    }
+}
+
+// Desktop (ab 1200px)
+@media (min-width: $breakpoint-desktop) {
+    .hero-logo {
+        top: $spacing-lg;
+        left: $spacing-lg;
+    }
+    
+    .hero-plus {
+        height: 40vh;
+        
+        svg {
+            height: 40vh;
+        }
+    }
+    
+    .hero-content {
+        left: $spacing-lg;
+        max-width: calc(100% - #{$spacing-lg * 2});
+        width: calc(100% - #{$spacing-lg * 2});
+    }
+} 

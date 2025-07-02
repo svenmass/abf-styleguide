@@ -1,0 +1,22 @@
+{
+    "name": "acf/hero",
+    "title": "Hero",
+    "description": "Ein vollbreiter Hero-Block mit Video/Bild-Hintergrund, Logo, Headlines und Button",
+    "category": "abf-blocks",
+    "icon": "format-image",
+    "keywords": ["hero", "header", "video", "background", "headline"],
+    "supports": {
+        "jsx": true
+    },
+    "mode": "edit",
+    "example": {
+        "attributes": {
+            "mode": "preview",
+            "data": {
+                "hero_headline": "Willkommen bei ABF",
+                "hero_subline": "Ihr Partner für moderne Lösungen",
+                "hero_button_text": "Mehr erfahren"
+            }
+        }
+    }
+} 

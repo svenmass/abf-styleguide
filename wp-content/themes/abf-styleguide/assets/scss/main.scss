@@ -3,12 +3,13 @@
 // =============================================================================
 
 // Import variables first
-@import 'variables';
+@import '_variables';
 
 // Import all SCSS modules
 @import 'typography';      
 @import 'layout';
 @import 'components';
+@import 'blocks';
 
 // =============================================================================
 // CSS CUSTOM PROPERTIES (DYNAMIC COLORS)
@@ -32,18 +33,35 @@
 *,
 *::before,
 *::after {
-    box-sizing: border-box;
+    box-sizing: border-box !important;
+}
+
+// WordPress core resets
+#page,
+#content,
+.wp-site-blocks {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100%;
+    box-sizing: border-box !important;
 }
 
 html {
     font-size: 16px;
     scroll-behavior: smooth;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
 }
 
 body {
     margin: 0;
     padding: 0;
     min-height: 100vh;
+    width: 100vw;
+    overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
@@ -52,11 +70,21 @@ body {
 // WORDPRESS SPECIFIC STYLES
 // =============================================================================
 
-// WordPress admin bar
-.admin-bar {
-    .site-header {
-        top: 32px;
-    }
+// WordPress admin bar styles entfernt (kein Header mehr vorhanden)
+
+// Site structure
+.site {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100vw;
+    overflow-x: hidden;
+    box-sizing: border-box;
+}
+
+.site-content {
+    margin: 0 !important;
+    padding: 0 !important;
+    box-sizing: border-box;
 }
 
 // WordPress content
