@@ -1,0 +1,30 @@
+services:
+  wordpress:
+    image: wordpress:6.5-php8.2-apache
+    container_name: abf-styleguide-wp
+    ports:
+      - "8083:80"
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DB_NAME: wordpress
+    volumes:
+      - ./wp-content:/var/www/html/wp-content
+    depends_on:
+      - db
+
+  db:
+    image: mariadb:10.6
+    container_name: abf-styleguide-db
+    restart: always
+    environment:
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:
