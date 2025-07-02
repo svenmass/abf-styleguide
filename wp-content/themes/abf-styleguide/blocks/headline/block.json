@@ -1,0 +1,24 @@
+{
+    "name": "acf/headline",
+    "title": "Headline",
+    "description": "Ein konfigurierbarer Headline-Block mit H-Klasse, Größe, Schriftschnitt und Farbe",
+    "category": "abf-blocks",
+    "icon": "heading",
+    "keywords": ["headline", "title", "heading", "h1", "h2", "h3"],
+    "supports": {
+        "jsx": true
+    },
+    "mode": "edit",
+    "example": {
+        "attributes": {
+            "mode": "preview",
+            "data": {
+                "headline_text": "Beispiel Headline",
+                "headline_tag": "h2",
+                "headline_size": "24",
+                "headline_weight": "400",
+                "headline_color": "primary"
+            }
+        }
+    }
+} 

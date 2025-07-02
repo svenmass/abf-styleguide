@@ -7,22 +7,43 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+// Global array to store field groups
+global $abf_block_field_groups;
+$abf_block_field_groups = array();
+
+// Function to register a field group (called from fields.php files)
+function abf_register_block_field_group($field_group) {
+    global $abf_block_field_groups;
+    $abf_block_field_groups[] = $field_group;
+}
+
 // Automatische Registrierung aller Blöcke und Felder im selben acf/init-Hook
 add_action('acf/init', function() {
+    global $abf_block_field_groups;
+    
     $blocks_dir = get_template_directory() . '/blocks/';
     $blocks = glob($blocks_dir . '*', GLOB_ONLYDIR);
 
+    // Erst alle Field Groups sammeln
     foreach ($blocks as $block_dir) {
-        $block_name = basename($block_dir);
-        $block_json = $block_dir . '/block.json';
         $fields_file = $block_dir . '/fields.php';
-
-        // Felder zuerst registrieren
         if (file_exists($fields_file)) {
             require_once $fields_file;
         }
+    }
+    
+    // Dann alle Field Groups registrieren
+    foreach ($abf_block_field_groups as $field_group) {
+        if (function_exists('acf_add_local_field_group')) {
+            acf_add_local_field_group($field_group);
+        }
+    }
 
-        // Dann Block registrieren
+    // Dann alle Blöcke registrieren
+    foreach ($blocks as $block_dir) {
+        $block_name = basename($block_dir);
+        $block_json = $block_dir . '/block.json';
+
         if (file_exists($block_json)) {
             $block_data = json_decode(file_get_contents($block_json), true);
 
