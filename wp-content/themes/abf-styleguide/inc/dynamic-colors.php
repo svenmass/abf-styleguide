@@ -19,6 +19,14 @@ function abf_add_dynamic_colors_css() {
     
     $css_variables = array();
     
+    // Add primary and secondary colors (first two colors from JSON)
+    if (isset($colors[0])) {
+        $css_variables[] = "--color-primary: {$colors[0]['value']};";
+    }
+    if (isset($colors[1])) {
+        $css_variables[] = "--color-secondary: {$colors[1]['value']};";
+    }
+    
     foreach ($colors as $color) {
         $color_name = sanitize_title($color['name']);
         $color_value = $color['value'];
@@ -56,6 +64,14 @@ function abf_add_dynamic_colors_editor() {
     }
     
     $css_variables = array();
+    
+    // Add primary and secondary colors (first two colors from JSON)
+    if (isset($colors[0])) {
+        $css_variables[] = "--color-primary: {$colors[0]['value']};";
+    }
+    if (isset($colors[1])) {
+        $css_variables[] = "--color-secondary: {$colors[1]['value']};";
+    }
     
     foreach ($colors as $color) {
         $color_name = sanitize_title($color['name']);

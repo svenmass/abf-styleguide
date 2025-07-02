@@ -59,9 +59,27 @@ $container_class = is_front_page() ? 'container-home' : 'container-content';
                 
                 <?php if ($button_text && $button_link): ?>
                     <div class="hero-button">
+                        <?php
+                        // Button color styling
+                        $button_style = '';
+                        if ($button_color === 'primary') {
+                            $button_class = 'btn btn-primary';
+                        } elseif ($button_color === 'secondary') {
+                            $button_class = 'btn btn-secondary';
+                        } else {
+                            // Dynamic color
+                            $button_class = 'btn';
+                            $color_value = abf_get_color_value($button_color);
+                            if ($color_value) {
+                                $button_style = 'style="background-color: ' . esc_attr($color_value) . '; color: white;"';
+                            } else {
+                                $button_style = 'style="background-color: var(--color-' . esc_attr(sanitize_title($button_color)) . '); color: white;"';
+                            }
+                        }
+                        ?>
                         <a href="<?php echo esc_url($button_link); ?>" 
-                           class="btn <?php echo $button_color ? 'btn-' . esc_attr($button_color) : 'btn-primary'; ?>"
-                           style="<?php echo $button_color && $button_color !== 'primary' && $button_color !== 'secondary' ? 'background-color: var(--color-' . esc_attr($button_color) . ');' : ''; ?>">
+                           class="<?php echo esc_attr($button_class); ?>"
+                           <?php echo $button_style; ?>>
                             <?php echo esc_html($button_text); ?>
                         </a>
                     </div>

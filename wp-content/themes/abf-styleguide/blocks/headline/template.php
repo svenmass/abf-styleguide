@@ -36,11 +36,19 @@ $styles[] = 'line-height: 1.4';
 // Color handling
 if ($headline_color === 'inherit') {
     $styles[] = 'color: inherit';
-} elseif ($headline_color === 'primary' || $headline_color === 'secondary') {
-    $styles[] = 'color: var(--color-' . $headline_color . ')';
+} elseif ($headline_color === 'primary') {
+    $styles[] = 'color: var(--color-primary)';
+} elseif ($headline_color === 'secondary') {
+    $styles[] = 'color: var(--color-secondary)';
 } else {
     // Dynamic color from colors.json
-    $styles[] = 'color: var(--color-' . sanitize_title($headline_color) . ')';
+    $color_value = abf_get_color_value($headline_color);
+    if ($color_value) {
+        $styles[] = 'color: ' . $color_value;
+    } else {
+        // Fallback to CSS variable
+        $styles[] = 'color: var(--color-' . sanitize_title($headline_color) . ')';
+    }
 }
 
 // Container class based on location
