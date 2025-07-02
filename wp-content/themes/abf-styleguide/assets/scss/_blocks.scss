@@ -16,6 +16,39 @@
 // HERO BLOCK
 // =============================================================================
 
+// Editor-specific styles for Hero Block
+.wp-block-acf-hero {
+    .block-hero {
+        // Im Editor: begrenzte Höhe statt 100vh
+        height: 50vh;
+        min-height: 400px;
+        max-height: 600px;
+        
+        .container-home {
+            height: 100%;
+            max-height: unset;
+        }
+        
+        .hero-content {
+            // Im Editor: content etwas höher positionieren
+            top: 40%;
+        }
+        
+        .hero-plus {
+            // Im Editor: Plus etwas kleiner
+            height: 30vh;
+            max-height: 200px;
+            
+            svg {
+                height: 30vh;
+                max-height: 200px;
+            }
+        }
+    }
+}
+
+// Frontend: volle Viewport-Höhe
+
 .block-hero {
     position: relative;
     width: 100vw;

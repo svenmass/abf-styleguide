@@ -8,7 +8,7 @@
     "supports": {
         "jsx": true
     },
-    "mode": "edit",
+    "mode": "auto",
     "example": {
         "attributes": {
             "mode": "preview",

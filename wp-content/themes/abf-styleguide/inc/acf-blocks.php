@@ -54,7 +54,7 @@ function abf_register_acf_blocks() {
         'supports'          => array(
             'jsx' => true,
         ),
-        'mode'              => 'edit',
+        'mode'              => 'auto',
     ));
     
     // Register Hero Block
@@ -69,7 +69,7 @@ function abf_register_acf_blocks() {
         'supports'          => array(
             'jsx' => true,
         ),
-        'mode'              => 'edit',
+        'mode'              => 'auto',
     ));
 }
 
@@ -522,4 +522,17 @@ function abf_add_color_palette() {
         }
     }
 }
-add_action('after_setup_theme', 'abf_add_color_palette'); 
+add_action('after_setup_theme', 'abf_add_color_palette');
+
+/**
+ * Enqueue block editor styles
+ */
+function abf_block_editor_styles() {
+    wp_enqueue_style(
+        'abf-blocks-editor-style',
+        get_template_directory_uri() . '/assets/css/main.css',
+        array(),
+        filemtime(get_template_directory() . '/assets/css/main.css')
+    );
+}
+add_action('enqueue_block_editor_assets', 'abf_block_editor_styles'); 
