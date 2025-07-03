@@ -47,8 +47,10 @@ function abf_enable_debug() {
     }
 }
 
-// --- TEST: Minimalbeispiel für ACF Block + Field Group (mit JSX im Content-Bereich) ---
-// (entfernt)
-// --- ENDE TEST ---
+/**
+ * Include User Management System
+ * Custom registration, login, and approval system without plugins
+ */
+require_once get_template_directory() . '/inc/user-management/init.php';
 
 
