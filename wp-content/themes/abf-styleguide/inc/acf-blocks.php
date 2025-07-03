@@ -592,6 +592,61 @@ function abf_register_acf_field_groups() {
                         ),
                     ),
                     
+                    // Plus Overlay Settings
+                    array(
+                        'key' => 'field_element_show_plus',
+                        'label' => 'Plus anzeigen',
+                        'name' => 'show_plus',
+                        'type' => 'true_false',
+                        'instructions' => 'Soll ein Plus-Icon im rechten unteren Eck angezeigt werden?',
+                        'default_value' => 0,
+                    ),
+                    array(
+                        'key' => 'field_element_plus_type',
+                        'label' => 'Plus Icon Typ',
+                        'name' => 'plus_type',
+                        'type' => 'radio',
+                        'instructions' => 'Wähle zwischen Default SVG oder eigenem Icon',
+                        'choices' => array(
+                            'default' => 'Standard Plus SVG',
+                            'custom' => 'Eigenes Icon (PNG/SVG)',
+                        ),
+                        'default_value' => 'default',
+                        'layout' => 'horizontal',
+                        'conditional_logic' => array(
+                            array(
+                                array(
+                                    'field' => 'field_element_show_plus',
+                                    'operator' => '==',
+                                    'value' => '1',
+                                ),
+                            ),
+                        ),
+                    ),
+                    array(
+                        'key' => 'field_element_plus_icon',
+                        'label' => 'Plus Icon',
+                        'name' => 'plus_icon',
+                        'type' => 'image',
+                        'instructions' => 'Wähle ein eigenes Plus-Icon (PNG oder SVG)',
+                        'required' => 0,
+                        'return_format' => 'array',
+                        'conditional_logic' => array(
+                            array(
+                                array(
+                                    'field' => 'field_element_show_plus',
+                                    'operator' => '==',
+                                    'value' => '1',
+                                ),
+                                array(
+                                    'field' => 'field_element_plus_type',
+                                    'operator' => '==',
+                                    'value' => 'custom',
+                                ),
+                            ),
+                        ),
+                    ),
+                    
                     // Headline Settings
                     array(
                         'key' => 'field_element_headline_text',

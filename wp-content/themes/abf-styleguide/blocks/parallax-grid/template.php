@@ -81,6 +81,10 @@ if (!function_exists('abf_get_parallax_color_value')) {
                 $button_text_color = $element['button_text_color'] ?? 'inherit';
                 $button_hover_bg_color = $element['button_hover_bg_color'] ?? 'secondary';
                 $button_hover_text_color = $element['button_hover_text_color'] ?? 'inherit';
+                
+                $show_plus = $element['show_plus'] ?? false;
+                $plus_type = $element['plus_type'] ?? 'default';
+                $plus_icon = $element['plus_icon'] ?? null;
             
             // Build style string for background
             $style_parts = [];
@@ -166,6 +170,18 @@ if (!function_exists('abf_get_parallax_color_value')) {
                     <?php endif; ?>
                     
                 </div>
+                
+                <?php if ($show_plus): ?>
+                    <div class="parallax-plus-overlay">
+                        <?php if ($plus_type === 'custom' && $plus_icon): ?>
+                            <img src="<?php echo esc_url($plus_icon['url']); ?>" alt="Plus Icon" class="parallax-plus-icon">
+                        <?php else: ?>
+                            <svg class="parallax-plus-icon" width="793" height="716" viewBox="0 0 793 716" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path opacity="0.7" d="M792.32 490.05H515.24L515.4 490.67L446.98 715.45H214.23L281.44 490.67H41.24C37.02 490.67 32.33 489.73 28.11 488.17C7.16996 481.14 -4.08002 458.8 2.94998 437.87L46.24 299.78C51.87 282.91 67.81 272.44 84.84 272.76H347.55L422.1 29.23C427.26 13.14 442.1 1.42001 459.92 1.42001H460.86L611.05 0.950012C633.08 0.950012 650.59 18.76 650.59 40.78C650.59 45.31 649.81 49.53 648.56 53.59L581.36 272.6H792.11L792.34 490.05H792.32Z" fill="white"/>
+                            </svg>
+                        <?php endif; ?>
+                    </div>
+                <?php endif; ?>
                 
             </div>
             
