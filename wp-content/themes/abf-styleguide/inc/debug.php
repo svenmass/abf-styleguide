@@ -39,5 +39,5 @@ function abf_debug_field_groups() {
     echo '</div>';
 }
 
-// Add debug info to admin footer
-add_action('admin_footer', 'abf_debug_field_groups'); 
+// Debug disabled for production
+// add_action('admin_footer', 'abf_debug_field_groups'); 

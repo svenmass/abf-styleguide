@@ -126,7 +126,7 @@ function abf_register_acf_blocks() {
  * Include modular field definitions
  */
 function abf_include_modular_fields() {
-    // Include Parallax Content Block fields (TESTWEISE)
+    // Include Parallax Content Block fields
     $parallax_content_fields = get_template_directory() . '/blocks/parallax-content/fields.php';
     if (file_exists($parallax_content_fields)) {
         require_once $parallax_content_fields;

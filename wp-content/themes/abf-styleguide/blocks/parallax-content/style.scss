@@ -396,26 +396,13 @@
     backface-visibility: hidden;
 }
 
-// Debug-Styles (wenn GSAP markers aktiv sind)
+// GSAP markers hidden in production
 .gsap-marker-scroller-start,
 .gsap-marker-scroller-end,
 .gsap-marker-start,
 .gsap-marker-end {
-    // Verstecke GSAP Debug-Marker in Production
-    // Zum Debugging markers: true in ScrollTrigger.create() setzen
     display: none !important;
 }
-
-// Optional: Debug-Mode aktivieren
-// Uncomment für Debugging:
-/*
-.gsap-marker-scroller-start,
-.gsap-marker-scroller-end,
-.gsap-marker-start,
-.gsap-marker-end {
-    display: block !important;
-}
-*/
 
 // =============================================================================
 // RESPONSIVE ANPASSUNGEN FÜR STICKY SYSTEM

@@ -237,11 +237,13 @@ jQuery(document).ready(function($) {
                         location.reload();
                     }
                 } else {
-                    alert('Fehler beim Abmelden: ' + data.message);
+                    // Silent error handling - redirect to homepage
+                    window.location.href = window.location.origin;
                 }
             })
             .fail(function() {
-                alert('Verbindungsfehler beim Abmelden.');
+                                  // Silent error handling - redirect to homepage
+                  window.location.href = window.location.origin;
             });
     }
     

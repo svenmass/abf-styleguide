@@ -85,7 +85,7 @@ if (!function_exists('abf_get_parallax_color_value')) {
         <?php 
         $elements = get_field('parallax_elements');
         
-        // Debug: Check if elements exist
+        // Check if elements are configured
         if (empty($elements) || !is_array($elements)) {
             // Show placeholder if no elements configured
             echo '<div style="padding: 40px; text-align: center; background: #f0f0f0; color: #666;">Parallax Grid Block: Bitte konfiguriere die 6 Grid-Elemente im Editor.</div>';

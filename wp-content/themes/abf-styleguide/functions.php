@@ -33,9 +33,12 @@ function abf_increase_upload_limits() {
 add_action('init', 'abf_increase_upload_limits');
 
 /**
- * Enable WordPress Debug for better error reporting
+ * Debug settings (disabled in production)
  */
 function abf_enable_debug() {
+    // Debug settings disabled for production
+    // Enable in development by uncommenting:
+    /*
     if (!defined('WP_DEBUG')) {
         define('WP_DEBUG', true);
     }
@@ -43,8 +46,9 @@ function abf_enable_debug() {
         define('WP_DEBUG_LOG', true);
     }
     if (!defined('WP_DEBUG_DISPLAY')) {
-        define('WP_DEBUG_DISPLAY', true);
+        define('WP_DEBUG_DISPLAY', false); // Never show errors in frontend
     }
+    */
 }
 
 /**

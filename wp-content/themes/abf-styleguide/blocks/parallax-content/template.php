@@ -212,12 +212,9 @@ if (!function_exists('abf_get_content_color_value')) {
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
-    console.log('🎯 GSAP ScrollTrigger Sticky System starting...');
-    
     gsap.registerPlugin(ScrollTrigger);
 
     const elements = document.querySelectorAll(".parallax-content-element");
-    console.log('Found', elements.length, 'parallax elements');
 
     if (elements.length === 0) return;
     
@@ -227,8 +224,6 @@ document.addEventListener("DOMContentLoaded", function () {
     elements.forEach((element, index) => {
         const offset = index * 120; // 120px Abstand für Sticky-Versatz
         const isLastElement = index === elements.length - 1;
-        
-        console.log('🚀 Setup ScrollTrigger for Element ' + (index + 1) + ' with offset: ' + offset + 'px');
 
         // ScrollTrigger mit GSAP Pin-System (löst das Container-Problem)
         ScrollTrigger.create({
@@ -243,7 +238,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     element.style.top = offset + 'px';
                     element.style.zIndex = 1000 + index;
                     stickyStates[index] = true;
-                    console.log('📌 Element ' + (index + 1) + ' pinned at ' + offset + 'px');
                 } else {
                     stickyStates[index] = false;
                 }
@@ -251,10 +245,8 @@ document.addEventListener("DOMContentLoaded", function () {
             onToggle: (self) => {
                 if (self.isActive) {
                     element.classList.add('is-sticky');
-                    console.log('📌 Element ' + (index + 1) + ' sticky: TRUE');
                 } else {
                     element.classList.remove('is-sticky');
-                    console.log('📌 Element ' + (index + 1) + ' sticky: FALSE');
                     
                     // Alle nachfolgenden Elemente auch unsticky machen beim Rückwärts-Scrollen
                     if (self.direction === -1) { // Up scroll
@@ -262,13 +254,12 @@ document.addEventListener("DOMContentLoaded", function () {
                             if (stickyStates[i]) {
                                 elements[i].classList.remove('is-sticky');
                                 stickyStates[i] = false;
-                                console.log('📌 Element ' + (i + 1) + ' sticky: FALSE (cascade)');
                             }
                         }
                     }
                 }
             },
-            markers: true // Für Debugging
+            markers: false // Production: markers disabled
         });
     });
     
@@ -281,14 +272,11 @@ document.addEventListener("DOMContentLoaded", function () {
         element.style.width = '100%';
         element.style.zIndex = 1000 + index;
         
-        console.log('🔒 STICKY: Element ' + (index + 1) + ' at ' + offset + 'px, z-index: ' + (1000 + index));
-        
         // Stelle sicher, dass spätere Elemente höhere z-index haben
         elements.forEach((otherElement, otherIndex) => {
             if (otherIndex < index) {
                 if (stickyStates[otherIndex]) {
                     otherElement.style.zIndex = 1000 + otherIndex;
-                    console.log('📉 Element ' + (otherIndex + 1) + ' z-index: ' + (1000 + otherIndex));
                 }
             }
         });
@@ -302,9 +290,6 @@ document.addEventListener("DOMContentLoaded", function () {
         element.style.right = '';
         element.style.width = '';
         element.style.zIndex = '';
-        console.log('🔓 NORMAL: Element ' + (index + 1) + ' back to flow');
     }
-    
-    console.log('✅ GSAP ScrollTrigger setup complete');
 });
 </script> 
