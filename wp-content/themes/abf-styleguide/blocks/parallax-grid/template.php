@@ -6,13 +6,32 @@
 // Get the block ID
 $block_id = 'parallax-grid-' . $block['id'];
 
-// Convert color choices to CSS variables
-if (!function_exists('convert_color_to_css_var')) {
-    function convert_color_to_css_var($color_choice) {
+// Convert color choices to actual values (like in headline block)
+if (!function_exists('abf_get_parallax_color_value')) {
+    function abf_get_parallax_color_value($color_choice) {
         if (!$color_choice || $color_choice === 'inherit') {
             return 'inherit';
         }
-        return "var(--color-{$color_choice})";
+        
+        // Handle primary and secondary colors
+        if ($color_choice === 'primary') {
+            return 'var(--color-primary)';
+        } elseif ($color_choice === 'secondary') {
+            return 'var(--color-secondary)';
+        } elseif ($color_choice === 'white') {
+            return '#ffffff';
+        } elseif ($color_choice === 'black') {
+            return '#000000';
+        }
+        
+        // Try to get dynamic color from colors.json
+        $color_value = abf_get_color_value($color_choice);
+        if ($color_value) {
+            return $color_value;
+        }
+        
+        // Fallback to CSS variable
+        return "var(--color-" . sanitize_title($color_choice) . ")";
     }
 }
 ?>
@@ -88,7 +107,7 @@ if (!function_exists('convert_color_to_css_var')) {
                         $headline_styles = [];
                         if ($headline_weight) $headline_styles[] = "font-weight: {$headline_weight}";
                         if ($headline_size) $headline_styles[] = "font-size: {$headline_size}px";
-                        if ($headline_color) $headline_styles[] = "color: " . convert_color_to_css_var($headline_color);
+                        if ($headline_color) $headline_styles[] = "color: " . abf_get_parallax_color_value($headline_color);
                         $headline_style_attr = !empty($headline_styles) ? ' style="' . implode('; ', $headline_styles) . '"' : '';
                         ?>
                         <<?php echo $headline_tag; ?> class="parallax-headline"<?php echo $headline_style_attr; ?>>
@@ -101,7 +120,7 @@ if (!function_exists('convert_color_to_css_var')) {
                         $subline_styles = [];
                         if ($subline_weight) $subline_styles[] = "font-weight: {$subline_weight}";
                         if ($subline_size) $subline_styles[] = "font-size: {$subline_size}px";
-                        if ($subline_color) $subline_styles[] = "color: " . convert_color_to_css_var($subline_color);
+                        if ($subline_color) $subline_styles[] = "color: " . abf_get_parallax_color_value($subline_color);
                         $subline_style_attr = !empty($subline_styles) ? ' style="' . implode('; ', $subline_styles) . '"' : '';
                         ?>
                         <<?php echo $subline_tag; ?> class="parallax-subline"<?php echo $subline_style_attr; ?>>
@@ -112,13 +131,13 @@ if (!function_exists('convert_color_to_css_var')) {
                     <?php if ($show_button && $button_text && $button_url): ?>
                         <?php
                         $button_styles = [];
-                        if ($button_bg_color) $button_styles[] = "background-color: " . convert_color_to_css_var($button_bg_color);
-                        if ($button_text_color) $button_styles[] = "color: " . convert_color_to_css_var($button_text_color);
+                        if ($button_bg_color) $button_styles[] = "background-color: " . abf_get_parallax_color_value($button_bg_color);
+                        if ($button_text_color) $button_styles[] = "color: " . abf_get_parallax_color_value($button_text_color);
                         $button_style_attr = !empty($button_styles) ? ' style="' . implode('; ', $button_styles) . '"' : '';
                         
                         $button_hover_styles = [];
-                        if ($button_hover_bg_color) $button_hover_styles[] = "background-color: " . convert_color_to_css_var($button_hover_bg_color);
-                        if ($button_hover_text_color) $button_hover_styles[] = "color: " . convert_color_to_css_var($button_hover_text_color);
+                        if ($button_hover_bg_color) $button_hover_styles[] = "background-color: " . abf_get_parallax_color_value($button_hover_bg_color);
+                        if ($button_hover_text_color) $button_hover_styles[] = "color: " . abf_get_parallax_color_value($button_hover_text_color);
                         $button_hover_css = !empty($button_hover_styles) ? implode('; ', $button_hover_styles) : '';
                         ?>
                         
@@ -184,64 +203,45 @@ document.addEventListener('DOMContentLoaded', function() {
             const element = entry.target;
             const ratio = entry.intersectionRatio;
             
-            // Einfache Flags pro Element
-            if (!element.dataset.isLocked) element.dataset.isLocked = 'false';
-            if (!element.dataset.lockDirection) element.dataset.lockDirection = '';
-            if (!element.dataset.justUnlocked) element.dataset.justUnlocked = 'false';
-            
             // Debug-Info
-            if (Math.random() < 0.05) { // Nur gelegentlich loggen
-                console.log('📊 Ratio:', ratio.toFixed(2), 'Locked:', element.dataset.isLocked, 'Direction:', scrollDirection);
+            if (Math.random() < 0.1) { // Nur gelegentlich loggen
+                console.log('📊 Parallax Ratio:', ratio.toFixed(2), 'Scroll-Richtung:', scrollDirection);
             }
             
-            if (ratio >= 0.9 && element.dataset.isLocked === 'false') {
-                // Element ist 90% sichtbar UND noch nicht gelockt → jetzt locken!
+            if (ratio >= 0.9) {
+                // Element ist 90% oder mehr sichtbar - Vollständig eingeblendet
                 element.style.transform = 'scale(1)';
                 element.style.opacity = '1';
-                element.dataset.isLocked = 'true'; // Element ist jetzt "gelockt"
-                element.dataset.lockDirection = scrollDirection; // In welche Richtung gelockt
-                console.log('🔒 Element GELOCKT bei 100% in Richtung:', scrollDirection);
+                element.dataset.reachedFullAt = scrollDirection; // Merke Richtung beim Erreichen von 100%
+                console.log('🎯 Element 100% erreicht bei Richtung:', scrollDirection);
             } else if (ratio > 0) {
-                // Element ist sichtbar
-                if (element.dataset.isLocked === 'false') {
-                    // Noch nicht gelockt → normaler Parallax
-                    const scale = 0.6 + (ratio / 0.9) * 0.4;
-                    const opacity = 0.3 + (ratio / 0.9) * 0.7;
-                    element.style.transform = 'scale(' + scale + ')';
-                    element.style.opacity = opacity;
-                } else if (element.dataset.justUnlocked === 'true') {
-                    // Gerade entsperrt → Parallax wieder aktivieren!
-                    const scale = 0.6 + (ratio / 0.9) * 0.4;
-                    const opacity = 0.3 + (ratio / 0.9) * 0.7;
-                    element.style.transform = 'scale(' + scale + ')';
-                    element.style.opacity = opacity;
-                    console.log('🔄 Entsperrt → Parallax reaktiviert');
-                }
-                // Falls gelockt UND nicht gerade entsperrt → ändere NICHTS!
+                // Element ist teilweise sichtbar - Normaler Parallax
+                const scale = 0.6 + (ratio / 0.9) * 0.4; // 0.6 bis 1.0
+                const opacity = 0.3 + (ratio / 0.9) * 0.7; // 0.3 bis 1.0
+                element.style.transform = 'scale(' + scale + ')';
+                element.style.opacity = opacity;
             } else if (ratio === 0) {
-                // Element nicht sichtbar
-                if (element.dataset.isLocked === 'true') {
-                    // Element ist gelockt
-                    if (scrollDirection === element.dataset.lockDirection) {
-                        // Gleiche Richtung → bleibt groß!
+                // Element ist nicht sichtbar - EINFACHE Richtungslogik!
+                const reachedFullAt = element.dataset.reachedFullAt; // 'down' oder 'up' oder undefined
+                
+                if (reachedFullAt) {
+                    // Element hat schon mal 100% erreicht
+                    if (scrollDirection === reachedFullAt) {
+                        // Gleiche Richtung wie beim Erreichen von 100% → BLEIBT groß!
                         element.style.transform = 'scale(1)';
                         element.style.opacity = '1';
-                        element.dataset.justUnlocked = 'false'; // Reset justUnlocked
-                        console.log('✅ Gleiche Richtung → bleibt groß');
+                        console.log('🔒 Gleiche Richtung (' + scrollDirection + ') → bleibt bei 100%');
                     } else {
-                        // Andere Richtung → entsperre und mache klein!
+                        // Richtungswechsel → Parallax reaktiviert → wird klein!
                         element.style.transform = 'scale(0.6)';
                         element.style.opacity = '0.3';
-                        element.dataset.isLocked = 'false';
-                        element.dataset.lockDirection = '';
-                        element.dataset.justUnlocked = 'true'; // Markiere als gerade entsperrt
-                        console.log('🔓 Richtungswechsel → entsperrt und klein');
+                        element.dataset.reachedFullAt = ''; // Reset für nächsten Zyklus
+                        console.log('🔄 Richtungswechsel (' + reachedFullAt + ' → ' + scrollDirection + ') → wird klein');
                     }
                 } else {
-                    // Nicht gelockt → normal klein
+                    // Noch nie 100% erreicht → normal klein
                     element.style.transform = 'scale(0.6)';
                     element.style.opacity = '0.3';
-                    element.dataset.justUnlocked = 'false'; // Reset
                 }
             }
         });

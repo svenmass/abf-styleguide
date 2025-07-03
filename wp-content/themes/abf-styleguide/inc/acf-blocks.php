@@ -18,6 +18,8 @@ function abf_get_color_choices() {
         'inherit' => 'Standard (inherit)',
         'primary' => 'Primärfarbe',
         'secondary' => 'Sekundärfarbe',
+        'white' => 'Weiß',
+        'black' => 'Schwarz',
     );
     
     if (!empty($colors)) {
@@ -625,13 +627,7 @@ function abf_register_acf_field_groups() {
                         'name' => 'headline_color',
                         'type' => 'select',
                         'instructions' => 'Textfarbe der Headline',
-                        'choices' => array(
-                            'inherit' => 'Standard (inherit)',
-                            'primary' => 'Primärfarbe',
-                            'secondary' => 'Sekundärfarbe',
-                            'white' => 'Weiß',
-                            'black' => 'Schwarz',
-                        ),
+                        'choices' => abf_get_color_choices(),
                         'default_value' => 'inherit',
                         'wrapper' => array('width' => '25'),
                     ),
@@ -695,13 +691,7 @@ function abf_register_acf_field_groups() {
                         'name' => 'subline_color',
                         'type' => 'select',
                         'instructions' => 'Textfarbe der Subline',
-                        'choices' => array(
-                            'inherit' => 'Standard (inherit)',
-                            'primary' => 'Primärfarbe',
-                            'secondary' => 'Sekundärfarbe',
-                            'white' => 'Weiß',
-                            'black' => 'Schwarz',
-                        ),
+                        'choices' => abf_get_color_choices(),
                         'default_value' => 'inherit',
                         'wrapper' => array('width' => '25'),
                     ),
@@ -755,13 +745,7 @@ function abf_register_acf_field_groups() {
                         'name' => 'button_bg_color',
                         'type' => 'select',
                         'instructions' => 'Hintergrundfarbe des Buttons',
-                        'choices' => array(
-                            'inherit' => 'Standard (inherit)',
-                            'primary' => 'Primärfarbe',
-                            'secondary' => 'Sekundärfarbe',
-                            'white' => 'Weiß',
-                            'black' => 'Schwarz',
-                        ),
+                        'choices' => abf_get_color_choices(),
                         'default_value' => 'primary',
                         'conditional_logic' => array(
                             array(
@@ -780,13 +764,7 @@ function abf_register_acf_field_groups() {
                         'name' => 'button_text_color',
                         'type' => 'select',
                         'instructions' => 'Textfarbe des Buttons',
-                        'choices' => array(
-                            'inherit' => 'Standard (inherit)',
-                            'primary' => 'Primärfarbe',
-                            'secondary' => 'Sekundärfarbe',
-                            'white' => 'Weiß',
-                            'black' => 'Schwarz',
-                        ),
+                        'choices' => abf_get_color_choices(),
                         'default_value' => 'inherit',
                         'conditional_logic' => array(
                             array(
@@ -805,13 +783,7 @@ function abf_register_acf_field_groups() {
                         'name' => 'button_hover_bg_color',
                         'type' => 'select',
                         'instructions' => 'Hover-Hintergrundfarbe',
-                        'choices' => array(
-                            'inherit' => 'Standard (inherit)',
-                            'primary' => 'Primärfarbe',
-                            'secondary' => 'Sekundärfarbe',
-                            'white' => 'Weiß',
-                            'black' => 'Schwarz',
-                        ),
+                        'choices' => abf_get_color_choices(),
                         'default_value' => 'secondary',
                         'conditional_logic' => array(
                             array(
@@ -830,13 +802,7 @@ function abf_register_acf_field_groups() {
                         'name' => 'button_hover_text_color',
                         'type' => 'select',
                         'instructions' => 'Hover-Textfarbe',
-                        'choices' => array(
-                            'inherit' => 'Standard (inherit)',
-                            'primary' => 'Primärfarbe',
-                            'secondary' => 'Sekundärfarbe',
-                            'white' => 'Weiß',
-                            'black' => 'Schwarz',
-                        ),
+                        'choices' => abf_get_color_choices(),
                         'default_value' => 'inherit',
                         'conditional_logic' => array(
                             array(
