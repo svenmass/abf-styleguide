@@ -60,6 +60,7 @@ if (!function_exists('abf_get_parallax_color_value')) {
                 $background_type = $element['background_type'] ?? 'color';
                 $background_color = $element['background_color'] ?? '#000000';
                 $background_image = $element['background_image'] ?? null;
+                $background_video = $element['background_video'] ?? null;
                 
                 $headline_text = $element['headline_text'] ?? '';
                 $headline_tag = $element['headline_tag'] ?? 'h2';
@@ -91,6 +92,7 @@ if (!function_exists('abf_get_parallax_color_value')) {
                     $style_parts[] = "background-image: url('{$image_url}')";
                 }
             }
+            // Video background wird direkt über HTML-Element gelöst
             $element_style = !empty($style_parts) ? ' style="' . implode('; ', $style_parts) . '"' : '';
             ?>
             
@@ -98,35 +100,41 @@ if (!function_exists('abf_get_parallax_color_value')) {
                 
                 <?php if ($background_type === 'image' && $background_image): ?>
                     <div class="parallax-background-image"></div>
+                <?php elseif ($background_type === 'video' && $background_video): ?>
+                    <video class="parallax-background-video" autoplay muted loop playsinline>
+                        <source src="<?php echo esc_url($background_video['url']); ?>" type="<?php echo esc_attr($background_video['mime_type']); ?>">
+                    </video>
                 <?php endif; ?>
                 
                 <div class="parallax-content">
                     
-                    <?php if ($headline_text): ?>
-                        <?php
-                        $headline_styles = [];
-                        if ($headline_weight) $headline_styles[] = "font-weight: {$headline_weight}";
-                        if ($headline_size) $headline_styles[] = "font-size: {$headline_size}px";
-                        if ($headline_color) $headline_styles[] = "color: " . abf_get_parallax_color_value($headline_color);
-                        $headline_style_attr = !empty($headline_styles) ? ' style="' . implode('; ', $headline_styles) . '"' : '';
-                        ?>
-                        <<?php echo $headline_tag; ?> class="parallax-headline"<?php echo $headline_style_attr; ?>>
-                            <?php echo wp_kses_post($headline_text); ?>
-                        </<?php echo $headline_tag; ?>>
-                    <?php endif; ?>
-                    
-                    <?php if ($subline_text): ?>
-                        <?php
-                        $subline_styles = [];
-                        if ($subline_weight) $subline_styles[] = "font-weight: {$subline_weight}";
-                        if ($subline_size) $subline_styles[] = "font-size: {$subline_size}px";
-                        if ($subline_color) $subline_styles[] = "color: " . abf_get_parallax_color_value($subline_color);
-                        $subline_style_attr = !empty($subline_styles) ? ' style="' . implode('; ', $subline_styles) . '"' : '';
-                        ?>
-                        <<?php echo $subline_tag; ?> class="parallax-subline"<?php echo $subline_style_attr; ?>>
-                            <?php echo wp_kses_post($subline_text); ?>
-                        </<?php echo $subline_tag; ?>>
-                    <?php endif; ?>
+                    <div class="parallax-text-content">
+                        <?php if ($headline_text): ?>
+                            <?php
+                            $headline_styles = [];
+                            if ($headline_weight) $headline_styles[] = "font-weight: {$headline_weight}";
+                            if ($headline_size) $headline_styles[] = "font-size: {$headline_size}px";
+                            if ($headline_color) $headline_styles[] = "color: " . abf_get_parallax_color_value($headline_color);
+                            $headline_style_attr = !empty($headline_styles) ? ' style="' . implode('; ', $headline_styles) . '"' : '';
+                            ?>
+                            <<?php echo $headline_tag; ?> class="parallax-headline"<?php echo $headline_style_attr; ?>>
+                                <?php echo wp_kses_post($headline_text); ?>
+                            </<?php echo $headline_tag; ?>>
+                        <?php endif; ?>
+                        
+                        <?php if ($subline_text): ?>
+                            <?php
+                            $subline_styles = [];
+                            if ($subline_weight) $subline_styles[] = "font-weight: {$subline_weight}";
+                            if ($subline_size) $subline_styles[] = "font-size: {$subline_size}px";
+                            if ($subline_color) $subline_styles[] = "color: " . abf_get_parallax_color_value($subline_color);
+                            $subline_style_attr = !empty($subline_styles) ? ' style="' . implode('; ', $subline_styles) . '"' : '';
+                            ?>
+                            <<?php echo $subline_tag; ?> class="parallax-subline"<?php echo $subline_style_attr; ?>>
+                                <?php echo wp_kses_post($subline_text); ?>
+                            </<?php echo $subline_tag; ?>>
+                        <?php endif; ?>
+                    </div>
                     
                     <?php if ($show_button && $button_text && $button_url): ?>
                         <?php
