@@ -105,6 +105,21 @@ function abf_register_acf_blocks() {
         ),
         'mode'              => 'auto',
     ));
+
+    // Register Parallax Element Block (NEW)
+    acf_register_block_type(array(
+        'name'              => 'parallax-element',
+        'title'             => __('Parallax Element'),
+        'description'       => __('Einzelnes Parallax Content Element mit konfigurierbarem Sticky-Verhalten'),
+        'render_template'   => get_template_directory() . '/blocks/parallax-element/template.php',
+        'category'          => 'abf-blocks',
+        'icon'              => 'admin-page',
+        'keywords'          => array('parallax', 'sticky', 'content', 'hero', 'element'),
+        'supports'          => array(
+            'jsx' => true,
+        ),
+        'mode'              => 'auto',
+    ));
 }
 
 /**
@@ -115,6 +130,15 @@ function abf_include_modular_fields() {
     $parallax_content_fields = get_template_directory() . '/blocks/parallax-content/fields.php';
     if (file_exists($parallax_content_fields)) {
         require_once $parallax_content_fields;
+    }
+    
+    // Include Parallax Element Block fields (NEW)
+    $parallax_element_fields = get_template_directory() . '/blocks/parallax-element/fields.php';
+    if (file_exists($parallax_element_fields)) {
+        $field_group = include($parallax_element_fields);
+        if ($field_group && function_exists('acf_add_local_field_group')) {
+            acf_add_local_field_group($field_group);
+        }
     }
 }
 add_action('acf/init', 'abf_include_modular_fields');

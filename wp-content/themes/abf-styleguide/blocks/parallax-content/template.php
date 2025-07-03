@@ -216,35 +216,94 @@ document.addEventListener("DOMContentLoaded", function () {
     
     gsap.registerPlugin(ScrollTrigger);
 
-    const blocks = document.querySelectorAll(".parallax-content-element");
-    console.log('Found', blocks.length, 'parallax elements');
+    const elements = document.querySelectorAll(".parallax-content-element");
+    console.log('Found', elements.length, 'parallax elements');
 
-    if (blocks.length === 0) return;
-
-    blocks.forEach((block, index) => {
+    if (elements.length === 0) return;
+    
+    // Tracking sticky states
+    let stickyStates = new Array(elements.length).fill(false);
+    
+    elements.forEach((element, index) => {
         const offset = index * 120; // 120px Abstand für Sticky-Versatz
+        const isLastElement = index === elements.length - 1;
         
         console.log('🚀 Setup ScrollTrigger for Element ' + (index + 1) + ' with offset: ' + offset + 'px');
 
+        // ScrollTrigger mit GSAP Pin-System (löst das Container-Problem)
         ScrollTrigger.create({
-            trigger: block,
-            start: `top+=${offset} top`,
-            end: () => `+=${block.offsetHeight}`,
+            trigger: element,
+            start: index === 0 ? `top top` : `top top-=${offset}`,
+            end: () => `+=${element.offsetHeight}`,
             pin: true,
-            pinSpacing: false,
-            toggleClass: {
-                targets: block,
-                className: "is-sticky"
+            pinSpacing: true, // WICHTIG: Erstellt Spacer um Layout zu erhalten
+            onUpdate: (self) => {
+                // Manuelle Positionierung für gestaffelte Positionen
+                if (self.isActive) {
+                    element.style.top = offset + 'px';
+                    element.style.zIndex = 1000 + index;
+                    stickyStates[index] = true;
+                    console.log('📌 Element ' + (index + 1) + ' pinned at ' + offset + 'px');
+                } else {
+                    stickyStates[index] = false;
+                }
             },
             onToggle: (self) => {
-                console.log('📌 Element ' + (index + 1) + ' sticky:', self.isActive);
+                if (self.isActive) {
+                    element.classList.add('is-sticky');
+                    console.log('📌 Element ' + (index + 1) + ' sticky: TRUE');
+                } else {
+                    element.classList.remove('is-sticky');
+                    console.log('📌 Element ' + (index + 1) + ' sticky: FALSE');
+                    
+                    // Alle nachfolgenden Elemente auch unsticky machen beim Rückwärts-Scrollen
+                    if (self.direction === -1) { // Up scroll
+                        for (let i = index + 1; i < elements.length; i++) {
+                            if (stickyStates[i]) {
+                                elements[i].classList.remove('is-sticky');
+                                stickyStates[i] = false;
+                                console.log('📌 Element ' + (i + 1) + ' sticky: FALSE (cascade)');
+                            }
+                        }
+                    }
+                }
             },
-            // Z-Index Management: Höhere Indizes für spätere Elemente
-            // So überdeckt das letzte Element alle vorherigen
-            zIndex: 1000 + index,
-            markers: false // Für Debugging auf true setzen
+            markers: true // Für Debugging
         });
     });
+    
+    function makeElementSticky(element, index, offset) {
+        element.classList.add('is-sticky');
+        element.style.position = 'fixed';
+        element.style.top = offset + 'px';
+        element.style.left = '0';
+        element.style.right = '0';
+        element.style.width = '100%';
+        element.style.zIndex = 1000 + index;
+        
+        console.log('🔒 STICKY: Element ' + (index + 1) + ' at ' + offset + 'px, z-index: ' + (1000 + index));
+        
+        // Stelle sicher, dass spätere Elemente höhere z-index haben
+        elements.forEach((otherElement, otherIndex) => {
+            if (otherIndex < index) {
+                if (stickyStates[otherIndex]) {
+                    otherElement.style.zIndex = 1000 + otherIndex;
+                    console.log('📉 Element ' + (otherIndex + 1) + ' z-index: ' + (1000 + otherIndex));
+                }
+            }
+        });
+    }
+    
+    function makeElementNormal(element, index) {
+        element.classList.remove('is-sticky');
+        element.style.position = '';
+        element.style.top = '';
+        element.style.left = '';
+        element.style.right = '';
+        element.style.width = '';
+        element.style.zIndex = '';
+        console.log('🔓 NORMAL: Element ' + (index + 1) + ' back to flow');
+    }
     
     console.log('✅ GSAP ScrollTrigger setup complete');
 });

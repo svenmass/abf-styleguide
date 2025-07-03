@@ -193,16 +193,12 @@ if (!function_exists('abf_get_parallax_color_value')) {
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('🎬 Parallax Grid: Script geladen');
     
     const blockId = '<?php echo esc_js($block_id); ?>';
     const elements = document.querySelectorAll('#' + blockId + ' .parallax-element');
     
-    console.log('🔍 Parallax Grid: Gefundene Elemente:', elements.length);
-    console.log('🎯 Block ID:', blockId);
     
     if (elements.length === 0) {
-        console.warn('⚠️ Parallax Grid: Keine .parallax-element gefunden!');
         return;
     }
     
@@ -227,17 +223,13 @@ document.addEventListener('DOMContentLoaded', function() {
             const element = entry.target;
             const ratio = entry.intersectionRatio;
             
-            // Debug-Info
-            if (Math.random() < 0.1) { // Nur gelegentlich loggen
-                console.log('📊 Parallax Ratio:', ratio.toFixed(2), 'Scroll-Richtung:', scrollDirection);
-            }
+
             
             if (ratio >= 0.9) {
                 // Element ist 90% oder mehr sichtbar - Vollständig eingeblendet
                 element.style.transform = 'scale(1)';
                 element.style.opacity = '1';
                 element.dataset.reachedFullAt = scrollDirection; // Merke Richtung beim Erreichen von 100%
-                console.log('🎯 Element 100% erreicht bei Richtung:', scrollDirection);
             } else if (ratio > 0) {
                 // Element ist teilweise sichtbar - Normaler Parallax
                 const scale = 0.6 + (ratio / 0.9) * 0.4; // 0.6 bis 1.0
@@ -254,13 +246,11 @@ document.addEventListener('DOMContentLoaded', function() {
                         // Gleiche Richtung wie beim Erreichen von 100% → BLEIBT groß!
                         element.style.transform = 'scale(1)';
                         element.style.opacity = '1';
-                        console.log('🔒 Gleiche Richtung (' + scrollDirection + ') → bleibt bei 100%');
                     } else {
                         // Richtungswechsel → Parallax reaktiviert → wird klein!
                         element.style.transform = 'scale(0.6)';
                         element.style.opacity = '0.3';
                         element.dataset.reachedFullAt = ''; // Reset für nächsten Zyklus
-                        console.log('🔄 Richtungswechsel (' + reachedFullAt + ' → ' + scrollDirection + ') → wird klein');
                     }
                 } else {
                     // Noch nie 100% erreicht → normal klein
@@ -273,7 +263,6 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Alle Elemente beobachten
     elements.forEach((element, index) => {
-        console.log('🎨 Setup Element ' + (index + 1) + ':', element);
         
         // Initiale Styles setzen - DRAMATISCHER EFFEKT!
         element.style.transform = 'scale(0.6)';
@@ -285,6 +274,5 @@ document.addEventListener('DOMContentLoaded', function() {
         observer.observe(element);
     });
     
-    console.log('✅ Parallax Grid: Setup abgeschlossen!');
 });
 </script> 
