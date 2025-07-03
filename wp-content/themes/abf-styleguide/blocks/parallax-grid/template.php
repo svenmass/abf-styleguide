@@ -6,6 +6,47 @@
 // Get the block ID
 $block_id = 'parallax-grid-' . $block['id'];
 
+// Get sticky settings
+$enable_sticky = get_field('grid_enable_sticky') ?: false;
+$sticky_position = get_field('grid_sticky_position') ?: 0;
+$z_index = get_field('grid_z_index') ?: 1000;
+$sticky_mobile_disable = get_field('grid_sticky_mobile_disable') ?: true;
+
+// Get design settings
+$container_background_color = get_field('grid_container_background_color') ?: '#ffffff';
+
+// Convert container background color to actual value
+if ($container_background_color === '#ffffff') {
+    $container_bg_value = '#ffffff';
+} elseif ($container_background_color === 'primary') {
+    $container_bg_value = 'var(--color-primary)';
+} elseif ($container_background_color === 'secondary') {
+    $container_bg_value = 'var(--color-secondary)';
+} elseif ($container_background_color === 'white') {
+    $container_bg_value = '#ffffff';
+} elseif ($container_background_color === 'black') {
+    $container_bg_value = '#000000';
+} else {
+    // Try to get dynamic color
+    if (function_exists('abf_get_color_value')) {
+        $color_value = abf_get_color_value($container_background_color);
+        $container_bg_value = $color_value ?: "var(--color-" . sanitize_title($container_background_color) . ")";
+    } else {
+        $container_bg_value = "var(--color-" . sanitize_title($container_background_color) . ")";
+    }
+}
+
+// Build data attributes for sticky behavior
+$data_attributes = [];
+if ($enable_sticky) {
+    $data_attributes[] = 'data-sticky="true"';
+    $data_attributes[] = 'data-sticky-position="' . intval($sticky_position) . '"';
+    $data_attributes[] = 'data-z-index="' . intval($z_index) . '"';
+    if ($sticky_mobile_disable) {
+        $data_attributes[] = 'data-sticky-mobile-disable="true"';
+    }
+}
+
 // Convert color choices to actual values (like in headline block)
 if (!function_exists('abf_get_parallax_color_value')) {
     function abf_get_parallax_color_value($color_choice) {
@@ -36,8 +77,10 @@ if (!function_exists('abf_get_parallax_color_value')) {
 }
 ?>
 
-<div class="block-parallax-grid" id="<?php echo esc_attr($block_id); ?>">
-    <div class="parallax-grid-container">
+<div class="block-parallax-grid <?php echo $enable_sticky ? 'has-sticky' : ''; ?>" 
+     id="<?php echo esc_attr($block_id); ?>"
+     <?php echo implode(' ', $data_attributes); ?>>
+    <div class="parallax-grid-container" style="background-color: <?php echo esc_attr($container_bg_value); ?>;">
         
         <?php 
         $elements = get_field('parallax_elements');
@@ -195,8 +238,13 @@ if (!function_exists('abf_get_parallax_color_value')) {
 document.addEventListener('DOMContentLoaded', function() {
     
     const blockId = '<?php echo esc_js($block_id); ?>';
+    const blockElement = document.getElementById(blockId);
     const elements = document.querySelectorAll('#' + blockId + ' .parallax-element');
     
+    // Z-Index immer setzen (auch ohne Sticky)
+    if (blockElement) {
+        blockElement.style.zIndex = <?php echo intval($z_index); ?>;
+    }
     
     if (elements.length === 0) {
         return;
@@ -273,6 +321,121 @@ document.addEventListener('DOMContentLoaded', function() {
         // Observer starten
         observer.observe(element);
     });
+    
+    <?php if ($enable_sticky): ?>
+    // Sticky-Funktionalität
+    const enableSticky = <?php echo $enable_sticky ? 'true' : 'false'; ?>;
+    const stickyPosition = <?php echo intval($sticky_position); ?>;
+    const zIndex = <?php echo intval($z_index); ?>;
+    const mobileDisable = <?php echo $sticky_mobile_disable ? 'true' : 'false'; ?>;
+    
+    let isSticky = false;
+    let originalPosition = null;
+    
+    function initStickySystem() {
+        if (originalPosition === null) {
+            // Speichere die absolute ursprüngliche Position dieses spezifischen Elements
+            const rect = blockElement.getBoundingClientRect();
+            originalPosition = window.pageYOffset + rect.top;
+        }
+    }
+    
+    function handleScroll() {
+        // Mobile check
+        if (mobileDisable) {
+            if (window.innerWidth <= 768) {
+                if (isSticky) releaseSticky();
+                return;
+            }
+        }
+        
+        if (originalPosition === null) initStickySystem();
+        
+        const scrollTop = window.pageYOffset;
+        
+        // Dieses spezifische Element basiert NUR auf seiner eigenen ursprünglichen Position
+        // Trigger-Punkt: wenn Scroll-Position die ursprüngliche Position - sticky-Position erreicht
+        const triggerPoint = originalPosition - stickyPosition;
+        
+        if (!isSticky) {
+            // Wird sticky wenn der Scroll-Punkt erreicht ist
+            if (scrollTop >= triggerPoint) {
+                applySticky();
+            }
+        } else {
+            // Wird wieder normal wenn wir über den Trigger-Punkt zurück scrollen
+            if (scrollTop < triggerPoint) {
+                releaseSticky();
+            }
+        }
+    }
+    
+    let spacerElement = null;
+    
+    function applySticky() {
+        isSticky = true;
+        
+        // Erstelle Spacer-Element um den Platz zu behalten
+        if (!spacerElement) {
+            spacerElement = document.createElement('div');
+            spacerElement.style.height = blockElement.offsetHeight + 'px';
+            spacerElement.style.width = '100%';
+            spacerElement.style.visibility = 'hidden';
+            spacerElement.style.pointerEvents = 'none';
+            blockElement.parentNode.insertBefore(spacerElement, blockElement);
+        }
+        
+        blockElement.style.position = 'fixed';
+        blockElement.style.top = stickyPosition + 'px';
+        blockElement.style.left = '0';
+        blockElement.style.right = '0';
+        blockElement.style.width = '100%';
+        blockElement.classList.add('is-sticky');
+        // Z-Index bereits beim Laden gesetzt
+    }
+    
+    function releaseSticky() {
+        isSticky = false;
+        
+        // Entferne Spacer-Element
+        if (spacerElement) {
+            spacerElement.parentNode.removeChild(spacerElement);
+            spacerElement = null;
+        }
+        
+        blockElement.style.position = '';
+        blockElement.style.top = '';
+        blockElement.style.left = '';
+        blockElement.style.right = '';
+        blockElement.style.width = '';
+        blockElement.classList.remove('is-sticky');
+        // Z-Index bleibt gesetzt für korrekte Stapelreihenfolge
+    }
+    
+    // Init
+    initStickySystem();
+    
+    // Throttled scroll listener
+    let ticking = false;
+    window.addEventListener('scroll', function() {
+        if (!ticking) {
+            requestAnimationFrame(function() {
+                handleScroll();
+                ticking = false;
+            });
+            ticking = true;
+        }
+    }, { passive: true });
+    
+    // Resize listener
+    window.addEventListener('resize', function() {
+        initStickySystem();
+        handleScroll();
+    });
+    
+    // Initial check
+    handleScroll();
+    <?php endif; ?>
     
 });
 </script> 

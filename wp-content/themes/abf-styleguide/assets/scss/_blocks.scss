@@ -212,6 +212,17 @@
         width: 100% !important;
         max-width: 100% !important;
         
+        // Sticky-Effekte im Editor deaktivieren
+        &.has-sticky {
+            transform: none !important;
+            position: relative !important;
+            box-shadow: none !important;
+        }
+        
+        &.is-sticky {
+            box-shadow: none !important;
+        }
+        
         .parallax-grid-container {
             width: 100% !important;
             max-width: 100% !important;
@@ -239,6 +250,36 @@
     margin: 0 !important;
     padding: 0 !important;
     box-sizing: border-box;
+    
+    // Smooth transitions für Sticky-Verhalten
+    transition: all 0.3s ease-out;
+}
+
+// =============================================================================
+// STICKY VERHALTEN für Parallax Grid
+// =============================================================================
+
+// Basis für Sticky-Elemente
+.block-parallax-grid.has-sticky {
+    // Bereit für Sticky-Transformation
+    transform: translateZ(0); // Hardware acceleration
+    will-change: transform;
+    backface-visibility: hidden;
+}
+
+// Aktiver Sticky-Zustand
+.block-parallax-grid.is-sticky {
+    // Visuelle Verbesserungen im Sticky-Zustand
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    
+    // Smooth transitions
+    transition: all 0.3s ease-out;
+    
+    // Sticky-Effekte im Editor deaktivieren
+    .wp-block-acf-parallax-grid & {
+        position: relative !important;
+        box-shadow: none !important;
+    }
 }
 
 .parallax-grid-container {

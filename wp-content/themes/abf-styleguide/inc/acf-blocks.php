@@ -555,6 +555,109 @@ function abf_register_acf_field_groups() {
         'key' => 'group_parallax_grid_block',
         'title' => 'Parallax Grid Block Felder',
         'fields' => array(
+            
+            // =============================================================================
+            // STICKY EINSTELLUNGEN
+            // =============================================================================
+            array(
+                'key' => 'field_pg_sticky_tab',
+                'label' => 'Sticky Einstellungen',
+                'name' => '',
+                'type' => 'tab',
+                'placement' => 'top',
+            ),
+            array(
+                'key' => 'field_pg_enable_sticky',
+                'label' => 'Sticky aktivieren',
+                'name' => 'grid_enable_sticky',
+                'type' => 'true_false',
+                'default_value' => 0,
+                'ui' => 1,
+                'instructions' => 'Block wird beim Scrollen an der angegebenen Position fixiert',
+            ),
+            array(
+                'key' => 'field_pg_sticky_position',
+                'label' => 'Sticky Position',
+                'name' => 'grid_sticky_position',
+                'type' => 'number',
+                'default_value' => 0,
+                'min' => 0,
+                'max' => 500,
+                'step' => 10,
+                'append' => 'px',
+                'instructions' => 'Abstand vom oberen Bildschirmrand (0px = ganz oben)',
+                'conditional_logic' => array(
+                    array(
+                        array(
+                            'field' => 'field_pg_enable_sticky',
+                            'operator' => '==',
+                            'value' => '1',
+                        ),
+                    ),
+                ),
+            ),
+            array(
+                'key' => 'field_pg_z_index',
+                'label' => 'Z-Index (Stapelreihenfolge)',
+                'name' => 'grid_z_index',
+                'type' => 'number',
+                'default_value' => 1000,
+                'min' => 1,
+                'max' => 9999,
+                'step' => 1,
+                'instructions' => 'Höhere Werte überdecken niedrigere (1000, 1001, 1002...) - auch ohne Sticky aktiv',
+            ),
+            array(
+                'key' => 'field_pg_sticky_mobile',
+                'label' => 'Sticky auf Mobile deaktivieren',
+                'name' => 'grid_sticky_mobile_disable',
+                'type' => 'true_false',
+                'default_value' => 1,
+                'ui' => 1,
+                'instructions' => 'Empfohlen: Sticky-Effekte auf kleinen Bildschirmen deaktivieren',
+                'conditional_logic' => array(
+                    array(
+                        array(
+                            'field' => 'field_pg_enable_sticky',
+                            'operator' => '==',
+                            'value' => '1',
+                        ),
+                    ),
+                ),
+            ),
+            
+            // =============================================================================
+            // DESIGN EINSTELLUNGEN
+            // =============================================================================
+            array(
+                'key' => 'field_pg_design_tab',
+                'label' => 'Design',
+                'name' => '',
+                'type' => 'tab',
+                'placement' => 'top',
+            ),
+            array(
+                'key' => 'field_pg_container_background_color',
+                'label' => 'Container Hintergrundfarbe',
+                'name' => 'grid_container_background_color',
+                'type' => 'select',
+                'choices' => array_merge(array('#ffffff' => 'Weiß (Standard)'), abf_get_color_choices()),
+                'default_value' => '#ffffff',
+                'allow_null' => 0,
+                'return_format' => 'value',
+                'instructions' => 'Hintergrundfarbe des gesamten Grid-Containers',
+            ),
+            
+            // =============================================================================
+            // GRID ELEMENTE
+            // =============================================================================
+            array(
+                'key' => 'field_pg_elements_tab',
+                'label' => 'Grid Elemente',
+                'name' => '',
+                'type' => 'tab',
+                'placement' => 'top',
+            ),
             array(
                 'key' => 'field_parallax_elements',
                 'label' => 'Grid Elemente',
