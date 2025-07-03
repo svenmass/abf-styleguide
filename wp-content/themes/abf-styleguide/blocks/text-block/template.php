@@ -248,21 +248,7 @@ document.addEventListener('DOMContentLoaded', function() {
     element.style.visibility = 'visible';
     element.style.opacity = '1';
     
-    // Debug info für Sticky-Probleme
-    console.log('🔧 Text Block initialized:', {
-        id: '<?php echo $block_id; ?>',
-        expectedZIndex: <?php echo intval($z_index); ?>,
-        actualZIndex: element.style.zIndex,
-        computedZIndex: getComputedStyle(element).zIndex,
-        element: element,
-        acfValues: {
-            enable_sticky: <?php echo $enable_sticky ? 'true' : 'false'; ?>,
-            sticky_position: <?php echo intval($sticky_position); ?>,
-            z_index: <?php echo intval($z_index); ?>,
-            background_color: '<?php echo esc_js($background_color); ?>',
-            full_height: <?php echo $full_height ? 'true' : 'false'; ?>
-        }
-    });
+    // Text Block erfolgreich initialisiert
     }
     
     // Button-Hover-Effekte mit JavaScript
@@ -323,14 +309,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const rect = blockElement.getBoundingClientRect();
             originalPosition = window.pageYOffset + rect.top;
             
-            console.log('🎯 Sticky System initialized:', {
-                blockId: blockId,
-                originalPosition: originalPosition,
-                currentScroll: window.pageYOffset,
-                rectTop: rect.top,
-                stickyPosition: stickyPosition,
-                triggerPoint: originalPosition - stickyPosition
-            });
+            // Sticky System initialisiert
         }
     }
     
@@ -351,14 +330,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Trigger-Punkt: wenn Scroll-Position die ursprüngliche Position - sticky-Position erreicht
         const triggerPoint = originalPosition - stickyPosition;
         
-        // Debug: Scroll-Position ausgeben
-        console.log('📊 Scroll Debug:', {
-            scrollTop: scrollTop,
-            originalPosition: originalPosition,
-            triggerPoint: triggerPoint,
-            isSticky: isSticky,
-            stickyPosition: stickyPosition
-        });
+        // Prüfe Sticky-Trigger-Punkt
         
         if (!isSticky) {
             // Wird sticky wenn der Scroll-Punkt erreicht ist
@@ -374,7 +346,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     function applySticky() {
-        console.log('🔥 APPLYING STICKY to Text Block:', blockId);
         isSticky = true;
         
         // Erstelle Spacer-Element um den Platz zu behalten
@@ -402,23 +373,10 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
         blockElement.classList.add('is-sticky');
         
-        // Debug: Prüfe finale CSS-Eigenschaften
-        const computedStyle = getComputedStyle(blockElement);
-        console.log('✅ Sticky applied! Element styles:', {
-            inlinePosition: blockElement.style.position,
-            computedPosition: computedStyle.position,
-            inlineTop: blockElement.style.top,
-            computedTop: computedStyle.top,
-            inlineZIndex: blockElement.style.zIndex,
-            computedZIndex: computedStyle.zIndex,
-            transform: computedStyle.transform,
-            containingBlock: blockElement.offsetParent,
-            elementRect: blockElement.getBoundingClientRect()
-        });
+        // Sticky-Verhalten erfolgreich angewendet
     }
     
     function releaseSticky() {
-        console.log('🔄 RELEASING STICKY from Text Block:', blockId);
         isSticky = false;
         
         // Entferne Spacer-Element
@@ -441,8 +399,6 @@ document.addEventListener('DOMContentLoaded', function() {
         blockElement.style.position = 'relative';
         blockElement.classList.remove('is-sticky');
         // Z-Index bleibt gesetzt für korrekte Stapelreihenfolge
-        
-        console.log('✅ Sticky released! Element position:', blockElement.style.position);
     }
     
     // Init
