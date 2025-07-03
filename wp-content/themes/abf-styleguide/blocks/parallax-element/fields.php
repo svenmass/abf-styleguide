@@ -3,7 +3,12 @@
  * ACF Fields für Parallax Element Block
  */
 
-return array(
+if (!defined('ABSPATH')) {
+    exit;
+}
+
+// Parallax Element Block Field Group
+acf_add_local_field_group(array(
     'key' => 'group_parallax_element',
     'title' => 'Parallax Element',
     'fields' => array(
@@ -57,16 +62,8 @@ return array(
             'min' => 1,
             'max' => 9999,
             'step' => 1,
-            'instructions' => 'Höhere Werte überdecken niedrigere (1000, 1001, 1002...)',
-            'conditional_logic' => array(
-                array(
-                    array(
-                        'field' => 'field_pe_enable_sticky',
-                        'operator' => '==',
-                        'value' => '1',
-                    ),
-                ),
-            ),
+            'instructions' => 'Höhere Werte überdecken niedrigere (1000, 1001, 1002...) - auch ohne Sticky aktiv',
+            // Conditional Logic entfernt - Z-Index ist immer verfügbar
         ),
         array(
             'key' => 'field_pe_sticky_mobile',
@@ -102,13 +99,7 @@ return array(
             'label' => 'Hintergrundfarbe',
             'name' => 'background_color',
             'type' => 'select',
-            'choices' => array(
-                'primary' => 'Primary',
-                'secondary' => 'Secondary',
-                'white' => 'Weiß',
-                'black' => 'Schwarz',
-                'inherit' => 'Transparent / Erben',
-            ),
+            'choices' => abf_get_color_choices(),
             'default_value' => 'primary',
             'allow_null' => 0,
             'return_format' => 'value',
@@ -205,13 +196,7 @@ return array(
             'label' => 'Headline Farbe',
             'name' => 'headline_color',
             'type' => 'select',
-            'choices' => array(
-                'white' => 'Weiß',
-                'black' => 'Schwarz',
-                'primary' => 'Primary',
-                'secondary' => 'Secondary',
-                'inherit' => 'Erben',
-            ),
+            'choices' => abf_get_color_choices(),
             'default_value' => 'white',
             'conditional_logic' => array(
                 array(
@@ -280,12 +265,7 @@ return array(
             'label' => 'Button Hintergrundfarbe',
             'name' => 'button_bg_color',
             'type' => 'select',
-            'choices' => array(
-                'primary' => 'Primary',
-                'secondary' => 'Secondary',
-                'white' => 'Weiß',
-                'black' => 'Schwarz',
-            ),
+            'choices' => abf_get_color_choices(),
             'default_value' => 'secondary',
             'conditional_logic' => array(
                 array(
@@ -302,12 +282,7 @@ return array(
             'label' => 'Button Textfarbe',
             'name' => 'button_text_color',
             'type' => 'select',
-            'choices' => array(
-                'white' => 'Weiß',
-                'black' => 'Schwarz',
-                'primary' => 'Primary',
-                'secondary' => 'Secondary',
-            ),
+            'choices' => abf_get_color_choices(),
             'default_value' => 'white',
             'conditional_logic' => array(
                 array(
@@ -324,12 +299,7 @@ return array(
             'label' => 'Button Hover Hintergrundfarbe',
             'name' => 'button_hover_bg_color',
             'type' => 'select',
-            'choices' => array(
-                'primary' => 'Primary',
-                'secondary' => 'Secondary',
-                'white' => 'Weiß',
-                'black' => 'Schwarz',
-            ),
+            'choices' => abf_get_color_choices(),
             'default_value' => 'primary',
             'conditional_logic' => array(
                 array(
@@ -346,12 +316,7 @@ return array(
             'label' => 'Button Hover Textfarbe',
             'name' => 'button_hover_text_color',
             'type' => 'select',
-            'choices' => array(
-                'white' => 'Weiß',
-                'black' => 'Schwarz',
-                'primary' => 'Primary',
-                'secondary' => 'Secondary',
-            ),
+            'choices' => abf_get_color_choices(),
             'default_value' => 'white',
             'conditional_logic' => array(
                 array(
@@ -451,7 +416,7 @@ return array(
             array(
                 'param' => 'block',
                 'operator' => '==',
-                'value' => 'abf/parallax-element',
+                'value' => 'acf/parallax-element',
             ),
         ),
     ),
@@ -460,4 +425,7 @@ return array(
     'style' => 'default',
     'label_placement' => 'top',
     'instruction_placement' => 'label',
-); 
+    'hide_on_screen' => '',
+    'active' => true,
+    'description' => 'Felder für den eigenständigen Parallax Element Block mit Sticky-Funktionalität',
+)); 

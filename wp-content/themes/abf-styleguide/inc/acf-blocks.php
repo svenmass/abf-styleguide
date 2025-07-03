@@ -135,10 +135,7 @@ function abf_include_modular_fields() {
     // Include Parallax Element Block fields (NEW)
     $parallax_element_fields = get_template_directory() . '/blocks/parallax-element/fields.php';
     if (file_exists($parallax_element_fields)) {
-        $field_group = include($parallax_element_fields);
-        if ($field_group && function_exists('acf_add_local_field_group')) {
-            acf_add_local_field_group($field_group);
-        }
+        require_once $parallax_element_fields;
     }
 }
 add_action('acf/init', 'abf_include_modular_fields');

@@ -112,7 +112,7 @@ if ($enable_sticky) {
     
     <!-- E3: Content Area (richtext top, button bottom) -->
     <div class="parallax-element-area-e3">
-        <div class="parallax-element-e3-inner<?php echo ($show_button && $button_text && $button_url) ? ' has-button' : ''; ?>">
+        <div class="parallax-element-e3-inner<?php echo ($show_button ? ($button_text ? ($button_url ? ' has-button' : '') : '') : ''); ?>">
             
             <?php if ($richtext_content): ?>
                 <?php
@@ -125,33 +125,37 @@ if ($enable_sticky) {
                 </div>
             <?php endif; ?>
             
-            <?php if ($show_button && $button_text && $button_url): ?>
-                <?php
-                $button_styles = [];
-                if ($button_bg_color) $button_styles[] = "background-color: " . abf_get_element_color_value($button_bg_color);
-                if ($button_text_color) $button_styles[] = "color: " . abf_get_element_color_value($button_text_color);
-                $button_style_attr = !empty($button_styles) ? ' style="' . implode('; ', $button_styles) . '"' : '';
-                
-                $button_hover_styles = [];
-                if ($button_hover_bg_color) $button_hover_styles[] = "background-color: " . abf_get_element_color_value($button_hover_bg_color);
-                if ($button_hover_text_color) $button_hover_styles[] = "color: " . abf_get_element_color_value($button_hover_text_color);
-                $button_hover_css = !empty($button_hover_styles) ? implode('; ', $button_hover_styles) : '';
-                ?>
-                
-                <?php if ($button_hover_css): ?>
-                    <style>
-                        #<?php echo $block_id; ?> .parallax-element-button:hover,
-                        #<?php echo $block_id; ?> .parallax-element-button:focus {
-                            <?php echo $button_hover_css; ?> !important;
-                        }
-                    </style>
+            <?php if ($show_button): ?>
+                <?php if ($button_text): ?>
+                    <?php if ($button_url): ?>
+                        <?php
+                        $button_styles = [];
+                        if ($button_bg_color) $button_styles[] = "background-color: " . abf_get_element_color_value($button_bg_color);
+                        if ($button_text_color) $button_styles[] = "color: " . abf_get_element_color_value($button_text_color);
+                        $button_style_attr = !empty($button_styles) ? ' style="' . implode('; ', $button_styles) . '"' : '';
+                        
+                        $button_hover_styles = [];
+                        if ($button_hover_bg_color) $button_hover_styles[] = "background-color: " . abf_get_element_color_value($button_hover_bg_color);
+                        if ($button_hover_text_color) $button_hover_styles[] = "color: " . abf_get_element_color_value($button_hover_text_color);
+                        $button_hover_css = !empty($button_hover_styles) ? implode('; ', $button_hover_styles) : '';
+                        ?>
+                        
+                        <?php if ($button_hover_css): ?>
+                            <style>
+                                #<?php echo $block_id; ?> .parallax-element-button:hover,
+                                #<?php echo $block_id; ?> .parallax-element-button:focus {
+                                    <?php echo $button_hover_css; ?> !important;
+                                }
+                            </style>
+                        <?php endif; ?>
+                        
+                        <div class="parallax-element-button-wrapper">
+                            <a href="<?php echo esc_url($button_url); ?>" class="parallax-element-button"<?php echo $button_style_attr; ?>>
+                                <?php echo esc_html($button_text); ?>
+                            </a>
+                        </div>
+                    <?php endif; ?>
                 <?php endif; ?>
-                
-                <div class="parallax-element-button-wrapper">
-                    <a href="<?php echo esc_url($button_url); ?>" class="parallax-element-button"<?php echo $button_style_attr; ?>>
-                        <?php echo esc_html($button_text); ?>
-                    </a>
-                </div>
             <?php endif; ?>
             
         </div>
@@ -160,14 +164,16 @@ if ($enable_sticky) {
     <!-- E4: White Layer with Media -->
     <div class="parallax-element-area-e4">
         <?php 
-        $has_media = ($media_type === 'image' && $image) || ($media_type === 'video' && $video);
+        $has_media = ($media_type === 'image' ? !empty($image) : false) || ($media_type === 'video' ? !empty($video) : false);
         $media_fit_class = '';
         
         if ($has_media) {
-            if ($media_type === 'image' && $image_fit === 'contain') {
-                $media_fit_class = 'has-contain';
-            } elseif ($media_type === 'image' && $image_fit === 'cover') {
-                $media_fit_class = 'has-cover';
+            if ($media_type === 'image') {
+                if ($image_fit === 'contain') {
+                    $media_fit_class = 'has-contain';
+                } elseif ($image_fit === 'cover') {
+                    $media_fit_class = 'has-cover';
+                }
             } elseif ($media_type === 'video') {
                 $media_fit_class = 'has-video';
             }
@@ -178,26 +184,30 @@ if ($enable_sticky) {
             <div class="parallax-element-white-layer <?php echo esc_attr($media_fit_class); ?>">
                 <?php if ($has_media): ?>
                     
-                    <?php if ($media_type === 'image' && $image): ?>
-                        <?php if ($image_fit === 'contain'): ?>
-                            <!-- Contain: Image with padding -->
-                            <div class="parallax-media-container contain">
+                    <?php if ($media_type === 'image'): ?>
+                        <?php if ($image): ?>
+                            <?php if ($image_fit === 'contain'): ?>
+                                <!-- Contain: Image with padding -->
+                                <div class="parallax-media-container contain">
+                                    <img src="<?php echo esc_url($image['url']); ?>" 
+                                         alt="<?php echo esc_attr($image['alt'] ?: ''); ?>" 
+                                         class="parallax-media-image contain">
+                                </div>
+                            <?php else: ?>
+                                <!-- Cover: Image fills layer -->
                                 <img src="<?php echo esc_url($image['url']); ?>" 
                                      alt="<?php echo esc_attr($image['alt'] ?: ''); ?>" 
-                                     class="parallax-media-image contain">
-                            </div>
-                        <?php else: ?>
-                            <!-- Cover: Image fills layer -->
-                            <img src="<?php echo esc_url($image['url']); ?>" 
-                                 alt="<?php echo esc_attr($image['alt'] ?: ''); ?>" 
-                                 class="parallax-media-image cover">
+                                     class="parallax-media-image cover">
+                            <?php endif; ?>
                         <?php endif; ?>
                     
-                    <?php elseif ($media_type === 'video' && $video): ?>
-                        <!-- Video: Always cover -->
-                        <video class="parallax-media-video" autoplay muted loop playsinline>
-                            <source src="<?php echo esc_url($video['url']); ?>" type="<?php echo esc_attr($video['mime_type']); ?>">
-                        </video>
+                    <?php elseif ($media_type === 'video'): ?>
+                        <?php if ($video): ?>
+                            <!-- Video: Always cover -->
+                            <video class="parallax-media-video" autoplay muted loop playsinline>
+                                <source src="<?php echo esc_url($video['url']); ?>" type="<?php echo esc_attr($video['mime_type']); ?>">
+                            </video>
+                        <?php endif; ?>
                     
                     <?php endif; ?>
                     
@@ -208,99 +218,132 @@ if ($enable_sticky) {
     
 </div>
 
+<script>
+// Z-Index immer setzen (auch ohne Sticky)
+document.addEventListener('DOMContentLoaded', function() {
+    const element = document.getElementById('<?php echo $block_id; ?>');
+    if (element) {
+        element.style.zIndex = <?php echo intval($z_index); ?>;
+    }
+});
+</script>
+
 <?php if ($enable_sticky): ?>
 <script>
-(function() {
-    'use strict';
+document.addEventListener('DOMContentLoaded', function() {
+    const element = document.getElementById('<?php echo $block_id; ?>');
+    if (!element) return;
     
-    document.addEventListener('DOMContentLoaded', function() {
-        const element = document.getElementById('<?php echo $block_id; ?>');
-        if (!element) return;
-        
-        const stickyPosition = parseInt(element.dataset.stickyPosition) || 0;
-        const zIndex = parseInt(element.dataset.zIndex) || 1000;
-        const mobileDisable = element.dataset.stickyMobileDisable === 'true';
-        
-        console.log('🎯 Parallax Element Sticky:', {
-            id: '<?php echo $block_id; ?>',
-            position: stickyPosition,
-            zIndex: zIndex,
-            mobileDisable: mobileDisable
-        });
-        
-        let isSticky = false;
-        let originalPosition = null;
-        
-        function checkSticky() {
-            // Check if mobile and disabled
-            if (mobileDisable && window.innerWidth <= 768) {
-                if (isSticky) {
-                    makeNormal();
-                }
+    const stickyPosition = <?php echo intval($sticky_position); ?>;
+    const zIndex = <?php echo intval($z_index); ?>;
+    const mobileDisable = <?php echo $sticky_mobile_disable ? 'true' : 'false'; ?>;
+    
+    let isSticky = false;
+    let originalPosition = null;
+    
+    function initStickySystem() {
+        if (originalPosition === null) {
+            // Speichere die absolute ursprüngliche Position dieses spezifischen Elements
+            const rect = element.getBoundingClientRect();
+            originalPosition = window.pageYOffset + rect.top;
+        }
+    }
+    
+    function handleScroll() {
+        // Mobile check
+        if (mobileDisable) {
+            if (window.innerWidth <= 768) {
+                if (isSticky) releaseSticky();
                 return;
             }
-            
-            const rect = element.getBoundingClientRect();
-            
-            if (!isSticky && rect.top <= stickyPosition) {
-                makeSticky();
-            } else if (isSticky && originalPosition && window.pageYOffset < originalPosition - stickyPosition) {
-                makeNormal();
+        }
+        
+        if (originalPosition === null) initStickySystem();
+        
+        const scrollTop = window.pageYOffset;
+        
+        // Dieses spezifische Element basiert NUR auf seiner eigenen ursprünglichen Position
+        // Trigger-Punkt: wenn Scroll-Position die ursprüngliche Position - sticky-Position erreicht
+        const triggerPoint = originalPosition - stickyPosition;
+        
+        if (!isSticky) {
+            // Wird sticky wenn der Scroll-Punkt erreicht ist
+            if (scrollTop >= triggerPoint) {
+                applySticky();
+            }
+        } else {
+            // Wird wieder normal wenn wir über den Trigger-Punkt zurück scrollen
+            if (scrollTop < triggerPoint) {
+                releaseSticky();
             }
         }
+    }
+    
+    let spacerElement = null;
+    
+    function applySticky() {
+        isSticky = true;
         
-        function makeSticky() {
-            if (isSticky) return;
-            
-            // Store original position
-            originalPosition = window.pageYOffset + element.getBoundingClientRect().top;
-            
-            isSticky = true;
-            element.classList.add('is-sticky');
-            element.style.position = 'fixed';
-            element.style.top = stickyPosition + 'px';
-            element.style.left = '0';
-            element.style.right = '0';
-            element.style.width = '100%';
-            element.style.zIndex = zIndex;
-            
-            console.log('🔒 STICKY: ' + '<?php echo $block_id; ?>' + ' at ' + stickyPosition + 'px');
+        // Erstelle Spacer-Element um den Platz zu behalten
+        if (!spacerElement) {
+            spacerElement = document.createElement('div');
+            spacerElement.style.height = element.offsetHeight + 'px';
+            spacerElement.style.width = '100%';
+            spacerElement.style.visibility = 'hidden';
+            spacerElement.style.pointerEvents = 'none';
+            element.parentNode.insertBefore(spacerElement, element);
         }
         
-        function makeNormal() {
-            if (!isSticky) return;
-            
-            isSticky = false;
-            element.classList.remove('is-sticky');
-            element.style.position = '';
-            element.style.top = '';
-            element.style.left = '';
-            element.style.right = '';
-            element.style.width = '';
-            element.style.zIndex = '';
-            
-            console.log('🔓 NORMAL: ' + '<?php echo $block_id; ?>' + ' back to flow');
+        element.style.position = 'fixed';
+        element.style.top = stickyPosition + 'px';
+        element.style.left = '0';
+        element.style.right = '0';
+        element.style.width = '100%';
+        element.classList.add('is-sticky');
+        // Z-Index bereits beim Laden gesetzt
+    }
+    
+    function releaseSticky() {
+        isSticky = false;
+        
+        // Entferne Spacer-Element
+        if (spacerElement) {
+            spacerElement.parentNode.removeChild(spacerElement);
+            spacerElement = null;
         }
         
-        // Throttled scroll handler
-        let ticking = false;
-        function handleScroll() {
-            if (!ticking) {
-                requestAnimationFrame(function() {
-                    checkSticky();
-                    ticking = false;
-                });
-                ticking = true;
-            }
+        element.style.position = '';
+        element.style.top = '';
+        element.style.left = '';
+        element.style.right = '';
+        element.style.width = '';
+        element.classList.remove('is-sticky');
+        // Z-Index bleibt gesetzt für korrekte Stapelreihenfolge
+    }
+    
+    // Init
+    initStickySystem();
+    
+    // Throttled scroll listener
+    let ticking = false;
+    window.addEventListener('scroll', function() {
+        if (!ticking) {
+            requestAnimationFrame(function() {
+                handleScroll();
+                ticking = false;
+            });
+            ticking = true;
         }
-        
-        // Initial check
-        checkSticky();
-        
-        // Listen to scroll events
-        window.addEventListener('scroll', handleScroll, { passive: true });
-        window.addEventListener('resize', handleScroll, { passive: true });
+    }, { passive: true });
+    
+    // Resize listener
+    window.addEventListener('resize', function() {
+        initStickySystem();
+        handleScroll();
     });
-})();
+    
+    // Initial check
+    handleScroll();
+});
 </script>
 <?php endif; ?> 
