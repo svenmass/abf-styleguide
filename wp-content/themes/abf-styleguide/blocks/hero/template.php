@@ -192,7 +192,23 @@ $block_id = 'hero-' . uniqid();
             <?php if ($button_text): ?>
                 <div class="hero-button-wrapper">
                     <?php if ($button_url): ?>
-                        <a href="<?php echo esc_url($button_url); ?>" class="hero-button">
+                        <?php
+                        // Handle special modal URLs
+                        $onclick_attr = '';
+                        $href_attr = esc_url($button_url);
+                        
+                        if ($button_url === '#register-modal' || $button_url === '#register') {
+                            $onclick_attr = ' onclick="ABF_UserManagement.showModal(); ABF_UserManagement.switchTab(\'register\'); return false;"';
+                            $href_attr = '#';
+                        } elseif ($button_url === '#login-modal' || $button_url === '#login') {
+                            $onclick_attr = ' onclick="ABF_UserManagement.showModal(); ABF_UserManagement.switchTab(\'login\'); return false;"';
+                            $href_attr = '#';
+                        } elseif ($button_url === '#modal' || $button_url === '#anmelden') {
+                            $onclick_attr = ' onclick="ABF_UserManagement.showModal(); return false;"';
+                            $href_attr = '#';
+                        }
+                        ?>
+                        <a href="<?php echo $href_attr; ?>" class="hero-button"<?php echo $onclick_attr; ?>>
                             <?php echo esc_html($button_text); ?>
                         </a>
                     <?php else: ?>

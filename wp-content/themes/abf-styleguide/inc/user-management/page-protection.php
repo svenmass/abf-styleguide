@@ -36,7 +36,7 @@ class ABF_Page_Protection {
         }
         
         // Check if user can access protected content
-        if (!ABF_User_Authentication::can_access_protected_content()) {
+        if (!$this->can_access_protected_content()) {
             $this->redirect_to_homepage_with_modal();
         }
     }
@@ -82,13 +82,49 @@ class ABF_Page_Protection {
     public function check_protection_status() {
         $response = array(
             'is_logged_in' => is_user_logged_in(),
-            'can_access' => ABF_User_Authentication::can_access_protected_content(),
-            'user_info' => ABF_User_Authentication::get_current_user_info(),
+            'can_access' => $this->can_access_protected_content(),
+            'user_info' => $this->get_enhanced_user_info(),
             'is_homepage' => is_front_page() || is_home(),
             'should_show_modal' => isset($_GET['show_login'])
         );
         
         wp_die(json_encode($response));
+    }
+    
+    /**
+     * Get enhanced user info including admin status
+     */
+    private function get_enhanced_user_info() {
+        if (!is_user_logged_in()) {
+            return null;
+        }
+        
+        $user = wp_get_current_user();
+        $can_access = $this->can_access_protected_content();
+        
+        // Check if user is privileged (admin/editor/author)
+        $is_privileged = current_user_can('manage_options') || 
+                        current_user_can('edit_others_posts') || 
+                        current_user_can('publish_posts');
+        
+        $approval_status = 'approved'; // Default for privileged users
+        $user_type = 'privileged'; // Default for privileged users
+        
+        // Get ABF-specific data if exists
+        if (!$is_privileged) {
+            $approval_status = get_user_meta($user->ID, 'abf_approval_status', true) ?: 'unknown';
+            $user_type = get_user_meta($user->ID, 'abf_user_type', true) ?: 'unknown';
+        }
+        
+        return array(
+            'ID' => $user->ID,
+            'name' => $user->first_name ?: $user->display_name,
+            'email' => $user->user_email,
+            'can_access' => $can_access,
+            'approval_status' => $approval_status,
+            'user_type' => $user_type,
+            'is_privileged' => $is_privileged
+        );
     }
     
     /**
@@ -124,10 +160,40 @@ class ABF_Page_Protection {
     }
     
     /**
+     * Enhanced access check including admin privileges
+     */
+    private function can_access_protected_content() {
+        // Not logged in = no access
+        if (!is_user_logged_in()) {
+            return false;
+        }
+        
+        // Admin users always have access
+        if (current_user_can('manage_options')) {
+            return true;
+        }
+        
+        // Editor users have access
+        if (current_user_can('edit_others_posts')) {
+            return true;
+        }
+        
+        // Author users have access
+        if (current_user_can('publish_posts')) {
+            return true;
+        }
+        
+        // Check ABF-specific approval for regular users
+        return ABF_User_Authentication::can_access_protected_content();
+    }
+    
+    /**
      * Get protection notice for frontend
      */
     public static function get_protection_notice() {
-        if (ABF_User_Authentication::can_access_protected_content()) {
+        // Create instance to use the enhanced method
+        $protection = new self();
+        if ($protection->can_access_protected_content()) {
             return null;
         }
         

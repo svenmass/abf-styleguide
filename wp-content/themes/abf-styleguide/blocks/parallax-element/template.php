@@ -137,14 +137,30 @@ if ($enable_sticky) {
                         ?>
                         
                         <div class="parallax-element-button-wrapper">
-                            <a href="<?php echo esc_url($button_url); ?>" 
+                            <?php
+                            // Handle special modal URLs
+                            $onclick_attr = '';
+                            $href_attr = esc_url($button_url);
+                            
+                            if ($button_url === '#register-modal' || $button_url === '#register') {
+                                $onclick_attr = ' onclick="ABF_UserManagement.showModal(); ABF_UserManagement.switchTab(\'register\'); return false;"';
+                                $href_attr = '#';
+                            } elseif ($button_url === '#login-modal' || $button_url === '#login') {
+                                $onclick_attr = ' onclick="ABF_UserManagement.showModal(); ABF_UserManagement.switchTab(\'login\'); return false;"';
+                                $href_attr = '#';
+                            } elseif ($button_url === '#modal' || $button_url === '#anmelden') {
+                                $onclick_attr = ' onclick="ABF_UserManagement.showModal(); return false;"';
+                                $href_attr = '#';
+                            }
+                            ?>
+                            <a href="<?php echo $href_attr; ?>" 
                                class="parallax-element-button"
                                data-button-id="<?php echo esc_attr($block_id); ?>-btn"
                                data-hover-bg="<?php echo esc_attr(abf_get_element_color_value($button_hover_bg_color)); ?>"
                                data-hover-text="<?php echo esc_attr(abf_get_element_color_value($button_hover_text_color)); ?>"
                                data-normal-bg="<?php echo esc_attr(abf_get_element_color_value($button_bg_color)); ?>"
                                data-normal-text="<?php echo esc_attr(abf_get_element_color_value($button_text_color)); ?>"
-                               <?php echo $button_style_attr; ?>>
+                               <?php echo $button_style_attr; ?><?php echo $onclick_attr; ?>>
                                 <?php echo esc_html($button_text); ?>
                             </a>
                         </div>

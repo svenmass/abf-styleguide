@@ -21,17 +21,30 @@ function abf_add_login_button() {
                 <?php
                 $user = wp_get_current_user();
                 $approval_status = get_user_meta($user->ID, 'abf_approval_status', true);
+                
+                // Check if user is privileged
+                $is_admin = current_user_can('manage_options');
+                $is_editor = current_user_can('edit_others_posts');
+                $is_author = current_user_can('publish_posts');
                 ?>
                 <div class="abf-user-info-box" style="background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); text-align: center;">
                     <div style="margin-bottom: 10px;">
                         <strong><?php echo esc_html($user->first_name ?: $user->display_name); ?></strong>
                     </div>
-                    <?php if ($approval_status === 'approved'): ?>
+                    <?php if ($is_admin): ?>
+                        <div style="color: #007cba; margin-bottom: 10px;">👑 Administrator</div>
+                    <?php elseif ($is_editor): ?>
+                        <div style="color: #0073aa; margin-bottom: 10px;">✏️ Redakteur</div>
+                    <?php elseif ($is_author): ?>
+                        <div style="color: #00a32a; margin-bottom: 10px;">📝 Autor</div>
+                    <?php elseif ($approval_status === 'approved'): ?>
                         <div style="color: #00a32a; margin-bottom: 10px;">✓ Zugang gewährt</div>
                     <?php elseif ($approval_status === 'pending'): ?>
                         <div style="color: #d63638; margin-bottom: 10px;">⏳ Warte auf Freigabe</div>
                     <?php elseif ($approval_status === 'rejected'): ?>
                         <div style="color: #646970; margin-bottom: 10px;">❌ Nicht genehmigt</div>
+                    <?php else: ?>
+                        <div style="color: #666970; margin-bottom: 10px;">🔓 Vollzugang</div>
                     <?php endif; ?>
                     <button type="button" id="abf-logout-btn" class="abf-btn abf-btn-small" style="font-size: 12px; padding: 8px 12px;">
                         Abmelden
