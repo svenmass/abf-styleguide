@@ -204,4 +204,48 @@ if (!function_exists('abf_get_content_color_value')) {
             
         <?php endforeach; ?>
     <?php } ?>
-</div> 
+</div>
+
+<!-- GSAP ScrollTrigger für Sticky Effekt -->
+<script src="https://unpkg.com/gsap@3.12.2/dist/gsap.min.js"></script>
+<script src="https://unpkg.com/gsap@3.12.2/dist/ScrollTrigger.min.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    console.log('🎯 GSAP ScrollTrigger Sticky System starting...');
+    
+    gsap.registerPlugin(ScrollTrigger);
+
+    const blocks = document.querySelectorAll(".parallax-content-element");
+    console.log('Found', blocks.length, 'parallax elements');
+
+    if (blocks.length === 0) return;
+
+    blocks.forEach((block, index) => {
+        const offset = index * 120; // 120px Abstand für Sticky-Versatz
+        
+        console.log('🚀 Setup ScrollTrigger for Element ' + (index + 1) + ' with offset: ' + offset + 'px');
+
+        ScrollTrigger.create({
+            trigger: block,
+            start: `top+=${offset} top`,
+            end: () => `+=${block.offsetHeight}`,
+            pin: true,
+            pinSpacing: false,
+            toggleClass: {
+                targets: block,
+                className: "is-sticky"
+            },
+            onToggle: (self) => {
+                console.log('📌 Element ' + (index + 1) + ' sticky:', self.isActive);
+            },
+            // Z-Index Management: Höhere Indizes für spätere Elemente
+            // So überdeckt das letzte Element alle vorherigen
+            zIndex: 1000 + index,
+            markers: false // Für Debugging auf true setzen
+        });
+    });
+    
+    console.log('✅ GSAP ScrollTrigger setup complete');
+});
+</script> 

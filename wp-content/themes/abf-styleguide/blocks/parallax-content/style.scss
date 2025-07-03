@@ -328,4 +328,114 @@
     .parallax-content-headline {
         font-size: calc(var(--font-size) * 0.8) !important;
     }
+}
+
+// =============================================================================
+// GSAP SCROLLTRIGGER STICKY SYSTEM
+// =============================================================================
+
+// Base styling für alle parallax elements 
+.parallax-content-element {
+    // Z-Index wird über GSAP JavaScript dynamisch gesetzt
+    // Wichtig: Relative Positionierung für korrektes Z-Index-Verhalten
+    z-index: 1;
+    
+    // Smooth transitions wenn Elemente sticky werden
+    transition: all 0.3s ease-out;
+}
+
+// Sticky State Klasse (wird von GSAP dynamisch hinzugefügt)
+.parallax-content-element.is-sticky {
+    // GSAP übernimmt die Positionierung - wir definieren nur visuelle Änderungen
+    
+    // Optional: Subtile Schatten oder andere visuelle Cues für Sticky-State
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    
+    // Smooth transitions
+    transition: all 0.3s ease-out;
+}
+
+// Z-Index Stacking für das Überdeckungsverhalten
+// Spätere Elemente sollen frühere überdecken
+.parallax-content-element[data-element="1"] {
+    z-index: 1001;
+}
+
+.parallax-content-element[data-element="2"] {
+    z-index: 1002;
+}
+
+.parallax-content-element[data-element="3"] {
+    z-index: 1003;
+}
+
+.parallax-content-element[data-element="4"] {
+    z-index: 1004;
+}
+
+.parallax-content-element[data-element="5"] {
+    z-index: 1005;
+}
+
+// Falls mehr Elemente benötigt werden, kann dies erweitert werden
+
+// GSAP Pin-Spacer Fixes (GSAP fügt automatisch .pin-spacer divs hinzu)
+.pin-spacer {
+    // Stelle sicher, dass Pin-Spacer keine ungewollten Margins/Paddings haben
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+// Performance Optimierungen für GSAP
+.parallax-content-element {
+    // Hardware-Acceleration für smoother Animationen
+    transform: translateZ(0);
+    will-change: transform;
+    
+    // Smooth rendering
+    backface-visibility: hidden;
+}
+
+// Debug-Styles (wenn GSAP markers aktiv sind)
+.gsap-marker-scroller-start,
+.gsap-marker-scroller-end,
+.gsap-marker-start,
+.gsap-marker-end {
+    // Verstecke GSAP Debug-Marker in Production
+    // Zum Debugging markers: true in ScrollTrigger.create() setzen
+    display: none !important;
+}
+
+// Optional: Debug-Mode aktivieren
+// Uncomment für Debugging:
+/*
+.gsap-marker-scroller-start,
+.gsap-marker-scroller-end,
+.gsap-marker-start,
+.gsap-marker-end {
+    display: block !important;
+}
+*/
+
+// =============================================================================
+// RESPONSIVE ANPASSUNGEN FÜR STICKY SYSTEM
+// =============================================================================
+
+// Tablet: Veränderte Sticky-Verhalten (falls gewünscht)
+@media (max-width: #{$breakpoint-desktop - 1px}) {
+    .parallax-content-element.is-sticky {
+        // Optional: Angepasste Schatten oder Effekte auf Tablet
+        box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+    }
+}
+
+// Mobile: Deaktiviere möglicherweise Sticky-Effekte (falls Performance-Probleme)
+@media (max-width: #{$breakpoint-mobile - 1px}) {
+    // Behalte alle Effekte auch auf Mobile
+    // Falls Probleme auftreten, können hier Anpassungen gemacht werden
+    
+    .parallax-content-element.is-sticky {
+        // Reduzierte Schatten auf Mobile für Performance
+        box-shadow: 0 1px 10px rgba(0, 0, 0, 0.05);
+    }
 } 
