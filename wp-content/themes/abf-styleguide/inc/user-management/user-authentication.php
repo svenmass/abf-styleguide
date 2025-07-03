@@ -69,6 +69,13 @@ class ABF_User_Authentication {
             )));
         }
         
+        if ($approval_status === 'revoked') {
+            wp_die(json_encode(array(
+                'success' => false, 
+                'message' => 'Ihr Zugang wurde vorübergehend eingeschränkt. Bei Fragen wenden Sie sich an unser Team.'
+            )));
+        }
+        
         // Attempt login
         $credentials = array(
             'user_login'    => $user->user_login,
@@ -220,6 +227,7 @@ class ABF_User_Authentication {
         $user_id = get_current_user_id();
         $approval_status = get_user_meta($user_id, 'abf_approval_status', true);
         
+        // Only approved users can access, not revoked ones
         return $approval_status === 'approved';
     }
     

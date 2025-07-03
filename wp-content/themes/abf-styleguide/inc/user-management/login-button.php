@@ -43,6 +43,8 @@ function abf_add_login_button() {
                         <div style="color: #d63638; margin-bottom: 10px;">⏳ Warte auf Freigabe</div>
                     <?php elseif ($approval_status === 'rejected'): ?>
                         <div style="color: #646970; margin-bottom: 10px;">❌ Nicht genehmigt</div>
+                    <?php elseif ($approval_status === 'revoked'): ?>
+                        <div style="color: #d63638; margin-bottom: 10px;">🚫 Zugang eingeschränkt</div>
                     <?php else: ?>
                         <div style="color: #666970; margin-bottom: 10px;">🔓 Vollzugang</div>
                     <?php endif; ?>
