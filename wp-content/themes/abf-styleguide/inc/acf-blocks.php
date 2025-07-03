@@ -90,7 +90,34 @@ function abf_register_acf_blocks() {
         ),
         'mode'              => 'auto',
     ));
+
+    // Register Parallax Content Block
+    acf_register_block_type(array(
+        'name'              => 'parallax-content',
+        'title'             => __('Parallax Content'),
+        'description'       => __('Ein bildschirmfüllender Block mit unbegrenzten Content-Elementen (Text links, weißes Layer rechts)'),
+        'render_template'   => get_template_directory() . '/blocks/parallax-content/template.php',
+        'category'          => 'abf-blocks',
+        'icon'              => 'align-left',
+        'keywords'          => array('parallax', 'content', 'text', 'media', 'repeater'),
+        'supports'          => array(
+            'jsx' => true,
+        ),
+        'mode'              => 'auto',
+    ));
 }
+
+/**
+ * Include modular field definitions
+ */
+function abf_include_modular_fields() {
+    // Include Parallax Content Block fields (TESTWEISE)
+    $parallax_content_fields = get_template_directory() . '/blocks/parallax-content/fields.php';
+    if (file_exists($parallax_content_fields)) {
+        require_once $parallax_content_fields;
+    }
+}
+add_action('acf/init', 'abf_include_modular_fields');
 
 /**
  * Register ACF Field Groups manually
