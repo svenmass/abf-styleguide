@@ -19,7 +19,7 @@ $background_color = get_field('background_color') ?: 'primary';
 $headline_text = get_field('headline_text') ?: '';
 $headline_tag = get_field('headline_tag') ?: 'h2';
 $headline_weight = get_field('headline_weight') ?: '400';
-$headline_size = get_field('headline_size') ?: 36;
+$headline_size = get_field('headline_size') ?: '36';
 $headline_color = get_field('headline_color') ?: 'white';
 
 $richtext_content = get_field('richtext_content') ?: '';
@@ -82,6 +82,7 @@ if ($enable_sticky) {
         $data_attributes[] = 'data-sticky-mobile-disable="true"';
     }
 }
+
 ?>
 
 <div class="block-parallax-element <?php echo $enable_sticky ? 'has-sticky' : ''; ?>" 
@@ -133,24 +134,17 @@ if ($enable_sticky) {
                         if ($button_bg_color) $button_styles[] = "background-color: " . abf_get_element_color_value($button_bg_color);
                         if ($button_text_color) $button_styles[] = "color: " . abf_get_element_color_value($button_text_color);
                         $button_style_attr = !empty($button_styles) ? ' style="' . implode('; ', $button_styles) . '"' : '';
-                        
-                        $button_hover_styles = [];
-                        if ($button_hover_bg_color) $button_hover_styles[] = "background-color: " . abf_get_element_color_value($button_hover_bg_color);
-                        if ($button_hover_text_color) $button_hover_styles[] = "color: " . abf_get_element_color_value($button_hover_text_color);
-                        $button_hover_css = !empty($button_hover_styles) ? implode('; ', $button_hover_styles) : '';
                         ?>
                         
-                        <?php if ($button_hover_css): ?>
-                            <style>
-                                #<?php echo $block_id; ?> .parallax-element-button:hover,
-                                #<?php echo $block_id; ?> .parallax-element-button:focus {
-                                    <?php echo $button_hover_css; ?> !important;
-                                }
-                            </style>
-                        <?php endif; ?>
-                        
                         <div class="parallax-element-button-wrapper">
-                            <a href="<?php echo esc_url($button_url); ?>" class="parallax-element-button"<?php echo $button_style_attr; ?>>
+                            <a href="<?php echo esc_url($button_url); ?>" 
+                               class="parallax-element-button"
+                               data-button-id="<?php echo esc_attr($block_id); ?>-btn"
+                               data-hover-bg="<?php echo esc_attr(abf_get_element_color_value($button_hover_bg_color)); ?>"
+                               data-hover-text="<?php echo esc_attr(abf_get_element_color_value($button_hover_text_color)); ?>"
+                               data-normal-bg="<?php echo esc_attr(abf_get_element_color_value($button_bg_color)); ?>"
+                               data-normal-text="<?php echo esc_attr(abf_get_element_color_value($button_text_color)); ?>"
+                               <?php echo $button_style_attr; ?>>
                                 <?php echo esc_html($button_text); ?>
                             </a>
                         </div>
@@ -224,6 +218,36 @@ document.addEventListener('DOMContentLoaded', function() {
     const element = document.getElementById('<?php echo $block_id; ?>');
     if (element) {
         element.style.zIndex = <?php echo intval($z_index); ?>;
+    }
+    
+    // Button-Hover-Effekte mit JavaScript (umgeht CSS-Spezifitätsprobleme)
+    const button = element.querySelector('.parallax-element-button[data-button-id="<?php echo $block_id; ?>-btn"]');
+    if (button) {
+        const hoverBg = button.getAttribute('data-hover-bg');
+        const hoverText = button.getAttribute('data-hover-text');
+        const normalBg = button.getAttribute('data-normal-bg');
+        const normalText = button.getAttribute('data-normal-text');
+        
+        // Ensure transitions are preserved
+        button.style.transition = 'background-color 0.3s ease, color 0.3s ease';
+        
+        button.addEventListener('mouseenter', function() {
+            if (hoverBg) {
+                this.style.backgroundColor = hoverBg;
+            }
+            if (hoverText) {
+                this.style.color = hoverText;
+            }
+        });
+        
+        button.addEventListener('mouseleave', function() {
+            if (normalBg) {
+                this.style.backgroundColor = normalBg;
+            }
+            if (normalText) {
+                this.style.color = normalText;
+            }
+        });
     }
 });
 </script>

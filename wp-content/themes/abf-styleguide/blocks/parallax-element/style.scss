@@ -5,6 +5,44 @@
 // Import variables (wenn separat kompiliert)
 // @import '../../../assets/scss/variables';
 
+// =============================================================================
+// EDITOR-SPECIFIC STYLES
+// =============================================================================
+
+// Editor-specific styles für Parallax Element Block
+.wp-block-acf-parallax-element {
+    .block-parallax-element {
+        // Im Editor: begrenzte Höhe
+        min-height: 420px;
+        max-height: 600px;
+        
+        // Im Editor: 100% statt 100vw verwenden
+        width: 100% !important;
+        max-width: 100% !important;
+        
+        // Sticky-Effekte im Editor deaktivieren
+        &.has-sticky {
+            transform: none !important;
+            position: relative !important;
+            box-shadow: none !important;
+        }
+        
+        &.is-sticky {
+            box-shadow: none !important;
+        }
+        
+        // White Layer im Editor anpassen
+        .parallax-element-white-layer {
+            min-height: 200px;
+            max-height: 400px;
+        }
+    }
+}
+
+// =============================================================================
+// FRONTEND STYLES
+// =============================================================================
+
 // Main Block Container
 .block-parallax-element {
     width: 100vw;
@@ -172,7 +210,7 @@
     border-radius: $button-border-radius;
     text-decoration: none;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: background-color 0.3s ease, color 0.3s ease;
     
     &:hover,
     &:focus {
@@ -188,8 +226,8 @@
 // White Layer
 .parallax-element-white-layer {
     position: relative;
-    width: 75%; // 75% der rechten Seite = 37.5% vom Gesamt, align right
-    max-width: 75%;
+    width: 90%; // 75% der rechten Seite = 37.5% vom Gesamt, align right
+    max-width: 90%;
     min-height: 300px; // Full height available in E4
     margin-top: 0; // Kein margin-top mehr nötig durch Grid-Layout
     background-color: #ffffff;

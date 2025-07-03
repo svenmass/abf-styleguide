@@ -138,6 +138,7 @@ acf_add_local_field_group(array(
                 'h6' => 'H6',
             ),
             'default_value' => 'h2',
+            'wrapper' => array('width' => '25'),
             'conditional_logic' => array(
                 array(
                     array(
@@ -156,11 +157,10 @@ acf_add_local_field_group(array(
             'choices' => array(
                 '300' => 'Light (300)',
                 '400' => 'Normal (400)',
-                '500' => 'Medium (500)',
-                '600' => 'Semi-Bold (600)',
                 '700' => 'Bold (700)',
             ),
             'default_value' => '400',
+            'wrapper' => array('width' => '25'),
             'conditional_logic' => array(
                 array(
                     array(
@@ -175,12 +175,18 @@ acf_add_local_field_group(array(
             'key' => 'field_pe_headline_size',
             'label' => 'Headline Schriftgröße',
             'name' => 'headline_size',
-            'type' => 'number',
-            'default_value' => 36,
-            'min' => 16,
-            'max' => 120,
-            'step' => 1,
-            'append' => 'px',
+            'type' => 'select',
+            'choices' => array(
+                '12' => '12px (Small)',
+                '18' => '18px (Body)', 
+                '24' => '24px (H2)',
+                '36' => '36px (H1)',
+                '48' => '48px (XL)',
+                '60' => '60px (XXL)',
+                '72' => '72px (3XL)',
+            ),
+            'default_value' => '36',
+            'wrapper' => array('width' => '25'),
             'conditional_logic' => array(
                 array(
                     array(
@@ -198,6 +204,7 @@ acf_add_local_field_group(array(
             'type' => 'select',
             'choices' => abf_get_color_choices(),
             'default_value' => 'white',
+            'wrapper' => array('width' => '25'),
             'conditional_logic' => array(
                 array(
                     array(
