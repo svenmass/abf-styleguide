@@ -1,0 +1,397 @@
+// =============================================================================
+// TEXT BLOCK STYLES
+// =============================================================================
+
+// Import variables (wenn separat kompiliert)
+// @import '../../../assets/scss/variables';
+
+// =============================================================================
+// MAIN BLOCK CONTAINER
+// =============================================================================
+
+.block-text-block {
+    width: 100vw;
+    max-width: 100vw;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-sizing: border-box;
+    position: relative;
+    
+    // Standard Höhe
+    min-height: 300px;
+    
+    // Volle Höhe wenn aktiviert
+    &.full-height {
+        min-height: 100vh;
+        height: 100vh;
+    }
+    
+    // Z-Index wird über ACF-Feld/Template gesetzt, nicht hardcoded
+    
+    // Smooth transitions für Sticky-Verhalten
+    transition: all 0.3s ease-out;
+    
+    // Debug: Sichtbarkeit sicherstellen
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+// =============================================================================
+// STICKY VERHALTEN
+// =============================================================================
+
+// Basis für Sticky-Elemente (JavaScript-gesteuert)
+.block-text-block.has-sticky {
+    // Hardware acceleration für bessere Performance
+    transform: translateZ(0);
+    will-change: transform;
+    backface-visibility: hidden;
+    
+    // Standard-Position
+    position: relative;
+}
+
+// Sticky State (wenn JavaScript aktiv)
+.block-text-block.is-sticky {
+    // Visuelle Verbesserungen im Sticky-Zustand
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    
+    // Smooth transitions nur für visuelle Eigenschaften
+    transition: box-shadow 0.3s ease-out;
+}
+
+// Spacer für JavaScript Sticky-System
+.text-block-sticky-spacer {
+    display: block !important;
+    width: 100% !important;
+    background: transparent !important;
+    pointer-events: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    box-sizing: border-box !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+}
+
+// =============================================================================
+// CONTAINER & CONTENT
+// =============================================================================
+
+.text-block-container {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    position: relative;
+    
+    // Sichtbarkeit sicherstellen
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.text-block-content {
+    width: 100%;
+    height: 100%;
+    padding: $spacing-lg;
+    box-sizing: border-box;
+    
+    // Text bleibt immer linksbündig und top-aligned
+    display: flex !important;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    text-align: left;
+    
+    // Maximale Breite für bessere Lesbarkeit
+    max-width: 1200px;
+    
+    // Sichtbarkeit sicherstellen
+    visibility: visible !important;
+    opacity: 1 !important;
+    
+    // Content-Spacing
+    > * {
+        margin-bottom: $spacing-md;
+        
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+}
+
+// =============================================================================
+// TYPOGRAPHY
+// =============================================================================
+
+.text-block-headline {
+    margin: 0 0 $spacing-md 0;
+    font-family: $font-family-primary;
+    text-align: left;
+    line-height: 1.2;
+    word-wrap: break-word;
+    hyphens: auto;
+}
+
+.text-block-subline {
+    margin: 0 0 $spacing-md 0;
+    font-family: $font-family-primary;
+    text-align: left;
+    line-height: 1.3;
+    word-wrap: break-word;
+    hyphens: auto;
+}
+
+.text-block-richtext {
+    margin: 0 0 $spacing-lg 0;
+    font-family: $font-family-primary;
+    color: inherit;
+    line-height: 1.6;
+    text-align: left;
+    
+    // Standard richtext styling
+    p {
+        margin: 0 0 $spacing-sm 0;
+        text-align: left;
+        
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+    
+    ul, ol {
+        margin: 0 0 $spacing-sm 0;
+        padding-left: $spacing-md;
+        text-align: left;
+    }
+    
+    li {
+        margin-bottom: $spacing-xs;
+    }
+    
+    strong {
+        font-weight: 700;
+    }
+    
+    em {
+        font-style: italic;
+    }
+    
+    a {
+        color: inherit;
+        text-decoration: underline;
+        
+        &:hover {
+            text-decoration: none;
+        }
+    }
+    
+    h1, h2, h3, h4, h5, h6 {
+        margin: $spacing-md 0 $spacing-sm 0;
+        text-align: left;
+        
+        &:first-child {
+            margin-top: 0;
+        }
+    }
+    
+    blockquote {
+        margin: $spacing-md 0;
+        padding-left: $spacing-md;
+        border-left: 3px solid currentColor;
+        font-style: italic;
+        opacity: 0.8;
+    }
+}
+
+// =============================================================================
+// BUTTON
+// =============================================================================
+
+.text-block-button-wrapper {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-top: auto; // Pushes button to bottom if container has flex-grow
+}
+
+.text-block-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: $font-family-primary;
+    font-weight: $font-weight-regular;
+    font-size: $font-size-body;
+    line-height: $line-height-base;
+    padding: $button-padding-y $button-padding-x;
+    border: none;
+    border-radius: $button-border-radius;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    white-space: nowrap;
+    
+    &:hover,
+    &:focus {
+        text-decoration: none;
+        outline: none;
+    }
+    
+    &:active {
+        transform: translateY(1px);
+    }
+}
+
+// =============================================================================
+// RESPONSIVE DESIGN
+// =============================================================================
+
+// Tablet (bis Desktop Breakpoint)
+@media (max-width: #{$breakpoint-desktop - 1px}) {
+    .text-block-content {
+        padding: $spacing-lg $spacing-md;
+        max-width: 100%;
+    }
+    
+    .text-block-headline {
+        font-size: calc(var(--font-size) * 0.9) !important;
+    }
+    
+    .text-block-subline {
+        font-size: calc(var(--font-size) * 0.9) !important;
+    }
+    
+    // Sticky-Effekte auf Tablet angepasst
+    .block-text-block.is-sticky {
+        box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+    }
+}
+
+// Mobile
+@media (max-width: #{$breakpoint-mobile - 1px}) {
+    .text-block-content {
+        padding: $spacing-md;
+    }
+    
+    .text-block-headline {
+        font-size: calc(var(--font-size) * 0.8) !important;
+        line-height: 1.1;
+    }
+    
+    .text-block-subline {
+        font-size: calc(var(--font-size) * 0.8) !important;
+        line-height: 1.2;
+    }
+    
+    .text-block-richtext {
+        font-size: 14px;
+        line-height: 1.5;
+    }
+    
+    .text-block-button {
+        padding: 12px 24px;
+        font-size: 14px;
+    }
+    
+    // Volle Höhe auf Mobile angepasst
+    .block-text-block.full-height {
+        min-height: 100vh;
+        height: auto; // Auf Mobile kann Content höher als Viewport sein
+    }
+    
+    // Reduzierte Sticky-Effekte auf Mobile für bessere Performance
+    .block-text-block.is-sticky {
+        box-shadow: 0 1px 10px rgba(0, 0, 0, 0.05);
+    }
+}
+
+// =============================================================================
+// SPECIAL LAYOUT COMBINATIONS
+// =============================================================================
+
+// Wenn volle Höhe aktiviert ist, Content vertikal zentrieren (optional)
+.block-text-block.full-height .text-block-content {
+    // Standard: justify-content: flex-start (top-aligned)
+    // Optional: justify-content: center für vertikale Zentrierung
+    // Optional: justify-content: flex-end für bottom-aligned
+    
+    // Text bleibt immer linksbündig, aber kann vertikal zentriert werden
+    &.center-vertically {
+        justify-content: center;
+    }
+    
+    &.bottom-aligned {
+        justify-content: flex-end;
+    }
+}
+
+// =============================================================================
+// PERFORMANCE OPTIMIERUNGEN
+// =============================================================================
+
+.block-text-block {
+    // Hardware-Acceleration für smoother Animationen
+    transform: translateZ(0);
+    will-change: transform;
+    
+    // Smooth rendering
+    backface-visibility: hidden;
+}
+
+// =============================================================================
+// ULTIMATE VISIBILITY FIXES
+// =============================================================================
+
+// Ultimate rules to ensure text blocks are always visible
+.block-text-block,
+div[class*="text-block"],
+[id*="text-block"] {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    position: relative !important;
+    // Z-Index NICHT hardcoded - soll von ACF-Feld kommen
+}
+
+// Ensure nothing can hide our text blocks
+.block-text-block * {
+    visibility: inherit !important;
+}
+
+// Override any theme or plugin styles that might hide content
+body .block-text-block {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+// =============================================================================
+// EDITOR-SPECIFIC STYLES (für Gutenberg Editor)
+// =============================================================================
+
+.wp-block-acf-text-block {
+    .block-text-block {
+        // Im Editor: begrenzte Höhe auch bei full-height
+        &.full-height {
+            min-height: 400px;
+            max-height: 600px;
+            height: auto;
+        }
+        
+        // Im Editor: 100% statt 100vw verwenden
+        width: 100% !important;
+        max-width: 100% !important;
+        
+        // Sticky-Effekte im Editor deaktivieren
+        &.has-sticky {
+            transform: none !important;
+            position: relative !important;
+            box-shadow: none !important;
+        }
+        
+        &.is-sticky {
+            box-shadow: none !important;
+        }
+    }
+} 
