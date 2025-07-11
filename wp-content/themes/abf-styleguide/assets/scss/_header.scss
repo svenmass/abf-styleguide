@@ -1,0 +1,156 @@
+// =============================================================================
+// HEADER STYLES
+// =============================================================================
+
+.site-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: #fff;
+    z-index: 1000;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    
+    // Mobile: 50px + 12px + 12px = 74px
+    height: 74px;
+    
+    @media (min-width: $breakpoint-tablet) {
+        // Tablet: 50px + 16px + 16px = 82px
+        height: 82px;
+    }
+    
+    @media (min-width: $breakpoint-desktop-small) {
+        // Desktop Small: 50px + 24px + 24px = 98px
+        height: 98px;
+    }
+    
+    @media (min-width: $breakpoint-desktop) {
+        // Desktop Large: 50px + 32px + 32px = 114px
+        height: 114px;
+    }
+}
+
+.header-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+    width: 100%;
+    
+    // Mobile: spacing-xs (12px) auf allen Seiten
+    padding: $spacing-xs;
+    
+    @media (min-width: $breakpoint-tablet) {
+        // Tablet: spacing-sm (16px) auf allen Seiten
+        padding: $spacing-sm;
+    }
+    
+    @media (min-width: $breakpoint-desktop-small) {
+        // Desktop Small: spacing-md (24px) auf allen Seiten
+        padding: $spacing-md;
+    }
+    
+    @media (min-width: $breakpoint-desktop) {
+        // Desktop Large: spacing-lg (32px) auf allen Seiten
+        padding: $spacing-lg;
+    }
+}
+
+.header-logo {
+    display: flex;
+    align-items: center;
+    
+    .logo-link {
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        color: inherit;
+        
+        &:hover,
+        &:focus {
+            text-decoration: none;
+            color: inherit;
+        }
+    }
+    
+    .logo-desktop,
+    .logo-mobile {
+        height: 50px;
+        width: auto;
+        max-width: none;
+    }
+}
+
+// Burger Menu (Mobile only)
+.burger-menu-toggle {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition: all 0.3s ease;
+    
+    // Only show on mobile
+    @media (min-width: $breakpoint-desktop-small) {
+        display: none;
+    }
+    
+    &:hover,
+    &:focus {
+        outline: none;
+        transform: scale(1.05);
+    }
+    
+    &:active {
+        transform: scale(0.95);
+    }
+    
+    // Burger lines
+    .burger-line {
+        width: 24px;
+        height: 2px;
+        background: var(--color-primary, #007cba);
+        margin: 2px 0;
+        transition: all 0.3s ease;
+        border-radius: 1px;
+    }
+    
+    // Active state (when menu is open)
+    &.active {
+        .burger-line {
+            &:nth-child(1) {
+                transform: rotate(45deg) translate(5px, 5px);
+            }
+            
+            &:nth-child(2) {
+                opacity: 0;
+            }
+            
+            &:nth-child(3) {
+                transform: rotate(-45deg) translate(7px, -6px);
+            }
+        }
+    }
+}
+
+// Adjust site content to account for fixed header
+.site-content:not(.fullscreen-content) {
+    margin-top: 74px; // Mobile header height
+    
+    @media (min-width: $breakpoint-tablet) {
+        margin-top: 82px; // Tablet header height
+    }
+    
+    @media (min-width: $breakpoint-desktop-small) {
+        margin-top: 98px; // Desktop Small header height
+    }
+    
+    @media (min-width: $breakpoint-desktop) {
+        margin-top: 114px; // Desktop Large header height
+    }
+} 

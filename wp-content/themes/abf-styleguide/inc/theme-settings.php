@@ -34,6 +34,198 @@ function abf_register_theme_settings_fields() {
             'key' => 'group_theme_settings',
             'title' => 'Theme Settings',
             'fields' => array(
+                // Logo Section
+                array(
+                    'key' => 'field_logo_section',
+                    'label' => 'Logo & Branding',
+                    'name' => 'logo_section',
+                    'type' => 'tab',
+                    'instructions' => '',
+                    'required' => 0,
+                    'conditional_logic' => 0,
+                    'wrapper' => array(
+                        'width' => '',
+                        'class' => '',
+                        'id' => '',
+                    ),
+                    'placement' => 'top',
+                    'endpoint' => 0,
+                ),
+                array(
+                    'key' => 'field_desktop_logo',
+                    'label' => 'Desktop Logo',
+                    'name' => 'desktop_logo',
+                    'type' => 'image',
+                    'instructions' => 'Logo für Desktop-Ansicht (empfohlen: 200x60px, PNG/SVG)',
+                    'required' => 0,
+                    'conditional_logic' => 0,
+                    'wrapper' => array(
+                        'width' => '50',
+                        'class' => '',
+                        'id' => '',
+                    ),
+                    'return_format' => 'array',
+                    'preview_size' => 'medium',
+                    'library' => 'all',
+                    'min_width' => '',
+                    'min_height' => '',
+                    'min_size' => '',
+                    'max_width' => '',
+                    'max_height' => '',
+                    'max_size' => '',
+                    'mime_types' => 'png,jpg,jpeg,svg,webp',
+                ),
+                array(
+                    'key' => 'field_mobile_logo',
+                    'label' => 'Mobile Logo',
+                    'name' => 'mobile_logo',
+                    'type' => 'image',
+                    'instructions' => 'Logo für Mobile-Ansicht (empfohlen: 150x45px, PNG/SVG)',
+                    'required' => 0,
+                    'conditional_logic' => 0,
+                    'wrapper' => array(
+                        'width' => '50',
+                        'class' => '',
+                        'id' => '',
+                    ),
+                    'return_format' => 'array',
+                    'preview_size' => 'medium',
+                    'library' => 'all',
+                    'min_width' => '',
+                    'min_height' => '',
+                    'min_size' => '',
+                    'max_width' => '',
+                    'max_height' => '',
+                    'max_size' => '',
+                    'mime_types' => 'png,jpg,jpeg,svg,webp',
+                ),
+                array(
+                    'key' => 'field_logo_alt_text',
+                    'label' => 'Logo Alt-Text',
+                    'name' => 'logo_alt_text',
+                    'type' => 'text',
+                    'instructions' => 'Alternativer Text für das Logo (für Barrierefreiheit)',
+                    'required' => 0,
+                    'conditional_logic' => 0,
+                    'wrapper' => array(
+                        'width' => '',
+                        'class' => '',
+                        'id' => '',
+                    ),
+                    'default_value' => '',
+                    'placeholder' => 'z.B. Firmenname Logo',
+                    'prepend' => '',
+                    'append' => '',
+                    'maxlength' => '',
+                ),
+                
+                // Favicon Section
+                array(
+                    'key' => 'field_favicon_section',
+                    'label' => 'Favicon & Icons',
+                    'name' => 'favicon_section',
+                    'type' => 'tab',
+                    'instructions' => '',
+                    'required' => 0,
+                    'conditional_logic' => 0,
+                    'wrapper' => array(
+                        'width' => '',
+                        'class' => '',
+                        'id' => '',
+                    ),
+                    'placement' => 'top',
+                    'endpoint' => 0,
+                ),
+                array(
+                    'key' => 'field_favicon',
+                    'label' => 'Favicon',
+                    'name' => 'favicon',
+                    'type' => 'image',
+                    'instructions' => 'Favicon für Browser-Tabs (empfohlen: 32x32px, ICO/PNG/SVG)',
+                    'required' => 0,
+                    'conditional_logic' => 0,
+                    'wrapper' => array(
+                        'width' => '33',
+                        'class' => '',
+                        'id' => '',
+                    ),
+                    'return_format' => 'array',
+                    'preview_size' => 'thumbnail',
+                    'library' => 'all',
+                    'min_width' => '',
+                    'min_height' => '',
+                    'min_size' => '',
+                    'max_width' => '',
+                    'max_height' => '',
+                    'max_size' => '',
+                    'mime_types' => 'ico,png,svg',
+                ),
+                array(
+                    'key' => 'field_apple_touch_icon',
+                    'label' => 'Apple Touch Icon',
+                    'name' => 'apple_touch_icon',
+                    'type' => 'image',
+                    'instructions' => 'Icon für iOS-Geräte (empfohlen: 180x180px, PNG/SVG)',
+                    'required' => 0,
+                    'conditional_logic' => 0,
+                    'wrapper' => array(
+                        'width' => '33',
+                        'class' => '',
+                        'id' => '',
+                    ),
+                    'return_format' => 'array',
+                    'preview_size' => 'medium',
+                    'library' => 'all',
+                    'min_width' => '',
+                    'min_height' => '',
+                    'min_size' => '',
+                    'max_width' => '',
+                    'max_height' => '',
+                    'max_size' => '',
+                    'mime_types' => 'png,svg',
+                ),
+                array(
+                    'key' => 'field_android_touch_icon',
+                    'label' => 'Android Touch Icon',
+                    'name' => 'android_touch_icon',
+                    'type' => 'image',
+                    'instructions' => 'Icon für Android-Geräte (empfohlen: 192x192px, PNG/SVG)',
+                    'required' => 0,
+                    'conditional_logic' => 0,
+                    'wrapper' => array(
+                        'width' => '33',
+                        'class' => '',
+                        'id' => '',
+                    ),
+                    'return_format' => 'array',
+                    'preview_size' => 'medium',
+                    'library' => 'all',
+                    'min_width' => '',
+                    'min_height' => '',
+                    'min_size' => '',
+                    'max_width' => '',
+                    'max_height' => '',
+                    'max_size' => '',
+                    'mime_types' => 'png,svg',
+                ),
+                
+                // Colors Section
+                array(
+                    'key' => 'field_colors_section',
+                    'label' => 'Farben',
+                    'name' => 'colors_section',
+                    'type' => 'tab',
+                    'instructions' => '',
+                    'required' => 0,
+                    'conditional_logic' => 0,
+                    'wrapper' => array(
+                        'width' => '',
+                        'class' => '',
+                        'id' => '',
+                    ),
+                    'placement' => 'top',
+                    'endpoint' => 0,
+                ),
                 array(
                     'key' => 'field_colors',
                     'label' => 'Farben',
@@ -183,3 +375,64 @@ function abf_styleguide_gutenberg_colors() {
     add_theme_support('editor-color-palette', $gutenberg_colors);
 }
 add_action('after_setup_theme', 'abf_styleguide_gutenberg_colors'); 
+
+/**
+ * Allow SVG uploads in WordPress
+ */
+function abf_allow_svg_uploads($mimes) {
+    $mimes['svg'] = 'image/svg+xml';
+    $mimes['svgz'] = 'image/svg+xml';
+    return $mimes;
+}
+add_filter('upload_mimes', 'abf_allow_svg_uploads');
+
+/**
+ * Sanitize SVG uploads for security
+ */
+function abf_sanitize_svg($file) {
+    if ($file['type'] === 'image/svg+xml') {
+        if (!function_exists('simplexml_load_file')) {
+            return $file;
+        }
+        
+        // Check if file is actually an SVG
+        $file_content = file_get_contents($file['tmp_name']);
+        if (strpos($file_content, '<svg') === false) {
+            return new WP_Error('invalid_svg', 'Die Datei ist kein gültiges SVG.');
+        }
+        
+        // Basic security check - remove potentially dangerous elements
+        $dangerous_elements = array(
+            'script', 'object', 'embed', 'iframe', 'foreignobject', 'use'
+        );
+        
+        foreach ($dangerous_elements as $element) {
+            if (strpos($file_content, '<' . $element) !== false) {
+                return new WP_Error('dangerous_svg', 'Das SVG enthält gefährliche Elemente und kann nicht hochgeladen werden.');
+            }
+        }
+        
+        // Check for external references
+        if (strpos($file_content, 'href="http') !== false || strpos($file_content, 'xlink:href="http') !== false) {
+            return new WP_Error('external_svg', 'Das SVG enthält externe Referenzen und kann nicht hochgeladen werden.');
+        }
+    }
+    
+    return $file;
+}
+add_filter('wp_handle_upload_prefilter', 'abf_sanitize_svg');
+
+/**
+ * Add SVG support to media library
+ */
+function abf_fix_svg_thumb_display() {
+    echo '
+    <style>
+        td.media-icon img[src$=".svg"], img[src$=".svg"].attachment-post-thumbnail { 
+            width: 100% !important; 
+            height: auto !important; 
+        }
+    </style>
+    ';
+}
+add_action('admin_head', 'abf_fix_svg_thumb_display'); 

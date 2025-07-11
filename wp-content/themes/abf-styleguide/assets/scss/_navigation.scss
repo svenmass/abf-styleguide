@@ -1,0 +1,205 @@
+// =============================================================================
+// NAVIGATION STYLES
+// =============================================================================
+
+.site-navigation {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 300px;
+    height: 100vh;
+    background: #fff;
+    z-index: 999;
+    box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    
+    // Desktop: Always visible
+    @media (min-width: $breakpoint-desktop-small) {
+        transform: translateX(0);
+        box-shadow: none;
+        border-right: 1px solid #eee;
+    }
+    
+    // Mobile: Hidden by default, shown when active
+    &.active {
+        transform: translateX(0);
+    }
+}
+
+.navigation-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: $spacing-md;
+    
+    @media (min-width: $breakpoint-desktop-small) {
+        padding: $spacing-lg;
+    }
+}
+
+.navigation-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: $spacing-lg;
+    padding-bottom: $spacing-md;
+    border-bottom: 1px solid #eee;
+    
+    // Hide on desktop (no close button needed)
+    @media (min-width: $breakpoint-desktop-small) {
+        display: none;
+    }
+}
+
+.navigation-title {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--color-primary, #007cba);
+}
+
+.navigation-close {
+    background: transparent;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #666;
+    transition: color 0.3s ease;
+    
+    &:hover,
+    &:focus {
+        color: var(--color-primary, #007cba);
+        outline: none;
+    }
+    
+    .close-icon {
+        line-height: 1;
+    }
+}
+
+.navigation-content {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.navigation-menu {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    
+    li {
+        margin: 0;
+        padding: 0;
+        
+        a {
+            display: block;
+            padding: $spacing-sm $spacing-md;
+            color: inherit;
+            text-decoration: none;
+            font-weight: 400;
+            transition: all 0.3s ease;
+            border-radius: 4px;
+            
+            &:hover,
+            &:focus {
+                background: var(--color-primary, #007cba);
+                color: #fff;
+                text-decoration: none;
+            }
+        }
+        
+        // Current page
+        &.current-menu-item a,
+        &.current_page_item a {
+            background: var(--color-primary, #007cba);
+            color: #fff;
+            font-weight: 600;
+        }
+        
+        // Submenu
+        .sub-menu {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            margin-left: $spacing-md;
+            
+            li a {
+                padding: $spacing-xs $spacing-md;
+                font-size: 14px;
+            }
+        }
+    }
+}
+
+.navigation-footer {
+    margin-top: auto;
+    padding-top: $spacing-md;
+    border-top: 1px solid #eee;
+}
+
+.navigation-contact {
+    text-align: center;
+    
+    .contact-text {
+        margin: 0 0 $spacing-xs;
+        font-size: 14px;
+        color: #666;
+        font-weight: 600;
+    }
+    
+    .contact-email {
+        color: var(--color-primary, #007cba);
+        text-decoration: none;
+        font-weight: 500;
+        
+        &:hover,
+        &:focus {
+            text-decoration: underline;
+        }
+    }
+}
+
+// Navigation Overlay (Mobile only)
+.navigation-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 998;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    
+    // Only show on mobile
+    @media (min-width: $breakpoint-desktop-small) {
+        display: none;
+    }
+    
+    &.active {
+        opacity: 1;
+        visibility: visible;
+    }
+}
+
+// Adjust site content for desktop navigation
+@media (min-width: $breakpoint-desktop-small) {
+    .site-content:not(.fullscreen-content) {
+        margin-left: 300px; // Navigation width
+    }
+    
+    .site-header {
+        margin-left: 300px; // Navigation width
+        width: calc(100% - 300px);
+    }
+} 
