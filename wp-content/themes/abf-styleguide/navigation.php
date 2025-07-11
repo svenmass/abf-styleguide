@@ -8,8 +8,13 @@ if (!defined('ABSPATH')) {
 }
 ?>
 
-<nav class="site-navigation" id="site-navigation">
+<nav class="site-navigation show-desktop-sidebar" id="site-navigation">
     <div class="navigation-container">
+        <!-- Logo in Navigation -->
+        <div class="navigation-logo">
+            <?php abf_output_logo('desktop', 'logo-desktop'); ?>
+        </div>
+        
         <div class="navigation-header">
             <h2 class="navigation-title">Navigation</h2>
             <button class="navigation-close" aria-label="Navigation schließen">

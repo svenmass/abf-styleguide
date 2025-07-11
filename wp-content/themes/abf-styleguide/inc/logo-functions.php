@@ -160,4 +160,61 @@ function abf_get_logo_dimensions($device = 'desktop') {
     }
     
     return array('width' => 0, 'height' => 0);
+}
+
+/**
+ * Display logo for specific context (header, navigation, etc.)
+ */
+function abf_display_logo($context = 'header') {
+    $logo_data = abf_get_logo_data();
+    
+    // Choose logo based on context
+    $logo = null;
+    $classes = '';
+    
+    switch ($context) {
+        case 'navigation':
+            // Use mobile logo for navigation (smaller size)
+            $logo = $logo_data['mobile'];
+            $classes = 'logo-mobile';
+            // Fallback to desktop logo if mobile logo not set
+            if (empty($logo)) {
+                $logo = $logo_data['desktop'];
+                $classes = 'logo-desktop';
+            }
+            break;
+            
+        case 'header':
+        default:
+            // Use desktop logo for header
+            $logo = $logo_data['desktop'];
+            $classes = 'logo-desktop';
+            break;
+    }
+    
+    if (!empty($logo['url'])) {
+        $alt_text = esc_attr($logo_data['alt_text']);
+        $classes = esc_attr($classes);
+        
+        // Check if it's an SVG file
+        $file_extension = pathinfo($logo['url'], PATHINFO_EXTENSION);
+        $is_svg = strtolower($file_extension) === 'svg';
+        
+        echo '<a href="' . esc_url(home_url('/')) . '" class="logo-link">';
+        
+        if ($is_svg) {
+            // For SVG files, we don't need width/height attributes
+            echo '<img src="' . esc_url($logo['url']) . '" alt="' . $alt_text . '" class="' . $classes . '">';
+        } else {
+            // For other image types, include width/height
+            echo '<img src="' . esc_url($logo['url']) . '" alt="' . $alt_text . '" class="' . $classes . '" width="' . esc_attr($logo['width']) . '" height="' . esc_attr($logo['height']) . '">';
+        }
+        
+        echo '</a>';
+    } else {
+        // Fallback to text logo
+        echo '<a href="' . esc_url(home_url('/')) . '" class="logo-link">';
+        echo '<span class="text-logo ' . esc_attr($classes) . '">' . esc_html(get_bloginfo('name')) . '</span>';
+        echo '</a>';
+    }
 } 

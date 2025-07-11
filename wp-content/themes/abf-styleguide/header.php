@@ -18,13 +18,16 @@
 
 <div id="page" class="site">
     <!-- Header -->
-    <header class="site-header">
+    <header class="site-header show-mobile-header">
         <div class="header-container">
             <div class="header-logo">
-                <a href="<?php echo esc_url(home_url('/')); ?>" class="logo-link">
-                    <?php abf_output_logo('desktop', 'logo-desktop'); ?>
-                    <?php abf_output_logo('mobile', 'logo-mobile'); ?>
-                </a>
+                <?php
+                if (abf_has_logo('mobile')) {
+                    abf_output_logo('mobile', 'logo-mobile');
+                } else {
+                    abf_output_logo('desktop', 'logo-desktop');
+                }
+                ?>
             </div>
             
             <!-- Burger Menu (Mobile only) -->

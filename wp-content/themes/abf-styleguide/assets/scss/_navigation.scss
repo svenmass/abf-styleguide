@@ -40,6 +40,36 @@
     }
 }
 
+// Logo in Navigation
+.navigation-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: $spacing-md 0;
+    margin-bottom: $spacing-lg;
+    border-bottom: 1px solid #eee;
+    
+    .logo-link {
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        color: inherit;
+        
+        &:hover,
+        &:focus {
+            text-decoration: none;
+            color: inherit;
+        }
+    }
+    
+    .logo-desktop,
+    .logo-mobile {
+        height: 40px;
+        width: auto;
+        max-width: 200px;
+    }
+}
+
 .navigation-header {
     display: flex;
     align-items: center;
@@ -192,6 +222,14 @@
     }
 }
 
+// Utility-Klasse: Sidebar-Navigation nur ab Desktop Small anzeigen
+.show-desktop-sidebar {
+    display: none;
+    @media (min-width: $breakpoint-desktop-small) {
+        display: block;
+    }
+}
+
 // Adjust site content for desktop navigation
 @media (min-width: $breakpoint-desktop-small) {
     .site-content:not(.fullscreen-content) {
@@ -201,5 +239,12 @@
     .site-header {
         margin-left: 300px; // Navigation width
         width: calc(100% - 300px);
+    }
+}
+
+// Mobile: Navigation starts from top since header is hidden
+@media (max-width: #{$breakpoint-desktop-small - 1px}) {
+    .site-navigation {
+        top: 0; // Start from top on mobile
     }
 } 

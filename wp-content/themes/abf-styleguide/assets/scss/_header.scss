@@ -2,6 +2,14 @@
 // HEADER STYLES
 // =============================================================================
 
+// Utility-Klasse: Header nur auf Mobile/Tablet anzeigen
+.show-mobile-header {
+    display: block;
+    @media (min-width: $breakpoint-desktop-small) {
+        display: none;
+    }
+}
+
 .site-header {
     position: fixed;
     top: 0;
@@ -20,7 +28,6 @@
     }
     
     @media (min-width: $breakpoint-desktop-small) {
-        // Desktop Small: 50px + 24px + 24px = 98px
         height: 98px;
     }
     
@@ -73,11 +80,14 @@
         }
     }
     
-    .logo-desktop,
+    .logo-desktop {
+        display: none;
+    }
     .logo-mobile {
+        display: block;
         height: 50px;
         width: auto;
-        max-width: none;
+        max-width: 100%;
     }
 }
 
@@ -140,11 +150,8 @@
 
 // Adjust site content to account for fixed header
 .site-content:not(.fullscreen-content) {
-    margin-top: 74px; // Mobile header height
-    
-    @media (min-width: $breakpoint-tablet) {
-        margin-top: 82px; // Tablet header height
-    }
+    // No margin on mobile/tablet since header is hidden
+    margin-top: 0;
     
     @media (min-width: $breakpoint-desktop-small) {
         margin-top: 98px; // Desktop Small header height
