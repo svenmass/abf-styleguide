@@ -1,8 +1,8 @@
 // =============================================================================
-// NAVIGATION STYLES
+// NAVIGATION STYLES (BEM)
 // =============================================================================
 
-.site-navigation {
+.navigation {
     position: fixed;
     top: 0;
     left: 0;
@@ -24,12 +24,12 @@
     }
     
     // Mobile: Hidden by default, shown when active
-    &.active {
+    &--active {
         transform: translateX(0);
     }
 }
 
-.navigation-container {
+.navigation__container {
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -41,7 +41,7 @@
 }
 
 // Logo in Navigation
-.navigation-logo {
+.navigation__logo {
     display: flex;
     align-items: center;
     justify-content: flex-start;
@@ -49,29 +49,29 @@
     margin-bottom: 150px;
     // Kein Trennstrich mehr
     border-bottom: none;
+}
+
+.navigation__logo-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
     
-    .logo-link {
-        display: flex;
-        align-items: center;
+    &:hover,
+    &:focus {
         text-decoration: none;
         color: inherit;
-        
-        &:hover,
-        &:focus {
-            text-decoration: none;
-            color: inherit;
-        }
-    }
-    
-    .logo-desktop,
-    .logo-mobile {
-        height: 40px;
-        width: auto;
-        max-width: 200px;
     }
 }
 
-.navigation-header {
+.navigation__logo-desktop,
+.navigation__logo-mobile {
+    height: 40px;
+    width: auto;
+    max-width: 200px;
+}
+
+.navigation__header {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -85,14 +85,14 @@
     }
 }
 
-.navigation-title {
+.navigation__title {
     margin: 0;
     font-size: 18px;
     font-weight: 600;
     color: var(--color-primary, #007cba);
 }
 
-.navigation-close {
+.navigation__close {
     background: transparent;
     border: none;
     font-size: 24px;
@@ -111,18 +111,18 @@
         color: var(--color-primary, #007cba);
         outline: none;
     }
-    
-    .close-icon {
-        line-height: 1;
-    }
 }
 
-.navigation-content {
+.navigation__close-icon {
+    line-height: 1;
+}
+
+.navigation__content {
     flex: 1;
     overflow-y: auto;
 }
 
-.navigation-menu {
+.navigation__menu {
     list-style: none;
     margin: 0;
     padding: 0;
@@ -131,95 +131,105 @@
     font-size: $font-size-body;
     font-weight: 400;
     color: #575756;
+}
+
+.navigation__menu-item {
+    margin: 0;
+    padding: 0;
+    position: relative;
     
-    li {
-        margin: 0;
-        padding: 0;
-        position: relative;
-        
-        a {
-            display: flex;
-            align-items: center;
-            padding: 0 0 0 0; // kein extra padding
-            color: #575756;
-            text-decoration: none;
-            font-weight: 400;
-            border-left: 2px solid transparent;
-            transition: border-color 0.2s, font-weight 0.2s;
-            border-radius: 0;
-            background: none;
-            height: 48px;
-            line-height: 48px;
-            font-family: inherit;
-            font-size: inherit;
-            // Abstand zwischen border und Text
-            padding-left: 6px; // 2px border + 4px Abstand
-        }
-        
-        &:hover > a,
-        &.current-menu-item > a,
-        &.current_page_item > a {
-            border-left: 2px solid var(--color-primary, #007cba);
-            font-weight: $font-weight-bold;
-            background: none;
-            border-radius: 0;
-        }
-        
-        // Submenu-Icon (Plus)
-        .submenu-toggle {
-            margin-left: auto;
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-        &.open > .submenu-toggle {
-            transform: rotate(45deg);
-        }
-        // Submenu
-        .sub-menu {
-            list-style: none;
-            margin: 0;
-            padding: 0 0 0 24px;
-            li a {
-                font-size: 16px;
-                height: 40px;
-                line-height: 40px;
-            }
-        }
+    &--open > .navigation__submenu-toggle {
+        transform: rotate(45deg);
     }
 }
 
-.navigation-footer {
+.navigation__menu-link {
+    display: flex;
+    align-items: center;
+    padding: 0 0 0 0; // kein extra padding
+    color: #575756;
+    text-decoration: none;
+    font-weight: 400;
+    border-left: 2px solid transparent;
+    transition: border-color 0.2s, font-weight 0.2s;
+    border-radius: 0;
+    background: none;
+    height: 48px;
+    line-height: 48px;
+    font-family: inherit;
+    font-size: inherit;
+    // Abstand zwischen border und Text
+    padding-left: 6px; // 2px border + 4px Abstand
+    
+    &:hover,
+    &:focus {
+        border-left: 2px solid var(--color-primary, #007cba);
+        font-weight: $font-weight-bold;
+        background: none;
+        border-radius: 0;
+    }
+}
+
+.navigation__menu-item:hover > .navigation__menu-link,
+.navigation__menu-item--current > .navigation__menu-link {
+    border-left: 2px solid var(--color-primary, #007cba);
+    font-weight: $font-weight-bold;
+    background: none;
+    border-radius: 0;
+}
+
+// Submenu-Icon (Plus)
+.navigation__submenu-toggle {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+// Submenu
+.navigation__submenu {
+    list-style: none;
+    margin: 0;
+    padding: 0 0 0 24px;
+    
+    .navigation__menu-link {
+        font-size: 16px;
+        height: 40px;
+        line-height: 40px;
+    }
+}
+
+.navigation__footer {
     margin-top: auto;
     padding-top: $spacing-md;
     border-top: 1px solid #eee;
 }
 
-.navigation-contact {
+.navigation__contact {
     text-align: center;
+}
+
+.navigation__contact-text {
+    margin: 0 0 $spacing-xs;
+    font-size: 14px;
+    color: #666;
+    font-weight: 600;
+}
+
+.navigation__contact-email {
+    color: var(--color-primary, #007cba);
+    text-decoration: none;
+    font-weight: 500;
     
-    .contact-text {
-        margin: 0 0 $spacing-xs;
-        font-size: 14px;
-        color: #666;
-        font-weight: 600;
-    }
-    
-    .contact-email {
-        color: var(--color-primary, #007cba);
-        text-decoration: none;
-        font-weight: 500;
-        
-        &:hover,
-        &:focus {
-            text-decoration: underline;
-        }
+    &:hover,
+    &:focus {
+        text-decoration: underline;
     }
 }
 
 // Navigation Overlay (Mobile only)
-.navigation-overlay {
+.navigation__overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -236,7 +246,7 @@
         display: none;
     }
     
-    &.active {
+    &--active {
         opacity: 1;
         visibility: visible;
     }
@@ -274,7 +284,7 @@
 
 // Mobile: Navigation starts from top since header is hidden
 @media (max-width: #{$breakpoint-desktop-small - 1px}) {
-    .site-navigation {
+    .navigation {
         top: 0; // Start from top on mobile
     }
 } 

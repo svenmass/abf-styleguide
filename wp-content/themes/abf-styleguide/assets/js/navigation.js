@@ -4,14 +4,14 @@
 
 document.addEventListener('DOMContentLoaded', function() {
     const burgerToggle = document.querySelector('.burger-menu-toggle');
-    const navigation = document.querySelector('.site-navigation');
-    const navigationOverlay = document.querySelector('.navigation-overlay');
-    const navigationClose = document.querySelector('.navigation-close');
+    const navigation = document.querySelector('.navigation');
+const navigationOverlay = document.querySelector('.navigation__overlay');
+const navigationClose = document.querySelector('.navigation__close');
     
     // Toggle navigation on burger click
     if (burgerToggle) {
         burgerToggle.addEventListener('click', function() {
-            const isActive = navigation.classList.contains('active');
+            const isActive = navigation.classList.contains('navigation--active');
             
             if (isActive) {
                 closeNavigation();
@@ -50,32 +50,32 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     // Submenu-Toggle (Plus-Icon)
-    document.querySelectorAll('.submenu-toggle').forEach(function(toggle) {
+    document.querySelectorAll('.navigation__submenu-toggle').forEach(function(toggle) {
         toggle.addEventListener('click', function(e) {
             e.preventDefault();
             const li = toggle.closest('li');
             if (li) {
-                li.classList.toggle('open');
+                li.classList.toggle('navigation__menu-item--open');
                 // Submenu ein-/ausblenden (optional, falls nicht per CSS)
-                const submenu = li.querySelector('.sub-menu');
+                const submenu = li.querySelector('.navigation__submenu');
                 if (submenu) {
-                    submenu.style.display = li.classList.contains('open') ? 'block' : 'none';
+                    submenu.style.display = li.classList.contains('navigation__menu-item--open') ? 'block' : 'none';
                 }
             }
         });
     });
     
     function openNavigation() {
-        navigation.classList.add('active');
-        navigationOverlay.classList.add('active');
+        navigation.classList.add('navigation--active');
+        navigationOverlay.classList.add('navigation__overlay--active');
         burgerToggle.classList.add('active');
         burgerToggle.setAttribute('aria-expanded', 'true');
         document.body.style.overflow = 'hidden'; // Prevent background scroll
     }
     
     function closeNavigation() {
-        navigation.classList.remove('active');
-        navigationOverlay.classList.remove('active');
+        navigation.classList.remove('navigation--active');
+        navigationOverlay.classList.remove('navigation__overlay--active');
         burgerToggle.classList.remove('active');
         burgerToggle.setAttribute('aria-expanded', 'false');
         document.body.style.overflow = ''; // Restore background scroll
