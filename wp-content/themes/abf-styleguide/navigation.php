@@ -30,6 +30,7 @@ if (!defined('ABSPATH')) {
                 'container' => false,
                 'fallback_cb' => 'abf_fallback_menu',
                 'items_wrap' => '<ul id="%1$s" class="%2$s">%3$s</ul>',
+                'walker' => new ABF_Nav_Walker(),
             ));
             ?>
         </div>

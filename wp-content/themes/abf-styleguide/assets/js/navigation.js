@@ -49,6 +49,22 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
+    // Submenu-Toggle (Plus-Icon)
+    document.querySelectorAll('.submenu-toggle').forEach(function(toggle) {
+        toggle.addEventListener('click', function(e) {
+            e.preventDefault();
+            const li = toggle.closest('li');
+            if (li) {
+                li.classList.toggle('open');
+                // Submenu ein-/ausblenden (optional, falls nicht per CSS)
+                const submenu = li.querySelector('.sub-menu');
+                if (submenu) {
+                    submenu.style.display = li.classList.contains('open') ? 'block' : 'none';
+                }
+            }
+        });
+    });
+    
     function openNavigation() {
         navigation.classList.add('active');
         navigationOverlay.classList.add('active');

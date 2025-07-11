@@ -42,4 +42,11 @@
     <!-- Navigation -->
     <?php get_template_part('navigation'); ?>
 
-    <div id="content" class="site-content"> 
+    <?php
+    // Prüfe, ob Fullscreen-Template aktiv ist
+    if (is_page_template('page-fullscreen.php')) {
+        echo '<div id="content" class="site-content fullscreen-content">';
+    } else {
+        echo '<div id="content" class="site-content">';
+    }
+    ?> 
