@@ -172,6 +172,32 @@ small, .small {
     line-height: $line-height-base;
 }
 
+// Standard Gutenberg Blocks Container-Begrenzung und responsive Spacing
+.wp-block:not(.wp-block-acf-hero):not(.wp-block-acf-parallax-grid):not(.wp-block-acf-parallax-element):not(.wp-block-acf-parallax-content):not(.wp-block-acf-text-block) {
+    max-width: $container-content;
+    margin-left: auto;
+    margin-right: auto;
+    
+    // Responsive spacing links und rechts basierend auf Breakpoints
+    padding-left: $spacing-xs;
+    padding-right: $spacing-xs;
+    
+    @media (min-width: $breakpoint-mobile) {
+        padding-left: $spacing-sm;
+        padding-right: $spacing-sm;
+    }
+    
+    @media (min-width: $breakpoint-tablet) {
+        padding-left: $spacing-md;
+        padding-right: $spacing-md;
+    }
+    
+    @media (min-width: $breakpoint-desktop) {
+        padding-left: $spacing-lg;
+        padding-right: $spacing-lg;
+    }
+}
+
 .editor-styles-wrapper {
     h1, .h1 {
         @extend h1;
