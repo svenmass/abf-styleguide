@@ -94,10 +94,10 @@ if ($button_url) {
             <?php endif; ?>
             
             <?php if ($text_content): ?>
-                <<?php echo $text_tag; ?> class="styleguide-text-element-text" 
+                <div class="styleguide-text-element-text" 
                     style="font-weight: <?php echo esc_attr($text_weight); ?>; font-size: <?php echo esc_attr($text_size); ?>px; color: <?php echo esc_attr(abf_get_styleguide_color_value($text_color)); ?>;">
                     <?php echo wp_kses_post($text_content); ?>
-                </<?php echo $text_tag; ?>>
+                </div>
             <?php endif; ?>
             
             <?php if ($show_button && $button_text): ?>
