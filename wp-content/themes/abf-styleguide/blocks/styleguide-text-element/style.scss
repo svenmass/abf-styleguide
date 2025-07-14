@@ -1,0 +1,281 @@
+// =============================================================================
+// STYLEGUIDE TEXT ELEMENT BLOCK
+// =============================================================================
+
+.block-styleguide-text-element {
+    width: 100%;
+    max-width: $container-content; // 840px from variables.scss
+    margin: 0 auto;
+    padding: 0;
+    
+    .styleguide-text-element-container {
+        width: 100%;
+        
+        .styleguide-text-element-content {
+            display: flex;
+            flex-direction: column;
+            gap: 0; // Will be set dynamically based on content
+            
+            // Headline styling
+            .styleguide-text-element-headline {
+                margin: 0;
+                padding: 0;
+                line-height: $line-height-base;
+                letter-spacing: $letter-spacing-base;
+                font-family: $font-family-primary;
+                
+                // Only add bottom margin if there's content below
+                &:has(+ .styleguide-text-element-text),
+                &:has(+ .styleguide-text-element-button-wrapper) {
+                    margin-bottom: $spacing-sm; // 16px from variables.scss (reduced from md)
+                }
+            }
+            
+            // Text styling
+            .styleguide-text-element-text {
+                margin: 0;
+                padding: 0;
+                line-height: $line-height-base;
+                letter-spacing: $letter-spacing-base;
+                font-family: $font-family-primary;
+                
+                // Only add bottom margin if there's a button below
+                &:has(+ .styleguide-text-element-button-wrapper) {
+                    margin-bottom: $spacing-sm; // 16px from variables.scss (reduced from md)
+                }
+                * {
+                    font-size: inherit !important;
+                    font-weight: inherit !important;
+                    color: inherit !important;
+                }
+            }
+            
+            // Button wrapper styling
+            .styleguide-text-element-button-wrapper {
+                margin: 0;
+                padding: 0;
+                
+                // Button styling - colors will be handled by JavaScript
+                .styleguide-text-element__button {
+                    // Base button styles from _components.scss
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-family: $font-family-primary;
+                    font-weight: $button-font-weight;
+                    font-size: $button-font-size;
+                    line-height: $line-height-base;
+                    padding: $button-padding-y $button-padding-x;
+                    border: none;
+                    border-radius: $button-border-radius;
+                    text-decoration: none;
+                    cursor: pointer;
+                    transition: background-color 0.3s ease, color 0.3s ease;
+                    
+                    &:hover,
+                    &:focus {
+                        text-decoration: none;
+                        outline: none;
+                    }
+                }
+            }
+        }
+    }
+}
+
+// =============================================================================
+// RESPONSIVE DESIGN
+// =============================================================================
+
+// Mobile (up to 576px)
+@media (max-width: $breakpoint-mobile) {
+    .block-styleguide-text-element {
+        padding: 0 $spacing-xs; // 12px from variables.scss
+        
+        .styleguide-text-element-container {
+            .styleguide-text-element-content {
+                gap: $spacing-xs; // 12px from variables.scss
+                
+                .styleguide-text-element-headline {
+                    &:has(+ .styleguide-text-element-text),
+                    &:has(+ .styleguide-text-element-button-wrapper) {
+                        margin-bottom: $spacing-xs; // 12px from variables.scss
+                    }
+                }
+                
+                .styleguide-text-element-text {
+                    &:has(+ .styleguide-text-element-button-wrapper) {
+                        margin-bottom: $spacing-xs; // 12px from variables.scss
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Tablet (576px - 768px)
+@media (min-width: $breakpoint-mobile) and (max-width: $breakpoint-tablet) {
+    .block-styleguide-text-element {
+        padding: 0 $spacing-sm; // 16px from variables.scss
+        
+        .styleguide-text-element-container {
+            .styleguide-text-element-content {
+                gap: $spacing-sm; // 16px from variables.scss
+                
+                .styleguide-text-element-headline {
+                    &:has(+ .styleguide-text-element-text),
+                    &:has(+ .styleguide-text-element-button-wrapper) {
+                        margin-bottom: $spacing-sm; // 16px from variables.scss
+                    }
+                }
+                
+                .styleguide-text-element-text {
+                    &:has(+ .styleguide-text-element-button-wrapper) {
+                        margin-bottom: $spacing-sm; // 16px from variables.scss
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Desktop Small (768px - 992px)
+@media (min-width: $breakpoint-tablet) and (max-width: $breakpoint-desktop-small) {
+    .block-styleguide-text-element {
+        padding: 0 $spacing-md; // 24px from variables.scss
+        
+        .styleguide-text-element-container {
+            .styleguide-text-element-content {
+                gap: $spacing-sm; // 16px from variables.scss (reduced)
+                
+                .styleguide-text-element-headline {
+                    &:has(+ .styleguide-text-element-text),
+                    &:has(+ .styleguide-text-element-button-wrapper) {
+                        margin-bottom: $spacing-sm; // 16px from variables.scss (reduced)
+                    }
+                }
+                
+                .styleguide-text-element-text {
+                    &:has(+ .styleguide-text-element-button-wrapper) {
+                        margin-bottom: $spacing-sm; // 16px from variables.scss (reduced)
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Desktop (992px - 1200px)
+@media (min-width: $breakpoint-desktop-small) and (max-width: $breakpoint-desktop) {
+    .block-styleguide-text-element {
+        padding: 0 $spacing-lg; // 32px from variables.scss
+        
+        .styleguide-text-element-container {
+            .styleguide-text-element-content {
+                gap: $spacing-sm; // 16px from variables.scss (reduced)
+                
+                .styleguide-text-element-headline {
+                    &:has(+ .styleguide-text-element-text),
+                    &:has(+ .styleguide-text-element-button-wrapper) {
+                        margin-bottom: $spacing-sm; // 16px from variables.scss (reduced)
+                    }
+                }
+                
+                .styleguide-text-element-text {
+                    &:has(+ .styleguide-text-element-button-wrapper) {
+                        margin-bottom: $spacing-sm; // 16px from variables.scss (reduced)
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Large Desktop (1201px+)
+@media (min-width: $breakpoint-large) {
+    .block-styleguide-text-element {
+        padding: 0 $spacing-lg; // 32px from variables.scss
+        
+        .styleguide-text-element-container {
+            .styleguide-text-element-content {
+                gap: $spacing-sm; // 16px from variables.scss (reduced)
+                
+                .styleguide-text-element-headline {
+                    &:has(+ .styleguide-text-element-text),
+                    &:has(+ .styleguide-text-element-button-wrapper) {
+                        margin-bottom: $spacing-sm; // 16px from variables.scss (reduced)
+                    }
+                }
+                
+                .styleguide-text-element-text {
+                    &:has(+ .styleguide-text-element-button-wrapper) {
+                        margin-bottom: $spacing-sm; // 16px from variables.scss (reduced)
+                    }
+                }
+            }
+        }
+    }
+}
+
+// =============================================================================
+// FALLBACK FOR BROWSERS THAT DON'T SUPPORT :has()
+// =============================================================================
+
+// Fallback spacing when :has() is not supported
+@supports not (selector(:has(*))) {
+    .block-styleguide-text-element {
+        .styleguide-text-element-container {
+            .styleguide-text-element-content {
+                .styleguide-text-element-headline {
+                    margin-bottom: $spacing-sm; // Reduced from md to sm
+                }
+                
+                .styleguide-text-element-text {
+                    margin-bottom: $spacing-sm; // Reduced from md to sm
+                }
+            }
+        }
+    }
+    
+    // Mobile fallback
+    @media (max-width: $breakpoint-mobile) {
+        .block-styleguide-text-element {
+            .styleguide-text-element-container {
+                .styleguide-text-element-content {
+                    .styleguide-text-element-headline,
+                    .styleguide-text-element-text {
+                        margin-bottom: $spacing-xs;
+                    }
+                }
+            }
+        }
+    }
+    
+    // Tablet fallback
+    @media (min-width: $breakpoint-mobile) and (max-width: $breakpoint-tablet) {
+        .block-styleguide-text-element {
+            .styleguide-text-element-container {
+                .styleguide-text-element-content {
+                    .styleguide-text-element-headline,
+                    .styleguide-text-element-text {
+                        margin-bottom: $spacing-sm;
+                    }
+                }
+            }
+        }
+    }
+    
+    // Desktop fallback
+    @media (min-width: $breakpoint-tablet) {
+        .block-styleguide-text-element {
+            .styleguide-text-element-container {
+                .styleguide-text-element-content {
+                    .styleguide-text-element-headline,
+                    .styleguide-text-element-text {
+                        margin-bottom: $spacing-sm; // Reduced from lg to sm
+                    }
+                }
+            }
+        }
+    }
+} 

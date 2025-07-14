@@ -262,12 +262,18 @@
 
 // Adjust site content for desktop navigation
 @media (min-width: $breakpoint-desktop-small) {
-    .site-content:not(.fullscreen-content),
-    .site-main:not(.fullscreen-content) {
+    .site-content:not(.fullscreen-content) {
         margin-left: 300px; // Sidebar width
         width: calc(100vw - 300px);
         display: flex;
         justify-content: center;
+    }
+    
+    // Fullscreen template sollte NICHT flex haben
+    .fullscreen-template .site-main {
+        display: block !important;
+        margin-left: 0 !important;
+        width: 100vw !important;
     }
     
     .container-content:not(.fullscreen-content) {

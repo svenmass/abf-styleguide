@@ -66,18 +66,30 @@ const navigationClose = document.querySelector('.navigation__close');
     });
     
     function openNavigation() {
-        navigation.classList.add('navigation--active');
-        navigationOverlay.classList.add('navigation__overlay--active');
-        burgerToggle.classList.add('active');
-        burgerToggle.setAttribute('aria-expanded', 'true');
+        if (navigation) {
+            navigation.classList.add('navigation--active');
+        }
+        if (navigationOverlay) {
+            navigationOverlay.classList.add('navigation__overlay--active');
+        }
+        if (burgerToggle) {
+            burgerToggle.classList.add('active');
+            burgerToggle.setAttribute('aria-expanded', 'true');
+        }
         document.body.style.overflow = 'hidden'; // Prevent background scroll
     }
     
     function closeNavigation() {
-        navigation.classList.remove('navigation--active');
-        navigationOverlay.classList.remove('navigation__overlay--active');
-        burgerToggle.classList.remove('active');
-        burgerToggle.setAttribute('aria-expanded', 'false');
+        if (navigation) {
+            navigation.classList.remove('navigation--active');
+        }
+        if (navigationOverlay) {
+            navigationOverlay.classList.remove('navigation__overlay--active');
+        }
+        if (burgerToggle) {
+            burgerToggle.classList.remove('active');
+            burgerToggle.setAttribute('aria-expanded', 'false');
+        }
         document.body.style.overflow = ''; // Restore background scroll
     }
 }); 

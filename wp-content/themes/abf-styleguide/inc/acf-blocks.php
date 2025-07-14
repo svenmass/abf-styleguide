@@ -135,6 +135,21 @@ function abf_register_acf_blocks() {
         ),
         'mode'              => 'auto',
     ));
+
+    // Register Styleguide Text Element Block (NEW)
+    acf_register_block_type(array(
+        'name'              => 'styleguide-text-element',
+        'title'             => __('Styleguide-Textelement'),
+        'description'       => __('Ein konfigurierbares Textelement mit Headline, Text und Button (max. 840px Breite)'),
+        'render_template'   => get_template_directory() . '/blocks/styleguide-text-element/template.php',
+        'category'          => 'abf-blocks',
+        'icon'              => 'editor-textcolor',
+        'keywords'          => array('text', 'headline', 'button', 'styleguide', 'content'),
+        'supports'          => array(
+            'jsx' => true,
+        ),
+        'mode'              => 'auto',
+    ));
 }
 
 /**
@@ -151,6 +166,15 @@ function abf_include_modular_fields() {
     $parallax_element_fields = get_template_directory() . '/blocks/parallax-element/fields.php';
     if (file_exists($parallax_element_fields)) {
         require_once $parallax_element_fields;
+    }
+    
+    // Include Styleguide Text Element Block fields
+    $styleguide_text_fields = get_template_directory() . '/blocks/styleguide-text-element/fields.php';
+    if (file_exists($styleguide_text_fields)) {
+        $field_group = require $styleguide_text_fields;
+        if (is_array($field_group)) {
+            acf_add_local_field_group($field_group);
+        }
     }
 }
 add_action('acf/init', 'abf_include_modular_fields');
@@ -1552,6 +1576,10 @@ function abf_register_acf_field_groups() {
         'active' => true,
         'description' => 'Felder für den Text-Block mit Sticky-Funktionalität',
     ));
+
+    // Styleguide Text Element Block Field Group
+    // Load modular field definitions
+    abf_include_modular_fields();
 }
 
 /**

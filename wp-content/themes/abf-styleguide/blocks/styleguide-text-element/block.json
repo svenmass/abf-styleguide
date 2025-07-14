@@ -1,0 +1,24 @@
+{
+    "name": "acf/styleguide-text-element",
+    "title": "Styleguide-Textelement",
+    "description": "Ein konfigurierbares Textelement mit Headline, Text und Button",
+    "category": "abf-blocks",
+    "icon": "editor-textcolor",
+    "keywords": ["text", "headline", "button", "styleguide", "content"],
+    "acf": {
+        "mode": "auto",
+        "renderTemplate": "template.php"
+    },
+    "supports": {
+        "jsx": true
+    },
+    "example": {
+        "attributes": {
+            "mode": "preview",
+            "data": {
+                "ste_headline_text": "Beispiel Headline",
+                "ste_text_content": "Dies ist ein Beispieltext für das Styleguide-Textelement."
+            }
+        }
+    }
+} 
