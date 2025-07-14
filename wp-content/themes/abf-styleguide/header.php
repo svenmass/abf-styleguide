@@ -39,12 +39,17 @@
         </div>
     </header>
 
-    <!-- Navigation -->
-    <?php get_template_part('navigation'); ?>
+    <!-- Navigation als direktes Kind von .site für CSS Grid -->
+    <?php 
+    $is_fullscreen = is_page_template('page-fullscreen.php');
+    if (!$is_fullscreen) {
+        get_template_part('navigation');
+    }
+    ?>
 
     <?php
-    // Prüfe, ob Fullscreen-Template aktiv ist
-    if (is_page_template('page-fullscreen.php')) {
+    // Content-Bereich
+    if ($is_fullscreen) {
         echo '<div id="content" class="site-content fullscreen-content">';
     } else {
         echo '<div id="content" class="site-content">';

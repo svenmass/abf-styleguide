@@ -49,27 +49,7 @@ get_header();
             // Post content (gleiche Klassen wie styleguide.page)
             the_content();
             
-            // Post navigation
-            the_post_navigation(
-                array(
-                    'prev_text' => '<span class="nav-subtitle">' . esc_html__('Previous:', 'abf-styleguide') . '</span> <span class="nav-title">%title</span>',
-                    'next_text' => '<span class="nav-subtitle">' . esc_html__('Next:', 'abf-styleguide') . '</span> <span class="nav-title">%title</span>',
-                )
-            );
-            
-            // Entry footer (categories, tags, etc.)
-            if (function_exists('abf_styleguide_entry_footer')) :
-                ?>
-                <footer class="post-footer">
-                    <?php abf_styleguide_entry_footer(); ?>
-                </footer><!-- .post-footer -->
-                <?php
-            endif;
-            
-            // Comments
-            if (comments_open() || get_comments_number()) :
-                comments_template();
-            endif;
+
             
         endwhile;
         ?>
