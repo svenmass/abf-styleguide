@@ -1,0 +1,277 @@
+// =============================================================================
+// STYLEGUIDE AKKORDEON BLOCK
+// =============================================================================
+
+.block-styleguide-akkordeon {
+    // Container verwendet container-content Breite ohne eigenes Spacing
+    width: 100%;
+    
+    .styleguide-akkordeon-container {
+        width: 100%;
+        
+        // Headline styling
+        .styleguide-akkordeon-headline {
+            margin: 0 0 $spacing-sm 0;
+            padding: 0;
+            line-height: $line-height-base;
+            letter-spacing: $letter-spacing-base;
+            font-family: $font-family-primary;
+            
+            &:has(+ .styleguide-akkordeon-text) {
+                margin-bottom: $spacing-sm;
+            }
+            
+            &:has(+ .styleguide-akkordeon-items) {
+                margin-bottom: $spacing-md;
+            }
+        }
+        
+        // Text styling
+        .styleguide-akkordeon-text {
+            margin: 0 0 $spacing-md 0;
+            padding: 0;
+            line-height: $line-height-base;
+            letter-spacing: $letter-spacing-base;
+            font-family: $font-family-primary;
+            
+            &:has(+ .styleguide-akkordeon-items) {
+                margin-bottom: $spacing-md;
+            }
+            
+            // Style inheritance für WYSIWYG Inhalte
+            strong, em, b, i, span, a, u, mark, small, sub, sup, del, ins, 
+            code, kbd, samp, var, cite, abbr, acronym, dfn, q, blockquote, 
+            pre, address, div, p {
+                font-size: inherit !important;
+                font-weight: inherit !important;
+                color: inherit !important;
+                line-height: inherit !important;
+                letter-spacing: inherit !important;
+            }
+            
+            * {
+                font-size: inherit !important;
+                font-weight: inherit !important;
+                color: inherit !important;
+            }
+        }
+        
+        // Akkordeon Items Container
+        .styleguide-akkordeon-items {
+            width: 100%;
+            
+            // Einzelnes Akkordeon Item
+            .styleguide-akkordeon-item {
+                position: relative;
+                
+                // Haarlinie zwischen Elementen (Hellgrau aus colors.json)
+                &:not(:last-child) {
+                    border-bottom: 1px solid #cccccc;
+                }
+                
+                // Header mit Button
+                .styleguide-akkordeon-item-header {
+                    margin: 0;
+                    padding: 0;
+                    
+                    .styleguide-akkordeon-item-trigger {
+                        width: 100%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        padding: $spacing-sm 0;
+                        background: transparent;
+                        border: none;
+                        cursor: pointer;
+                        font-family: $font-family-primary;
+                        text-align: left;
+                        transition: all 0.3s ease;
+                        
+                        &:hover {
+                            opacity: 0.8;
+                        }
+                        
+                        &:focus {
+                            outline: 2px solid var(--color-primary, #007cba);
+                            outline-offset: 2px;
+                        }
+                        
+                        // Titel
+                        .styleguide-akkordeon-item-title {
+                            flex: 1;
+                            margin-right: $spacing-sm;
+                            line-height: $line-height-base;
+                            letter-spacing: $letter-spacing-base;
+                        }
+                        
+                        // Plus Icon
+                        .styleguide-akkordeon-item-icon {
+                            flex-shrink: 0;
+                            width: 15px;
+                            height: 16px;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            transition: transform 0.3s ease;
+                            
+                            svg {
+                                width: 15px;
+                                height: 16px;
+                                display: block;
+                            }
+                        }
+                        
+                        // Geöffneter Zustand - Icon dreht sich um 45°
+                        &[aria-expanded="true"] {
+                            .styleguide-akkordeon-item-icon {
+                                transform: rotate(45deg);
+                            }
+                        }
+                    }
+                }
+                
+                // Content Container
+                .styleguide-akkordeon-item-content {
+                    overflow: hidden;
+                    max-height: 0;
+                    transition: max-height 0.3s ease, padding 0.3s ease;
+                    
+                    // Geöffneter Zustand
+                    &[aria-hidden="false"] {
+                        max-height: 1000px; // Ausreichend hoch für die meisten Inhalte
+                        padding-bottom: $spacing-sm;
+                    }
+                    
+                    .styleguide-akkordeon-item-content-inner {
+                        padding-top: 0;
+                        font-family: $font-family-primary;
+                        line-height: 1.6;
+                        
+                        // Style inheritance für WYSIWYG Inhalte
+                        strong, em, b, i, span, a, u, mark, small, sub, sup, del, ins, 
+                        code, kbd, samp, var, cite, abbr, acronym, dfn, q, blockquote, 
+                        pre, address, div, p {
+                            font-size: inherit !important;
+                            font-weight: inherit !important;
+                            color: inherit !important;
+                            line-height: inherit !important;
+                            letter-spacing: inherit !important;
+                        }
+                        
+                        * {
+                            font-size: inherit !important;
+                            font-weight: inherit !important;
+                            color: inherit !important;
+                        }
+                        
+                        // Absätze styling
+                        p {
+                            margin: 0 0 $spacing-xs 0;
+                            
+                            &:last-child {
+                                margin-bottom: 0;
+                            }
+                        }
+                        
+                        // Listen styling
+                        ul, ol {
+                            margin: 0 0 $spacing-xs 0;
+                            padding-left: 20px;
+                            
+                            &:last-child {
+                                margin-bottom: 0;
+                            }
+                            
+                            li {
+                                margin-bottom: 4px;
+                                
+                                &:last-child {
+                                    margin-bottom: 0;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// =============================================================================
+// RESPONSIVE DESIGN
+// =============================================================================
+
+// Tablet und kleiner: Angepasste Abstände
+@media (max-width: $breakpoint-tablet) {
+    .block-styleguide-akkordeon {
+        .styleguide-akkordeon-container {
+            .styleguide-akkordeon-headline {
+                margin-bottom: $spacing-xs;
+                
+                &:has(+ .styleguide-akkordeon-text) {
+                    margin-bottom: $spacing-xs;
+                }
+                
+                &:has(+ .styleguide-akkordeon-items) {
+                    margin-bottom: $spacing-sm;
+                }
+            }
+            
+            .styleguide-akkordeon-text {
+                margin-bottom: $spacing-sm;
+                
+                &:has(+ .styleguide-akkordeon-items) {
+                    margin-bottom: $spacing-sm;
+                }
+            }
+            
+            .styleguide-akkordeon-items {
+                .styleguide-akkordeon-item {
+                    .styleguide-akkordeon-item-header {
+                        .styleguide-akkordeon-item-trigger {
+                            padding: $spacing-xs 0;
+                            
+                            .styleguide-akkordeon-item-title {
+                                margin-right: $spacing-xs;
+                            }
+                        }
+                    }
+                    
+                    .styleguide-akkordeon-item-content {
+                        &[aria-hidden="false"] {
+                            padding-bottom: $spacing-xs;
+                        }
+                        
+                        .styleguide-akkordeon-item-content-inner {
+                            p {
+                                margin-bottom: 8px;
+                            }
+                            
+                            ul, ol {
+                                margin-bottom: 8px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Mobile: Weitere Anpassungen
+@media (max-width: $breakpoint-mobile) {
+    .block-styleguide-akkordeon {
+        .styleguide-akkordeon-container {
+            .styleguide-akkordeon-items {
+                .styleguide-akkordeon-item {
+                    .styleguide-akkordeon-item-content {
+                        // Reduzierte max-height für bessere Performance auf Mobile
+                        &[aria-hidden="false"] {
+                            max-height: 800px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+} 

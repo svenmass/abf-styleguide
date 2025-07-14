@@ -180,6 +180,21 @@ function abf_register_acf_blocks() {
         ),
         'mode'              => 'auto',
     ));
+    
+    // Register Styleguide Akkordeon Block (NEW)
+    acf_register_block_type(array(
+        'name'              => 'styleguide-akkordeon',
+        'title'             => __('Styleguide-Akkordeon'),
+        'description'       => __('Ein konfigurierbares Akkordeon-Element mit Headline, Text und aufklappbaren Elementen'),
+        'render_template'   => get_template_directory() . '/blocks/styleguide-akkordeon/template.php',
+        'category'          => 'abf-blocks',
+        'icon'              => 'list-view',
+        'keywords'          => array('akkordeon', 'accordion', 'faq', 'aufklappbar', 'toggle', 'styleguide'),
+        'supports'          => array(
+            'jsx' => true,
+        ),
+        'mode'              => 'auto',
+    ));
 }
 
 /**
@@ -220,6 +235,15 @@ function abf_include_modular_fields() {
     $styleguide_trennlinie_fields = get_template_directory() . '/blocks/styleguide-trennlinie/fields.php';
     if (file_exists($styleguide_trennlinie_fields)) {
         $field_group = require $styleguide_trennlinie_fields;
+        if (is_array($field_group)) {
+            acf_add_local_field_group($field_group);
+        }
+    }
+    
+    // Include Styleguide Akkordeon Block fields
+    $styleguide_akkordeon_fields = get_template_directory() . '/blocks/styleguide-akkordeon/fields.php';
+    if (file_exists($styleguide_akkordeon_fields)) {
+        $field_group = require $styleguide_akkordeon_fields;
         if (is_array($field_group)) {
             acf_add_local_field_group($field_group);
         }
