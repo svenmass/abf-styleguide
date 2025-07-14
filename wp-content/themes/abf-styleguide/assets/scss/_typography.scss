@@ -173,7 +173,30 @@ small, .small {
 }
 
 // Standard Gutenberg Blocks Container-Begrenzung und responsive Spacing
-.wp-block:not(.wp-block-acf-hero):not(.wp-block-acf-parallax-grid):not(.wp-block-acf-parallax-element):not(.wp-block-acf-parallax-content):not(.wp-block-acf-text-block) {
+.wp-block:not(.wp-block-acf-hero):not(.wp-block-acf-parallax-grid):not(.wp-block-acf-parallax-element):not(.wp-block-acf-parallax-content):not(.wp-block-acf-text-block),
+.wp-block-paragraph,
+.wp-block-heading,
+.wp-block-list,
+.wp-block-quote,
+.wp-block-image,
+.wp-block-gallery,
+.wp-block-audio,
+.wp-block-video,
+.wp-block-file,
+.wp-block-code,
+.wp-block-preformatted,
+.wp-block-pullquote,
+.wp-block-table,
+.wp-block-verse,
+.wp-block-button,
+.wp-block-buttons,
+.wp-block-columns,
+.wp-block-column,
+.wp-block-group,
+.wp-block-separator,
+.wp-block-spacer,
+.wp-block-shortcode,
+.wp-block-embed {
     max-width: $container-content;
     margin-left: auto;
     margin-right: auto;
