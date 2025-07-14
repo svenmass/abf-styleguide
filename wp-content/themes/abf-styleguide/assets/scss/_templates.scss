@@ -53,6 +53,17 @@
     }
 }
 
+// General page and entry titles with top spacing
+.page-title,
+.entry-title {
+    margin-top: 200px;
+    
+    // Überschreibe den margin-top für Styleguide-Page (die hat bereits den Header)
+    .styleguide-main & {
+        margin-top: 0;
+    }
+}
+
 // Container adjustments for different templates
 .fullscreen-template {
     .container-home,
