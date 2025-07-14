@@ -76,6 +76,17 @@ const navigationClose = document.querySelector('.navigation__close');
             burgerToggle.classList.add('active');
             burgerToggle.setAttribute('aria-expanded', 'true');
         }
+        
+        // Add navigation-active class to site content and header for mobile
+        const siteContent = document.querySelector('.site-content');
+        const siteHeader = document.querySelector('.site-header');
+        if (siteContent) {
+            siteContent.classList.add('navigation-active');
+        }
+        if (siteHeader) {
+            siteHeader.classList.add('navigation-active');
+        }
+        
         document.body.style.overflow = 'hidden'; // Prevent background scroll
     }
     
@@ -90,6 +101,17 @@ const navigationClose = document.querySelector('.navigation__close');
             burgerToggle.classList.remove('active');
             burgerToggle.setAttribute('aria-expanded', 'false');
         }
+        
+        // Remove navigation-active class from site content and header
+        const siteContent = document.querySelector('.site-content');
+        const siteHeader = document.querySelector('.site-header');
+        if (siteContent) {
+            siteContent.classList.remove('navigation-active');
+        }
+        if (siteHeader) {
+            siteHeader.classList.remove('navigation-active');
+        }
+        
         document.body.style.overflow = ''; // Restore background scroll
     }
 }); 

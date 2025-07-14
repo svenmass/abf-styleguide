@@ -15,17 +15,32 @@
     transition: transform 0.3s ease;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
     
     // Desktop: Always visible
     @media (min-width: $breakpoint-desktop-small) {
         transform: translateX(0);
         box-shadow: none;
         border-right: 1px solid #eee;
+        width: 300px;
+        max-width: 300px;
     }
     
     // Mobile: Hidden by default, shown when active
     &--active {
         transform: translateX(0);
+    }
+    
+    // Mobile: Adjust width for smaller screens
+    @media (max-width: #{$breakpoint-desktop-small - 1px}) {
+        width: 280px;
+        max-width: 280px;
+    }
+    
+    // Very small screens
+    @media (max-width: 480px) {
+        width: 260px;
+        max-width: 260px;
     }
 }
 
@@ -267,6 +282,8 @@
         width: calc(100vw - 300px);
         display: flex;
         justify-content: center;
+        align-items: flex-start;
+        min-height: 100vh;
     }
     
     // Fullscreen template sollte NICHT flex haben
@@ -280,11 +297,64 @@
         width: 100%;
         max-width: 1080px;
         padding: 0 $spacing-lg;
+        margin: 0 auto;
     }
     
     .site-header {
         margin-left: 300px; // Navigation width
         width: calc(100% - 300px);
+    }
+    
+    // Ensure main content is properly centered and responsive
+    .styleguide-main {
+        width: 100%;
+        max-width: 100%;
+        margin: 0;
+        padding: $spacing-lg 0;
+        
+        .page-header {
+            width: 100%;
+            max-width: 100%;
+        }
+        
+        .page-content {
+            width: 100%;
+            max-width: 100%;
+        }
+    }
+}
+
+// Adjust content for mobile navigation when active
+@media (max-width: #{$breakpoint-desktop-small - 1px}) {
+    .site-content:not(.fullscreen-content) {
+        &.navigation-active {
+            margin-left: 280px;
+            width: calc(100vw - 280px);
+        }
+    }
+    
+    .site-header {
+        &.navigation-active {
+            margin-left: 280px;
+            width: calc(100% - 280px);
+        }
+    }
+}
+
+// Very small screens
+@media (max-width: 480px) {
+    .site-content:not(.fullscreen-content) {
+        &.navigation-active {
+            margin-left: 260px;
+            width: calc(100vw - 260px);
+        }
+    }
+    
+    .site-header {
+        &.navigation-active {
+            margin-left: 260px;
+            width: calc(100% - 260px);
+        }
     }
 }
 
@@ -292,5 +362,42 @@
 @media (max-width: #{$breakpoint-desktop-small - 1px}) {
     .navigation {
         top: 0; // Start from top on mobile
+    }
+    
+    // Mobile content adjustments
+    .site-content:not(.fullscreen-content) {
+        margin-left: 0;
+        width: 100vw;
+        display: block;
+    }
+    
+    .container-content:not(.fullscreen-content) {
+        width: 100%;
+        max-width: 100%;
+        padding: 0 $spacing-sm;
+        margin: 0;
+    }
+    
+    .styleguide-main {
+        width: 100%;
+        max-width: 100%;
+        margin: 0;
+        padding: $spacing-md 0;
+        
+        .page-header {
+            width: 100%;
+            max-width: 100%;
+            padding: 0 $spacing-sm;
+        }
+        
+        .page-content {
+            width: 100%;
+            max-width: 100%;
+        }
+    }
+    
+    .site-header {
+        margin-left: 0;
+        width: 100%;
     }
 } 
