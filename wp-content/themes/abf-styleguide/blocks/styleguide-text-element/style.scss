@@ -94,6 +94,27 @@
     }
 }
 
+// Styling für farbigen Container (wenn Hintergrundfarbe gewählt ist)
+.block-styleguide-text-element {
+    .styleguide-text-element-container.has-background-color {
+        border-radius: 10px;
+        box-shadow: 0 3px 3px rgba(0, 0, 0, 0.25);
+        padding: $spacing-sm;
+        
+        @media (min-width: $breakpoint-mobile) {
+            padding: $spacing-md;
+        }
+        
+        @media (min-width: $breakpoint-tablet) {
+            padding: $spacing-md;
+        }
+        
+        @media (min-width: $breakpoint-desktop) {
+            padding: $spacing-lg;
+        }
+    }
+}
+
 // =============================================================================
 // RESPONSIVE DESIGN
 // =============================================================================

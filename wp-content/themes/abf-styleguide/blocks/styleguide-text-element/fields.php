@@ -162,6 +162,30 @@ return array(
         ),
         
         // =============================================================================
+        // HINTERGRUND EINSTELLUNGEN
+        // =============================================================================
+        array(
+            'key' => 'field_ste_background_tab',
+            'label' => 'Hintergrund',
+            'name' => '',
+            'type' => 'tab',
+            'placement' => 'top',
+        ),
+        array(
+            'key' => 'field_ste_background_color',
+            'label' => 'Hintergrundfarbe',
+            'name' => 'ste_background_color',
+            'type' => 'select',
+            'choices' => array_merge(
+                array('' => 'Keine (Standard)'),
+                $color_choices
+            ),
+            'default_value' => '',
+            'instructions' => 'Optionale Hintergrundfarbe für das Element (zeigt Container mit Padding, Schatten und Border-Radius)',
+            'allow_null' => 0,
+        ),
+        
+        // =============================================================================
         // BUTTON EINSTELLUNGEN
         // =============================================================================
         array(

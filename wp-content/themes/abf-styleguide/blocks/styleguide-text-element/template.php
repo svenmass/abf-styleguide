@@ -19,6 +19,9 @@ $text_size = get_field('ste_text_size') ?: '18';
 $text_weight = get_field('ste_text_weight') ?: '400';
 $text_color = get_field('ste_text_color') ?: 'inherit';
 
+// Hintergrundfarbe (optional)
+$background_color = get_field('ste_background_color') ?: '';
+
 $show_button = get_field('ste_show_button') ?: false;
 $button_text = get_field('ste_button_text') ?: '';
 $button_url = get_field('ste_button_url') ?: '';
@@ -83,7 +86,10 @@ if ($button_url) {
 ?>
 
 <div class="block-styleguide-text-element" id="<?php echo esc_attr($block_id); ?>">
-    <div class="styleguide-text-element-container">
+    <div class="styleguide-text-element-container<?php echo $background_color ? ' has-background-color' : ''; ?>"
+         <?php if ($background_color): ?>
+         style="background-color: <?php echo esc_attr(abf_get_styleguide_color_value($background_color)); ?>;"
+         <?php endif; ?>>
         <div class="styleguide-text-element-content">
             
             <?php if ($headline_text): ?>
