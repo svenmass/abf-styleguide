@@ -3,74 +3,92 @@
  * Styleguide Akkordeon Block Template
  */
 
-// Get the block ID
-$block_id = 'styleguide-akkordeon-' . $block['id'];
+// Prevent direct access
+if (!defined('ABSPATH')) {
+    exit;
+}
 
-// Get content fields
-$headline_text = get_field('sa_headline_text') ?: '';
-$headline_tag = get_field('sa_headline_tag') ?: 'h2';
-$headline_size = get_field('sa_headline_size') ?: '24';
-$headline_weight = get_field('sa_headline_weight') ?: '400';
-$headline_color = get_field('sa_headline_color') ?: 'inherit';
+// Extract block data
+$fields = get_fields();
 
-$text_content = get_field('sa_text_content') ?: '';
-$text_tag = get_field('sa_text_tag') ?: 'p';
-$text_size = get_field('sa_text_size') ?: '18';
-$text_weight = get_field('sa_text_weight') ?: '400';
-$text_color = get_field('sa_text_color') ?: 'inherit';
+if (!$fields) {
+    return;
+}
 
-$accordion_items = get_field('sa_accordion_items') ?: array();
+// Block ID für einzigartige IDs
+$unique_id_prefix = 'akkordeon-' . uniqid();
 
-// Convert color choices to actual values
-function abf_get_accordion_color_value($color_choice) {
-    if (!$color_choice || $color_choice === 'inherit') {
+/**
+ * Get color value from choice field
+ */
+if (!function_exists('abf_get_accordion_color_value')) {
+    function abf_get_accordion_color_value($color_choice) {
+        if (!$color_choice || $color_choice === 'inherit') {
+            return 'inherit';
+        }
+        
+        // Check if it's a predefined color from colors.json
+        $colors_file = get_template_directory() . '/colors.json';
+        if (file_exists($colors_file)) {
+            $colors_json = file_get_contents($colors_file);
+            $colors = json_decode($colors_json, true);
+            
+            if (isset($colors[$color_choice])) {
+                return $colors[$color_choice];
+            }
+        }
+        
+        // If it's already a color value (hex, rgb, etc.), return as is
+        if (strpos($color_choice, '#') === 0 || strpos($color_choice, 'rgb') === 0 || strpos($color_choice, 'hsl') === 0) {
+            return $color_choice;
+        }
+        
+        // Default fallback
         return 'inherit';
     }
-    
-    // Handle primary and secondary colors
-    if ($color_choice === 'primary') {
-        return 'var(--color-primary)';
-    } elseif ($color_choice === 'secondary') {
-        return 'var(--color-secondary)';
-    } elseif ($color_choice === 'white') {
-        return '#ffffff';
-    } elseif ($color_choice === 'black') {
-        return '#000000';
-    }
-    
-    // Try to get dynamic color from colors.json
-    if (function_exists('abf_get_color_value')) {
-        $color_value = abf_get_color_value($color_choice);
-        if ($color_value) {
-            return $color_value;
-        }
-    }
-    
-    // Fallback to CSS variable
-    return "var(--color-" . sanitize_title($color_choice) . ")";
 }
 
-// Auto-generate accordion item H-tag based on main headline
-function abf_get_accordion_h_tag($main_headline_tag) {
-    $h_number = (int)filter_var($main_headline_tag, FILTER_SANITIZE_NUMBER_INT);
-    
-    if ($h_number >= 1 && $h_number <= 5) {
-        return 'h' . ($h_number + 1);
+/**
+ * Get correct H-tag for accordion items based on main headline
+ */
+if (!function_exists('abf_get_accordion_h_tag')) {
+    function abf_get_accordion_h_tag($main_headline_tag) {
+        // Map headline tags to next level
+        $tag_map = [
+            'h1' => 'h2',
+            'h2' => 'h3', 
+            'h3' => 'h4',
+            'h4' => 'h5',
+            'h5' => 'h6',
+            'h6' => 'h6', // Can't go lower than h6
+        ];
+        
+        return isset($tag_map[$main_headline_tag]) ? $tag_map[$main_headline_tag] : 'h3';
     }
-    
-    // Fallback
-    return 'h3';
 }
 
-$accordion_h_tag = abf_get_accordion_h_tag($headline_tag);
+// Get content fields
+$headline_text = $fields['sa_headline_text'] ?? '';
+$headline_tag = $fields['sa_headline_tag'] ?? 'h2';
+$headline_size = $fields['sa_headline_size'] ?? '24';
+$headline_weight = $fields['sa_headline_weight'] ?? '400';
+$headline_color = $fields['sa_headline_color'] ?? 'inherit';
+
+$text_content = $fields['sa_text_content'] ?? '';
+$text_tag = $fields['sa_text_tag'] ?? 'p';
+$text_size = $fields['sa_text_size'] ?? '18';
+$text_weight = $fields['sa_text_weight'] ?? '400';
+$text_color = $fields['sa_text_color'] ?? 'inherit';
+
+$accordion_items = $fields['sa_accordion_items'] ?? array();
 
 // Don't render if no content
 if (!$headline_text && !$text_content && empty($accordion_items)) {
     return;
 }
 
-// Generate unique IDs for each accordion item
-$unique_id_prefix = 'accordion-' . uniqid();
+// Auto-generate accordion item H-tag based on main headline
+$accordion_h_tag = abf_get_accordion_h_tag($headline_tag);
 ?>
 
 <div class="block-styleguide-akkordeon" id="<?php echo esc_attr($block_id); ?>">
