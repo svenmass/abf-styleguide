@@ -157,6 +157,8 @@ acf_add_local_field_group(array(
             'choices' => array(
                 '300' => 'Light (300)',
                 '400' => 'Normal (400)',
+                '500' => 'Medium (500)',
+                '600' => 'Semi-Bold (600)',
                 '700' => 'Bold (700)',
             ),
             'default_value' => '400',

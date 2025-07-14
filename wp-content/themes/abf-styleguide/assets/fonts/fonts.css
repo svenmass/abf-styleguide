@@ -1,33 +1,66 @@
 /* =============================================================================
-   FONT FACE DEFINITIONS
+   FONT FACE DEFINITIONS - INTER
    ============================================================================= */
 
+/* Inter Light (300) */
 @font-face {
-    font-family: 'Aptos';
-    src: url('Aptos.woff2') format('woff2'),
-         url('Aptos.woff') format('woff'),
-         url('Aptos.ttf') format('truetype');
+    font-family: 'Inter';
+    src: url('inter-v19-latin-300.woff2') format('woff2');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* Inter Light Italic (300) */
+@font-face {
+    font-family: 'Inter';
+    src: url('inter-v19-latin-300italic.woff2') format('woff2');
+    font-weight: 300;
+    font-style: italic;
+    font-display: swap;
+}
+
+/* Inter Regular (400) */
+@font-face {
+    font-family: 'Inter';
+    src: url('inter-v19-latin-regular.woff2') format('woff2');
     font-weight: 400;
     font-style: normal;
     font-display: swap;
 }
 
+/* Inter Italic (400) */
 @font-face {
-    font-family: 'Aptos';
-    src: url('Aptos-Bold.woff2') format('woff2'),
-         url('Aptos-Bold.woff') format('woff'),
-         url('Aptos-Bold.ttf') format('truetype');
-    font-weight: 700;
+    font-family: 'Inter';
+    src: url('inter-v19-latin-italic.woff2') format('woff2');
+    font-weight: 400;
+    font-style: italic;
+    font-display: swap;
+}
+
+/* Inter Medium (500) */
+@font-face {
+    font-family: 'Inter';
+    src: url('inter-v19-latin-500.woff2') format('woff2');
+    font-weight: 500;
     font-style: normal;
     font-display: swap;
 }
 
+/* Inter Semi-Bold (600) */
 @font-face {
-    font-family: 'Aptos';
-    src: url('Aptos-Light.woff2') format('woff2'),
-         url('Aptos-Light.woff') format('woff'),
-         url('Aptos-Light.ttf') format('truetype');
-    font-weight: 300;
+    font-family: 'Inter';
+    src: url('inter-v19-latin-600.woff2') format('woff2');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* Inter Bold (700) */
+@font-face {
+    font-family: 'Inter';
+    src: url('inter-v19-latin-700.woff2') format('woff2');
+    font-weight: 700;
     font-style: normal;
     font-display: swap;
 } 
