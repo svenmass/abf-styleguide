@@ -13,16 +13,15 @@
 get_header();
 ?>
 
-    <div id="primary" class="content-area">
-        <main id="main" class="site-main">
-
+<main id="main" class="site-main styleguide-main">
+    <div class="container-content">
         <?php
         if (have_posts()) :
 
             if (is_home() && !is_front_page()) :
                 ?>
-                <header>
-                    <h1 class="page-title screen-reader-text"><?php single_post_title(); ?></h1>
+                <header class="page-header">
+                    <h1 class="page-title"><?php single_post_title(); ?></h1>
                 </header>
                 <?php
             endif;
@@ -30,13 +29,58 @@ get_header();
             /* Start the Loop */
             while (have_posts()) :
                 the_post();
+                
+                // Post article with styleguide.page styling
+                ?>
+                <article id="post-<?php the_ID(); ?>" <?php post_class('styleguide-post'); ?>>
+                    <header class="entry-header">
+                        <?php
+                        if (is_singular()) :
+                            the_title('<h1 class="entry-title">', '</h1>');
+                        else :
+                            the_title('<h2 class="entry-title"><a href="' . esc_url(get_permalink()) . '" rel="bookmark">', '</a></h2>');
+                        endif;
 
-                /*
-                 * Include the Post-Type-specific template for the content.
-                 * If you want to override this in a child theme, then include a file
-                 * called content-___.php (where ___ is the Post Type name) and that will be used instead.
-                 */
-                get_template_part('template-parts/content', get_post_type());
+                        if ('post' === get_post_type()) :
+                            ?>
+                            <div class="entry-meta">
+                                <?php
+                                if (function_exists('abf_styleguide_posted_on')) {
+                                    abf_styleguide_posted_on();
+                                }
+                                if (function_exists('abf_styleguide_posted_by')) {
+                                    abf_styleguide_posted_by();
+                                }
+                                ?>
+                            </div><!-- .entry-meta -->
+                        <?php endif; ?>
+                    </header><!-- .entry-header -->
+
+                    <?php 
+                    if (function_exists('abf_styleguide_post_thumbnail')) {
+                        abf_styleguide_post_thumbnail(); 
+                    }
+                    ?>
+
+                    <div class="entry-content">
+                        <?php
+                        if (is_singular()) :
+                            the_content();
+                        else :
+                            the_excerpt();
+                        endif;
+                        ?>
+                    </div><!-- .entry-content -->
+
+                    <footer class="entry-footer">
+                        <?php 
+                        if (function_exists('abf_styleguide_entry_footer')) {
+                            abf_styleguide_entry_footer(); 
+                        }
+                        ?>
+                    </footer><!-- .entry-footer -->
+                </article><!-- #post-<?php the_ID(); ?> -->
+                <?php
 
             endwhile;
 
@@ -48,10 +92,7 @@ get_header();
 
         endif;
         ?>
+    </div>
+</main>
 
-        </main><!-- #main -->
-    </div><!-- #primary -->
-
-<?php
-get_sidebar();
-get_footer();
+<?php get_footer(); ?>

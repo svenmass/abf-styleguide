@@ -8,33 +8,72 @@
 get_header();
 ?>
 
-    <div id="primary" class="content-area">
-        <main id="main" class="site-main">
-
+<main id="main" class="site-main styleguide-main">
+    <div class="container-content">
         <?php
         while (have_posts()) :
             the_post();
-
-            get_template_part('template-parts/content', get_post_type());
-
+            
+            // Post title
+            if (get_the_title()) :
+                ?>
+                <header class="page-header">
+                    <h1 class="page-title"><?php the_title(); ?></h1>
+                </header>
+                <?php
+            endif;
+            
+            // Post meta (date, author, etc.)
+            if ('post' === get_post_type()) :
+                ?>
+                <div class="entry-meta">
+                    <?php
+                    if (function_exists('abf_styleguide_posted_on')) {
+                        abf_styleguide_posted_on();
+                    }
+                    if (function_exists('abf_styleguide_posted_by')) {
+                        abf_styleguide_posted_by();
+                    }
+                    ?>
+                </div><!-- .entry-meta -->
+                <?php
+            endif;
+            
+            // Post thumbnail
+            if (function_exists('abf_styleguide_post_thumbnail')) {
+                abf_styleguide_post_thumbnail();
+            }
+            
+            // Post content
+            the_content();
+            
+            // Post navigation
             the_post_navigation(
                 array(
                     'prev_text' => '<span class="nav-subtitle">' . esc_html__('Previous:', 'abf-styleguide') . '</span> <span class="nav-title">%title</span>',
                     'next_text' => '<span class="nav-subtitle">' . esc_html__('Next:', 'abf-styleguide') . '</span> <span class="nav-title">%title</span>',
                 )
             );
-
-            // If comments are open or we have at least one comment, load up the comment template.
+            
+            // Entry footer (categories, tags, etc.)
+            ?>
+            <footer class="entry-footer">
+                <?php 
+                if (function_exists('abf_styleguide_entry_footer')) {
+                    abf_styleguide_entry_footer(); 
+                }
+                ?>
+            </footer><!-- .entry-footer -->
+            <?php
+            
+            // Comments
             if (comments_open() || get_comments_number()) :
                 comments_template();
             endif;
-
-        endwhile; // End of the loop.
+            
+        endwhile;
         ?>
+    </div>
+</main>
 
-        </main><!-- #main -->
-    </div><!-- #primary -->
-
-<?php
-get_sidebar();
-get_footer(); 
+<?php get_footer(); ?> 
