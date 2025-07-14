@@ -172,7 +172,7 @@ small, .small {
     line-height: $line-height-base;
 }
 
-// Standard Gutenberg Blocks Container-Begrenzung und responsive Spacing
+// Standard Gutenberg Blocks Container-Begrenzung (ohne responsive Spacing, da container-content bereits Padding hat)
 .wp-block:not(.wp-block-acf-hero):not(.wp-block-acf-parallax-grid):not(.wp-block-acf-parallax-element):not(.wp-block-acf-parallax-content):not(.wp-block-acf-text-block),
 .wp-block-paragraph,
 .wp-block-heading,
@@ -201,24 +201,7 @@ small, .small {
     margin-left: auto;
     margin-right: auto;
     
-    // Responsive spacing links und rechts basierend auf Breakpoints
-    padding-left: $spacing-xs;
-    padding-right: $spacing-xs;
-    
-    @media (min-width: $breakpoint-mobile) {
-        padding-left: $spacing-sm;
-        padding-right: $spacing-sm;
-    }
-    
-    @media (min-width: $breakpoint-tablet) {
-        padding-left: $spacing-md;
-        padding-right: $spacing-md;
-    }
-    
-    @media (min-width: $breakpoint-desktop) {
-        padding-left: $spacing-lg;
-        padding-right: $spacing-lg;
-    }
+    // Kein padding mehr nötig, da container-content bereits das richtige responsive Padding hat
 }
 
 .editor-styles-wrapper {
