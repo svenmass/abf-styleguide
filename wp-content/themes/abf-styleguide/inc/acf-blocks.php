@@ -151,6 +151,21 @@ function abf_register_acf_blocks() {
         'mode'              => 'auto',
     ));
     
+    // Register Styleguide Bild-Text Block (NEW)
+    acf_register_block_type(array(
+        'name'              => 'styleguide-bild-text',
+        'title'             => __('Styleguide-Bild-Text'),
+        'description'       => __('Ein zweispaltiges Element mit Bild und Text in konfigurierbaren Spaltenaufteilungen'),
+        'render_template'   => get_template_directory() . '/blocks/styleguide-bild-text/template.php',
+        'category'          => 'abf-blocks',
+        'icon'              => 'format-image',
+        'keywords'          => array('bild', 'text', 'image', 'zweispaltig', 'layout', 'styleguide'),
+        'supports'          => array(
+            'jsx' => true,
+        ),
+        'mode'              => 'auto',
+    ));
+    
     // Register Styleguide Trennlinie Block (NEW)
     acf_register_block_type(array(
         'name'              => 'styleguide-trennlinie',
@@ -187,6 +202,15 @@ function abf_include_modular_fields() {
     $styleguide_text_fields = get_template_directory() . '/blocks/styleguide-text-element/fields.php';
     if (file_exists($styleguide_text_fields)) {
         $field_group = require $styleguide_text_fields;
+        if (is_array($field_group)) {
+            acf_add_local_field_group($field_group);
+        }
+    }
+    
+    // Include Styleguide Bild-Text Block fields
+    $styleguide_bild_text_fields = get_template_directory() . '/blocks/styleguide-bild-text/fields.php';
+    if (file_exists($styleguide_bild_text_fields)) {
+        $field_group = require $styleguide_bild_text_fields;
         if (is_array($field_group)) {
             acf_add_local_field_group($field_group);
         }

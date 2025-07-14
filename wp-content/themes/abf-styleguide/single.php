@@ -19,24 +19,7 @@ get_header();
                 ?>
                 <header class="page-header">
                     <h1 class="page-title"><?php the_title(); ?></h1>
-                    
-                    <?php
-                    // Post meta nur bei Posts anzeigen
-                    if ('post' === get_post_type()) :
-                        ?>
-                        <div class="post-meta">
-                            <?php
-                            if (function_exists('abf_styleguide_posted_on')) {
-                                abf_styleguide_posted_on();
-                            }
-                            if (function_exists('abf_styleguide_posted_by')) {
-                                abf_styleguide_posted_by();
-                            }
-                            ?>
-                        </div><!-- .post-meta -->
-                        <?php
-                    endif;
-                    ?>
+
                 </header>
                 <?php
             endif;

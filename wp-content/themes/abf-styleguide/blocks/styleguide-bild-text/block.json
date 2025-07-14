@@ -1,0 +1,26 @@
+{
+    "name": "acf/styleguide-bild-text",
+    "title": "Styleguide-Bild-Text",
+    "description": "Ein zweispaltiges Element mit Bild und Text in konfigurierbaren Spaltenaufteilungen",
+    "category": "abf-blocks",
+    "icon": "format-image",
+    "keywords": ["bild", "text", "image", "zweispaltig", "layout", "styleguide"],
+    "acf": {
+        "mode": "auto",
+        "renderTemplate": "template.php"
+    },
+    "supports": {
+        "jsx": true
+    },
+    "example": {
+        "attributes": {
+            "mode": "preview",
+            "data": {
+                "sbt_headline_text": "Beispiel Headline",
+                "sbt_text_content": "Dies ist ein Beispieltext für das Styleguide-Bild-Text-Element.",
+                "sbt_column_split": "50/50",
+                "sbt_image_position": "left"
+            }
+        }
+    }
+} 
