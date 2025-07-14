@@ -74,7 +74,6 @@ $unique_id_prefix = 'accordion-' . uniqid();
 ?>
 
 <div class="block-styleguide-akkordeon" id="<?php echo esc_attr($block_id); ?>">
-    <div class="container-content">
         <div class="styleguide-akkordeon-container">
             
             <!-- Headline -->
@@ -178,5 +177,5 @@ $unique_id_prefix = 'accordion-' . uniqid();
             <?php endif; ?>
             
         </div>
-    </div>
+
 </div> 

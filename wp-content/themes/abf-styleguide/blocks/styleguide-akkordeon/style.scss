@@ -96,15 +96,16 @@
                             outline-offset: 2px;
                         }
                         
-                        // Titel
+                        // Titel - nimmt verfügbaren Platz ein
                         .styleguide-akkordeon-item-title {
                             flex: 1;
                             margin-right: $spacing-sm;
                             line-height: $line-height-base;
                             letter-spacing: $letter-spacing-base;
+                            text-align: left;
                         }
                         
-                        // Plus Icon
+                        // Plus Icon - fix rechts positioniert
                         .styleguide-akkordeon-item-icon {
                             flex-shrink: 0;
                             width: 15px;
@@ -113,6 +114,7 @@
                             align-items: center;
                             justify-content: center;
                             transition: transform 0.3s ease;
+                            margin-left: auto; // Sicherstellen, dass es ganz rechts ist
                             
                             svg {
                                 width: 15px;
@@ -130,10 +132,11 @@
                     }
                 }
                 
-                // Content Container
+                // Content Container - INITIAL GESCHLOSSEN
                 .styleguide-akkordeon-item-content {
                     overflow: hidden;
                     max-height: 0;
+                    padding: 0;
                     transition: max-height 0.3s ease, padding 0.3s ease;
                     
                     // Geöffneter Zustand
@@ -164,7 +167,7 @@
                             color: inherit !important;
                         }
                         
-                        // Absätze styling
+                        // Paragraph styling
                         p {
                             margin: 0 0 $spacing-xs 0;
                             
@@ -173,7 +176,7 @@
                             }
                         }
                         
-                        // Listen styling
+                        // Liste styling
                         ul, ol {
                             margin: 0 0 $spacing-xs 0;
                             padding-left: 20px;
@@ -181,13 +184,13 @@
                             &:last-child {
                                 margin-bottom: 0;
                             }
+                        }
+                        
+                        li {
+                            margin-bottom: 4px;
                             
-                            li {
-                                margin-bottom: 4px;
-                                
-                                &:last-child {
-                                    margin-bottom: 0;
-                                }
+                            &:last-child {
+                                margin-bottom: 0;
                             }
                         }
                     }
@@ -195,15 +198,9 @@
             }
         }
     }
-}
-
-// =============================================================================
-// RESPONSIVE DESIGN
-// =============================================================================
-
-// Tablet und kleiner: Angepasste Abstände
-@media (max-width: $breakpoint-tablet) {
-    .block-styleguide-akkordeon {
+    
+    // Mobile responsive adjustments
+    @media (max-width: 768px) {
         .styleguide-akkordeon-container {
             .styleguide-akkordeon-headline {
                 margin-bottom: $spacing-xs;
@@ -243,11 +240,7 @@
                         }
                         
                         .styleguide-akkordeon-item-content-inner {
-                            p {
-                                margin-bottom: 8px;
-                            }
-                            
-                            ul, ol {
+                            p, ul, ol {
                                 margin-bottom: 8px;
                             }
                         }
@@ -256,18 +249,15 @@
             }
         }
     }
-}
-
-// Mobile: Weitere Anpassungen
-@media (max-width: $breakpoint-mobile) {
-    .block-styleguide-akkordeon {
+    
+    // Very small screen adjustments
+    @media (max-width: 576px) {
         .styleguide-akkordeon-container {
             .styleguide-akkordeon-items {
                 .styleguide-akkordeon-item {
                     .styleguide-akkordeon-item-content {
-                        // Reduzierte max-height für bessere Performance auf Mobile
                         &[aria-hidden="false"] {
-                            max-height: 800px;
+                            max-height: 800px; // Weniger Höhe für sehr kleine Bildschirme
                         }
                     }
                 }
