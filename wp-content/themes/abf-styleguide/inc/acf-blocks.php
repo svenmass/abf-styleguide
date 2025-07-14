@@ -150,6 +150,21 @@ function abf_register_acf_blocks() {
         ),
         'mode'              => 'auto',
     ));
+    
+    // Register Styleguide Trennlinie Block (NEW)
+    acf_register_block_type(array(
+        'name'              => 'styleguide-trennlinie',
+        'title'             => __('Styleguide-Trennlinie'),
+        'description'       => __('Eine konfigurierbare Trennlinie mit verschiedenen Stärken, Farben und Breiten'),
+        'render_template'   => get_template_directory() . '/blocks/styleguide-trennlinie/template.php',
+        'category'          => 'abf-blocks',
+        'icon'              => 'minus',
+        'keywords'          => array('trennlinie', 'separator', 'divider', 'linie', 'styleguide'),
+        'supports'          => array(
+            'jsx' => true,
+        ),
+        'mode'              => 'auto',
+    ));
 }
 
 /**
@@ -172,6 +187,15 @@ function abf_include_modular_fields() {
     $styleguide_text_fields = get_template_directory() . '/blocks/styleguide-text-element/fields.php';
     if (file_exists($styleguide_text_fields)) {
         $field_group = require $styleguide_text_fields;
+        if (is_array($field_group)) {
+            acf_add_local_field_group($field_group);
+        }
+    }
+    
+    // Include Styleguide Trennlinie Block fields
+    $styleguide_trennlinie_fields = get_template_directory() . '/blocks/styleguide-trennlinie/fields.php';
+    if (file_exists($styleguide_trennlinie_fields)) {
+        $field_group = require $styleguide_trennlinie_fields;
         if (is_array($field_group)) {
             acf_add_local_field_group($field_group);
         }

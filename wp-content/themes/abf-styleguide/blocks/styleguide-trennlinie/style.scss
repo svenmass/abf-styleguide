@@ -1,0 +1,173 @@
+// =============================================================================
+// STYLEGUIDE TRENNLINIE BLOCK
+// =============================================================================
+
+.styleguide-trennlinie {
+    width: 100%;
+    max-width: 100%;
+    
+    // Container für maximale Breite
+    .container-content {
+        max-width: $container-content;
+        margin: 0 auto;
+        padding: 0 $spacing-lg;
+        
+        // Responsive padding
+        @media (max-width: $breakpoint-desktop) {
+            padding: 0 $spacing-md;
+        }
+        
+        @media (max-width: $breakpoint-tablet) {
+            padding: 0 $spacing-sm;
+        }
+        
+        @media (max-width: $breakpoint-mobile) {
+            padding: 0 $spacing-xs;
+        }
+    }
+    
+    // Die eigentliche Trennlinie
+    &__line {
+        margin: 0 auto;
+        display: block;
+        border: none;
+        border-radius: 0;
+        
+        // Fallback für nicht unterstützte Browser
+        background-color: $color-primary;
+        height: 2px;
+        width: 100%;
+    }
+    
+    // =============================================================================
+    // SPACING VARIANTEN
+    // =============================================================================
+    
+    // Spacing Top
+    &--spacing-top-xs {
+        padding-top: $spacing-xs;
+    }
+    
+    &--spacing-top-sm {
+        padding-top: $spacing-sm;
+    }
+    
+    &--spacing-top-md {
+        padding-top: $spacing-md;
+    }
+    
+    &--spacing-top-lg {
+        padding-top: $spacing-lg;
+    }
+    
+    // Spacing Bottom
+    &--spacing-bottom-xs {
+        padding-bottom: $spacing-xs;
+    }
+    
+    &--spacing-bottom-sm {
+        padding-bottom: $spacing-sm;
+    }
+    
+    &--spacing-bottom-md {
+        padding-bottom: $spacing-md;
+    }
+    
+    &--spacing-bottom-lg {
+        padding-bottom: $spacing-lg;
+    }
+    
+    // =============================================================================
+    // DICKE VARIANTEN
+    // =============================================================================
+    
+    &--1 {
+        .styleguide-trennlinie__line {
+            height: 1px;
+        }
+    }
+    
+    &--2 {
+        .styleguide-trennlinie__line {
+            height: 2px;
+        }
+    }
+    
+    &--3 {
+        .styleguide-trennlinie__line {
+            height: 3px;
+        }
+    }
+    
+    // =============================================================================
+    // BREITE VARIANTEN
+    // =============================================================================
+    
+    &--100 {
+        .styleguide-trennlinie__line {
+            width: 100%;
+        }
+    }
+    
+    &--60 {
+        .styleguide-trennlinie__line {
+            width: 60%;
+        }
+    }
+    
+    &--30 {
+        .styleguide-trennlinie__line {
+            width: 30%;
+        }
+    }
+    
+    // =============================================================================
+    // ACCESSIBILITY & PRINT
+    // =============================================================================
+    
+    // Screenreader-freundlich
+    &[aria-hidden="true"] {
+        .styleguide-trennlinie__line {
+            opacity: 0.7;
+        }
+    }
+    
+    // Print-Optimierung
+    @media print {
+        .styleguide-trennlinie__line {
+            background-color: #000 !important;
+            height: 1px !important;
+            width: 100% !important;
+        }
+        
+        // Kein Spacing beim Drucken
+        &[class*="--spacing-"] {
+            padding-top: 0 !important;
+            padding-bottom: 0 !important;
+        }
+    }
+    
+    // =============================================================================
+    // HOVER & FOCUS STATES (für Gutenberg Editor)
+    // =============================================================================
+    
+    // Gutenberg Editor-Modus
+    .wp-block-editor & {
+        position: relative;
+        
+        &:hover {
+            &::before {
+                content: 'Trennlinie';
+                position: absolute;
+                top: -20px;
+                left: 0;
+                font-size: 12px;
+                color: #666;
+                background: rgba(255, 255, 255, 0.9);
+                padding: 2px 6px;
+                border-radius: 3px;
+                z-index: 1;
+            }
+        }
+    }
+} 

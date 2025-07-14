@@ -1,0 +1,25 @@
+{
+    "name": "acf/styleguide-trennlinie",
+    "title": "Styleguide-Trennlinie",
+    "description": "Eine konfigurierbare Trennlinie mit verschiedenen Stärken, Farben und Breiten",
+    "category": "abf-blocks",
+    "icon": "minus",
+    "keywords": ["trennlinie", "separator", "divider", "linie", "styleguide"],
+    "acf": {
+        "mode": "auto",
+        "renderTemplate": "template.php"
+    },
+    "supports": {
+        "jsx": true
+    },
+    "example": {
+        "attributes": {
+            "mode": "preview",
+            "data": {
+                "stl_thickness": "2px",
+                "stl_color": "primary",
+                "stl_width": "100%"
+            }
+        }
+    }
+} 

@@ -666,4 +666,10 @@
         max-width: calc(100% - #{$spacing-lg * 2});
         width: calc(100% - #{$spacing-lg * 2});
     }
-} 
+}
+
+// =============================================================================
+// STYLEGUIDE TRENNLINIE BLOCK
+// =============================================================================
+
+@import '../../blocks/styleguide-trennlinie/style.scss'; 
