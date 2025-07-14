@@ -41,9 +41,12 @@
         text-align: center;
         
         .page-title {
+            max-width: $container-content;
+            text-align: left;
             margin: 0;
             font-size: 36px;
             font-weight: 600;
+            margin-top: 100px;
             color: var(--color-primary, #007cba);
             
             @media (max-width: #{$breakpoint-tablet - 1px}) {
