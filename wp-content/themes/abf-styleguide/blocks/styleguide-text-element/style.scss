@@ -101,7 +101,7 @@
 // Mobile (up to 576px)
 @media (max-width: $breakpoint-mobile) {
     .block-styleguide-text-element {
-        padding: 0 $spacing-xs; // 12px from variables.scss
+        // Kein padding mehr nötig, da container-content bereits das richtige responsive Padding hat
         
         .styleguide-text-element-container {
             .styleguide-text-element-content {
@@ -127,7 +127,7 @@
 // Tablet (576px - 768px)
 @media (min-width: $breakpoint-mobile) and (max-width: $breakpoint-tablet) {
     .block-styleguide-text-element {
-        padding: 0 $spacing-sm; // 16px from variables.scss
+        // Kein padding mehr nötig, da container-content bereits das richtige responsive Padding hat
         
         .styleguide-text-element-container {
             .styleguide-text-element-content {
@@ -153,7 +153,7 @@
 // Desktop Small (768px - 992px)
 @media (min-width: $breakpoint-tablet) and (max-width: $breakpoint-desktop-small) {
     .block-styleguide-text-element {
-        padding: 0 $spacing-md; // 24px from variables.scss
+        // Kein padding mehr nötig, da container-content bereits das richtige responsive Padding hat
         
         .styleguide-text-element-container {
             .styleguide-text-element-content {
@@ -179,7 +179,7 @@
 // Desktop (992px - 1200px)
 @media (min-width: $breakpoint-desktop-small) and (max-width: $breakpoint-desktop) {
     .block-styleguide-text-element {
-        padding: 0 $spacing-lg; // 32px from variables.scss
+        // Kein padding mehr nötig, da container-content bereits das richtige responsive Padding hat
         
         .styleguide-text-element-container {
             .styleguide-text-element-content {
@@ -205,7 +205,7 @@
 // Large Desktop (1201px+)
 @media (min-width: $breakpoint-large) {
     .block-styleguide-text-element {
-        padding: 0 $spacing-lg; // 32px from variables.scss
+        // Kein padding mehr nötig, da container-content bereits das richtige responsive Padding hat
         
         .styleguide-text-element-container {
             .styleguide-text-element-content {

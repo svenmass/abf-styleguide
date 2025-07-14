@@ -6,24 +6,13 @@
     width: 100%;
     max-width: 100%;
     
-    // Container für maximale Breite
+    // Container für maximale Breite (ohne Padding, da übergeordneter Container bereits Padding hat)
     .container-content {
         max-width: $container-content;
         margin: 0 auto;
-        padding: 0 $spacing-lg;
+        padding: 0;
         
-        // Responsive padding
-        @media (max-width: $breakpoint-desktop) {
-            padding: 0 $spacing-md;
-        }
-        
-        @media (max-width: $breakpoint-tablet) {
-            padding: 0 $spacing-sm;
-        }
-        
-        @media (max-width: $breakpoint-mobile) {
-            padding: 0 $spacing-xs;
-        }
+        // Kein responsive Padding mehr nötig, da übergeordneter container-content bereits das richtige Padding hat
     }
     
     // Die eigentliche Trennlinie

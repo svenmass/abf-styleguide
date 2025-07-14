@@ -61,6 +61,8 @@
 .entry-title {
     margin-top: 200px;
     
+    // Kein padding mehr nötig, da container-content bereits das richtige responsive Padding hat
+    
     // Überschreibe den margin-top für Styleguide-Page (die hat bereits den Header)
     .styleguide-main & {
         margin-top: 0;
