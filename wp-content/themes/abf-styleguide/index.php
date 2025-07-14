@@ -30,20 +30,20 @@ get_header();
             while (have_posts()) :
                 the_post();
                 
-                // Post article with styleguide.page styling
+                // Post article - verwende BEM-Architektur
                 ?>
-                <article id="post-<?php the_ID(); ?>" <?php post_class('styleguide-post'); ?>>
-                    <header class="entry-header">
+                <article id="post-<?php the_ID(); ?>" <?php post_class('post'); ?>>
+                    <header class="post__header">
                         <?php
                         if (is_singular()) :
-                            the_title('<h1 class="entry-title">', '</h1>');
+                            the_title('<h1 class="post__title">', '</h1>');
                         else :
-                            the_title('<h2 class="entry-title"><a href="' . esc_url(get_permalink()) . '" rel="bookmark">', '</a></h2>');
+                            the_title('<h2 class="post__title"><a href="' . esc_url(get_permalink()) . '" rel="bookmark" class="post__title-link">', '</a></h2>');
                         endif;
 
                         if ('post' === get_post_type()) :
                             ?>
-                            <div class="entry-meta">
+                            <div class="post__meta">
                                 <?php
                                 if (function_exists('abf_styleguide_posted_on')) {
                                     abf_styleguide_posted_on();
@@ -52,9 +52,9 @@ get_header();
                                     abf_styleguide_posted_by();
                                 }
                                 ?>
-                            </div><!-- .entry-meta -->
+                            </div><!-- .post__meta -->
                         <?php endif; ?>
-                    </header><!-- .entry-header -->
+                    </header><!-- .post__header -->
 
                     <?php 
                     if (function_exists('abf_styleguide_post_thumbnail')) {
@@ -62,7 +62,7 @@ get_header();
                     }
                     ?>
 
-                    <div class="entry-content">
+                    <div class="post__content">
                         <?php
                         if (is_singular()) :
                             the_content();
@@ -70,15 +70,15 @@ get_header();
                             the_excerpt();
                         endif;
                         ?>
-                    </div><!-- .entry-content -->
+                    </div><!-- .post__content -->
 
-                    <footer class="entry-footer">
+                    <footer class="post__footer">
                         <?php 
                         if (function_exists('abf_styleguide_entry_footer')) {
                             abf_styleguide_entry_footer(); 
                         }
                         ?>
-                    </footer><!-- .entry-footer -->
+                    </footer><!-- .post__footer -->
                 </article><!-- #post-<?php the_ID(); ?> -->
                 <?php
 

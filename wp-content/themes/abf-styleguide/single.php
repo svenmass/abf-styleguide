@@ -14,28 +14,30 @@ get_header();
         while (have_posts()) :
             the_post();
             
-            // Post title
+            // Post title (wie page-title in styleguide.page)
             if (get_the_title()) :
                 ?>
                 <header class="page-header">
                     <h1 class="page-title"><?php the_title(); ?></h1>
-                </header>
-                <?php
-            endif;
-            
-            // Post meta (date, author, etc.)
-            if ('post' === get_post_type()) :
-                ?>
-                <div class="entry-meta">
+                    
                     <?php
-                    if (function_exists('abf_styleguide_posted_on')) {
-                        abf_styleguide_posted_on();
-                    }
-                    if (function_exists('abf_styleguide_posted_by')) {
-                        abf_styleguide_posted_by();
-                    }
+                    // Post meta nur bei Posts anzeigen
+                    if ('post' === get_post_type()) :
+                        ?>
+                        <div class="post-meta">
+                            <?php
+                            if (function_exists('abf_styleguide_posted_on')) {
+                                abf_styleguide_posted_on();
+                            }
+                            if (function_exists('abf_styleguide_posted_by')) {
+                                abf_styleguide_posted_by();
+                            }
+                            ?>
+                        </div><!-- .post-meta -->
+                        <?php
+                    endif;
                     ?>
-                </div><!-- .entry-meta -->
+                </header>
                 <?php
             endif;
             
@@ -44,7 +46,7 @@ get_header();
                 abf_styleguide_post_thumbnail();
             }
             
-            // Post content
+            // Post content (gleiche Klassen wie styleguide.page)
             the_content();
             
             // Post navigation
@@ -56,15 +58,13 @@ get_header();
             );
             
             // Entry footer (categories, tags, etc.)
-            ?>
-            <footer class="entry-footer">
-                <?php 
-                if (function_exists('abf_styleguide_entry_footer')) {
-                    abf_styleguide_entry_footer(); 
-                }
+            if (function_exists('abf_styleguide_entry_footer')) :
                 ?>
-            </footer><!-- .entry-footer -->
-            <?php
+                <footer class="post-footer">
+                    <?php abf_styleguide_entry_footer(); ?>
+                </footer><!-- .post-footer -->
+                <?php
+            endif;
             
             // Comments
             if (comments_open() || get_comments_number()) :
