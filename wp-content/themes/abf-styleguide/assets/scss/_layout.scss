@@ -28,6 +28,9 @@
     @media (min-width: $breakpoint-desktop) {
         padding: 0 $spacing-lg;
     }
+    
+    // Navigation-Layout wird in _navigation.scss spezifisch überschrieben
+    // Diese Regel gilt nur für Seiten ohne Navigation
 }
 
 // =============================================================================
