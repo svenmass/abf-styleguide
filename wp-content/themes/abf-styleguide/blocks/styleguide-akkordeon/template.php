@@ -18,35 +18,7 @@ if (!$fields) {
 // Block ID für einzigartige IDs
 $unique_id_prefix = 'akkordeon-' . uniqid();
 
-/**
- * Get color value from choice field
- */
-if (!function_exists('abf_get_accordion_color_value')) {
-    function abf_get_accordion_color_value($color_choice) {
-        if (!$color_choice || $color_choice === 'inherit') {
-            return 'inherit';
-        }
-        
-        // Check if it's a predefined color from colors.json
-        $colors_file = get_template_directory() . '/colors.json';
-        if (file_exists($colors_file)) {
-            $colors_json = file_get_contents($colors_file);
-            $colors = json_decode($colors_json, true);
-            
-            if (isset($colors[$color_choice])) {
-                return $colors[$color_choice];
-            }
-        }
-        
-        // If it's already a color value (hex, rgb, etc.), return as is
-        if (strpos($color_choice, '#') === 0 || strpos($color_choice, 'rgb') === 0 || strpos($color_choice, 'hsl') === 0) {
-            return $color_choice;
-        }
-        
-        // Default fallback
-        return 'inherit';
-    }
-}
+// Color function is now centralized in functions.php
 
 /**
  * Get correct H-tag for accordion items based on main headline
@@ -96,30 +68,18 @@ $accordion_h_tag = abf_get_accordion_h_tag($headline_tag);
             
             <!-- Headline -->
             <?php if ($headline_text): ?>
-                <?php
-                $headline_styles = [];
-                if ($headline_weight) $headline_styles[] = "font-weight: {$headline_weight}";
-                if ($headline_size) $headline_styles[] = "font-size: {$headline_size}px";
-                if ($headline_color) $headline_styles[] = "color: " . abf_get_accordion_color_value($headline_color);
-                $headline_style_attr = !empty($headline_styles) ? ' style="' . implode('; ', $headline_styles) . '"' : '';
-                ?>
-                <<?php echo $headline_tag; ?> class="styleguide-akkordeon-headline"<?php echo $headline_style_attr; ?>>
+                <<?php echo $headline_tag; ?> class="styleguide-akkordeon-headline" 
+                    style="font-weight: <?php echo esc_attr($headline_weight); ?>; font-size: <?php echo esc_attr($headline_size); ?>px; color: <?php echo esc_attr(abf_get_styleguide_color_value($headline_color)); ?>;">
                     <?php echo wp_kses_post($headline_text); ?>
                 </<?php echo $headline_tag; ?>>
             <?php endif; ?>
             
             <!-- Text Content -->
             <?php if ($text_content): ?>
-                <?php
-                $text_styles = [];
-                if ($text_weight) $text_styles[] = "font-weight: {$text_weight}";
-                if ($text_size) $text_styles[] = "font-size: {$text_size}px";
-                if ($text_color) $text_styles[] = "color: " . abf_get_accordion_color_value($text_color);
-                $text_style_attr = !empty($text_styles) ? ' style="' . implode('; ', $text_styles) . '"' : '';
-                ?>
-                <<?php echo $text_tag; ?> class="styleguide-akkordeon-text"<?php echo $text_style_attr; ?>>
+                <div class="styleguide-akkordeon-text" 
+                    style="font-weight: <?php echo esc_attr($text_weight); ?>; font-size: <?php echo esc_attr($text_size); ?>px; color: <?php echo esc_attr(abf_get_styleguide_color_value($text_color)); ?>;">
                     <?php echo wp_kses_post($text_content); ?>
-                </<?php echo $text_tag; ?>>
+                </div>
             <?php endif; ?>
             
             <!-- Accordion Items -->
@@ -142,19 +102,6 @@ $accordion_h_tag = abf_get_accordion_h_tag($headline_tag);
                         $content_color = $item['accordion_content_color'] ?? 'inherit';
                         
                         if (!$title || !$content) continue;
-                        
-                        // Build styles
-                        $title_styles = [];
-                        if ($title_weight) $title_styles[] = "font-weight: {$title_weight}";
-                        if ($title_size) $title_styles[] = "font-size: {$title_size}px";
-                        if ($title_color) $title_styles[] = "color: " . abf_get_accordion_color_value($title_color);
-                        $title_style_attr = !empty($title_styles) ? ' style="' . implode('; ', $title_styles) . '"' : '';
-                        
-                        $content_styles = [];
-                        if ($content_weight) $content_styles[] = "font-weight: {$content_weight}";
-                        if ($content_size) $content_styles[] = "font-size: {$content_size}px";
-                        if ($content_color) $content_styles[] = "color: " . abf_get_accordion_color_value($content_color);
-                        $content_style_attr = !empty($content_styles) ? ' style="' . implode('; ', $content_styles) . '"' : '';
                         ?>
                         
                         <div class="styleguide-akkordeon-item" data-accordion-item>
@@ -164,7 +111,7 @@ $accordion_h_tag = abf_get_accordion_h_tag($headline_tag);
                                     aria-expanded="false"
                                     aria-controls="<?php echo esc_attr($item_id); ?>"
                                     data-accordion-trigger
-                                    <?php echo $title_style_attr; ?>
+                                    style="font-weight: <?php echo esc_attr($title_weight); ?>; font-size: <?php echo esc_attr($title_size); ?>px; color: <?php echo esc_attr(abf_get_styleguide_color_value($title_color)); ?>;"
                                 >
                                     <span class="styleguide-akkordeon-item-title">
                                         <?php echo esc_html($title); ?>
@@ -184,7 +131,8 @@ $accordion_h_tag = abf_get_accordion_h_tag($headline_tag);
                                 aria-hidden="true"
                                 data-accordion-content
                             >
-                                <div class="styleguide-akkordeon-item-content-inner"<?php echo $content_style_attr; ?>>
+                                <div class="styleguide-akkordeon-item-content-inner" 
+                                    style="font-weight: <?php echo esc_attr($content_weight); ?>; font-size: <?php echo esc_attr($content_size); ?>px; color: <?php echo esc_attr(abf_get_styleguide_color_value($content_color)); ?>;">
                                     <?php echo wp_kses_post($content); ?>
                                 </div>
                             </div>

@@ -107,8 +107,8 @@
                 .styleguide-bild-text-headline {
                     margin: 0;
                     padding: 0;
-                    line-height: 1.2;
-                    letter-spacing: normal;
+                    line-height: 1.2; // $line-height-headline nicht verfügbar in diesem Kontext
+                    letter-spacing: $letter-spacing-base;
                     font-family: $font-family-primary;
                     word-wrap: break-word;
                     overflow-wrap: break-word;
@@ -126,8 +126,8 @@
                 .styleguide-bild-text-text {
                     margin: 0;
                     padding: 0;
-                    line-height: 1.2;
-                    letter-spacing: normal;
+                    line-height: 1.4; // $line-height-base nicht verfügbar in diesem Kontext
+                    letter-spacing: $letter-spacing-base;
                     font-family: $font-family-primary;
                     word-wrap: break-word;
                     overflow-wrap: break-word;

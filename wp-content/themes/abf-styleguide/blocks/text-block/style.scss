@@ -129,7 +129,7 @@
     margin: 0 0 $spacing-md 0;
     font-family: $font-family-primary;
     text-align: left;
-    line-height: 1.2;
+    line-height: 1.2; // $line-height-headline nicht verfügbar in diesem Kontext
     word-wrap: break-word;
     hyphens: auto;
 }
@@ -138,7 +138,7 @@
     margin: 0 0 $spacing-md 0;
     font-family: $font-family-primary;
     text-align: left;
-    line-height: 1.3;
+    line-height: 1.4; // $line-height-base nicht verfügbar in diesem Kontext
     word-wrap: break-word;
     hyphens: auto;
 }
@@ -147,7 +147,7 @@
     margin: 0 0 $spacing-lg 0;
     font-family: $font-family-primary;
     color: inherit;
-    line-height: 1.6;
+    line-height: 1.4; // $line-height-base nicht verfügbar in diesem Kontext
     text-align: left;
     
     // Standard richtext styling

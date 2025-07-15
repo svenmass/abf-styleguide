@@ -30,39 +30,7 @@ $button_text_color = get_field('ste_button_text_color') ?: 'white';
 $button_hover_bg_color = get_field('ste_button_hover_bg_color') ?: 'secondary';
 $button_hover_text_color = get_field('ste_button_hover_text_color') ?: 'white';
 
-// Convert color choices to actual values
-if (!function_exists('abf_get_styleguide_color_value')) {
-    function abf_get_styleguide_color_value($color_choice) {
-        if (!$color_choice || $color_choice === 'inherit') {
-            return 'inherit';
-        }
-        
-        // Handle basic colors
-        if ($color_choice === 'white') {
-            return '#ffffff';
-        } elseif ($color_choice === 'black') {
-            return '#000000';
-        }
-        
-        // Try to get dynamic color from colors.json
-        if (function_exists('abf_get_color_value')) {
-            $color_value = abf_get_color_value($color_choice);
-            if ($color_value) {
-                return $color_value;
-            }
-        }
-        
-        // Handle primary and secondary colors with fallbacks
-        if ($color_choice === 'primary') {
-            return '#66a98c'; // ABF Grün from colors.json
-        } elseif ($color_choice === 'secondary') {
-            return '#c50d14'; // ABF Rot from colors.json
-        }
-        
-        // Fallback to CSS variable
-        return "var(--color-" . sanitize_title($color_choice) . ")";
-    }
-}
+// Color function is now centralized in functions.php
 
 // Handle button URLs with modal triggers
 $href_attr = '#';

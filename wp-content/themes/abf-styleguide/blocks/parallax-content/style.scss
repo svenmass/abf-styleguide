@@ -90,14 +90,14 @@
     margin: 0 0 $spacing-md 0;
     font-family: $font-family-primary;
     text-align: left;
-    line-height: 1.2;
+    line-height: 1.2; // $line-height-headline nicht verfügbar in diesem Kontext
 }
 
 .parallax-content-richtext {
     margin: 0 0 $spacing-lg 0;
     font-family: $font-family-primary;
     color: inherit;
-    line-height: 1.6;
+    line-height: 1.4; // $line-height-base nicht verfügbar in diesem Kontext
     
     // Standard richtext styling
     p {
