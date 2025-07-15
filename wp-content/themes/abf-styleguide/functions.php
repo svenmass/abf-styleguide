@@ -57,4 +57,44 @@ function abf_enable_debug() {
  */
 require_once get_template_directory() . '/inc/user-management/init.php';
 
+/**
+ * Format download links to include file type and size
+ * Automatically adds [dokumenttype, größe in kB] to download links
+ */
+function format_download_links($content) {
+    return preg_replace_callback(
+        '#<a\s[^>]*href="([^"]+\.(pdf|zip|jpg|jpeg|png|svg|dotx|xls|xlsx))"[^>]*>(.*?)</a>#i',
+        function ($matches) {
+            $file_url = $matches[1];
+            $file_extension = $matches[2];
+            $link_text = $matches[3];
+
+            // Convert relative URLs to absolute paths
+            if (strpos($file_url, 'http') !== 0) {
+                $file_url = site_url($file_url);
+            }
+
+            // Get local file path
+            $file_path = ABSPATH . str_replace(site_url() . '/', '', $file_url);
+
+            // Get file type and size
+            $filetype = strtoupper($file_extension);
+            $filesize = 'Unbekannt';
+            
+            if (file_exists($file_path)) {
+                $filesize_bytes = filesize($file_path);
+                $filesize = size_format($filesize_bytes);
+            }
+
+            // Return formatted link with meta information
+            return '<a href="' . esc_url($file_url) . '" download>' . 
+                   $link_text . 
+                   '<span class="file-meta">[' . $filetype . ', ' . $filesize . ']</span>' .
+                   '</a>';
+        },
+        $content
+    );
+}
+add_filter('the_content', 'format_download_links');
+
 
