@@ -512,7 +512,7 @@
     
     &:hover,
     &:focus {
-        text-decoration: underline;
+        text-decoration: none; // Keine Underline bei Hover/Focus
     }
 }
 
