@@ -39,18 +39,6 @@ if (!function_exists('abf_get_accordion_h_tag')) {
     }
 }
 
-// Helper function for file meta information
-function abf_get_file_meta($file) {
-    if (!$file || !isset($file['url'])) {
-        return '';
-    }
-    
-    $file_extension = strtoupper(pathinfo($file['url'], PATHINFO_EXTENSION));
-    $file_size = isset($file['filesize']) ? round($file['filesize'] / 1024, 0) : 0;
-    
-    return "<span class=\"file-meta\">[{$file_extension}, {$file_size} kB]</span>";
-}
-
 // Get content fields
 $headline_text = $fields['sa_headline_text'] ?? '';
 $headline_tag = $fields['sa_headline_tag'] ?? 'h2';

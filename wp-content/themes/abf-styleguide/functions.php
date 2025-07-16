@@ -131,4 +131,19 @@ function abf_get_styleguide_color_value($color_choice) {
     return "var(--color-" . sanitize_title($color_choice) . ")";
 }
 
+/**
+ * Helper function for file meta information
+ * Used in various blocks to display file extension and size
+ */
+function abf_get_file_meta($file) {
+    if (!$file || !isset($file['url'])) {
+        return '';
+    }
+    
+    $file_extension = strtoupper(pathinfo($file['url'], PATHINFO_EXTENSION));
+    $file_size = isset($file['filesize']) ? round($file['filesize'] / 1024, 0) : 0;
+    
+    return "<span class=\"file-meta\">[{$file_extension}, {$file_size} kB]</span>";
+}
+
 
