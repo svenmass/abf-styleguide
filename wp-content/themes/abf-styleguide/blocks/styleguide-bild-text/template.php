@@ -3,6 +3,18 @@
  * Styleguide Bild-Text Block Template
  */
 
+// Helper function for file meta information
+function abf_get_file_meta($file) {
+    if (!$file || !isset($file['url'])) {
+        return '';
+    }
+    
+    $file_extension = strtoupper(pathinfo($file['url'], PATHINFO_EXTENSION));
+    $file_size = isset($file['filesize']) ? round($file['filesize'] / 1024, 0) : 0;
+    
+    return "<span class=\"file-meta\">[{$file_extension}, {$file_size} kB]</span>";
+}
+
 // Get the block ID
 $block_id = 'styleguide-bild-text-' . $block['id'];
 
@@ -123,6 +135,9 @@ $text_column_fr = $image_position === 'left' ? $right_fr : $left_fr;
                                         <a href="<?php echo esc_url($download['download_link']['url']); ?>" 
                                            download>
                                             <?php echo esc_html($download['download_title']); ?>
+                                            <?php if ($download['download_link']['filesize']): ?>
+                                                <?php echo abf_get_file_meta($download['download_link']); ?>
+                                            <?php endif; ?>
                                         </a>
                                     <?php endif; ?>
                                 <?php endforeach; ?>
@@ -184,6 +199,9 @@ $text_column_fr = $image_position === 'left' ? $right_fr : $left_fr;
                                         <a href="<?php echo esc_url($download['download_link']['url']); ?>" 
                                            download>
                                             <?php echo esc_html($download['download_title']); ?>
+                                            <?php if ($download['download_link']['filesize']): ?>
+                                                <?php echo abf_get_file_meta($download['download_link']); ?>
+                                            <?php endif; ?>
                                         </a>
                                     <?php endif; ?>
                                 <?php endforeach; ?>
