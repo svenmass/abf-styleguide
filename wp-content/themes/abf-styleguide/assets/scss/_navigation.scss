@@ -183,9 +183,9 @@
     padding: 0 0 0 11px; // 3px border + 4px Abstand + 4px extra
     color: #575756;
     text-decoration: none;
-    font-weight: 400;
+    font-weight: $font-weight-semibold; // Top-Level automatisch semibold
     border-left: none; // Kein Border mehr, wird durch ::before ersetzt
-    transition: font-weight 0.2s;
+    transition: color 0.2s;
     border-radius: 0;
     background: none;
     height: 48px;
@@ -195,7 +195,7 @@
     flex: 1; // Nimmt verfügbaren Platz ein
     position: relative;
     
-    // Pseudo-Element für den Strich (nur Schrift-Höhe)
+    // Pseudo-Element für den Strich (nur Schrift-Höhe) - nur Top-Level
     &::before {
         content: '';
         position: absolute;
@@ -210,10 +210,7 @@
     
     &:hover,
     &:focus {
-        font-weight: $font-weight-bold;
-        background: none;
-        border-radius: 0;
-        
+        // Text bleibt semibold, nur Balken wird angezeigt
         &::before {
             background-color: var(--color-primary, #007cba);
         }
@@ -224,24 +221,20 @@
     .current-menu-ancestor &,
     .current-page-parent &,
     .current-page-ancestor & {
-        font-weight: $font-weight-bold;
-        
         &::before {
             background-color: var(--color-primary, #007cba);
         }
     }
 }
 
-.navigation__menu-item:hover > .navigation__menu-link,
-.navigation__menu-item--current > .navigation__menu-link,
-.navigation__menu-item.current-menu-item > .navigation__menu-link,
-.navigation__menu-item.current-menu-ancestor > .navigation__menu-link,
-.navigation__menu-item.current-page-parent > .navigation__menu-link,
-.navigation__menu-item.current-page-ancestor > .navigation__menu-link {
-    font-weight: $font-weight-bold;
-    background: none;
-    border-radius: 0;
-    
+// Top-Level Navigation: Hover und aktive Zustände (nur Balken)
+.navigation__menu > .navigation__menu-item:hover > .navigation__menu-link,
+.navigation__menu > .navigation__menu-item--current > .navigation__menu-link,
+.navigation__menu > .navigation__menu-item.current-menu-item > .navigation__menu-link,
+.navigation__menu > .navigation__menu-item.current-menu-ancestor > .navigation__menu-link,
+.navigation__menu > .navigation__menu-item.current-page-parent > .navigation__menu-link,
+.navigation__menu > .navigation__menu-item.current-page-ancestor > .navigation__menu-link {
+    // Text bleibt semibold, nur Balken wird angezeigt
     &::before {
         background-color: var(--color-primary, #007cba);
     }
@@ -278,6 +271,37 @@
         font-size: 16px;
         height: 40px;
         line-height: 40px;
+        font-weight: $font-weight-light; // Submenu-Links light
+        padding-left: 4px; // Weniger Padding da kein Balken
+        
+        // Kein Balken für Submenu-Links
+        &::before {
+            display: none;
+        }
+        
+        // Submenu-Hover: nur Farbänderung
+        &:hover,
+        &:focus {
+            color: #c50d14;
+            font-weight: $font-weight-light; // Bleibt light
+            
+            &::before {
+                display: none; // Sicher kein Balken
+            }
+        }
+    }
+    
+    // Aktive Submenu-Items
+    .current-menu-item > .navigation__menu-link,
+    .current-menu-ancestor > .navigation__menu-link,
+    .current-page-parent > .navigation__menu-link,
+    .current-page-ancestor > .navigation__menu-link {
+        color: #c50d14;
+        font-weight: $font-weight-light; // Bleibt light
+        
+        &::before {
+            display: none; // Kein Balken
+        }
     }
 }
 
