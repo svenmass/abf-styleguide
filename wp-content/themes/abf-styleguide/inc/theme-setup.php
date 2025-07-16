@@ -66,5 +66,8 @@ function abf_image_sizes() {
     add_image_size('abf-hero', 1920, 800, true);
     add_image_size('abf-thumbnail', 400, 300, true);
     add_image_size('abf-medium', 800, 600, true);
+    
+    // Set post-thumbnail size for cards (16:10 aspect ratio)
+    set_post_thumbnail_size(400, 250, true);
 }
 add_action('after_setup_theme', 'abf_image_sizes'); 

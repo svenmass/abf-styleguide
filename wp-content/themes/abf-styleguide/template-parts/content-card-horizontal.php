@@ -9,13 +9,11 @@
 $post_id = get_the_ID();
 $post_title = get_the_title();
 $post_permalink = get_permalink();
-$post_thumbnail = get_the_post_thumbnail_url($post_id, 'abf-medium');
 $post_excerpt = get_the_excerpt();
 
-// Default thumbnail if none exists
-if (!$post_thumbnail) {
-    $post_thumbnail = get_template_directory_uri() . '/assets/images/logo.svg';
-}
+// Get post thumbnail with fallback logic
+$post_thumbnail = abf_get_card_thumbnail_url($post_id, 'abf-medium');
+$thumbnail_alt = abf_get_card_thumbnail_alt($post_id);
 
 // Get categories
 $categories = get_the_category();
@@ -38,7 +36,7 @@ $arrow_icon = '<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns
     <!-- Card Image -->
     <div class="card__image">
         <img src="<?php echo esc_url($post_thumbnail); ?>" 
-             alt="<?php echo esc_attr($post_title); ?>" 
+             alt="<?php echo esc_attr($thumbnail_alt ?: $post_title); ?>" 
              loading="lazy">
     </div>
     

@@ -141,4 +141,37 @@ function abf_styleguide_post_thumbnail() {
 
         <?php
     endif; // End is_singular().
+}
+
+/**
+ * Get post thumbnail URL for cards with proper fallback
+ */
+function abf_get_card_thumbnail_url($post_id = null, $size = 'abf-medium') {
+    if (!$post_id) {
+        $post_id = get_the_ID();
+    }
+    
+    // Check if post has thumbnail
+    if (has_post_thumbnail($post_id)) {
+        return get_the_post_thumbnail_url($post_id, $size);
+    }
+    
+    // Fallback to theme default
+    return get_template_directory_uri() . '/assets/images/logo.svg';
+}
+
+/**
+ * Get post thumbnail alt text
+ */
+function abf_get_card_thumbnail_alt($post_id = null) {
+    if (!$post_id) {
+        $post_id = get_the_ID();
+    }
+    
+    if (has_post_thumbnail($post_id)) {
+        $alt = get_post_meta(get_post_thumbnail_id($post_id), '_wp_attachment_image_alt', true);
+        return $alt ?: get_the_title($post_id);
+    }
+    
+    return 'Kein Beitragsbild verfügbar';
 } 
