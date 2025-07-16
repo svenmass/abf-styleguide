@@ -298,7 +298,23 @@
         &.menu-item-has-children {
             display: flex; // Flexbox für Items mit Kindern
             align-items: center;
-            flex-wrap: nowrap; // Plus-Icon bleibt in derselben Zeile
+            flex-wrap: wrap; // Submenu kann in neue Zeile (darunter)
+            
+            // Container für Link und Toggle nebeneinander
+            > .navigation__menu-link {
+                flex: 1; // Link nimmt verfügbaren Platz
+            }
+            
+            // Plus-Icon rechtsbündig
+            > .navigation__submenu-toggle {
+                margin-left: auto; // Rechtsbündig
+            }
+            
+            // Submenu darunter anzeigen
+            > .navigation__submenu {
+                flex-basis: 100%; // Nimmt volle Breite in neuer Zeile
+                margin-top: 0; // Kein zusätzlicher Abstand
+            }
         }
     }
     
@@ -357,12 +373,28 @@
     .navigation__submenu {
         padding-left: 12px; // Zusätzliche Einrückung für dritte Ebene
         
-        // Menu-Items in der dritten Ebene: sicherstellen, dass Plus-Icon in derselben Zeile bleibt
+        // Menu-Items in der dritten Ebene: konsistente Struktur mit anderen Ebenen
         .navigation__menu-item {
             &.menu-item-has-children {
                 display: flex;
                 align-items: center;
-                flex-wrap: nowrap; // Verhindert Zeilenumbruch beim Plus-Icon
+                flex-wrap: wrap; // Submenu kann in neue Zeile (darunter)
+                
+                // Container für Link und Toggle nebeneinander
+                > .navigation__menu-link {
+                    flex: 1; // Link nimmt verfügbaren Platz
+                }
+                
+                // Plus-Icon rechtsbündig
+                > .navigation__submenu-toggle {
+                    margin-left: auto; // Rechtsbündig
+                }
+                
+                // Submenu darunter anzeigen
+                > .navigation__submenu {
+                    flex-basis: 100%; // Nimmt volle Breite in neuer Zeile
+                    margin-top: 0; // Kein zusätzlicher Abstand
+                }
             }
         }
         
