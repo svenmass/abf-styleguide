@@ -61,11 +61,11 @@
     display: flex;
     flex-direction: column;
     height: 100%;
-    padding: $spacing-lg;
+    padding: $spacing-lg $spacing-xs $spacing-lg $spacing-lg; // top right bottom left
     overflow-x: hidden; // Verhindert horizontalen Scrollbalken
     
     @media (min-width: $breakpoint-desktop-small) {
-        padding: $spacing-lg;
+        padding: $spacing-lg $spacing-xs $spacing-lg $spacing-lg; // top right bottom left
     }
 }
 
@@ -157,7 +157,7 @@
 
 .navigation__menu {
     list-style: none;
-    margin: 0;
+    margin: 150px 0 0 0; // top right bottom left
     padding: 0;
     padding-left: 0; // bündig mit Logo
     font-family: $font-family-primary;
