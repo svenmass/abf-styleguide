@@ -8,7 +8,7 @@ if (!defined('ABSPATH')) {
 }
 ?>
 
-<nav class="navigation show-desktop-sidebar" id="site-navigation">
+<nav class="navigation" id="site-navigation">
     <div class="navigation__container">
         <!-- Logo in Navigation -->
         <div class="navigation__logo">

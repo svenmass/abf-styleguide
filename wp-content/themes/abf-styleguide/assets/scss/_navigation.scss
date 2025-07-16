@@ -422,13 +422,7 @@
     }
 }
 
-// Utility-Klasse: Sidebar-Navigation nur ab Desktop Small anzeigen
-.show-desktop-sidebar {
-    display: none;
-    @media (min-width: $breakpoint-desktop-small) {
-        display: block;
-    }
-}
+// Utility-Klasse nicht mehr benötigt - Navigation ist jetzt responsive
 
 // =============================================================================
 // NEUES CSS GRID LAYOUT SYSTEM
