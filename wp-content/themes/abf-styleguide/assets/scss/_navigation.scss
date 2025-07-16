@@ -153,6 +153,25 @@
     padding: 0;
     position: relative;
     
+    // Flexbox-Container für Link und Toggle
+    > .navigation__menu-link,
+    > .navigation__submenu-toggle {
+        display: flex;
+        align-items: center;
+    }
+    
+    // Container für Link und Toggle nebeneinander
+    > .navigation__menu-link {
+        flex: 1;
+    }
+    
+    // Wenn Item einen Toggle hat, beide nebeneinander anzeigen
+    &.menu-item-has-children {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap; // Submenu kann in neue Zeile
+    }
+    
     &--open > .navigation__submenu-toggle {
         transform: rotate(45deg);
     }
@@ -161,45 +180,65 @@
 .navigation__menu-link {
     display: flex;
     align-items: center;
-    padding: 0 0 0 0; // kein extra padding
+    padding: 0 0 0 11px; // 3px border + 4px Abstand + 4px extra
     color: #575756;
     text-decoration: none;
     font-weight: 400;
-    border-left: 2px solid transparent;
-    transition: border-color 0.2s, font-weight 0.2s;
+    border-left: none; // Kein Border mehr, wird durch ::before ersetzt
+    transition: font-weight 0.2s;
     border-radius: 0;
     background: none;
     height: 48px;
     line-height: 48px;
     font-family: inherit;
     font-size: inherit;
-    // Abstand zwischen border und Text
-    padding-left: 6px; // 2px border + 4px Abstand
+    flex: 1; // Nimmt verfügbaren Platz ein
+    position: relative;
+    
+    // Pseudo-Element für den Strich (nur Schrift-Höhe)
+    &::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 3px;
+        height: 1.2em; // Schrift-Höhe
+        background: transparent;
+        transition: background-color 0.2s;
+    }
     
     &:hover,
     &:focus {
-        border-left: 2px solid var(--color-primary, #007cba);
         font-weight: $font-weight-bold;
         background: none;
         border-radius: 0;
+        
+        &::before {
+            background-color: var(--color-primary, #007cba);
+        }
     }
 }
 
 .navigation__menu-item:hover > .navigation__menu-link,
 .navigation__menu-item--current > .navigation__menu-link {
-    border-left: 2px solid var(--color-primary, #007cba);
     font-weight: $font-weight-bold;
     background: none;
     border-radius: 0;
+    
+    &::before {
+        background-color: var(--color-primary, #007cba);
+    }
 }
 
 // Submenu-Icon (Plus)
 .navigation__submenu-toggle {
-    margin-left: auto;
     display: flex;
     align-items: center;
     cursor: pointer;
     transition: transform 0.2s;
+    padding: 0 8px;
+    flex-shrink: 0; // Verhindert Verkleinerung
 }
 
 // Submenu
@@ -207,12 +246,28 @@
     list-style: none;
     margin: 0;
     padding: 0 0 0 24px;
+    display: none; // Standardmäßig ausgeblendet
+    width: 100%;
+    flex-basis: 100%; // Nimmt volle Breite in Flexbox
+    
+    .navigation__menu-item {
+        display: block; // Submenu-Items nicht als Flexbox
+        
+        &.menu-item-has-children {
+            display: block; // Auch Submenu-Items mit Kindern als Block
+        }
+    }
     
     .navigation__menu-link {
         font-size: 16px;
         height: 40px;
         line-height: 40px;
     }
+}
+
+// Submenu anzeigen wenn Parent geöffnet
+.navigation__menu-item--open > .navigation__submenu {
+    display: block;
 }
 
 .navigation__footer {

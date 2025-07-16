@@ -56,11 +56,7 @@ const navigationClose = document.querySelector('.navigation__close');
             const li = toggle.closest('li');
             if (li) {
                 li.classList.toggle('navigation__menu-item--open');
-                // Submenu ein-/ausblenden (optional, falls nicht per CSS)
-                const submenu = li.querySelector('.navigation__submenu');
-                if (submenu) {
-                    submenu.style.display = li.classList.contains('navigation__menu-item--open') ? 'block' : 'none';
-                }
+                // Submenu wird jetzt vollständig über CSS gesteuert
             }
         });
     });
