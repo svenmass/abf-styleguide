@@ -218,10 +218,26 @@
             background-color: var(--color-primary, #007cba);
         }
     }
+    
+    // Aktive Seite (WordPress-Klassen)
+    .current-menu-item &,
+    .current-menu-ancestor &,
+    .current-page-parent &,
+    .current-page-ancestor & {
+        font-weight: $font-weight-bold;
+        
+        &::before {
+            background-color: var(--color-primary, #007cba);
+        }
+    }
 }
 
 .navigation__menu-item:hover > .navigation__menu-link,
-.navigation__menu-item--current > .navigation__menu-link {
+.navigation__menu-item--current > .navigation__menu-link,
+.navigation__menu-item.current-menu-item > .navigation__menu-link,
+.navigation__menu-item.current-menu-ancestor > .navigation__menu-link,
+.navigation__menu-item.current-page-parent > .navigation__menu-link,
+.navigation__menu-item.current-page-ancestor > .navigation__menu-link {
     font-weight: $font-weight-bold;
     background: none;
     border-radius: 0;
@@ -244,8 +260,8 @@
 // Submenu
 .navigation__submenu {
     list-style: none;
-    margin: 0;
-    padding: 0 0 0 24px;
+    margin: -12px 0 0 0; // 12px nach oben ziehen
+    padding: 0 0 0 12px; // 12px nach vorne (statt 24px)
     display: none; // Standardmäßig ausgeblendet
     width: 100%;
     flex-basis: 100%; // Nimmt volle Breite in Flexbox
