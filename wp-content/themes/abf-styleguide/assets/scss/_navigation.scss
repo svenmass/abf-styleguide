@@ -268,7 +268,7 @@
     flex-shrink: 0; // Verhindert Verkleinerung
 }
 
-// Submenu
+// Submenu - Gilt für alle Ebenen
 .navigation__submenu {
     list-style: none;
     margin: 0 0 0 0; // User-Anpassung: kein negativer Margin mehr
@@ -283,8 +283,15 @@
     transform: scaleY(0); // Start collapsed
     transform-origin: top; // Animation von oben
     transition: max-height 0.4s cubic-bezier(0.4, 0.0, 0.2, 1), 
-                opacity 0.3s ease-out 0.1s, 
+                opacity 0.3s ease-out, 
                 transform 0.4s cubic-bezier(0.4, 0.0, 0.2, 1); // Smooth Aufklappen
+    
+    // Ensure nested submenus inherit the same behavior
+    .navigation__submenu {
+        transition: max-height 0.4s cubic-bezier(0.4, 0.0, 0.2, 1), 
+                    opacity 0.3s ease-out, 
+                    transform 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
+    }
     
     .navigation__menu-item {
         display: block; // Submenu-Items nicht als Flexbox
@@ -346,25 +353,39 @@
     }
 }
 
-// Submenu anzeigen wenn Parent geöffnet
+// Submenu anzeigen wenn Parent geöffnet - gilt für alle Ebenen
 .navigation__menu-item--open > .navigation__submenu {
     max-height: 320px; // 10 Items à 32px = 320px (angepasst für kleinere Links)
     opacity: 1;
     transform: scaleY(1);
     transition: max-height 0.4s cubic-bezier(0.4, 0.0, 0.2, 1), 
-                opacity 0.3s ease-out 0.1s, 
+                opacity 0.3s ease-out, 
                 transform 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
+    
+    // Ensure nested open submenus also get smooth animation
+    .navigation__menu-item--open > .navigation__submenu {
+        transition: max-height 0.4s cubic-bezier(0.4, 0.0, 0.2, 1), 
+                    opacity 0.3s ease-out, 
+                    transform 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
+    }
 }
 
-// Aktive Submenu-Seite: bleibt immer geöffnet
+// Aktive Submenu-Seite: bleibt immer geöffnet - gilt für alle Ebenen
 .navigation__menu-item--active-child {
     > .navigation__submenu {
         max-height: 320px;
         opacity: 1;
         transform: scaleY(1);
         transition: max-height 0.4s cubic-bezier(0.4, 0.0, 0.2, 1), 
-                    opacity 0.3s ease-out 0.1s, 
+                    opacity 0.3s ease-out, 
                     transform 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
+        
+        // Ensure nested active submenus also get smooth animation
+        .navigation__menu-item--active-child > .navigation__submenu {
+            transition: max-height 0.4s cubic-bezier(0.4, 0.0, 0.2, 1), 
+                        opacity 0.3s ease-out, 
+                        transform 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
+        }
     }
     
     // Plus-Icon für aktive Submenu-Seite: bleibt in "open" Position
