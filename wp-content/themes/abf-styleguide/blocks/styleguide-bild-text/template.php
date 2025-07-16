@@ -112,6 +112,23 @@ $text_column_fr = $image_position === 'left' ? $right_fr : $left_fr;
                             </div>
                         <?php endif; ?>
                         
+                        <?php 
+                        // Downloads/Links
+                        $downloads = get_field('sbt_downloads');
+                        if ($downloads && is_array($downloads) && count($downloads) > 0): 
+                        ?>
+                            <div class="styleguide-bild-text-downloads">
+                                <?php foreach ($downloads as $download): ?>
+                                    <?php if ($download['download_title'] && $download['download_link']): ?>
+                                        <a href="<?php echo esc_url($download['download_link']['url']); ?>" 
+                                           <?php echo $download['download_link']['target'] ? 'target="' . esc_attr($download['download_link']['target']) . '"' : ''; ?>>
+                                            <?php echo esc_html($download['download_title']); ?>
+                                        </a>
+                                    <?php endif; ?>
+                                <?php endforeach; ?>
+                            </div>
+                        <?php endif; ?>
+                        
                         <?php if ($show_button && $button_text && $button_url): ?>
                             <?php
                             $button_styles = [];
@@ -153,6 +170,23 @@ $text_column_fr = $image_position === 'left' ? $right_fr : $left_fr;
                             <div class="styleguide-bild-text-text" 
                                 style="font-weight: <?php echo esc_attr($text_weight); ?>; font-size: <?php echo esc_attr($text_size); ?>px; color: <?php echo esc_attr(abf_get_styleguide_color_value($text_color)); ?>;">
                                 <?php echo wp_kses_post($text_content); ?>
+                            </div>
+                        <?php endif; ?>
+                        
+                        <?php 
+                        // Downloads/Links
+                        $downloads = get_field('sbt_downloads');
+                        if ($downloads && is_array($downloads) && count($downloads) > 0): 
+                        ?>
+                            <div class="styleguide-bild-text-downloads">
+                                <?php foreach ($downloads as $download): ?>
+                                    <?php if ($download['download_title'] && $download['download_link']): ?>
+                                        <a href="<?php echo esc_url($download['download_link']['url']); ?>" 
+                                           <?php echo $download['download_link']['target'] ? 'target="' . esc_attr($download['download_link']['target']) . '"' : ''; ?>>
+                                            <?php echo esc_html($download['download_title']); ?>
+                                        </a>
+                                    <?php endif; ?>
+                                <?php endforeach; ?>
                             </div>
                         <?php endif; ?>
                         

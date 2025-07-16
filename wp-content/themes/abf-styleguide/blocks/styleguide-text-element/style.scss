@@ -309,5 +309,22 @@
                 }
             }
         }
+        
+        // =============================================================================
+        // DOWNLOADS STYLING
+        // =============================================================================
+        .styleguide-text-element-downloads {
+            margin-top: $spacing-sm;
+            margin-bottom: $spacing-sm;
+            
+            a {
+                display: block;
+                margin-bottom: $spacing-xs;
+                
+                &:last-child {
+                    margin-bottom: 0;
+                }
+            }
+        }
     }
 } 

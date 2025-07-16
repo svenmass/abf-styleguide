@@ -190,6 +190,67 @@ return array(
         ),
         
         // =============================================================================
+        // DOWNLOADS EINSTELLUNGEN
+        // =============================================================================
+        array(
+            'key' => 'field_ste_downloads_tab',
+            'label' => 'Downloads',
+            'name' => '',
+            'type' => 'tab',
+            'placement' => 'top',
+        ),
+        array(
+            'key' => 'field_ste_downloads',
+            'label' => 'Downloads/Links',
+            'name' => 'ste_downloads',
+            'type' => 'repeater',
+            'instructions' => 'Fügen Sie Downloads oder Links hinzu, die automatisch formatiert werden',
+            'required' => 0,
+            'conditional_logic' => 0,
+            'wrapper' => array(
+                'width' => '',
+                'class' => '',
+                'id' => '',
+            ),
+            'collapsed' => 'field_ste_download_title',
+            'min' => 0,
+            'max' => 20,
+            'layout' => 'table',
+            'button_label' => 'Download/Link hinzufügen',
+            'sub_fields' => array(
+                array(
+                    'key' => 'field_ste_download_title',
+                    'label' => 'Titel',
+                    'name' => 'download_title',
+                    'type' => 'text',
+                    'instructions' => 'Anzeigename für den Download/Link',
+                    'required' => 1,
+                    'default_value' => '',
+                    'placeholder' => 'z.B. "Broschüre herunterladen"',
+                    'wrapper' => array(
+                        'width' => '40',
+                        'class' => '',
+                        'id' => '',
+                    ),
+                ),
+                array(
+                    'key' => 'field_ste_download_link',
+                    'label' => 'Link/Datei',
+                    'name' => 'download_link',
+                    'type' => 'link',
+                    'instructions' => 'URL oder Datei aus der Mediathek',
+                    'required' => 1,
+                    'return_format' => 'array',
+                    'wrapper' => array(
+                        'width' => '60',
+                        'class' => '',
+                        'id' => '',
+                    ),
+                ),
+            ),
+        ),
+        
+        // =============================================================================
         // BUTTON EINSTELLUNGEN
         // =============================================================================
         array(

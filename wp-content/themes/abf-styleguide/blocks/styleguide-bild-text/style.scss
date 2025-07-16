@@ -283,5 +283,22 @@
                 }
             }
         }
+        
+        // =============================================================================
+        // DOWNLOADS STYLING
+        // =============================================================================
+        .styleguide-bild-text-downloads {
+            margin-top: $spacing-sm;
+            margin-bottom: $spacing-sm;
+            
+            a {
+                display: block;
+                margin-bottom: $spacing-xs;
+                
+                &:last-child {
+                    margin-bottom: 0;
+                }
+            }
+        }
     }
 } 

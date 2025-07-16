@@ -74,6 +74,23 @@ if ($button_url) {
                 </div>
             <?php endif; ?>
             
+            <?php 
+            // Downloads/Links
+            $downloads = get_field('ste_downloads');
+            if ($downloads && is_array($downloads) && count($downloads) > 0): 
+            ?>
+                <div class="styleguide-text-element-downloads">
+                    <?php foreach ($downloads as $download): ?>
+                        <?php if ($download['download_title'] && $download['download_link']): ?>
+                            <a href="<?php echo esc_url($download['download_link']['url']); ?>" 
+                               <?php echo $download['download_link']['target'] ? 'target="' . esc_attr($download['download_link']['target']) . '"' : ''; ?>>
+                                <?php echo esc_html($download['download_title']); ?>
+                            </a>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
+            
             <?php if ($show_button && $button_text): ?>
                 <?php if ($button_url): ?>
                     <?php
