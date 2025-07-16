@@ -51,7 +51,11 @@ const navigationClose = document.querySelector('.navigation__close');
     
     // Beim Laden: Aktive Submenu-Seiten automatisch öffnen
     function openActiveSubmenus() {
+        // Erweiterte Suche nach aktiven Submenu-Items
         const activeSubmenus = document.querySelectorAll('.navigation__submenu .current-menu-item, .navigation__submenu .current-menu-ancestor, .navigation__submenu .current-page-parent, .navigation__submenu .current-page-ancestor');
+        
+        // Auch Top-Level aktive Items berücksichtigen
+        const activeTopLevel = document.querySelectorAll('.navigation__menu > .current-menu-ancestor, .navigation__menu > .current-page-ancestor');
         
         activeSubmenus.forEach(function(activeItem) {
             const parentMenuItem = activeItem.closest('.navigation__menu-item');
@@ -60,10 +64,21 @@ const navigationClose = document.querySelector('.navigation__close');
                 parentMenuItem.classList.add('navigation__menu-item--active-child'); // Marker für aktive Submenu-Seite
             }
         });
+        
+        // Top-Level Items mit aktiven Kindern ebenfalls öffnen
+        activeTopLevel.forEach(function(activeItem) {
+            if (activeItem.querySelector('.navigation__submenu')) {
+                activeItem.classList.add('navigation__menu-item--open');
+                activeItem.classList.add('navigation__menu-item--active-child');
+            }
+        });
     }
     
-    // Beim Laden ausführen
-    openActiveSubmenus();
+    // Beim Laden ausführen - mit setTimeout für bessere Kompatibilität
+    setTimeout(openActiveSubmenus, 100);
+    
+    // Zusätzlich bei window.load ausführen
+    window.addEventListener('load', openActiveSubmenus);
     
     // Submenu-Toggle (Plus-Icon) mit Accordion-Verhalten
     document.querySelectorAll('.navigation__submenu-toggle').forEach(function(toggle) {
@@ -85,8 +100,12 @@ const navigationClose = document.querySelector('.navigation__close');
                 if (!hasActiveChild) {
                     li.classList.toggle('navigation__menu-item--open');
                 } else {
-                    // Aktive Submenu-Seite bleibt immer geöffnet
-                    li.classList.add('navigation__menu-item--open');
+                    // Aktive Submenu-Seite: Wenn geklickt, schließen erlauben, aber bei anderem Klick wieder öffnen
+                    if (isCurrentlyOpen) {
+                        li.classList.remove('navigation__menu-item--open');
+                    } else {
+                        li.classList.add('navigation__menu-item--open');
+                    }
                 }
             }
         });
