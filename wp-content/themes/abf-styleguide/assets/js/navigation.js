@@ -61,6 +61,22 @@ const navigationClose = document.querySelector('.navigation__close');
         });
     });
     
+    // Submenu-Links: Navigation nicht schließen, aktiven Punkt anzeigen
+    document.querySelectorAll('.navigation__submenu .navigation__menu-link').forEach(function(link) {
+        link.addEventListener('click', function(e) {
+            // Entferne aktive Klasse von allen anderen Submenu-Links
+            document.querySelectorAll('.navigation__submenu .navigation__menu-link').forEach(function(otherLink) {
+                otherLink.classList.remove('navigation__menu-link--active');
+            });
+            
+            // Füge aktive Klasse zum geklickten Link hinzu
+            this.classList.add('navigation__menu-link--active');
+            
+            // Navigation bleibt offen (kein closeNavigation() aufrufen)
+            // Link-Funktion wird normal ausgeführt
+        });
+    });
+    
     function openNavigation() {
         if (navigation) {
             navigation.classList.add('navigation--active');
