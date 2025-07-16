@@ -253,13 +253,19 @@
 // Submenu
 .navigation__submenu {
     list-style: none;
-    margin: -12px 0 0 0; // 12px nach oben ziehen
+    margin: 0 0 0 0; // User-Anpassung: kein negativer Margin mehr
     padding: 0 0 0 6px; // 6px nach vorne (weiter nach links)
-    display: none; // Standardmäßig ausgeblendet
+    display: block; // Immer block, nur Höhe animiert
     width: 100%;
     flex-basis: 100%; // Nimmt volle Breite in Flexbox
     overflow: hidden; // Für smooth Animation
-    transition: max-height 0.3s ease-out; // Smooth Aufklappen
+    max-height: 0; // Start collapsed
+    opacity: 0; // Start transparent
+    transform: scaleY(0); // Start collapsed
+    transform-origin: top; // Animation von oben
+    transition: max-height 0.4s cubic-bezier(0.4, 0.0, 0.2, 1), 
+                opacity 0.3s ease-out 0.1s, 
+                transform 0.4s cubic-bezier(0.4, 0.0, 0.2, 1); // Smooth Aufklappen
     
     .navigation__menu-item {
         display: block; // Submenu-Items nicht als Flexbox
@@ -271,8 +277,8 @@
     
     .navigation__menu-link {
         font-size: 16px;
-        height: 40px;
-        line-height: 40px;
+        height: 32px; // 8px kleiner (war 40px)
+        line-height: 32px; // 8px kleiner (war 40px)
         font-weight: $font-weight-light; // Submenu-Links light
         padding-left: 4px; // Weniger Padding da kein Balken
         text-decoration: none; // Kein Underline
@@ -323,17 +329,12 @@
 
 // Submenu anzeigen wenn Parent geöffnet
 .navigation__menu-item--open > .navigation__submenu {
-    display: block;
-    max-height: 500px; // Ausreichend für alle Submenu-Items
-    transition: max-height 0.3s ease-out, opacity 0.2s ease-out;
+    max-height: 320px; // 10 Items à 32px = 320px (angepasst für kleinere Links)
     opacity: 1;
-}
-
-// Submenu ausgeblendet - Animation
-.navigation__menu-item:not(.navigation__menu-item--open) > .navigation__submenu {
-    max-height: 0;
-    opacity: 0;
-    transition: max-height 0.3s ease-in, opacity 0.2s ease-in;
+    transform: scaleY(1);
+    transition: max-height 0.4s cubic-bezier(0.4, 0.0, 0.2, 1), 
+                opacity 0.3s ease-out, 
+                transform 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
 }
 
 .navigation__footer {
