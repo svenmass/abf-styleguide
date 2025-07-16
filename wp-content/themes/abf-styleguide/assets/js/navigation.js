@@ -89,18 +89,19 @@ const navigationClose = document.querySelector('.navigation__close');
                 const isCurrentlyOpen = li.classList.contains('navigation__menu-item--open');
                 const hasActiveChild = li.classList.contains('navigation__menu-item--active-child');
                 
-                // Alle anderen Submenus schließen (außer die mit aktiven Submenu-Seiten und übergeordnete Elemente)
-                document.querySelectorAll('.navigation__menu-item--open').forEach(function(openItem) {
-                    if (openItem !== li && !openItem.classList.contains('navigation__menu-item--active-child')) {
-                        // Prüfen, ob openItem ein übergeordnetes Element des aktuellen li ist
-                        const isParent = openItem.contains(li);
-                        
-                        // Nur schließen, wenn es KEIN übergeordnetes Element ist
-                        if (!isParent) {
-                            openItem.classList.remove('navigation__menu-item--open');
+                // Geschwister-Elemente der gleichen Ebene schließen (Accordion-Verhalten pro Ebene)
+                const parentContainer = li.parentNode; // ul oder .navigation__submenu
+                if (parentContainer) {
+                    // Alle direkten Kinder des gleichen Parents durchgehen (Geschwister)
+                    const siblings = parentContainer.querySelectorAll(':scope > .navigation__menu-item');
+                    siblings.forEach(function(sibling) {
+                        if (sibling !== li && 
+                            sibling.classList.contains('navigation__menu-item--open') &&
+                            !sibling.classList.contains('navigation__menu-item--active-child')) {
+                            sibling.classList.remove('navigation__menu-item--open');
                         }
-                    }
-                });
+                    });
+                }
                 
                 // Aktuelles Submenu togglen - aber nur wenn es keine aktive Submenu-Seite enthält
                 if (!hasActiveChild) {
