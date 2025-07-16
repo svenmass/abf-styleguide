@@ -271,7 +271,7 @@
 .navigation__submenu {
     list-style: none;
     margin: 0 0 0 0; // User-Anpassung: kein negativer Margin mehr
-    padding: 0 0 0 6px; // 6px nach vorne (weiter nach links)
+    padding: 0 0 0 0px; // 6px reduziert auf 0px (User-Anpassung)
     display: block; // Immer block, nur Höhe animiert
     width: 100%;
     flex-basis: 100%; // Nimmt volle Breite in Flexbox
@@ -354,6 +354,15 @@
     // DRITTE EBENE - Sub-Submenu
     .navigation__submenu {
         padding-left: 12px; // Zusätzliche Einrückung für dritte Ebene
+        
+        // Menu-Items in der dritten Ebene: sicherstellen, dass Plus-Icon in derselben Zeile bleibt
+        .navigation__menu-item {
+            &.menu-item-has-children {
+                display: flex;
+                align-items: center;
+                flex-wrap: nowrap; // Verhindert Zeilenumbruch beim Plus-Icon
+            }
+        }
         
         .navigation__menu-link {
             font-size: 16px; // Gleiche Schriftgröße wie zweite Ebene
