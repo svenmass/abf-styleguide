@@ -449,7 +449,7 @@
 
 // Submenu anzeigen wenn Parent geöffnet - gilt für alle Ebenen
 .navigation__menu-item--open > .navigation__submenu {
-    max-height: 320px; // 10 Items à 32px = 320px (angepasst für kleinere Links)
+    max-height: 600px; // Erhöht für 3-stufige Navigation (ca. 18 Items à 32px)
     opacity: 1;
     transform: scaleY(1);
     transition: max-height 0.4s cubic-bezier(0.4, 0.0, 0.2, 1), 
@@ -467,7 +467,7 @@
 // Aktive Submenu-Seite: bleibt immer geöffnet - gilt für alle Ebenen
 .navigation__menu-item--active-child {
     > .navigation__submenu {
-        max-height: 320px;
+        max-height: 600px; // Erhöht für 3-stufige Navigation (ca. 18 Items à 32px)
         opacity: 1;
         transform: scaleY(1);
         transition: max-height 0.4s cubic-bezier(0.4, 0.0, 0.2, 1), 
