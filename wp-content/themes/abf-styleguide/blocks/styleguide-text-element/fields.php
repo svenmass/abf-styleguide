@@ -201,10 +201,10 @@ return array(
         ),
         array(
             'key' => 'field_ste_downloads',
-            'label' => 'Downloads/Links',
+            'label' => 'Downloads',
             'name' => 'ste_downloads',
             'type' => 'repeater',
-            'instructions' => 'Fügen Sie Downloads oder Links hinzu, die automatisch formatiert werden',
+            'instructions' => 'Fügen Sie Downloads hinzu, die automatisch formatiert werden',
             'required' => 0,
             'conditional_logic' => 0,
             'wrapper' => array(
@@ -216,7 +216,7 @@ return array(
             'min' => 0,
             'max' => 20,
             'layout' => 'table',
-            'button_label' => 'Download/Link hinzufügen',
+            'button_label' => 'Download hinzufügen',
             'sub_fields' => array(
                 array(
                     'key' => 'field_ste_download_title',
@@ -235,12 +235,13 @@ return array(
                 ),
                 array(
                     'key' => 'field_ste_download_link',
-                    'label' => 'Link/Datei',
+                    'label' => 'Datei',
                     'name' => 'download_link',
-                    'type' => 'link',
-                    'instructions' => 'URL oder Datei aus der Mediathek',
+                    'type' => 'file',
+                    'instructions' => 'Datei aus der Mediathek auswählen',
                     'required' => 1,
                     'return_format' => 'array',
+                    'library' => 'all',
                     'wrapper' => array(
                         'width' => '60',
                         'class' => '',

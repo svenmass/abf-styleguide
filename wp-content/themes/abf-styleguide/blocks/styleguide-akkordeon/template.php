@@ -90,8 +90,7 @@ $accordion_h_tag = abf_get_accordion_h_tag($headline_tag);
                 <div class="styleguide-akkordeon-downloads">
                     <?php foreach ($downloads as $download): ?>
                         <?php if ($download['download_title'] && $download['download_link']): ?>
-                            <a href="<?php echo esc_url($download['download_link']['url']); ?>" 
-                               <?php echo $download['download_link']['target'] ? 'target="' . esc_attr($download['download_link']['target']) . '"' : ''; ?>>
+                            <a href="<?php echo esc_url($download['download_link']['url']); ?>" download>
                                 <?php echo esc_html($download['download_title']); ?>
                             </a>
                         <?php endif; ?>

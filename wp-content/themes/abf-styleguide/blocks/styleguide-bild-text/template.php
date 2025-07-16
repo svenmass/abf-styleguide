@@ -121,7 +121,7 @@ $text_column_fr = $image_position === 'left' ? $right_fr : $left_fr;
                                 <?php foreach ($downloads as $download): ?>
                                     <?php if ($download['download_title'] && $download['download_link']): ?>
                                         <a href="<?php echo esc_url($download['download_link']['url']); ?>" 
-                                           <?php echo $download['download_link']['target'] ? 'target="' . esc_attr($download['download_link']['target']) . '"' : ''; ?>>
+                                           download>
                                             <?php echo esc_html($download['download_title']); ?>
                                         </a>
                                     <?php endif; ?>
@@ -182,7 +182,7 @@ $text_column_fr = $image_position === 'left' ? $right_fr : $left_fr;
                                 <?php foreach ($downloads as $download): ?>
                                     <?php if ($download['download_title'] && $download['download_link']): ?>
                                         <a href="<?php echo esc_url($download['download_link']['url']); ?>" 
-                                           <?php echo $download['download_link']['target'] ? 'target="' . esc_attr($download['download_link']['target']) . '"' : ''; ?>>
+                                           download>
                                             <?php echo esc_html($download['download_title']); ?>
                                         </a>
                                     <?php endif; ?>
