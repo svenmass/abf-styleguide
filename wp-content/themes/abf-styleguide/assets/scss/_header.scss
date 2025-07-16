@@ -104,6 +104,7 @@
     cursor: pointer;
     padding: 0;
     transition: all 0.3s ease;
+    z-index: 1001; // Höher als Navigation (999) für Overlay-Effekt
     
     // Only show on mobile
     @media (min-width: $breakpoint-desktop-small) {

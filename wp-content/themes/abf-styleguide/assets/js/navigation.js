@@ -146,15 +146,12 @@ const navigationClose = document.querySelector('.navigation__close');
             burgerToggle.setAttribute('aria-expanded', 'true');
         }
         
-        // Add navigation-active class to site content and header for mobile
+        // Add navigation-active class to site content for mobile
         const siteContent = document.querySelector('.site-content');
-        const siteHeader = document.querySelector('.site-header');
         if (siteContent) {
             siteContent.classList.add('navigation-active');
         }
-        if (siteHeader) {
-            siteHeader.classList.add('navigation-active');
-        }
+        // Header bleibt unverändert - keine navigation-active Klasse mehr
         
         document.body.style.overflow = 'hidden'; // Prevent background scroll
     }
@@ -171,15 +168,12 @@ const navigationClose = document.querySelector('.navigation__close');
             burgerToggle.setAttribute('aria-expanded', 'false');
         }
         
-        // Remove navigation-active class from site content and header
+        // Remove navigation-active class from site content
         const siteContent = document.querySelector('.site-content');
-        const siteHeader = document.querySelector('.site-header');
         if (siteContent) {
             siteContent.classList.remove('navigation-active');
         }
-        if (siteHeader) {
-            siteHeader.classList.remove('navigation-active');
-        }
+        // Header bleibt unverändert - keine navigation-active Klasse mehr
         
         document.body.style.overflow = ''; // Restore background scroll
     }
