@@ -271,7 +271,7 @@
 .navigation__submenu {
     list-style: none;
     margin: 0 0 0 0; // User-Anpassung: kein negativer Margin mehr
-    padding: 0 0 0 0px; // 6px reduziert auf 0px (User-Anpassung)
+    padding: 0 0 0 6px; // 6px reduziert auf 0px (User-Anpassung)
     display: block; // Immer block, nur Höhe animiert
     width: 100%;
     flex-basis: 100%; // Nimmt volle Breite in Flexbox
@@ -293,10 +293,12 @@
     }
     
     .navigation__menu-item {
-        display: block; // Submenu-Items nicht als Flexbox
+        display: block; // Standard für Submenu-Items ohne Kinder
         
         &.menu-item-has-children {
-            display: block; // Auch Submenu-Items mit Kindern als Block
+            display: flex; // Flexbox für Items mit Kindern
+            align-items: center;
+            flex-wrap: nowrap; // Plus-Icon bleibt in derselben Zeile
         }
     }
     
