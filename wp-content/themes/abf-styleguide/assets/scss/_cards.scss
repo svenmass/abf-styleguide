@@ -14,12 +14,10 @@
     border-radius: 8px;
     overflow: hidden;
     background: white;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     
     &:hover {
         text-decoration: none;
         transform: translateY(-2px);
-        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
     }
     
     // Card Image
@@ -41,12 +39,12 @@
     
     // Card Content
     &__content {
-        padding: $spacing-md;
+        padding-top: $spacing-sm;
     }
     
     // Card Title
     &__title {
-        font-size: $font-size-h2;
+        font-size: $font-size-h3;
         font-weight: $font-weight-semibold;
         line-height: $line-height-headline;
         margin: 0 0 $spacing-sm 0;
