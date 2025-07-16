@@ -269,8 +269,10 @@
         margin-bottom: $spacing-sm;
         
         a {
-            display: block;
+            display: inline-flex;
+            align-items: center;
             margin-bottom: $spacing-xs;
+            width: 100%;
             
             &:last-child {
                 margin-bottom: 0;
