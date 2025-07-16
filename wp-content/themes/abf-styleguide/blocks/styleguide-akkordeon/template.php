@@ -82,22 +82,6 @@ $accordion_h_tag = abf_get_accordion_h_tag($headline_tag);
                 </div>
             <?php endif; ?>
             
-            <?php 
-            // Downloads/Links
-            $downloads = get_field('sa_downloads');
-            if ($downloads && is_array($downloads) && count($downloads) > 0): 
-            ?>
-                <div class="styleguide-akkordeon-downloads">
-                    <?php foreach ($downloads as $download): ?>
-                        <?php if ($download['download_title'] && $download['download_link']): ?>
-                            <a href="<?php echo esc_url($download['download_link']['url']); ?>" download>
-                                <?php echo esc_html($download['download_title']); ?>
-                            </a>
-                        <?php endif; ?>
-                    <?php endforeach; ?>
-                </div>
-            <?php endif; ?>
-            
             <!-- Accordion Items -->
             <?php if (!empty($accordion_items)): ?>
                 <div class="styleguide-akkordeon-items">
@@ -154,6 +138,22 @@ $accordion_h_tag = abf_get_accordion_h_tag($headline_tag);
                             </div>
                         </div>
                         
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
+            
+            <!-- Downloads Section -->
+            <?php 
+            $downloads = get_field('sa_downloads');
+            if ($downloads && is_array($downloads) && count($downloads) > 0): 
+            ?>
+                <div class="styleguide-akkordeon-downloads">
+                    <?php foreach ($downloads as $download): ?>
+                        <?php if ($download['download_title'] && $download['download_link']): ?>
+                            <a href="<?php echo esc_url($download['download_link']['url']); ?>" download>
+                                <?php echo esc_html($download['download_title']); ?>
+                            </a>
+                        <?php endif; ?>
                     <?php endforeach; ?>
                 </div>
             <?php endif; ?>

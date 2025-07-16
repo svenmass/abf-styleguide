@@ -296,14 +296,21 @@ return array(
         ),
         
         // =============================================================================
-        // DOWNLOADS EINSTELLUNGEN
+        // DOWNLOADS TAB
         // =============================================================================
+        array(
+            'key' => 'field_sa_downloads_tab',
+            'label' => 'Downloads',
+            'name' => '',
+            'type' => 'tab',
+            'placement' => 'top',
+        ),
         array(
             'key' => 'field_sa_downloads',
             'label' => 'Downloads',
             'name' => 'sa_downloads',
             'type' => 'repeater',
-            'instructions' => 'Fügen Sie Downloads hinzu, die automatisch formatiert werden',
+            'instructions' => 'Fügen Sie Downloads hinzu, die nach den Akkordeon-Elementen angezeigt werden',
             'required' => 0,
             'conditional_logic' => 0,
             'wrapper' => array(
@@ -322,7 +329,7 @@ return array(
                     'label' => 'Titel',
                     'name' => 'download_title',
                     'type' => 'text',
-                    'instructions' => 'Anzeigename für den Download/Link',
+                    'instructions' => 'Anzeigename für den Download',
                     'required' => 1,
                     'default_value' => '',
                     'placeholder' => 'z.B. "Broschüre herunterladen"',
