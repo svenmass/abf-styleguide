@@ -49,6 +49,7 @@
         line-height: $line-height-headline;
         margin: 0 0 $spacing-sm 0;
         color: var(--color-primary);
+        text-decoration: none; // Keine Underline bei Card-Titeln
         transition: color 0.3s ease;
         
         display: flex;

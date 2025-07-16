@@ -208,6 +208,11 @@
     height: 48px;
     line-height: 48px;
     font-family: inherit;
+    
+    &:hover,
+    &:focus {
+        text-decoration: none; // Keine Underline bei Hover/Focus
+    }
     font-size: inherit;
     flex: 1; // Nimmt verfügbaren Platz ein
     position: relative;
