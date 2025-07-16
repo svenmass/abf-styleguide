@@ -123,7 +123,7 @@
     
     // Burger lines
     .burger-line {
-        width: 24px;
+        width: 30px;
         height: 2px;
         background: var(--color-primary, #007cba);
         margin: 2px 0;
@@ -131,11 +131,11 @@
         border-radius: 1px;
     }
     
-    // Active state (when menu is open)
+    // Active state (when menu is open) - Perfect X shape
     &.active {
         .burger-line {
             &:nth-child(1) {
-                transform: rotate(45deg) translate(5px, 5px);
+                transform: rotate(45deg) translate(6px, 6px);
             }
             
             &:nth-child(2) {
@@ -143,7 +143,7 @@
             }
             
             &:nth-child(3) {
-                transform: rotate(-45deg) translate(7px, -6px);
+                transform: rotate(-45deg) translate(6px, -6px);
             }
         }
     }
