@@ -89,10 +89,16 @@ const navigationClose = document.querySelector('.navigation__close');
                 const isCurrentlyOpen = li.classList.contains('navigation__menu-item--open');
                 const hasActiveChild = li.classList.contains('navigation__menu-item--active-child');
                 
-                // Alle anderen Submenus schließen (außer die mit aktiven Submenu-Seiten)
+                // Alle anderen Submenus schließen (außer die mit aktiven Submenu-Seiten und übergeordnete Elemente)
                 document.querySelectorAll('.navigation__menu-item--open').forEach(function(openItem) {
                     if (openItem !== li && !openItem.classList.contains('navigation__menu-item--active-child')) {
-                        openItem.classList.remove('navigation__menu-item--open');
+                        // Prüfen, ob openItem ein übergeordnetes Element des aktuellen li ist
+                        const isParent = openItem.contains(li);
+                        
+                        // Nur schließen, wenn es KEIN übergeordnetes Element ist
+                        if (!isParent) {
+                            openItem.classList.remove('navigation__menu-item--open');
+                        }
                     }
                 });
                 
