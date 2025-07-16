@@ -49,14 +49,45 @@ const navigationClose = document.querySelector('.navigation__close');
         }
     });
     
-    // Submenu-Toggle (Plus-Icon)
+    // Beim Laden: Aktive Submenu-Seiten automatisch öffnen
+    function openActiveSubmenus() {
+        const activeSubmenus = document.querySelectorAll('.navigation__submenu .current-menu-item, .navigation__submenu .current-menu-ancestor, .navigation__submenu .current-page-parent, .navigation__submenu .current-page-ancestor');
+        
+        activeSubmenus.forEach(function(activeItem) {
+            const parentMenuItem = activeItem.closest('.navigation__menu-item');
+            if (parentMenuItem) {
+                parentMenuItem.classList.add('navigation__menu-item--open');
+                parentMenuItem.classList.add('navigation__menu-item--active-child'); // Marker für aktive Submenu-Seite
+            }
+        });
+    }
+    
+    // Beim Laden ausführen
+    openActiveSubmenus();
+    
+    // Submenu-Toggle (Plus-Icon) mit Accordion-Verhalten
     document.querySelectorAll('.navigation__submenu-toggle').forEach(function(toggle) {
         toggle.addEventListener('click', function(e) {
             e.preventDefault();
             const li = toggle.closest('li');
             if (li) {
-                li.classList.toggle('navigation__menu-item--open');
-                // Submenu wird jetzt vollständig über CSS gesteuert
+                const isCurrentlyOpen = li.classList.contains('navigation__menu-item--open');
+                const hasActiveChild = li.classList.contains('navigation__menu-item--active-child');
+                
+                // Alle anderen Submenus schließen (außer die mit aktiven Submenu-Seiten)
+                document.querySelectorAll('.navigation__menu-item--open').forEach(function(openItem) {
+                    if (openItem !== li && !openItem.classList.contains('navigation__menu-item--active-child')) {
+                        openItem.classList.remove('navigation__menu-item--open');
+                    }
+                });
+                
+                // Aktuelles Submenu togglen - aber nur wenn es keine aktive Submenu-Seite enthält
+                if (!hasActiveChild) {
+                    li.classList.toggle('navigation__menu-item--open');
+                } else {
+                    // Aktive Submenu-Seite bleibt immer geöffnet
+                    li.classList.add('navigation__menu-item--open');
+                }
             }
         });
     });
@@ -71,6 +102,13 @@ const navigationClose = document.querySelector('.navigation__close');
             
             // Füge aktive Klasse zum geklickten Link hinzu
             this.classList.add('navigation__menu-link--active');
+            
+            // Parent Menu-Item als aktiv markieren
+            const parentMenuItem = this.closest('.navigation__menu-item');
+            if (parentMenuItem) {
+                parentMenuItem.classList.add('navigation__menu-item--active-child');
+                parentMenuItem.classList.add('navigation__menu-item--open');
+            }
             
             // Navigation bleibt offen (kein closeNavigation() aufrufen)
             // Link-Funktion wird normal ausgeführt
