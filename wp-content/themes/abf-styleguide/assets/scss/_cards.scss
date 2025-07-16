@@ -1,0 +1,294 @@
+// =============================================================================
+// CARD COMPONENTS (BEM)
+// =============================================================================
+
+// =============================================================================
+// CARD COMMON STYLES
+// =============================================================================
+
+.card {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.3s ease;
+    border-radius: 8px;
+    overflow: hidden;
+    background: white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    
+    &:hover {
+        text-decoration: none;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+    }
+    
+    // Card Image
+    &__image {
+        position: relative;
+        overflow: hidden;
+        
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        
+        &:hover img {
+            transform: scale(1.05);
+        }
+    }
+    
+    // Card Content
+    &__content {
+        padding: $spacing-md;
+    }
+    
+    // Card Title
+    &__title {
+        font-size: $font-size-h2;
+        font-weight: $font-weight-semibold;
+        line-height: $line-height-headline;
+        margin: 0 0 $spacing-sm 0;
+        color: var(--color-primary);
+        transition: color 0.3s ease;
+        
+        display: flex;
+        align-items: center;
+        gap: $spacing-sm;
+    }
+    
+    // Card Icon
+    &__icon {
+        width: 18px;
+        height: 18px;
+        flex-shrink: 0;
+        transition: all 0.3s ease;
+        
+        svg {
+            width: 100%;
+            height: 100%;
+            
+            path {
+                transition: fill 0.3s ease;
+                fill: var(--color-primary);
+            }
+        }
+    }
+    
+    // Card Excerpt
+    &__excerpt {
+        font-size: $font-size-body;
+        line-height: $line-height-base;
+        color: #666;
+        margin: 0 0 $spacing-sm 0;
+    }
+    
+    // Card Meta
+    &__meta {
+        font-size: $font-size-small;
+        color: #999;
+        margin: 0 0 $spacing-sm 0;
+    }
+    
+    // Card Category
+    &__category {
+        font-size: $font-size-small;
+        color: var(--color-secondary);
+        font-weight: $font-weight-medium;
+        margin: 0 0 $spacing-sm 0;
+    }
+    
+    // Card Button
+    &__button {
+        display: inline-flex;
+        align-items: center;
+        gap: $spacing-sm;
+        font-size: $font-size-body;
+        font-weight: $font-weight-medium;
+        color: var(--color-primary);
+        text-decoration: none;
+        transition: color 0.3s ease;
+        
+        .card__icon {
+            width: 16px;
+            height: 16px;
+        }
+        
+        &:hover {
+            color: var(--color-secondary);
+        }
+    }
+    
+    // Hover Effects
+    &:hover {
+        .card__title {
+            color: var(--color-secondary);
+        }
+        
+        .card__icon svg path {
+            fill: var(--color-secondary);
+        }
+        
+        .card__button {
+            color: var(--color-secondary);
+        }
+    }
+}
+
+// =============================================================================
+// VERTICAL CARD VARIANT
+// =============================================================================
+
+.card--vertical {
+    display: flex;
+    flex-direction: column;
+    
+    .card__image {
+        aspect-ratio: 16/10;
+    }
+    
+    .card__content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        
+        // Only title and icon for vertical cards
+        .card__title {
+            flex: 1;
+        }
+    }
+}
+
+// =============================================================================
+// HORIZONTAL CARD VARIANT
+// =============================================================================
+
+.card--horizontal {
+    display: flex;
+    flex-direction: row;
+    
+    .card__image {
+        flex: 0 0 40%;
+        aspect-ratio: 16/10;
+    }
+    
+    .card__content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        
+        .card__title {
+            margin-bottom: $spacing-md;
+        }
+        
+        .card__excerpt {
+            flex: 1;
+        }
+        
+        .card__category {
+            margin-bottom: $spacing-md;
+        }
+        
+        .card__button {
+            margin-top: auto;
+        }
+    }
+}
+
+// =============================================================================
+// CARD GRID LAYOUTS
+// =============================================================================
+
+// Vertical Cards Grid
+.cards-grid {
+    display: grid;
+    gap: $spacing-lg;
+    
+    // Default: 2 columns
+    &--2-cols {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    // 3 columns
+    &--3-cols {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    // 4 columns
+    &--4-cols {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+// Horizontal Cards List
+.cards-list {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-lg;
+    
+    .card--horizontal {
+        width: 100%;
+    }
+}
+
+// =============================================================================
+// RESPONSIVE BEHAVIOR
+// =============================================================================
+
+@media (max-width: $breakpoint-desktop) {
+    .cards-grid {
+        &--4-cols {
+            grid-template-columns: repeat(3, 1fr);
+        }
+        
+        &--3-cols {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+    
+    .card--horizontal {
+        .card__image {
+            flex: 0 0 35%;
+        }
+    }
+}
+
+@media (max-width: $breakpoint-tablet) {
+    .cards-grid {
+        &--4-cols,
+        &--3-cols,
+        &--2-cols {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+    
+    .card--horizontal {
+        flex-direction: column;
+        
+        .card__image {
+            flex: none;
+            aspect-ratio: 16/10;
+        }
+    }
+}
+
+@media (max-width: $breakpoint-mobile) {
+    .cards-grid {
+        &--4-cols,
+        &--3-cols,
+        &--2-cols {
+            grid-template-columns: 1fr;
+        }
+    }
+    
+    .card {
+        &__content {
+            padding: $spacing-sm;
+        }
+        
+        &__title {
+            font-size: $font-size-h3;
+        }
+    }
+} 

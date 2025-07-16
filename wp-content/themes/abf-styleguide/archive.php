@@ -1,11 +1,6 @@
 <?php
 /**
- * The main template file
- *
- * This is the most generic template file in a WordPress theme
- * and one of the two required files for a theme (the other being style.css).
- * It is used to display a page when nothing more specific matches a query.
- * E.g., it puts together the home page when no home.php file exists.
+ * The template for displaying archive pages
  *
  * @package ABF_Styleguide
  */
@@ -15,18 +10,15 @@ get_header();
 
 <main id="main" class="site-main styleguide-main">
     <div class="container-content">
-        <?php
-        if (have_posts()) :
-
-            if (is_home() && !is_front_page()) :
-                ?>
-                <header class="page-header">
-                    <h1 class="page-title"><?php single_post_title(); ?></h1>
-                </header>
+        <?php if (have_posts()) : ?>
+            
+            <header class="page-header">
                 <?php
-            endif;
+                the_archive_title('<h1 class="page-title">', '</h1>');
+                the_archive_description('<div class="archive-description">', '</div>');
+                ?>
+            </header>
 
-            ?>
             <div class="cards-grid cards-grid--3-cols">
                 <?php
                 /* Start the Loop */
@@ -36,8 +28,8 @@ get_header();
                 endwhile;
                 ?>
             </div>
-            <?php
 
+            <?php
             the_posts_navigation();
 
         else :
@@ -49,4 +41,4 @@ get_header();
     </div>
 </main>
 
-<?php get_footer(); ?>
+<?php get_footer(); ?> 

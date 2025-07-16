@@ -195,6 +195,36 @@ function abf_register_acf_blocks() {
         ),
         'mode'              => 'auto',
     ));
+    
+    // Register Styleguide Posts Block (NEW)
+    acf_register_block_type(array(
+        'name'              => 'styleguide-posts',
+        'title'             => __('Styleguide Posts'),
+        'description'       => __('Zeigt Posts in einem Card-Grid an'),
+        'render_template'   => get_template_directory() . '/blocks/styleguide-posts/template.php',
+        'category'          => 'abf-blocks',
+        'icon'              => 'grid-view',
+        'keywords'          => array('posts', 'cards', 'grid', 'styleguide'),
+        'supports'          => array(
+            'jsx' => true,
+        ),
+        'mode'              => 'auto',
+    ));
+    
+    // Register Styleguide Similar Posts Block (NEW)
+    acf_register_block_type(array(
+        'name'              => 'styleguide-similar',
+        'title'             => __('Styleguide Similar Posts'),
+        'description'       => __('Zeigt ähnliche/verwandte Posts in einem Card-Grid an'),
+        'render_template'   => get_template_directory() . '/blocks/styleguide-similar/template.php',
+        'category'          => 'abf-blocks',
+        'icon'              => 'slides',
+        'keywords'          => array('similar', 'related', 'posts', 'cards', 'styleguide'),
+        'supports'          => array(
+            'jsx' => true,
+        ),
+        'mode'              => 'auto',
+    ));
 }
 
 /**
@@ -1718,4 +1748,227 @@ function abf_block_editor_styles() {
         filemtime(get_template_directory() . '/assets/css/main.css')
     );
 }
-add_action('enqueue_block_editor_assets', 'abf_block_editor_styles'); 
+add_action('enqueue_block_editor_assets', 'abf_block_editor_styles');
+
+/**
+ * Add ACF field groups for new blocks
+ */
+add_action('acf/init', 'abf_register_card_blocks_fields');
+
+function abf_register_card_blocks_fields() {
+    if (!function_exists('acf_add_local_field_group')) {
+        return;
+    }
+    
+    // Styleguide Posts Block Field Group
+    acf_add_local_field_group(array(
+        'key' => 'group_styleguide_posts',
+        'title' => 'Styleguide Posts Block Felder',
+        'fields' => array(
+            array(
+                'key' => 'field_posts_to_show',
+                'label' => 'Anzahl Posts',
+                'name' => 'posts_to_show',
+                'type' => 'number',
+                'instructions' => 'Wie viele Posts sollen angezeigt werden?',
+                'default_value' => 6,
+                'min' => 1,
+                'max' => 20,
+                'wrapper' => array('width' => '33'),
+            ),
+            array(
+                'key' => 'field_posts_columns',
+                'label' => 'Spalten',
+                'name' => 'columns',
+                'type' => 'select',
+                'instructions' => 'Anzahl der Spalten im Grid',
+                'choices' => array(
+                    '2' => '2 Spalten',
+                    '3' => '3 Spalten',
+                    '4' => '4 Spalten',
+                ),
+                'default_value' => '3',
+                'wrapper' => array('width' => '33'),
+            ),
+            array(
+                'key' => 'field_posts_post_types',
+                'label' => 'Post Types',
+                'name' => 'post_types',
+                'type' => 'select',
+                'instructions' => 'Welche Post Types sollen angezeigt werden?',
+                'choices' => array(
+                    'post' => 'Beiträge',
+                    'page' => 'Seiten',
+                ),
+                'default_value' => array('post'),
+                'multiple' => 1,
+                'wrapper' => array('width' => '33'),
+            ),
+            array(
+                'key' => 'field_posts_categories',
+                'label' => 'Kategorien',
+                'name' => 'categories',
+                'type' => 'taxonomy',
+                'instructions' => 'Nur Posts aus bestimmten Kategorien anzeigen (leer = alle)',
+                'taxonomy' => 'category',
+                'field_type' => 'multi_select',
+                'multiple' => 1,
+                'wrapper' => array('width' => '50'),
+            ),
+            array(
+                'key' => 'field_posts_tags',
+                'label' => 'Tags',
+                'name' => 'tags',
+                'type' => 'taxonomy',
+                'instructions' => 'Nur Posts mit bestimmten Tags anzeigen (leer = alle)',
+                'taxonomy' => 'post_tag',
+                'field_type' => 'multi_select',
+                'multiple' => 1,
+                'wrapper' => array('width' => '50'),
+            ),
+            array(
+                'key' => 'field_posts_orderby',
+                'label' => 'Sortierung',
+                'name' => 'orderby',
+                'type' => 'select',
+                'instructions' => 'Nach was soll sortiert werden?',
+                'choices' => array(
+                    'date' => 'Datum',
+                    'title' => 'Titel',
+                    'menu_order' => 'Reihenfolge',
+                    'rand' => 'Zufällig',
+                ),
+                'default_value' => 'date',
+                'wrapper' => array('width' => '50'),
+            ),
+            array(
+                'key' => 'field_posts_order',
+                'label' => 'Reihenfolge',
+                'name' => 'order',
+                'type' => 'select',
+                'instructions' => 'Aufsteigend oder absteigend?',
+                'choices' => array(
+                    'DESC' => 'Absteigend',
+                    'ASC' => 'Aufsteigend',
+                ),
+                'default_value' => 'DESC',
+                'wrapper' => array('width' => '50'),
+            ),
+            array(
+                'key' => 'field_posts_show_title',
+                'label' => 'Block-Titel anzeigen',
+                'name' => 'show_title',
+                'type' => 'true_false',
+                'instructions' => 'Soll eine Überschrift über dem Block angezeigt werden?',
+                'default_value' => 0,
+                'wrapper' => array('width' => '50'),
+            ),
+            array(
+                'key' => 'field_posts_block_title',
+                'label' => 'Block-Titel',
+                'name' => 'block_title',
+                'type' => 'text',
+                'instructions' => 'Titel für den Block',
+                'default_value' => 'Aktuelle Beiträge',
+                'conditional_logic' => array(
+                    array(
+                        array(
+                            'field' => 'field_posts_show_title',
+                            'operator' => '==',
+                            'value' => '1',
+                        ),
+                    ),
+                ),
+                'wrapper' => array('width' => '50'),
+            ),
+        ),
+        'location' => array(
+            array(
+                array(
+                    'param' => 'block',
+                    'operator' => '==',
+                    'value' => 'acf/styleguide-posts',
+                ),
+            ),
+        ),
+    ));
+    
+    // Styleguide Similar Posts Block Field Group
+    acf_add_local_field_group(array(
+        'key' => 'group_styleguide_similar',
+        'title' => 'Styleguide Similar Posts Block Felder',
+        'fields' => array(
+            array(
+                'key' => 'field_similar_posts_to_show',
+                'label' => 'Anzahl Posts',
+                'name' => 'posts_to_show',
+                'type' => 'number',
+                'instructions' => 'Wie viele ähnliche Posts sollen angezeigt werden?',
+                'default_value' => 3,
+                'min' => 1,
+                'max' => 12,
+                'wrapper' => array('width' => '33'),
+            ),
+            array(
+                'key' => 'field_similar_columns',
+                'label' => 'Spalten',
+                'name' => 'columns',
+                'type' => 'select',
+                'instructions' => 'Anzahl der Spalten im Grid',
+                'choices' => array(
+                    '2' => '2 Spalten',
+                    '3' => '3 Spalten',
+                    '4' => '4 Spalten',
+                ),
+                'default_value' => '3',
+                'wrapper' => array('width' => '33'),
+            ),
+            array(
+                'key' => 'field_similar_base_post',
+                'label' => 'Basis-Post',
+                'name' => 'base_post',
+                'type' => 'post_object',
+                'instructions' => 'Zu welchem Post sollen ähnliche Posts gefunden werden? (leer = aktueller Post)',
+                'post_type' => array('post'),
+                'multiple' => 0,
+                'wrapper' => array('width' => '33'),
+            ),
+            array(
+                'key' => 'field_similar_show_title',
+                'label' => 'Block-Titel anzeigen',
+                'name' => 'show_title',
+                'type' => 'true_false',
+                'instructions' => 'Soll eine Überschrift über dem Block angezeigt werden?',
+                'default_value' => 1,
+                'wrapper' => array('width' => '50'),
+            ),
+            array(
+                'key' => 'field_similar_block_title',
+                'label' => 'Block-Titel',
+                'name' => 'block_title',
+                'type' => 'text',
+                'instructions' => 'Titel für den Block',
+                'default_value' => 'Ähnliche Beiträge',
+                'conditional_logic' => array(
+                    array(
+                        array(
+                            'field' => 'field_similar_show_title',
+                            'operator' => '==',
+                            'value' => '1',
+                        ),
+                    ),
+                ),
+                'wrapper' => array('width' => '50'),
+            ),
+        ),
+        'location' => array(
+            array(
+                array(
+                    'param' => 'block',
+                    'operator' => '==',
+                    'value' => 'acf/styleguide-similar',
+                ),
+            ),
+        ),
+    ));
+} 

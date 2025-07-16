@@ -75,7 +75,6 @@
     align-items: center;
     justify-content: flex-start;
     padding: 0;
-    margin-bottom: 100px;
     // Kein Trennstrich mehr
     border-bottom: none;
     
@@ -157,7 +156,7 @@
 
 .navigation__menu {
     list-style: none;
-    margin: 150px 0 0 0; // top right bottom left
+    margin: 88px 0 0 0; // top right bottom left
     padding: 0;
     padding-left: 0; // bündig mit Logo
     font-family: $font-family-primary;
@@ -349,6 +348,58 @@
         
         &::before {
             display: none; // Kein Balken
+        }
+    }
+    
+    // DRITTE EBENE - Sub-Submenu
+    .navigation__submenu {
+        padding-left: 12px; // Zusätzliche Einrückung für dritte Ebene
+        
+        .navigation__menu-link {
+            font-size: 16px; // Gleiche Schriftgröße wie zweite Ebene
+            height: 32px;
+            line-height: 32px;
+            font-weight: $font-weight-light;
+            padding-left: 8px; // Etwas mehr Padding für bessere Lesbarkeit
+            
+            &::before {
+                display: none;
+            }
+            
+            &:hover,
+            &:focus {
+                color: #c50d14;
+                font-weight: $font-weight-light;
+                text-decoration: none;
+                
+                &::before {
+                    display: none;
+                }
+            }
+        }
+        
+        // Aktive Links in der dritten Ebene
+        .current-menu-item > .navigation__menu-link,
+        .current-menu-ancestor > .navigation__menu-link,
+        .current-page-parent > .navigation__menu-link,
+        .current-page-ancestor > .navigation__menu-link {
+            color: #c50d14;
+            font-weight: $font-weight-light;
+            text-decoration: none;
+            
+            &::before {
+                display: none;
+            }
+        }
+        
+        .navigation__menu-link--active {
+            color: #c50d14;
+            font-weight: $font-weight-light;
+            text-decoration: none;
+            
+            &::before {
+                display: none;
+            }
         }
     }
 }
