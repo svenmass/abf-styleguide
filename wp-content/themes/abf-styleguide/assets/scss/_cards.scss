@@ -50,8 +50,6 @@
         margin: 0 0 $spacing-sm 0;
         color: var(--color-primary);
         text-decoration: none !important; // Keine Underline bei Card-Titeln
-        border-bottom: none !important; // Keine border-bottom Linie
-        outline: none !important; // Kein outline
         transition: color 0.3s ease;
         
         display: flex;
@@ -126,7 +124,6 @@
         .card__title {
             color: var(--color-secondary);
             text-decoration: none !important;
-            border-bottom: none !important; // Keine border-bottom Linie bei Hover
         }
         
         .card__icon svg path {
@@ -159,7 +156,6 @@
         // Only title and icon for vertical cards
         .card__title {
             text-decoration: none !important;
-            border-bottom: none !important; // Keine border-bottom Linie
             flex: 1;
         }
     }
@@ -185,7 +181,6 @@
         
         .card__title {
             text-decoration: none !important;
-            border-bottom: none !important; // Keine border-bottom Linie
             margin-bottom: $spacing-md;
         }
         
@@ -296,7 +291,6 @@
         
         &__title {
             text-decoration: none !important;
-            border-bottom: none !important; // Keine border-bottom Linie
             font-size: $font-size-h3;
         }
     }
