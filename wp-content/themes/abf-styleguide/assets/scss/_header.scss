@@ -105,6 +105,9 @@
     padding: 0;
     transition: all 0.3s ease;
     z-index: 1001; // Höher als Navigation (999) für Overlay-Effekt
+    position: fixed;
+    top: 16px;
+    right: 16px;
     
     // Only show on mobile
     @media (min-width: $breakpoint-desktop-small) {
@@ -123,19 +126,25 @@
     
     // Burger lines
     .burger-line {
-        width: 30px;
+        width: 32px;
         height: 2px;
         background: var(--color-primary, #007cba);
-        margin: 2px 0;
+        margin: 3px 0;
         transition: all 0.3s ease;
         border-radius: 1px;
     }
     
-    // Active state (when menu is open) - Perfect X shape
+    // Active state (when menu is open) - Perfect X shape filling container
     &.active {
         .burger-line {
+            margin: 0;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            
             &:nth-child(1) {
-                transform: rotate(45deg) translate(6px, 6px);
+                width: 34px;
+                transform: translate(-50%, -50%) rotate(45deg);
             }
             
             &:nth-child(2) {
@@ -143,7 +152,8 @@
             }
             
             &:nth-child(3) {
-                transform: rotate(-45deg) translate(6px, -6px);
+                width: 34px;
+                transform: translate(-50%, -50%) rotate(-45deg);
             }
         }
     }
