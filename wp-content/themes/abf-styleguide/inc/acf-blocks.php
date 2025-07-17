@@ -278,6 +278,15 @@ function abf_include_modular_fields() {
             acf_add_local_field_group($field_group);
         }
     }
+    
+    // Include Styleguide Posts Block fields
+    $styleguide_posts_fields = get_template_directory() . '/blocks/styleguide-posts/fields.php';
+    if (file_exists($styleguide_posts_fields)) {
+        $field_group = require $styleguide_posts_fields;
+        if (is_array($field_group)) {
+            acf_add_local_field_group($field_group);
+        }
+    }
 }
 add_action('acf/init', 'abf_include_modular_fields');
 
