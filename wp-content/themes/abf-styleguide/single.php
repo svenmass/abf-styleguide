@@ -24,10 +24,10 @@ get_header();
                 <?php
             endif;
             
-            // Post thumbnail
-            if (function_exists('abf_styleguide_post_thumbnail')) {
-                abf_styleguide_post_thumbnail();
-            }
+            // Post thumbnail - DEAKTIVIERT
+            // if (function_exists('abf_styleguide_post_thumbnail')) {
+            //     abf_styleguide_post_thumbnail();
+            // }
             
             // Post content (gleiche Klassen wie styleguide.page)
             the_content();
