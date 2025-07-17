@@ -194,6 +194,16 @@
     }
 }
 
+// Top-Level Navigation-Items: Trennstrich zwischen den Elementen (wie beim Kontakt)
+.navigation__menu > .navigation__menu-item {
+    border-bottom: 1px solid #eee;
+    
+    // Letztes Element: Kein Trennstrich
+    &:last-child {
+        border-bottom: none;
+    }
+}
+
 .navigation__menu-link {
     display: flex;
     align-items: center;
