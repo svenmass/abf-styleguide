@@ -328,17 +328,13 @@ document.addEventListener('DOMContentLoaded', function() {
         // Get breakpoints and calculate columns
         function getColumns() {
             const width = window.innerWidth;
-            if (width <= 768) return 2;      // Mobile: 2 columns
-            if (width <= 1024) return 3;    // Tablet: 3 columns  
-            if (width <= 1200) return 4;    // Small desktop: 4 columns
-            return 5;                       // Large desktop: 5 columns
+            if (width <= 768) return 1;      // Mobile: 1 column
+            if (width <= 1024) return 2;    // Tablet: 2 columns  
+            return 3;                       // Desktop: 3 columns
         }
         
         function getGap() {
-            const width = window.innerWidth;
-            if (width <= 768) return 16;    // Mobile: 16px
-            if (width >= 1200) return 24;   // Desktop: 24px
-            return 20;                      // Default: 20px
+            return 1;                       // Nur Haarlinie: 1px
         }
         
         let imagesLoaded = 0;
