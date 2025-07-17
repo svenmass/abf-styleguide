@@ -30,9 +30,11 @@
 
 .styleguide-grid-container {
     display: grid;
-    gap: 0; // Kein Gap, da wir Borders verwenden
-    justify-items: center;
-    align-items: start;
+    gap: 0;
+    justify-items: stretch;
+    align-items: stretch; // Gleiche Höhe für alle Items
+    border: 1px solid #e0e0e0;
+    overflow: hidden; // Saubere Ecken
     
     // Responsive grid columns
     grid-template-columns: repeat(2, 1fr); // Mobile: 2 Spalten
@@ -62,87 +64,87 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: flex-start;
     text-align: center;
-    width: 150px;
+    width: 100%;
     min-height: 150px;
     box-sizing: border-box;
     padding: $spacing-sm;
+    position: relative;
     
-    // Trennlinien zwischen den Grid-Items
-    // Mobile: 2 Spalten
-    border-right: 1px solid #e0e0e0;
-    border-bottom: 1px solid #e0e0e0;
+    // Einfache Border-Logik: Alle Items haben linke und obere Border
+    border-left: 1px solid #e0e0e0;
+    border-top: 1px solid #e0e0e0;
     
-    // Keine rechte Border für letzte Spalte (jede 2.)
-    &:nth-child(2n) {
-        border-right: none;
+    // Erste Spalte: keine linke Border
+    &:nth-child(2n+1) {
+        border-left: none;
     }
     
-    // Keine untere Border für letzte Zeile
-    &:nth-last-child(-n+2) {
-        border-bottom: none;
+    // Erste Zeile: keine obere Border (erste 2 Elemente)
+    &:nth-child(-n+2) {
+        border-top: none;
     }
     
     // Small Tablet: 3 Spalten
     @media (min-width: #{$breakpoint-mobile + 1px}) and (max-width: $breakpoint-tablet) {
-        // Keine rechte Border für letzte Spalte (jede 3.)
-        &:nth-child(2n) {
-            border-right: 1px solid #e0e0e0; // Reset mobile rule
+        // Erste Spalte: keine linke Border (jede 3n+1)
+        &:nth-child(2n+1) {
+            border-left: 1px solid #e0e0e0; // Reset mobile rule
         }
-        &:nth-child(3n) {
-            border-right: none;
+        &:nth-child(3n+1) {
+            border-left: none;
         }
         
-        // Keine untere Border für letzte Zeile
-        &:nth-last-child(-n+2) {
-            border-bottom: 1px solid #e0e0e0; // Reset mobile rule
+        // Erste Zeile: keine obere Border (erste 3 Elemente)
+        &:nth-child(-n+2) {
+            border-top: 1px solid #e0e0e0; // Reset mobile rule
         }
-        &:nth-last-child(-n+3) {
-            border-bottom: none;
+        &:nth-child(-n+3) {
+            border-top: none;
         }
     }
     
     // Large Tablet: 4 Spalten
     @media (min-width: #{$breakpoint-tablet + 1px}) and (max-width: $breakpoint-desktop-small) {
-        // Keine rechte Border für letzte Spalte (jede 4.)
-        &:nth-child(2n), &:nth-child(3n) {
-            border-right: 1px solid #e0e0e0; // Reset previous rules
+        // Erste Spalte: keine linke Border (jede 4n+1)
+        &:nth-child(2n+1), &:nth-child(3n+1) {
+            border-left: 1px solid #e0e0e0; // Reset previous rules
         }
-        &:nth-child(4n) {
-            border-right: none;
+        &:nth-child(4n+1) {
+            border-left: none;
         }
         
-        // Keine untere Border für letzte Zeile
-        &:nth-last-child(-n+2), &:nth-last-child(-n+3) {
-            border-bottom: 1px solid #e0e0e0; // Reset previous rules
+        // Erste Zeile: keine obere Border (erste 4 Elemente)
+        &:nth-child(-n+2), &:nth-child(-n+3) {
+            border-top: 1px solid #e0e0e0; // Reset previous rules
         }
-        &:nth-last-child(-n+4) {
-            border-bottom: none;
+        &:nth-child(-n+4) {
+            border-top: none;
         }
     }
     
     // Desktop: 6 Spalten
     @media (min-width: $breakpoint-desktop-small) {
-        // Keine rechte Border für letzte Spalte (jede 6.)
-        &:nth-child(2n), &:nth-child(3n), &:nth-child(4n) {
-            border-right: 1px solid #e0e0e0; // Reset previous rules
+        // Erste Spalte: keine linke Border (jede 6n+1)
+        &:nth-child(2n+1), &:nth-child(3n+1), &:nth-child(4n+1) {
+            border-left: 1px solid #e0e0e0; // Reset previous rules
         }
-        &:nth-child(6n) {
-            border-right: none;
+        &:nth-child(6n+1) {
+            border-left: none;
         }
         
-        // Keine untere Border für letzte Zeile
-        &:nth-last-child(-n+2), &:nth-last-child(-n+3), &:nth-last-child(-n+4) {
-            border-bottom: 1px solid #e0e0e0; // Reset previous rules
+        // Erste Zeile: keine obere Border (erste 6 Elemente)
+        &:nth-child(-n+2), &:nth-child(-n+3), &:nth-child(-n+4) {
+            border-top: 1px solid #e0e0e0; // Reset previous rules
         }
-        &:nth-last-child(-n+6) {
-            border-bottom: none;
+        &:nth-child(-n+6) {
+            border-top: none;
         }
     }
     
     // Responsive item sizing
     @media (max-width: $breakpoint-mobile) {
-        width: 120px;
         min-height: 120px;
         padding: $spacing-xs;
     }
