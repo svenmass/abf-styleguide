@@ -8,6 +8,17 @@
     margin: 0 auto;
     padding: 0;
     box-sizing: border-box;
+    
+    // Responsive Container-Anpassungen
+    @media (max-width: $breakpoint-tablet) {
+        max-width: 100%;
+        padding: 0 $spacing-sm;
+    }
+    
+    @media (max-width: $breakpoint-mobile) {
+        max-width: 100%;
+        padding: 0 $spacing-xs;
+    }
 }
 
 // =============================================================================
@@ -33,6 +44,8 @@
     grid-template-columns: repeat(3, 1fr); // Feste 3 Spalten
     gap: 1px; // Nur Haarlinie zwischen den Bildern
     grid-auto-rows: 10px; // Small row height for masonry effect
+    width: 100%;
+    box-sizing: border-box;
     
     @media (max-width: $breakpoint-tablet) {
         grid-template-columns: repeat(2, 1fr); // 2 Spalten auf Tablet
@@ -58,11 +71,18 @@
     break-inside: avoid;
     display: inline-block;
     width: 100%;
+    max-width: 100%;
     margin-bottom: $spacing-sm;
     position: relative;
+    box-sizing: border-box;
     
     @media (max-width: $breakpoint-tablet) {
         margin-bottom: $spacing-xs;
+    }
+    
+    @media (max-width: $breakpoint-mobile) {
+        margin-bottom: $spacing-xs;
+        max-width: 100%;
     }
 }
 
@@ -108,12 +128,19 @@
 .styleguide-masonry-image {
     width: 100%;
     height: auto;
+    max-width: 100%;
     display: block;
     border-radius: 8px;
     transition: transform 0.3s ease;
+    object-fit: cover;
+    box-sizing: border-box;
     
     .styleguide-masonry-image-link:hover & {
         transform: scale(1.05);
+    }
+    
+    @media (max-width: $breakpoint-mobile) {
+        border-radius: 4px;
     }
 }
 

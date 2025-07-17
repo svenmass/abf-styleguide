@@ -325,12 +325,12 @@ document.addEventListener('DOMContentLoaded', function() {
         
         console.log('Initializing masonry layout for:', '<?php echo esc_js($gallery_id); ?>', 'Items:', items.length);
         
-        // Get breakpoints and calculate columns
+        // Get breakpoints and calculate columns (abgestimmt auf CSS-Breakpoints)
         function getColumns() {
             const width = window.innerWidth;
-            if (width <= 768) return 1;      // Mobile: 1 column
-            if (width <= 1024) return 2;    // Tablet: 2 columns  
-            return 3;                       // Desktop: 3 columns
+            if (width <= 576) return 1;      // Mobile: 1 column ($breakpoint-mobile)
+            if (width <= 768) return 2;     // Tablet: 2 columns ($breakpoint-tablet)
+            return 3;                       // Desktop: 3 columns (>768px)
         }
         
         function getGap() {
