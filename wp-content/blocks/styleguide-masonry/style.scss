@@ -1,0 +1,297 @@
+// =============================================================================
+// STYLEGUIDE MASONRY BLOCK
+// =============================================================================
+
+.styleguide-masonry-block {
+    width: 100%;
+    max-width: $container-content;
+    margin: 0 auto;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+// =============================================================================
+// HEADLINE
+// =============================================================================
+
+.styleguide-masonry-headline {
+    margin-bottom: $spacing-md;
+    font-family: $font-family-primary;
+    line-height: $line-height-base;
+    
+    @media (max-width: $breakpoint-tablet) {
+        margin-bottom: $spacing-sm;
+    }
+}
+
+// =============================================================================
+// MASONRY CONTAINER
+// =============================================================================
+
+.styleguide-masonry-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: $spacing-sm;
+    grid-auto-rows: 10px; // Small row height for masonry effect
+    
+    @media (max-width: $breakpoint-tablet) {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: $spacing-xs;
+    }
+    
+    @media (max-width: $breakpoint-mobile) {
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    }
+    
+    @media (min-width: $breakpoint-desktop) {
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: $spacing-md;
+    }
+}
+
+// =============================================================================
+// MASONRY ITEM
+// =============================================================================
+
+.styleguide-masonry-item {
+    break-inside: avoid;
+    display: inline-block;
+    width: 100%;
+    margin-bottom: $spacing-sm;
+    position: relative;
+    
+    @media (max-width: $breakpoint-tablet) {
+        margin-bottom: $spacing-xs;
+    }
+}
+
+// =============================================================================
+// IMAGE LINK & WRAPPER
+// =============================================================================
+
+.styleguide-masonry-image-link {
+    display: block;
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        
+        .styleguide-masonry-overlay {
+            opacity: 1;
+        }
+    }
+    
+    &:focus {
+        outline: 2px solid $color-primary;
+        outline-offset: 2px;
+    }
+}
+
+.styleguide-masonry-image-wrapper {
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+    background: #f8f9fa;
+}
+
+// =============================================================================
+// IMAGE
+// =============================================================================
+
+.styleguide-masonry-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+    
+    .styleguide-masonry-image-link:hover & {
+        transform: scale(1.05);
+    }
+}
+
+// =============================================================================
+// OVERLAY
+// =============================================================================
+
+.styleguide-masonry-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    border-radius: 8px;
+    color: white;
+    text-align: center;
+    padding: $spacing-sm;
+    
+    // Disable on mobile/touch devices
+    @media (hover: none) {
+        display: none;
+    }
+}
+
+.styleguide-masonry-overlay-icon {
+    margin-bottom: $spacing-xs;
+    
+    svg {
+        width: 32px;
+        height: 32px;
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+    }
+}
+
+.styleguide-masonry-overlay-text {
+    font-family: $font-family-primary;
+    font-size: $font-size-small;
+    font-weight: $font-weight-semibold;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+    letter-spacing: 0.5px;
+}
+
+// =============================================================================
+// CAPTION
+// =============================================================================
+
+.styleguide-masonry-caption {
+    margin-top: $spacing-xs;
+    font-family: $font-family-primary;
+    font-size: $font-size-small;
+    font-weight: $font-weight-regular;
+    color: #666;
+    line-height: $line-height-base;
+    text-align: center;
+    
+    @media (max-width: $breakpoint-mobile) {
+        font-size: 12px;
+    }
+}
+
+// =============================================================================
+// PLACEHOLDER (wenn keine Bilder)
+// =============================================================================
+
+.styleguide-masonry-placeholder {
+    width: 100%;
+    min-height: 300px;
+    background: #f8f9fa;
+    border: 2px dashed #dee2e6;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    p {
+        margin: 0;
+        color: #666;
+        font-size: $font-size-body;
+        font-family: $font-family-primary;
+    }
+}
+
+// =============================================================================
+// ALTERNATIVE MASONRY LAYOUT (CSS MASONRY)
+// =============================================================================
+
+// Modern CSS masonry support (when available)
+@supports (grid-template-rows: masonry) {
+    .styleguide-masonry-container {
+        grid-template-rows: masonry;
+        grid-auto-rows: auto;
+    }
+    
+    .styleguide-masonry-item {
+        margin-bottom: 0;
+    }
+}
+
+// =============================================================================
+// RESPONSIVE BEHAVIOR
+// =============================================================================
+
+@media (max-width: $breakpoint-mobile) {
+    .styleguide-masonry-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .styleguide-masonry-item {
+        margin-bottom: $spacing-sm;
+    }
+    
+    .styleguide-masonry-image-link {
+        &:hover {
+            transform: none;
+            box-shadow: none;
+        }
+    }
+}
+
+@media (min-width: $breakpoint-desktop) {
+    .styleguide-masonry-container {
+        gap: $spacing-lg;
+    }
+    
+    .styleguide-masonry-item {
+        margin-bottom: $spacing-md;
+    }
+}
+
+// =============================================================================
+// LOADING STATE
+// =============================================================================
+
+.styleguide-masonry-image {
+    opacity: 0;
+    animation: fadeIn 0.5s ease-in-out forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+// =============================================================================
+// ACCESSIBILITY
+// =============================================================================
+
+// Reduce motion for users who prefer it
+@media (prefers-reduced-motion: reduce) {
+    .styleguide-masonry-image-link {
+        transition: none;
+        
+        &:hover {
+            transform: none;
+        }
+    }
+    
+    .styleguide-masonry-image {
+        transition: none;
+        animation: none;
+        opacity: 1;
+        
+        .styleguide-masonry-image-link:hover & {
+            transform: none;
+        }
+    }
+    
+    .styleguide-masonry-overlay {
+        transition: none;
+    }
+} 
