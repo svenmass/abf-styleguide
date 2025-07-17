@@ -29,7 +29,7 @@ $download_text = get_field('se_download_text') ?: 'Bild herunterladen';
 $custom_download = get_field('se_custom_download');
 
 // Convert ACF boolean values to actual booleans
-$show_download = ($show_download === true || $show_download === '1' || $show_download === 1);
+$show_download = ($show_download == 1 || $show_download === true || $show_download === '1');
 
 // Early return if no image
 if (!$image) {
@@ -97,59 +97,124 @@ $lightbox_id = 'lightbox-' . $block['id'];
 </div>
 
 <?php
-// Enqueue PhotoSwipe assets
-wp_enqueue_script('photoswipe');
+// Enqueue PhotoSwipe CSS (JavaScript will be loaded dynamically)
 wp_enqueue_style('photoswipe');
 
 // Add inline script for this specific gallery
 ?>
 <script>
+// Preload PhotoSwipe and initialize when DOM is loaded
+let photoSwipeLoaded = false;
+let PhotoSwipeModule = null;
+
+// Load PhotoSwipe immediately
+import('https://cdn.jsdelivr.net/npm/photoswipe@5.4.4/dist/photoswipe.esm.js')
+    .then(module => {
+        PhotoSwipeModule = module;
+        photoSwipeLoaded = true;
+        console.log('PhotoSwipe preloaded successfully');
+    })
+    .catch(error => {
+        console.error('Failed to preload PhotoSwipe:', error);
+    });
+
+// Initialize PhotoSwipe when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM loaded, initializing PhotoSwipe for gallery: <?php echo esc_js($gallery_id); ?>');
+    
+    // Prepare data for PhotoSwipe
+    const galleryData = [{
+        src: '<?php echo esc_js($image_url); ?>',
+        width: <?php echo (int)$image['width']; ?>,
+        height: <?php echo (int)$image['height']; ?>,
+        alt: '<?php echo esc_js($image_alt); ?>'
+    }];
+    
+    console.log('PhotoSwipe data:', galleryData);
+    
     // Initialize PhotoSwipe for this gallery
     const galleryElements = document.querySelectorAll('[data-gallery="<?php echo esc_js($gallery_id); ?>"]');
+    console.log('Found gallery elements:', galleryElements.length);
     
     if (galleryElements.length > 0) {
         galleryElements.forEach(function(element) {
+            // Store original href for fallback
+            const originalHref = element.href;
+            
+            // Remove href to prevent default navigation
+            element.removeAttribute('href');
+            element.style.cursor = 'pointer';
+            
             element.addEventListener('click', function(e) {
+                // Prevent any default behavior
                 e.preventDefault();
+                e.stopPropagation();
                 
-                // Prepare PhotoSwipe items
-                const items = [{
-                    src: this.href,
-                    width: parseInt(this.dataset.pswpWidth),
-                    height: parseInt(this.dataset.pswpHeight),
-                    alt: this.querySelector('img').alt
-                }];
+                console.log('PhotoSwipe click handler triggered');
                 
-                // PhotoSwipe options
-                const options = {
-                    index: 0,
-                    showHideAnimationType: 'fade',
-                    <?php if ($show_download): ?>
-                    // Add download button
-                    toolbar: [
-                        'close',
-                        {
-                            name: 'download',
-                            order: 9,
-                            isButton: true,
-                            tagName: 'a',
-                            html: '<?php echo esc_js($download_text); ?>',
-                            onInit: (el, pswp) => {
-                                el.setAttribute('href', '<?php echo esc_js($download_url); ?>');
-                                el.setAttribute('download', '<?php echo esc_js($download_filename); ?>');
-                                el.setAttribute('target', '_blank');
-                                el.classList.add('styleguide-download-link');
-                            }
-                        }
-                    ]
-                    <?php endif; ?>
-                };
+                // Function to open PhotoSwipe
+                function openPhotoSwipe() {
+                    if (!photoSwipeLoaded || !PhotoSwipeModule) {
+                        console.error('PhotoSwipe not loaded, using fallback');
+                        window.open(originalHref, '_blank');
+                        return;
+                    }
+                    
+                    try {
+                        console.log('Opening PhotoSwipe with data:', galleryData);
+                        
+                        // Create PhotoSwipe options
+                        const options = {
+                            dataSource: galleryData,
+                            index: 0,
+                            bgOpacity: 0.8,
+                            closeOnVerticalDrag: true,
+                            showHideAnimationType: 'fade'
+                        };
+                        
+                        // Create PhotoSwipe instance
+                        const pswp = new PhotoSwipeModule.default(options);
+                        
+                        <?php if ($show_download): ?>
+                        // Add download button
+                        pswp.on('uiRegister', function() {
+                            pswp.ui.registerElement({
+                                name: 'download-button',
+                                order: 8,
+                                isButton: true,
+                                tagName: 'a',
+                                html: '<?php echo esc_js($download_text); ?>',
+                                onInit: (el, pswp) => {
+                                    el.setAttribute('href', '<?php echo esc_js($download_url); ?>');
+                                    el.setAttribute('download', '<?php echo esc_js($download_filename); ?>');
+                                    el.setAttribute('target', '_blank');
+                                    el.setAttribute('rel', 'noopener');
+                                    el.style.cssText = 'color: white; background: rgba(0,0,0,0.5); padding: 8px 12px; border-radius: 4px; margin-right: 8px; text-decoration: none; font-size: 14px;';
+                                }
+                            });
+                        });
+                        <?php endif; ?>
+                        
+                        // Initialize PhotoSwipe (this will open it)
+                        pswp.init();
+                        
+                        console.log('PhotoSwipe opened successfully');
+                    } catch (error) {
+                        console.error('Error opening PhotoSwipe:', error);
+                        window.open(originalHref, '_blank');
+                    }
+                }
                 
-                // Initialize PhotoSwipe
-                const lightbox = new PhotoSwipe(options);
-                lightbox.init();
-                lightbox.loadAndOpen(0, items);
+                // Check if PhotoSwipe is already loaded
+                if (photoSwipeLoaded) {
+                    openPhotoSwipe();
+                } else {
+                    // Wait a bit for PhotoSwipe to load
+                    console.log('Waiting for PhotoSwipe to load...');
+                    setTimeout(function() {
+                        openPhotoSwipe();
+                    }, 100);
+                }
             });
         });
     }

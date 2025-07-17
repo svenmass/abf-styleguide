@@ -127,24 +127,25 @@ a {
 // =============================================================================
 
 // Automatische Anwendung auf Links zu bestimmten Dateitypen
-a[href$=".pdf"],
-a[href$=".PDF"],
-a[href$=".png"],
-a[href$=".PNG"],
-a[href$=".jpg"],
-a[href$=".JPG"],
-a[href$=".jpeg"],
-a[href$=".JPEG"],
-a[href$=".dotx"],
-a[href$=".DOTX"],
-a[href$=".xls"],
-a[href$=".XLS"],
-a[href$=".xlsx"],
-a[href$=".XLSX"],
-a[href$=".zip"],
-a[href$=".ZIP"],
-a[href$=".svg"],
-a[href$=".SVG"] {
+// Ausnahme: Links innerhalb von styleguide-einzelbild-block
+a[href$=".pdf"]:not(.styleguide-einzelbild-image-link),
+a[href$=".PDF"]:not(.styleguide-einzelbild-image-link),
+a[href$=".png"]:not(.styleguide-einzelbild-image-link),
+a[href$=".PNG"]:not(.styleguide-einzelbild-image-link),
+a[href$=".jpg"]:not(.styleguide-einzelbild-image-link),
+a[href$=".JPG"]:not(.styleguide-einzelbild-image-link),
+a[href$=".jpeg"]:not(.styleguide-einzelbild-image-link),
+a[href$=".JPEG"]:not(.styleguide-einzelbild-image-link),
+a[href$=".dotx"]:not(.styleguide-einzelbild-image-link),
+a[href$=".DOTX"]:not(.styleguide-einzelbild-image-link),
+a[href$=".xls"]:not(.styleguide-einzelbild-image-link),
+a[href$=".XLS"]:not(.styleguide-einzelbild-image-link),
+a[href$=".xlsx"]:not(.styleguide-einzelbild-image-link),
+a[href$=".XLSX"]:not(.styleguide-einzelbild-image-link),
+a[href$=".zip"]:not(.styleguide-einzelbild-image-link),
+a[href$=".ZIP"]:not(.styleguide-einzelbild-image-link),
+a[href$=".svg"]:not(.styleguide-einzelbild-image-link),
+a[href$=".SVG"]:not(.styleguide-einzelbild-image-link) {
     display: inline-flex;
     align-items: center;
     gap: $spacing-base;
