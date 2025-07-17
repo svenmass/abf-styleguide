@@ -240,6 +240,36 @@ function abf_register_acf_blocks() {
         ),
         'mode'              => 'auto',
     ));
+    
+    // Register Styleguide Grid Block (NEW)
+    acf_register_block_type(array(
+        'name'              => 'styleguide-grid',
+        'title'             => __('Styleguide-Grid'),
+        'description'       => __('150×150px Grid mit 80×80px SVG-Icons, Beschriftungen und Download-Links'),
+        'render_template'   => get_template_directory() . '/blocks/styleguide-grid/template.php',
+        'category'          => 'abf-blocks',
+        'icon'              => 'grid-view',
+        'keywords'          => array('grid', 'svg', 'icons', 'download', 'styleguide'),
+        'supports'          => array(
+            'jsx' => true,
+        ),
+        'mode'              => 'auto',
+    ));
+    
+    // Register Styleguide Masonry Block (NEW)
+    acf_register_block_type(array(
+        'name'              => 'styleguide-masonry',
+        'title'             => __('Styleguide-Masonry'),
+        'description'       => __('Masonry-Layout für Bilder mit Lightbox und Download-Funktionalität'),
+        'render_template'   => get_template_directory() . '/blocks/styleguide-masonry/template.php',
+        'category'          => 'abf-blocks',
+        'icon'              => 'images-alt2',
+        'keywords'          => array('masonry', 'bilder', 'gallery', 'lightbox', 'download', 'styleguide'),
+        'supports'          => array(
+            'jsx' => true,
+        ),
+        'mode'              => 'auto',
+    ));
 }
 
 /**
@@ -307,6 +337,24 @@ function abf_include_modular_fields() {
     $styleguide_einzelbild_fields = get_template_directory() . '/blocks/styleguide-einzelbild/fields.php';
     if (file_exists($styleguide_einzelbild_fields)) {
         $field_group = require $styleguide_einzelbild_fields;
+        if (is_array($field_group)) {
+            acf_add_local_field_group($field_group);
+        }
+    }
+    
+    // Include Styleguide Grid Block fields
+    $styleguide_grid_fields = get_template_directory() . '/blocks/styleguide-grid/fields.php';
+    if (file_exists($styleguide_grid_fields)) {
+        $field_group = require $styleguide_grid_fields;
+        if (is_array($field_group)) {
+            acf_add_local_field_group($field_group);
+        }
+    }
+    
+    // Include Styleguide Masonry Block fields
+    $styleguide_masonry_fields = get_template_directory() . '/blocks/styleguide-masonry/fields.php';
+    if (file_exists($styleguide_masonry_fields)) {
+        $field_group = require $styleguide_masonry_fields;
         if (is_array($field_group)) {
             acf_add_local_field_group($field_group);
         }

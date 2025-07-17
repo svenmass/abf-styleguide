@@ -104,19 +104,22 @@ wp_enqueue_style('photoswipe');
 ?>
 <script>
 // Preload PhotoSwipe and initialize when DOM is loaded
-let photoSwipeLoaded = false;
-let PhotoSwipeModule = null;
+// Use global variables to avoid conflicts between multiple blocks
+window.photoSwipeLoaded = window.photoSwipeLoaded || false;
+window.PhotoSwipeModule = window.PhotoSwipeModule || null;
 
-// Load PhotoSwipe immediately
-import('https://cdn.jsdelivr.net/npm/photoswipe@5.4.4/dist/photoswipe.esm.js')
-    .then(module => {
-        PhotoSwipeModule = module;
-        photoSwipeLoaded = true;
-        console.log('PhotoSwipe preloaded successfully');
-    })
-    .catch(error => {
-        console.error('Failed to preload PhotoSwipe:', error);
-    });
+// Load PhotoSwipe immediately (only if not already loaded)
+if (!window.photoSwipeLoaded && !window.PhotoSwipeModule) {
+    import('https://cdn.jsdelivr.net/npm/photoswipe@5.4.4/dist/photoswipe.esm.js')
+        .then(module => {
+            window.PhotoSwipeModule = module;
+            window.photoSwipeLoaded = true;
+            console.log('PhotoSwipe preloaded successfully');
+        })
+        .catch(error => {
+            console.error('Failed to preload PhotoSwipe:', error);
+        });
+}
 
 // Initialize PhotoSwipe when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
@@ -154,7 +157,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 // Function to open PhotoSwipe
                 function openPhotoSwipe() {
-                    if (!photoSwipeLoaded || !PhotoSwipeModule) {
+                    if (!window.photoSwipeLoaded || !window.PhotoSwipeModule) {
                         console.error('PhotoSwipe not loaded, using fallback');
                         window.open(originalHref, '_blank');
                         return;
@@ -173,7 +176,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         };
                         
                         // Create PhotoSwipe instance
-                        const pswp = new PhotoSwipeModule.default(options);
+                        const pswp = new window.PhotoSwipeModule.default(options);
                         
                         <?php if ($show_download): ?>
                         // Add download button
@@ -206,7 +209,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
                 
                 // Check if PhotoSwipe is already loaded
-                if (photoSwipeLoaded) {
+                if (window.photoSwipeLoaded) {
                     openPhotoSwipe();
                 } else {
                     // Wait a bit for PhotoSwipe to load
