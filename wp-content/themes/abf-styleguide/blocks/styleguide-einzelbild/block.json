@@ -1,0 +1,27 @@
+{
+    "name": "acf/styleguide-einzelbild",
+    "title": "Styleguide-Einzelbild",
+    "description": "Ein einzelnes Bild im 16:9 Format mit Lightbox und Download-Funktionalität",
+    "category": "abf-blocks",
+    "icon": "format-image",
+    "keywords": ["bild", "image", "einzelbild", "lightbox", "download", "styleguide"],
+    "acf": {
+        "mode": "auto",
+        "renderTemplate": "template.php"
+    },
+    "supports": {
+        "jsx": true
+    },
+    "example": {
+        "attributes": {
+            "mode": "preview",
+            "data": {
+                "se_image": {
+                    "url": "https://via.placeholder.com/960x540",
+                    "alt": "Beispielbild"
+                },
+                "se_caption": "Beispiel-Bildunterschrift"
+            }
+        }
+    }
+} 

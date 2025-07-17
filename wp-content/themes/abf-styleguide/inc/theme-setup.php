@@ -44,6 +44,10 @@ function abf_enqueue_scripts() {
     // Enqueue fonts
     wp_enqueue_style('abf-fonts', get_template_directory_uri() . '/assets/fonts/fonts.css', array(), '1.0.0');
     
+    // Enqueue PhotoSwipe library (CDN)
+    wp_enqueue_style('photoswipe', 'https://cdn.jsdelivr.net/npm/photoswipe@5.4.4/dist/photoswipe.css', array(), '5.4.4');
+    wp_enqueue_script('photoswipe', 'https://cdn.jsdelivr.net/npm/photoswipe@5.4.4/dist/photoswipe.umd.min.js', array(), '5.4.4', true);
+    
     // Enqueue scripts
     wp_enqueue_script('abf-script', get_template_directory_uri() . '/assets/js/main.js', array(), '1.0.0', true);
 }

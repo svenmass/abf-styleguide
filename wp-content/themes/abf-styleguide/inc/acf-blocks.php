@@ -225,6 +225,21 @@ function abf_register_acf_blocks() {
         ),
         'mode'              => 'auto',
     ));
+    
+    // Register Styleguide Einzelbild Block (NEW)
+    acf_register_block_type(array(
+        'name'              => 'styleguide-einzelbild',
+        'title'             => __('Styleguide-Einzelbild'),
+        'description'       => __('Ein einzelnes Bild im 16:9 Format mit Lightbox und Download-Funktionalität'),
+        'render_template'   => get_template_directory() . '/blocks/styleguide-einzelbild/template.php',
+        'category'          => 'abf-blocks',
+        'icon'              => 'format-image',
+        'keywords'          => array('bild', 'image', 'einzelbild', 'lightbox', 'download', 'styleguide'),
+        'supports'          => array(
+            'jsx' => true,
+        ),
+        'mode'              => 'auto',
+    ));
 }
 
 /**
@@ -283,6 +298,15 @@ function abf_include_modular_fields() {
     $styleguide_posts_fields = get_template_directory() . '/blocks/styleguide-posts/fields.php';
     if (file_exists($styleguide_posts_fields)) {
         $field_group = require $styleguide_posts_fields;
+        if (is_array($field_group)) {
+            acf_add_local_field_group($field_group);
+        }
+    }
+    
+    // Include Styleguide Einzelbild Block fields
+    $styleguide_einzelbild_fields = get_template_directory() . '/blocks/styleguide-einzelbild/fields.php';
+    if (file_exists($styleguide_einzelbild_fields)) {
+        $field_group = require $styleguide_einzelbild_fields;
         if (is_array($field_group)) {
             acf_add_local_field_group($field_group);
         }
