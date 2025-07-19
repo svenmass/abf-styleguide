@@ -96,7 +96,8 @@ if ($enable_sticky) {
             <?php
             $headline_styles = [];
             if ($headline_weight) $headline_styles[] = "font-weight: {$headline_weight}";
-            if ($headline_size) $headline_styles[] = "font-size: {$headline_size}px";
+            // Font-size wird von CSS Custom Properties übernommen - Backend-Werte werden durch globale Overrides respektiert
+            // if ($headline_size) $headline_styles[] = "font-size: {$headline_size}px";
             if ($headline_color) $headline_styles[] = "color: " . abf_get_element_color_value($headline_color);
             $headline_style_attr = !empty($headline_styles) ? ' style="' . implode('; ', $headline_styles) . '"' : '';
             ?>

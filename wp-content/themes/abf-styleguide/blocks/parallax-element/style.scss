@@ -389,9 +389,10 @@
         font-size: 14px;
     }
     
-    .parallax-element-headline {
-        font-size: calc(var(--font-size) * 0.8) !important;
-    }
+    // Headline verwendet jetzt globale responsive CSS Custom Properties
+    // .parallax-element-headline {
+    //     font-size: calc(var(--font-size) * 0.8) !important;
+    // }
     
     // Reduzierte Sticky-Effekte auf Mobile für bessere Performance
     .block-parallax-element.is-sticky {
