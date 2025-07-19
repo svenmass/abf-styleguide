@@ -242,9 +242,11 @@ return array(
         ),
         array(
             'key' => 'field_pe_button_url',
-            'label' => 'Button URL',
+            'label' => 'Button Link',
             'name' => 'button_url',
-            'type' => 'url',
+            'type' => 'link',
+            'instructions' => 'Wähle ein Linkziel aus Seiten, Beiträgen oder externe URL. "#" für Anker-Links ist erlaubt.',
+            'return_format' => 'array',
             'conditional_logic' => array(
                 array(
                     array(
