@@ -41,6 +41,7 @@ $button_styles = array();
 $button_hover_styles = array();
 
 // Headline styles
+// Font-size: Backend-Einstellung hat Vorrang, CSS Custom Properties als Fallback
 if ($headline_size) {
     $headline_styles[] = 'font-size: ' . esc_attr($headline_size) . 'px';
 }
@@ -61,6 +62,7 @@ if ($headline_color) {
 }
 
 // Subline styles
+// Font-size: Backend-Einstellung hat Vorrang, CSS Custom Properties als Fallback
 if ($subline_size) {
     $subline_styles[] = 'font-size: ' . esc_attr($subline_size) . 'px';
 }

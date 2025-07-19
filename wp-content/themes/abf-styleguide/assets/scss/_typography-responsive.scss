@@ -1,0 +1,139 @@
+// =============================================================================
+// RESPONSIVE TYPOGRAPHY
+// =============================================================================
+// Globale CSS Custom Properties für responsive Font-Sizes
+// Alle Blöcke können diese verwenden, ohne eigene Media Queries zu benötigen
+
+:root {
+    // Desktop (Default) - CSS Custom Properties
+    --font-size-h1: #{$font-size-h1};
+    --font-size-h2: #{$font-size-h2};
+    --font-size-h3: #{$font-size-h3};
+    --font-size-h4: #{$font-size-h4};
+    --font-size-body: #{$font-size-body};
+    --font-size-small: #{$font-size-small};
+    --font-size-xl: #{$font-size-xl};
+    --font-size-xxl: #{$font-size-xxl};
+    --font-size-3xl: #{$font-size-3xl};
+}
+
+// Tablet (< 992px) - Überschreibt die CSS Custom Properties
+@media (max-width: #{$breakpoint-desktop-small - 1px}) {
+    :root {
+        --font-size-h1: 34px;
+        --font-size-h2: 22px;
+        --font-size-h3: 16px;
+        --font-size-h4: 16px;
+        --font-size-body: 16px;
+        --font-size-small: 12px;
+        --font-size-xl: 40px;
+        --font-size-xxl: 48px;
+        --font-size-3xl: 60px;
+    }
+}
+
+// Mobile (< 576px) - Überschreibt die CSS Custom Properties
+@media (max-width: #{$breakpoint-mobile - 1px}) {
+    :root {
+        --font-size-h1: 30px;
+        --font-size-h2: 20px;
+        --font-size-h3: 14px;
+        --font-size-h4: 14px;
+        --font-size-body: 14px;
+        --font-size-small: 10px;
+        --font-size-xl: 30px;
+        --font-size-xxl: 40px;
+        --font-size-3xl: 54px;
+    }
+}
+
+// =============================================================================
+// RESPONSIVE TYPOGRAPHY MIXINS
+// =============================================================================
+// Einfache Mixins für häufig verwendete Font-Sizes
+
+@mixin font-size-h1 {
+    font-size: var(--font-size-h1);
+}
+
+@mixin font-size-h2 {
+    font-size: var(--font-size-h2);
+}
+
+@mixin font-size-h3 {
+    font-size: var(--font-size-h3);
+}
+
+@mixin font-size-body {
+    font-size: var(--font-size-body);
+}
+
+@mixin font-size-3xl {
+    font-size: var(--font-size-3xl);
+}
+
+// Beispiel-Anwendung:
+// .hero-headline { @include font-size-3xl; }
+// .hero-subline { @include font-size-h2; }
+
+// =============================================================================
+// GLOBALE FONT-SIZE OVERRIDES
+// =============================================================================
+// Automatische Responsive-Übernahme für alle Blöcke mit fixen Font-Sizes
+// Überschreibt inline styles mit CSS Custom Properties
+
+// Überschreibt alle häufig verwendeten fixen Font-Sizes
+[style*="font-size: 72px"] { font-size: var(--font-size-3xl) !important; }
+[style*="font-size: 60px"] { font-size: var(--font-size-xxl) !important; }
+[style*="font-size: 48px"] { font-size: var(--font-size-xl) !important; }
+[style*="font-size: 36px"] { font-size: var(--font-size-h1) !important; }
+[style*="font-size: 24px"] { font-size: var(--font-size-h2) !important; }
+[style*="font-size: 18px"] { font-size: var(--font-size-body) !important; }
+[style*="font-size: 12px"] { font-size: var(--font-size-small) !important; }
+
+// Zusätzliche Sicherheit: Verschiedene Schreibweisen abfangen
+[style*="font-size:72px"] { font-size: var(--font-size-3xl) !important; }
+[style*="font-size:60px"] { font-size: var(--font-size-xxl) !important; }
+[style*="font-size:48px"] { font-size: var(--font-size-xl) !important; }
+[style*="font-size:36px"] { font-size: var(--font-size-h1) !important; }
+[style*="font-size:24px"] { font-size: var(--font-size-h2) !important; }
+[style*="font-size:18px"] { font-size: var(--font-size-body) !important; }
+[style*="font-size:12px"] { font-size: var(--font-size-small) !important; }
+
+// =============================================================================
+// BLOCK-SPEZIFISCHE OVERRIDES
+// =============================================================================
+// Zusätzliche Sicherheit für bekannte Block-Strukturen
+
+// Alle ACF-Blöcke: Automatische Responsive-Typografie
+[class*="wp-block-acf-"] {
+    // Headlines und Titel
+    .headline, .title, .text-element-headline, .parallax-headline {
+        &[style*="font-size: 72px"] { font-size: var(--font-size-3xl) !important; }
+        &[style*="font-size: 60px"] { font-size: var(--font-size-xxl) !important; }
+        &[style*="font-size: 48px"] { font-size: var(--font-size-xl) !important; }
+        &[style*="font-size: 36px"] { font-size: var(--font-size-h1) !important; }
+        &[style*="font-size: 24px"] { font-size: var(--font-size-h2) !important; }
+    }
+    
+    // Text-Inhalte
+    .text, .content, .text-element-text, .parallax-text {
+        &[style*="font-size: 18px"] { font-size: var(--font-size-body) !important; }
+        &[style*="font-size: 12px"] { font-size: var(--font-size-small) !important; }
+    }
+}
+
+// Styleguide-spezifische Blöcke
+.block-styleguide-text-element {
+    .styleguide-text-element-headline[style*="font-size:"],
+    .styleguide-text-element-text[style*="font-size:"] {
+        // Alle fixen Font-Sizes werden automatisch responsive
+        &[style*="font-size: 72px"] { font-size: var(--font-size-3xl) !important; }
+        &[style*="font-size: 60px"] { font-size: var(--font-size-xxl) !important; }
+        &[style*="font-size: 48px"] { font-size: var(--font-size-xl) !important; }
+        &[style*="font-size: 36px"] { font-size: var(--font-size-h1) !important; }
+        &[style*="font-size: 24px"] { font-size: var(--font-size-h2) !important; }
+        &[style*="font-size: 18px"] { font-size: var(--font-size-body) !important; }
+        &[style*="font-size: 12px"] { font-size: var(--font-size-small) !important; }
+    }
+} 

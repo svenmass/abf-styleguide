@@ -120,6 +120,16 @@ if (!function_exists('abf_get_parallax_color_value')) {
                 $show_button = $element['show_button'] ?? false;
                 $button_text = $element['button_text'] ?? '';
                 $button_url = $element['button_url'] ?? '';
+                $button_url_value = '';
+                $button_target = '';
+                
+                // Handle new ACF Link field format (array) vs old URL field format (string)
+                if (is_array($button_url)) {
+                    $button_url_value = $button_url['url'] ?? '';
+                    $button_target = $button_url['target'] ?? '';
+                } else {
+                    $button_url_value = $button_url;
+                }
                 $button_bg_color = $element['button_bg_color'] ?? 'primary';
                 $button_text_color = $element['button_text_color'] ?? 'inherit';
                 $button_hover_bg_color = $element['button_hover_bg_color'] ?? 'secondary';
@@ -132,7 +142,8 @@ if (!function_exists('abf_get_parallax_color_value')) {
             // Build style string for background
             $style_parts = [];
             if ($background_type === 'color' && $background_color) {
-                $style_parts[] = "background-color: {$background_color}";
+                $background_color_value = abf_get_parallax_color_value($background_color);
+                $style_parts[] = "background-color: {$background_color_value}";
             } elseif ($background_type === 'image' && $background_image) {
                 $image_url = wp_get_attachment_image_url($background_image, 'full');
                 if ($image_url) {
@@ -183,7 +194,7 @@ if (!function_exists('abf_get_parallax_color_value')) {
                         <?php endif; ?>
                     </div>
                     
-                    <?php if ($show_button && $button_text && $button_url): ?>
+                    <?php if ($show_button && $button_text && $button_url_value): ?>
                         <?php
                         $button_styles = [];
                         if ($button_bg_color) $button_styles[] = "background-color: " . abf_get_parallax_color_value($button_bg_color);
@@ -198,8 +209,8 @@ if (!function_exists('abf_get_parallax_color_value')) {
                         
                         <?php if ($button_hover_css): ?>
                             <style>
-                                .parallax-element-<?php echo $element_number; ?> .parallax-button:hover,
-                                .parallax-element-<?php echo $element_number; ?> .parallax-button:focus {
+                                .parallax-grid-container .parallax-element-<?php echo $element_number; ?> .parallax-button:hover,
+                                .parallax-grid-container .parallax-element-<?php echo $element_number; ?> .parallax-button:focus {
                                     <?php echo $button_hover_css; ?> !important;
                                 }
                             </style>
@@ -209,20 +220,21 @@ if (!function_exists('abf_get_parallax_color_value')) {
                             <?php
                             // Handle special modal URLs
                             $onclick_attr = '';
-                            $href_attr = esc_url($button_url);
+                            $href_attr = esc_url($button_url_value);
+                            $target_attr = $button_target ? ' target="' . esc_attr($button_target) . '"' : '';
                             
-                            if ($button_url === '#register-modal' || $button_url === '#register') {
+                            if ($button_url_value === '#register-modal' || $button_url_value === '#register') {
                                 $onclick_attr = ' onclick="ABF_UserManagement.showModal(); ABF_UserManagement.switchTab(\'register\'); return false;"';
                                 $href_attr = '#';
-                            } elseif ($button_url === '#login-modal' || $button_url === '#login') {
+                            } elseif ($button_url_value === '#login-modal' || $button_url_value === '#login') {
                                 $onclick_attr = ' onclick="ABF_UserManagement.showModal(); ABF_UserManagement.switchTab(\'login\'); return false;"';
                                 $href_attr = '#';
-                            } elseif ($button_url === '#modal' || $button_url === '#anmelden') {
+                            } elseif ($button_url_value === '#modal' || $button_url_value === '#anmelden') {
                                 $onclick_attr = ' onclick="ABF_UserManagement.showModal(); return false;"';
                                 $href_attr = '#';
                             }
                             ?>
-                            <a href="<?php echo $href_attr; ?>" class="parallax-button"<?php echo $button_style_attr; ?><?php echo $onclick_attr; ?>>
+                            <a href="<?php echo $href_attr; ?>" class="parallax-button"<?php echo $button_style_attr; ?><?php echo $target_attr; ?><?php echo $onclick_attr; ?>>
                                 <?php echo esc_html($button_text); ?>
                             </a>
                         </div>

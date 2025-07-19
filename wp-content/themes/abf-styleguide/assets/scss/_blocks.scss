@@ -38,12 +38,20 @@
         }
         
         .hero-content {
-            // Im Editor: content etwas höher positionieren
-            top: 40%;
+            // Im Editor: content unten positionieren
+            bottom: 50px !important;
+            top: auto !important;
             
             // Im Editor: Breite anpassen
-            width: calc(100% - 32px) !important;
-            max-width: calc(100% - 32px) !important;
+            width: 50% !important;
+            max-width: 50% !important;
+            left: 24px !important;
+            
+            // Weißer Hintergrund mit 40% Opacity auch im Editor
+            background: rgba(255, 255, 255, 0.4) !important;
+            padding: 24px !important;
+            border-radius: 8px !important;
+            backdrop-filter: blur(10px) !important;
         }
         
         .hero-plus {
@@ -146,25 +154,33 @@
 // Hero Content
 .hero-content {
     position: absolute;
-    top: 50vh;
+    top: 55vh;
     left: $spacing-md;
     transform: translateY(-50%);
     z-index: 4;
     text-align: left;
     max-width: 90%;
-    width: calc(100% - #{$spacing-md * 2});
+ 
+    
+    // Weißer Hintergrund mit 40% Opacity
+    background: rgba(255, 255, 255, 0.4);
+    padding: $spacing-lg;
+    border-radius: 8px;
+    backdrop-filter: blur(5px); // Zusätzlicher Glaseffekt
 }
 
 .hero-headline {
     margin: 0 0 $spacing-md 0;
     text-align: left;
     font-family: $font-family-primary;
+    font-size: var(--font-size-3xl); // Responsive: 72px → 66px → 60px
 }
 
 .hero-subline {
     margin: 0 0 $spacing-lg 0;
     text-align: left;
     font-family: $font-family-primary;
+    font-size: var(--font-size-h2); // Responsive: 24px → 22px → 20px
 }
 
 .hero-button-wrapper {
@@ -179,7 +195,7 @@
     justify-content: center;
     font-family: $font-family-primary;
     font-weight: $font-weight-regular;
-    font-size: $font-size-body;
+    font-size: var(--font-size-body); // Responsive: 18px → 16px → 14px
     line-height: $line-height-base;
     padding: $button-padding-y $button-padding-x;
     border: none;
@@ -480,23 +496,22 @@
     
     .hero-content {
         left: $spacing-sm;
-        max-width: calc(100% - #{$spacing-sm * 2});
-        width: calc(100% - #{$spacing-sm * 2});
+        max-width: 100%; // Mobile: 100% Breite
+        width: 100%;
+        padding: $spacing-md;
     }
     
+    // Mobile Spacing-Anpassungen (< 576px)
     .hero-headline {
-        font-size: 28px !important;
         margin-bottom: $spacing-sm;
     }
     
     .hero-subline {
-        font-size: 18px !important;
         margin-bottom: $spacing-md;
     }
     
     .hero-button {
         padding: 14px 32px;
-        font-size: 16px;
     }
     
     // Parallax Grid Block - Mobile: Alle gestapelt, 4:5 Format
@@ -572,9 +587,12 @@
     
     .hero-content {
         left: $spacing-md;
-        max-width: calc(100% - #{$spacing-md * 2});
-        width: calc(100% - #{$spacing-md * 2});
+        max-width: 75%; // Tablet: 75% Breite
+        width: 75%;
+        padding: $spacing-lg;
     }
+    
+    // Tablet - Font-Sizes werden global über CSS Custom Properties gehandhabt
     
     // Parallax Grid Block - Tablet: El1, El4|El5, El2|El3, El6
     .block-parallax-grid {
@@ -663,8 +681,9 @@
     
     .hero-content {
         left: $spacing-lg;
-        max-width: calc(100% - #{$spacing-lg * 2});
-        width: calc(100% - #{$spacing-lg * 2});
+        max-width: 50%; // Desktop: 50% Breite
+        width: 50%;
+        padding: $spacing-lg;
     }
 }
 

@@ -72,8 +72,13 @@ class ABF_User_Management_System {
     
     public function enqueue_scripts() {
         // Only on homepage for now
+        // WICHTIG: Eine Homepage muss in WordPress definiert sein (Einstellungen → Lesen)
         if (is_front_page() || is_home()) {
-            wp_enqueue_script('abf-user-management', get_template_directory_uri() . '/assets/js/user-management.js', array('jquery'), '1.0.0', true);
+            // Cache-busting: Use file modification time as version
+            $js_file = get_template_directory() . '/assets/js/user-management.js';
+            $version = file_exists($js_file) ? filemtime($js_file) : '1.0.0';
+            
+            wp_enqueue_script('abf-user-management', get_template_directory_uri() . '/assets/js/user-management.js', array('jquery'), $version, true);
             
             wp_localize_script('abf-user-management', 'abf_ajax', array(
                 'ajax_url' => admin_url('admin-ajax.php'),
@@ -228,6 +233,7 @@ class ABF_User_Management_System {
             max-width: 500px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
             animation: slideIn 0.3s;
+            position: relative; /* Für die Positionierung des Schließen-Buttons */
         }
         
         @keyframes fadeIn {
@@ -241,14 +247,14 @@ class ABF_User_Management_System {
         }
         
         .abf-modal-close {
-            color: #aaa;
-            float: right;
+            color: #ffffff;
             font-size: 28px;
             font-weight: bold;
             position: absolute;
             right: 15px;
-            top: 10px;
+            top: 15px;
             cursor: pointer;
+            z-index: 10;
         }
         
         .abf-modal-close:hover {
@@ -256,7 +262,7 @@ class ABF_User_Management_System {
         }
         
         .abf-modal-header {
-            background: linear-gradient(135deg, var(--color-primary, #007cba), var(--color-secondary, #0073aa));
+            background: #575756; /* Nur rot, ohne Verlauf */
             color: white;
             padding: 20px;
             border-radius: 8px 8px 0 0;

@@ -919,10 +919,13 @@ function abf_register_acf_field_groups() {
                         'key' => 'field_element_background_color',
                         'label' => 'Hintergrundfarbe',
                         'name' => 'background_color',
-                        'type' => 'color_picker',
-                        'instructions' => 'Wähle eine Hintergrundfarbe',
+                        'type' => 'select',
+                        'instructions' => 'Wähle eine Hintergrundfarbe aus den Theme-Farben',
                         'required' => 0,
-                        'default_value' => '#000000',
+                        'choices' => abf_get_color_choices(),
+                        'default_value' => 'primary',
+                        'allow_null' => 0,
+                        'return_format' => 'value',
                         'conditional_logic' => array(
                             array(
                                 array(
@@ -1195,10 +1198,11 @@ function abf_register_acf_field_groups() {
                     ),
                     array(
                         'key' => 'field_element_button_url',
-                        'label' => 'Button URL',
+                        'label' => 'Button Link',
                         'name' => 'button_url',
-                        'type' => 'url',
-                        'instructions' => 'Ziel-URL für den Button',
+                        'type' => 'link',
+                        'instructions' => 'Wähle ein Linkziel aus Seiten, Beiträgen oder externe URL',
+                        'return_format' => 'array',
                         'conditional_logic' => array(
                             array(
                                 array(

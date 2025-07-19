@@ -17,8 +17,8 @@
     box-sizing: border-box;
     position: relative;
     
-    // Standard Höhe
-    min-height: 300px;
+    // Standard Höhe - flexibel für dynamischen Inhalt
+    min-height: auto;
     
     // Volle Höhe wenn aktiviert
     &.full-height {
@@ -372,12 +372,15 @@ body .block-text-block {
 
 .wp-block-acf-text-block {
     .block-text-block {
-        // Im Editor: begrenzte Höhe auch bei full-height
+        // Im Editor: dynamische Höhe auch bei full-height
         &.full-height {
-            min-height: 400px;
-            max-height: 600px;
-            height: auto;
+            min-height: 200px; // Reduzierte Mindesthöhe für bessere Flexibilität
+            height: auto; // Wächst mit dem Inhalt
         }
+        
+        // Generell: Flexiblere Höhe für alle Editor-Blöcke
+        min-height: auto;
+        height: auto;
         
         // Im Editor: 100% statt 100vw verwenden
         width: 100% !important;

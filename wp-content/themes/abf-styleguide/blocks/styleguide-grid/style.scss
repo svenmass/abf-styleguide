@@ -30,10 +30,11 @@
 
 .styleguide-grid-container {
     display: grid;
-    gap: 0;
+    gap: 1px; // 1px Gap zwischen den Elementen
     justify-items: stretch;
     align-items: stretch; // Gleiche Höhe für alle Items
-    border: 1px solid #e0e0e0;
+    background-color: #e0e0e0; // Hintergrundfarbe wird zu den "Linien"
+    border: 1px solid #e0e0e0; // Äußerer Rahmen
     overflow: hidden; // Saubere Ecken
     
     // Responsive grid columns
@@ -48,11 +49,14 @@
     }
     
     @media (min-width: $breakpoint-desktop-small) {
-        grid-template-columns: repeat(6, 1fr); // Desktop: 6 Spalten
+        grid-template-columns: repeat(4, 1fr); // Desktop: 5 Spalten
     }
-    
+    @media (min-width: $breakpoint-desktop) {
+        grid-template-columns: repeat(5, 1fr); // Desktop: 5 Spalten
+    }
+    // Keine auto-fit mehr - das verursacht Gaps
     @media (min-width: #{$container-content + 200px}) {
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); // Very large screens: auto-fit
+        grid-template-columns: repeat(6, 1fr); // Bleibt bei 6 Spalten
     }
 }
 
@@ -71,82 +75,13 @@
     box-sizing: border-box;
     padding: $spacing-sm;
     position: relative;
+    background-color: white; // Weiße Hintergrundfarbe für die Boxen
     
-    // Einfache Border-Logik: Alle Items haben linke und obere Border
-    border-left: 1px solid #e0e0e0;
-    border-top: 1px solid #e0e0e0;
-    
-    // Erste Spalte: keine linke Border
-    &:nth-child(2n+1) {
-        border-left: none;
-    }
-    
-    // Erste Zeile: keine obere Border (erste 2 Elemente)
-    &:nth-child(-n+2) {
-        border-top: none;
-    }
-    
-    // Small Tablet: 3 Spalten
-    @media (min-width: #{$breakpoint-mobile + 1px}) and (max-width: $breakpoint-tablet) {
-        // Erste Spalte: keine linke Border (jede 3n+1)
-        &:nth-child(2n+1) {
-            border-left: 1px solid #e0e0e0; // Reset mobile rule
-        }
-        &:nth-child(3n+1) {
-            border-left: none;
-        }
-        
-        // Erste Zeile: keine obere Border (erste 3 Elemente)
-        &:nth-child(-n+2) {
-            border-top: 1px solid #e0e0e0; // Reset mobile rule
-        }
-        &:nth-child(-n+3) {
-            border-top: none;
-        }
-    }
-    
-    // Large Tablet: 4 Spalten
-    @media (min-width: #{$breakpoint-tablet + 1px}) and (max-width: $breakpoint-desktop-small) {
-        // Erste Spalte: keine linke Border (jede 4n+1)
-        &:nth-child(2n+1), &:nth-child(3n+1) {
-            border-left: 1px solid #e0e0e0; // Reset previous rules
-        }
-        &:nth-child(4n+1) {
-            border-left: none;
-        }
-        
-        // Erste Zeile: keine obere Border (erste 4 Elemente)
-        &:nth-child(-n+2), &:nth-child(-n+3) {
-            border-top: 1px solid #e0e0e0; // Reset previous rules
-        }
-        &:nth-child(-n+4) {
-            border-top: none;
-        }
-    }
-    
-    // Desktop: 6 Spalten
-    @media (min-width: $breakpoint-desktop-small) {
-        // Erste Spalte: keine linke Border (jede 6n+1)
-        &:nth-child(2n+1), &:nth-child(3n+1), &:nth-child(4n+1) {
-            border-left: 1px solid #e0e0e0; // Reset previous rules
-        }
-        &:nth-child(6n+1) {
-            border-left: none;
-        }
-        
-        // Erste Zeile: keine obere Border (erste 6 Elemente)
-        &:nth-child(-n+2), &:nth-child(-n+3), &:nth-child(-n+4) {
-            border-top: 1px solid #e0e0e0; // Reset previous rules
-        }
-        &:nth-child(-n+6) {
-            border-top: none;
-        }
-    }
+    // Keine Borders mehr - das Gap und der Container-Hintergrund machen die Linien
     
     // Responsive item sizing
     @media (max-width: $breakpoint-mobile) {
         min-height: 120px;
-        padding: $spacing-xs;
     }
 }
 
@@ -265,14 +200,3 @@
 // RESPONSIVE BEHAVIOR
 // =============================================================================
 
-@media (max-width: $breakpoint-mobile) {
-    .styleguide-grid-container {
-        gap: $spacing-xs;
-    }
-}
-
-@media (min-width: $breakpoint-desktop) {
-    .styleguide-grid-container {
-        gap: $spacing-lg;
-    }
-}
