@@ -1,11 +1,15 @@
 {
-    "name": "abf/parallax-element",
+    "name": "acf/parallax-element",
     "title": "Parallax Element",
     "description": "Einzelnes Parallax Content Element mit konfigurierbarem Sticky-Verhalten",
     "category": "abf-blocks",
     "icon": "admin-page",
     "apiVersion": 2,
     "keywords": ["parallax", "sticky", "content", "hero"],
+    "acf": {
+        "mode": "auto",
+        "renderTemplate": "template.php"
+    },
     "supports": {
         "align": ["wide", "full"],
         "anchor": true

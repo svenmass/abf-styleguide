@@ -8,7 +8,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Parallax Element Block Field Group
-acf_add_local_field_group(array(
+return array(
     'key' => 'group_parallax_element',
     'title' => 'Parallax Element',
     'fields' => array(
@@ -423,4 +423,4 @@ acf_add_local_field_group(array(
     'hide_on_screen' => '',
     'active' => true,
     'description' => 'Felder für den eigenständigen Parallax Element Block mit Sticky-Funktionalität',
-)); 
+); 

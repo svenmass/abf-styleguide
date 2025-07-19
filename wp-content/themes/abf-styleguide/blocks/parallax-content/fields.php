@@ -8,7 +8,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Parallax Content Block Field Group
-acf_add_local_field_group(array(
+return array(
     'key' => 'group_parallax_content_block',
     'title' => 'Parallax Content Block Felder',
     'fields' => array(
@@ -324,4 +324,4 @@ acf_add_local_field_group(array(
     'hide_on_screen' => '',
     'active' => true,
     'description' => 'Felder für den Parallax Content Block mit unbegrenzten Repeater-Elementen',
-)); 
+); 
