@@ -18,14 +18,12 @@ $container_background_color = get_field('grid_container_background_color') ?: '#
 // Convert container background color to actual value
 if ($container_background_color === '#ffffff') {
     $container_bg_value = '#ffffff';
+} elseif ($container_background_color === 'inherit') {
+    $container_bg_value = '#575756'; // Standard text color
 } elseif ($container_background_color === 'primary') {
-    $container_bg_value = 'var(--color-primary)';
+    $container_bg_value = '#66a98c'; // Primary brand color
 } elseif ($container_background_color === 'secondary') {
-    $container_bg_value = 'var(--color-secondary)';
-} elseif ($container_background_color === 'white') {
-    $container_bg_value = '#ffffff';
-} elseif ($container_background_color === 'black') {
-    $container_bg_value = '#000000';
+    $container_bg_value = '#c50d14'; // Secondary brand color
 } else {
     // Try to get dynamic color
     if (function_exists('abf_get_color_value')) {
@@ -51,18 +49,14 @@ if ($enable_sticky) {
 if (!function_exists('abf_get_parallax_color_value')) {
     function abf_get_parallax_color_value($color_choice) {
         if (!$color_choice || $color_choice === 'inherit') {
-            return 'inherit';
+            return '#575756'; // Standard text color
         }
         
-        // Handle primary and secondary colors
+        // Handle fixed brand colors
         if ($color_choice === 'primary') {
-            return 'var(--color-primary)';
+            return '#66a98c'; // Primary brand color
         } elseif ($color_choice === 'secondary') {
-            return 'var(--color-secondary)';
-        } elseif ($color_choice === 'white') {
-            return '#ffffff';
-        } elseif ($color_choice === 'black') {
-            return '#000000';
+            return '#c50d14'; // Secondary brand color
         }
         
         // Try to get dynamic color from colors.json

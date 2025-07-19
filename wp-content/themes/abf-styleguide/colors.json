@@ -9,15 +9,23 @@
             "value": "#c50d14"
         },
         {
-            "name": "Hellgrau",
-            "value": "#cccccc"
+            "name": "ABF Gr\u00fcn 30%",
+            "value": "#d5e4dd"
         },
         {
-            "name": "Antrazit",
+            "name": "Wei\u00df (Basisfarbe)",
+            "value": "#ffffff"
+        },
+        {
+            "name": "Antrazit (Text)",
             "value": "#575756"
         },
         {
-            "name": "Hellblau (apotheke)",
+            "name": "Hellgrau (Basisfarbe)",
+            "value": "#cccccc"
+        },
+        {
+            "name": "Hellblau (Apotheke)",
             "value": "#7cc1e3"
         },
         {
@@ -53,5 +61,5 @@
             "value": "#c39a47"
         }
     ],
-    "updated": "2025-07-19 16:24:26"
+    "updated": "2025-07-19 17:18:25"
 }

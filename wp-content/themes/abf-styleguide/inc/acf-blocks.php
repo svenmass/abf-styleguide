@@ -20,11 +20,9 @@ if (!defined('ABSPATH')) {
 function abf_get_color_choices() {
     $colors = abf_get_colors();
     $choices = array(
-        'inherit' => 'Standard (inherit)',
-        'primary' => 'Primärfarbe',
-        'secondary' => 'Sekundärfarbe',
-        'white' => 'Weiß',
-        'black' => 'Schwarz',
+        'inherit' => 'Standard (inherit) - #575756',
+        'primary' => 'Primärfarbe - #66a98c',
+        'secondary' => 'Sekundärfarbe - #c50d14',
     );
     
     if (!empty($colors)) {

@@ -35,11 +35,11 @@ $styles[] = 'line-height: 1.4';
 
 // Color handling
 if ($headline_color === 'inherit') {
-    $styles[] = 'color: inherit';
+    $styles[] = 'color: #575756'; // Standard text color
 } elseif ($headline_color === 'primary') {
-    $styles[] = 'color: var(--color-primary)';
+    $styles[] = 'color: #66a98c'; // Primary brand color
 } elseif ($headline_color === 'secondary') {
-    $styles[] = 'color: var(--color-secondary)';
+    $styles[] = 'color: #c50d14'; // Secondary brand color
 } else {
     // Dynamic color from colors.json
     $color_value = abf_get_color_value($headline_color);

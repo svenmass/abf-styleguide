@@ -42,10 +42,12 @@ $link-color-hover: #74A68E;
 $link-weight: $font-weight-bold;
 $link-decoration: underline;
 
+// Fixed brand colors
+$color-inherit: #575756; // Standard text color  
+$color-primary: #66a98c; // Primary brand color
+$color-secondary: #c50d14; // Secondary brand color
+
 // Dynamic colors will be loaded from colors.json
-// These are fallback colors
-$color-primary: #007cba;
-$color-secondary: #6c757d;
 $color-success: #28a745;
 $color-danger: #dc3545;
 $color-warning: #ffc107;

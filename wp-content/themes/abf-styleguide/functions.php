@@ -102,17 +102,10 @@ add_filter('the_content', 'format_download_links');
  */
 function abf_get_styleguide_color_value($color_choice) {
     if (!$color_choice || $color_choice === 'inherit') {
-        return 'inherit';
+        return '#575756'; // Standard text color
     }
     
-    // Handle basic colors
-    if ($color_choice === 'white') {
-        return '#ffffff';
-    } elseif ($color_choice === 'black') {
-        return '#000000';
-    }
-    
-    // Try to get dynamic color from colors.json
+    // Try to get dynamic color from colors.json first
     if (function_exists('abf_get_color_value')) {
         $color_value = abf_get_color_value($color_choice);
         if ($color_value) {
@@ -120,11 +113,11 @@ function abf_get_styleguide_color_value($color_choice) {
         }
     }
     
-    // Handle primary and secondary colors with fallbacks
+    // Handle fixed brand colors
     if ($color_choice === 'primary') {
-        return '#66a98c'; // ABF Grün from colors.json
+        return '#66a98c'; // Primary brand color
     } elseif ($color_choice === 'secondary') {
-        return '#c50d14'; // ABF Rot from colors.json
+        return '#c50d14'; // Secondary brand color
     }
     
     // Fallback to CSS variable

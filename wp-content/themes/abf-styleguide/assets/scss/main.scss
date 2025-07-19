@@ -36,6 +36,7 @@
 :root {
     // Dynamic colors will be loaded from colors.json via PHP
     // These are fallback values
+    --color-inherit: #{$color-inherit};
     --color-primary: #{$color-primary};
     --color-secondary: #{$color-secondary};
     --color-success: #{$color-success};

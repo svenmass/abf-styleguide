@@ -42,18 +42,14 @@ $video = get_field('video') ?: null;
 if (!function_exists('abf_get_element_color_value')) {
     function abf_get_element_color_value($color_choice) {
         if (!$color_choice || $color_choice === 'inherit') {
-            return 'inherit';
+            return '#575756'; // Standard text color
         }
         
-        // Handle primary and secondary colors
+        // Handle fixed brand colors
         if ($color_choice === 'primary') {
-            return 'var(--color-primary)';
+            return '#66a98c'; // Primary brand color
         } elseif ($color_choice === 'secondary') {
-            return 'var(--color-secondary)';
-        } elseif ($color_choice === 'white') {
-            return '#ffffff';
-        } elseif ($color_choice === 'black') {
-            return '#000000';
+            return '#c50d14'; // Secondary brand color
         }
         
         // Try to get dynamic color from colors.json

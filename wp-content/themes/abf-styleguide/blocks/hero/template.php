@@ -49,10 +49,12 @@ if ($headline_weight) {
     $headline_styles[] = 'font-weight: ' . esc_attr($headline_weight);
 }
 if ($headline_color) {
-    if ($headline_color === 'primary') {
-        $headline_styles[] = 'color: var(--color-primary)';
+    if ($headline_color === 'inherit') {
+        $headline_styles[] = 'color: #575756'; // Standard text color
+    } elseif ($headline_color === 'primary') {
+        $headline_styles[] = 'color: #66a98c'; // Primary brand color
     } elseif ($headline_color === 'secondary') {
-        $headline_styles[] = 'color: var(--color-secondary)';
+        $headline_styles[] = 'color: #c50d14'; // Secondary brand color
     } else {
         $color_value = abf_get_color_value($headline_color);
         if ($color_value) {
@@ -70,10 +72,12 @@ if ($subline_weight) {
     $subline_styles[] = 'font-weight: ' . esc_attr($subline_weight);
 }
 if ($subline_color) {
-    if ($subline_color === 'primary') {
-        $subline_styles[] = 'color: var(--color-primary)';
+    if ($subline_color === 'inherit') {
+        $subline_styles[] = 'color: #575756'; // Standard text color
+    } elseif ($subline_color === 'primary') {
+        $subline_styles[] = 'color: #66a98c'; // Primary brand color
     } elseif ($subline_color === 'secondary') {
-        $subline_styles[] = 'color: var(--color-secondary)';
+        $subline_styles[] = 'color: #c50d14'; // Secondary brand color
     } else {
         $color_value = abf_get_color_value($subline_color);
         if ($color_value) {
@@ -88,10 +92,12 @@ $button_text_value = '';
 $button_hover_bg_value = '';
 $button_hover_text_value = '';
 
-if ($button_bg_color === 'primary') {
-    $button_bg_value = 'var(--color-primary)';
+if ($button_bg_color === 'inherit') {
+    $button_bg_value = '#575756'; // Standard text color
+} elseif ($button_bg_color === 'primary') {
+    $button_bg_value = '#66a98c'; // Primary brand color
 } elseif ($button_bg_color === 'secondary') {
-    $button_bg_value = 'var(--color-secondary)';
+    $button_bg_value = '#c50d14'; // Secondary brand color
 } else {
     $color_value = abf_get_color_value($button_bg_color);
     if ($color_value) {
@@ -99,12 +105,12 @@ if ($button_bg_color === 'primary') {
     }
 }
 
-if ($button_text_color === 'white') {
-    $button_text_value = '#ffffff';
+if ($button_text_color === 'inherit') {
+    $button_text_value = '#575756'; // Standard text color
 } elseif ($button_text_color === 'primary') {
-    $button_text_value = 'var(--color-primary)';
+    $button_text_value = '#66a98c'; // Primary brand color
 } elseif ($button_text_color === 'secondary') {
-    $button_text_value = 'var(--color-secondary)';
+    $button_text_value = '#c50d14'; // Secondary brand color
 } else {
     $color_value = abf_get_color_value($button_text_color);
     if ($color_value) {
@@ -112,10 +118,12 @@ if ($button_text_color === 'white') {
     }
 }
 
-if ($button_hover_bg === 'primary') {
-    $button_hover_bg_value = 'var(--color-primary)';
+if ($button_hover_bg === 'inherit') {
+    $button_hover_bg_value = '#575756'; // Standard text color
+} elseif ($button_hover_bg === 'primary') {
+    $button_hover_bg_value = '#66a98c'; // Primary brand color
 } elseif ($button_hover_bg === 'secondary') {
-    $button_hover_bg_value = 'var(--color-secondary)';
+    $button_hover_bg_value = '#c50d14'; // Secondary brand color
 } else {
     $color_value = abf_get_color_value($button_hover_bg);
     if ($color_value) {
@@ -123,12 +131,12 @@ if ($button_hover_bg === 'primary') {
     }
 }
 
-if ($button_hover_text === 'white') {
-    $button_hover_text_value = '#ffffff';
+if ($button_hover_text === 'inherit') {
+    $button_hover_text_value = '#575756'; // Standard text color
 } elseif ($button_hover_text === 'primary') {
-    $button_hover_text_value = 'var(--color-primary)';
+    $button_hover_text_value = '#66a98c'; // Primary brand color
 } elseif ($button_hover_text === 'secondary') {
-    $button_hover_text_value = 'var(--color-secondary)';
+    $button_hover_text_value = '#c50d14'; // Secondary brand color
 } else {
     $color_value = abf_get_color_value($button_hover_text);
     if ($color_value) {
