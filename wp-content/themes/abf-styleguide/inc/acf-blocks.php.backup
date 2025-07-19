@@ -1,0 +1,518 @@
+<?php
+/**
+ * ACF Blocks Registration - Manual Registration
+ */
+
+if (!defined('ABSPATH')) {
+    exit;
+}
+
+
+
+/**
+ * Get dynamic color choices for ACF fields
+ */
+function abf_get_color_choices() {
+    $colors = abf_get_colors();
+    $choices = array(
+        'inherit' => 'Standard (inherit)',
+        'primary' => 'Primärfarbe',
+        'secondary' => 'Sekundärfarbe',
+        'white' => 'Weiß',
+        'black' => 'Schwarz',
+    );
+    
+    if (!empty($colors)) {
+        foreach ($colors as $color) {
+            $color_name = $color['name'] ?? '';
+            if ($color_name) {
+                $color_slug = sanitize_title($color_name);
+                $choices[$color_slug] = $color_name;
+            }
+        }
+    }
+    
+    return $choices;
+}
+
+/**
+ * Register ACF Blocks manually
+ */
+add_action('acf/init', 'abf_register_acf_blocks');
+
+function abf_register_acf_blocks() {
+    // Check if ACF is available
+    if (!function_exists('acf_register_block_type') || !function_exists('acf_add_local_field_group')) {
+        return;
+    }
+    
+    // NOTE: Headline and Hero blocks are now registered automatically via block.json
+    // See abf_register_blocks_automatically() function above
+    
+    // NOTE: Parallax Grid Block is now registered automatically via block.json
+
+    // NOTE: All remaining blocks are now registered automatically via block.json
+
+    // NOTE: Text Block is now registered automatically via block.json
+
+    // NOTE: All Styleguide blocks are now registered automatically via their individual block.json files
+    // This includes: styleguide-text-element, styleguide-bild-text, styleguide-trennlinie, 
+    // styleguide-akkordeon, styleguide-posts, styleguide-similar, styleguide-einzelbild, 
+    // styleguide-grid, styleguide-masonry
+}
+
+/**
+ * Include modular field definitions
+ */
+function abf_include_modular_fields() {
+    // Include Parallax Content Block fields
+    $parallax_content_fields = get_template_directory() . '/blocks/parallax-content/fields.php';
+    if (file_exists($parallax_content_fields)) {
+        require_once $parallax_content_fields;
+    }
+    
+    // Include Parallax Element Block fields (NEW)
+    $parallax_element_fields = get_template_directory() . '/blocks/parallax-element/fields.php';
+    if (file_exists($parallax_element_fields)) {
+        require_once $parallax_element_fields;
+    }
+    
+    // Include Styleguide Text Element Block fields
+    $styleguide_text_fields = get_template_directory() . '/blocks/styleguide-text-element/fields.php';
+    if (file_exists($styleguide_text_fields)) {
+        $field_group = require $styleguide_text_fields;
+        if (is_array($field_group)) {
+            acf_add_local_field_group($field_group);
+        }
+    }
+    
+    // Include Styleguide Bild-Text Block fields
+    $styleguide_bild_text_fields = get_template_directory() . '/blocks/styleguide-bild-text/fields.php';
+    if (file_exists($styleguide_bild_text_fields)) {
+        $field_group = require $styleguide_bild_text_fields;
+        if (is_array($field_group)) {
+            acf_add_local_field_group($field_group);
+        }
+    }
+    
+    // Include Styleguide Trennlinie Block fields
+    $styleguide_trennlinie_fields = get_template_directory() . '/blocks/styleguide-trennlinie/fields.php';
+    if (file_exists($styleguide_trennlinie_fields)) {
+        $field_group = require $styleguide_trennlinie_fields;
+        if (is_array($field_group)) {
+            acf_add_local_field_group($field_group);
+        }
+    }
+    
+    // Include Styleguide Akkordeon Block fields
+    $styleguide_akkordeon_fields = get_template_directory() . '/blocks/styleguide-akkordeon/fields.php';
+    if (file_exists($styleguide_akkordeon_fields)) {
+        $field_group = require $styleguide_akkordeon_fields;
+        if (is_array($field_group)) {
+            acf_add_local_field_group($field_group);
+        }
+    }
+    
+    // Include Styleguide Posts Block fields
+    $styleguide_posts_fields = get_template_directory() . '/blocks/styleguide-posts/fields.php';
+    if (file_exists($styleguide_posts_fields)) {
+        $field_group = require $styleguide_posts_fields;
+        if (is_array($field_group)) {
+            acf_add_local_field_group($field_group);
+        }
+    }
+    
+    // Include Styleguide Einzelbild Block fields
+    $styleguide_einzelbild_fields = get_template_directory() . '/blocks/styleguide-einzelbild/fields.php';
+    if (file_exists($styleguide_einzelbild_fields)) {
+        $field_group = require $styleguide_einzelbild_fields;
+        if (is_array($field_group)) {
+            acf_add_local_field_group($field_group);
+        }
+    }
+    
+    // Include Styleguide Grid Block fields
+    $styleguide_grid_fields = get_template_directory() . '/blocks/styleguide-grid/fields.php';
+    if (file_exists($styleguide_grid_fields)) {
+        $field_group = require $styleguide_grid_fields;
+        if (is_array($field_group)) {
+            acf_add_local_field_group($field_group);
+        }
+    }
+    
+    // Include Styleguide Masonry Block fields
+    $styleguide_masonry_fields = get_template_directory() . '/blocks/styleguide-masonry/fields.php';
+    if (file_exists($styleguide_masonry_fields)) {
+        $field_group = require $styleguide_masonry_fields;
+        if (is_array($field_group)) {
+            acf_add_local_field_group($field_group);
+        }
+    }
+}
+add_action('acf/init', 'abf_include_modular_fields');
+
+/**
+ * Register ACF Field Groups manually
+ */
+add_action('acf/init', 'abf_register_acf_field_groups');
+
+function abf_register_acf_field_groups() {
+    if (!function_exists('acf_add_local_field_group')) {
+        return;
+    }
+    
+    // Get dynamic color choices
+    $color_choices = abf_get_color_choices();
+    
+    // NOTE: Headline and Hero Block Field Groups are now loaded automatically via fields.php
+    // The automatic system takes precedence, so these manual definitions are kept as fallback
+    
+    
+    
+}
+
+/**
+ * Add custom block categories
+ */
+function abf_block_categories($categories, $post) {
+    return array_merge(
+        $categories,
+        array(
+            array(
+                'slug' => 'abf-blocks',
+                'title' => __('ABF Blocks', 'abf-styleguide'),
+                'icon' => 'admin-generic',
+            ),
+        )
+    );
+}
+add_filter('block_categories_all', 'abf_block_categories', 10, 2);
+
+/**
+ * Add ACF color palette to editor
+ */
+function abf_add_color_palette() {
+    $colors_file = get_template_directory() . '/colors.json';
+    
+    if (file_exists($colors_file)) {
+        $colors = json_decode(file_get_contents($colors_file), true);
+        
+        if ($colors && isset($colors['colors'])) {
+            $color_palette = array();
+            
+            foreach ($colors['colors'] as $color) {
+                $color_palette[] = array(
+                    'name' => $color['name'],
+                    'slug' => sanitize_title($color['name']),
+                    'color' => $color['value'],
+                );
+            }
+            
+            add_theme_support('editor-color-palette', $color_palette);
+        }
+    }
+}
+add_action('after_setup_theme', 'abf_add_color_palette');
+
+/**
+ * Enqueue block editor styles
+ */
+function abf_block_editor_styles() {
+    wp_enqueue_style(
+        'abf-blocks-editor-style',
+        get_template_directory_uri() . '/assets/css/main.css',
+        array(),
+        filemtime(get_template_directory() . '/assets/css/main.css')
+    );
+}
+add_action('enqueue_block_editor_assets', 'abf_block_editor_styles');
+
+/**
+ * Add ACF field groups for new blocks
+ */
+add_action('acf/init', 'abf_register_card_blocks_fields');
+
+function abf_register_card_blocks_fields() {
+    if (!function_exists('acf_add_local_field_group')) {
+        return;
+    }
+    
+    // Styleguide Posts Block Field Group
+    acf_add_local_field_group(array(
+        'key' => 'group_styleguide_posts',
+        'title' => 'Styleguide Posts Block Felder',
+        'fields' => array(
+            array(
+                'key' => 'field_posts_to_show',
+                'label' => 'Anzahl Posts',
+                'name' => 'posts_to_show',
+                'type' => 'number',
+                'instructions' => 'Wie viele Posts sollen angezeigt werden?',
+                'default_value' => 6,
+                'min' => 1,
+                'max' => 20,
+                'wrapper' => array('width' => '33'),
+            ),
+            array(
+                'key' => 'field_posts_columns',
+                'label' => 'Spalten',
+                'name' => 'columns',
+                'type' => 'select',
+                'instructions' => 'Anzahl der Spalten im Grid',
+                'choices' => array(
+                    '2' => '2 Spalten',
+                    '3' => '3 Spalten',
+                    '4' => '4 Spalten',
+                ),
+                'default_value' => '3',
+                'wrapper' => array('width' => '33'),
+            ),
+            array(
+                'key' => 'field_posts_post_types',
+                'label' => 'Post Types',
+                'name' => 'post_types',
+                'type' => 'select',
+                'instructions' => 'Welche Post Types sollen angezeigt werden?',
+                'choices' => array(
+                    'post' => 'Beiträge',
+                    'page' => 'Seiten',
+                ),
+                'default_value' => array('post'),
+                'multiple' => 1,
+                'wrapper' => array('width' => '33'),
+            ),
+            array(
+                'key' => 'field_posts_categories',
+                'label' => 'Kategorien',
+                'name' => 'categories',
+                'type' => 'taxonomy',
+                'instructions' => 'Nur Posts aus bestimmten Kategorien anzeigen (leer = alle)',
+                'taxonomy' => 'category',
+                'field_type' => 'multi_select',
+                'multiple' => 1,
+                'wrapper' => array('width' => '50'),
+            ),
+            array(
+                'key' => 'field_posts_tags',
+                'label' => 'Tags',
+                'name' => 'tags',
+                'type' => 'taxonomy',
+                'instructions' => 'Nur Posts mit bestimmten Tags anzeigen (leer = alle)',
+                'taxonomy' => 'post_tag',
+                'field_type' => 'multi_select',
+                'multiple' => 1,
+                'wrapper' => array('width' => '50'),
+            ),
+            array(
+                'key' => 'field_posts_orderby',
+                'label' => 'Sortierung',
+                'name' => 'orderby',
+                'type' => 'select',
+                'instructions' => 'Nach was soll sortiert werden?',
+                'choices' => array(
+                    'date' => 'Datum',
+                    'title' => 'Titel',
+                    'menu_order' => 'Reihenfolge',
+                    'rand' => 'Zufällig',
+                ),
+                'default_value' => 'date',
+                'wrapper' => array('width' => '50'),
+            ),
+            array(
+                'key' => 'field_posts_order',
+                'label' => 'Reihenfolge',
+                'name' => 'order',
+                'type' => 'select',
+                'instructions' => 'Aufsteigend oder absteigend?',
+                'choices' => array(
+                    'DESC' => 'Absteigend',
+                    'ASC' => 'Aufsteigend',
+                ),
+                'default_value' => 'DESC',
+                'wrapper' => array('width' => '50'),
+            ),
+            array(
+                'key' => 'field_posts_show_title',
+                'label' => 'Block-Titel anzeigen',
+                'name' => 'show_title',
+                'type' => 'true_false',
+                'instructions' => 'Soll eine Überschrift über dem Block angezeigt werden?',
+                'default_value' => 0,
+                'wrapper' => array('width' => '50'),
+            ),
+            array(
+                'key' => 'field_posts_block_title',
+                'label' => 'Block-Titel',
+                'name' => 'block_title',
+                'type' => 'text',
+                'instructions' => 'Titel für den Block',
+                'default_value' => 'Aktuelle Beiträge',
+                'conditional_logic' => array(
+                    array(
+                        array(
+                            'field' => 'field_posts_show_title',
+                            'operator' => '==',
+                            'value' => '1',
+                        ),
+                    ),
+                ),
+                'wrapper' => array('width' => '50'),
+            ),
+        ),
+        'location' => array(
+            array(
+                array(
+                    'param' => 'block',
+                    'operator' => '==',
+                    'value' => 'acf/styleguide-posts',
+                ),
+            ),
+        ),
+    ));
+    
+    // Styleguide Similar Posts Block Field Group
+    acf_add_local_field_group(array(
+        'key' => 'group_styleguide_similar',
+        'title' => 'Styleguide Similar Posts Block Felder',
+        'fields' => array(
+            array(
+                'key' => 'field_similar_posts_to_show',
+                'label' => 'Anzahl Posts',
+                'name' => 'posts_to_show',
+                'type' => 'number',
+                'instructions' => 'Wie viele ähnliche Posts sollen angezeigt werden?',
+                'default_value' => 3,
+                'min' => 1,
+                'max' => 12,
+                'wrapper' => array('width' => '33'),
+            ),
+            array(
+                'key' => 'field_similar_columns',
+                'label' => 'Spalten',
+                'name' => 'columns',
+                'type' => 'select',
+                'instructions' => 'Anzahl der Spalten im Grid',
+                'choices' => array(
+                    '2' => '2 Spalten',
+                    '3' => '3 Spalten',
+                    '4' => '4 Spalten',
+                ),
+                'default_value' => '3',
+                'wrapper' => array('width' => '33'),
+            ),
+            array(
+                'key' => 'field_similar_base_post',
+                'label' => 'Basis-Post',
+                'name' => 'base_post',
+                'type' => 'post_object',
+                'instructions' => 'Zu welchem Post sollen ähnliche Posts gefunden werden? (leer = aktueller Post)',
+                'post_type' => array('post'),
+                'multiple' => 0,
+                'wrapper' => array('width' => '33'),
+            ),
+            array(
+                'key' => 'field_similar_show_title',
+                'label' => 'Block-Titel anzeigen',
+                'name' => 'show_title',
+                'type' => 'true_false',
+                'instructions' => 'Soll eine Überschrift über dem Block angezeigt werden?',
+                'default_value' => 1,
+                'wrapper' => array('width' => '50'),
+            ),
+            array(
+                'key' => 'field_similar_block_title',
+                'label' => 'Block-Titel',
+                'name' => 'block_title',
+                'type' => 'text',
+                'instructions' => 'Titel für den Block',
+                'default_value' => 'Ähnliche Beiträge',
+                'conditional_logic' => array(
+                    array(
+                        array(
+                            'field' => 'field_similar_show_title',
+                            'operator' => '==',
+                            'value' => '1',
+                        ),
+                    ),
+                ),
+                'wrapper' => array('width' => '50'),
+            ),
+        ),
+        'location' => array(
+            array(
+                array(
+                    'param' => 'block',
+                    'operator' => '==',
+                    'value' => 'acf/styleguide-similar',
+                ),
+            ),
+        ),
+    ));
+} 
+
+/**
+ * Automatic Block Registration System
+ * Scans all block directories and automatically registers blocks via block.json
+ * Also loads corresponding fields.php files
+ */
+add_action('init', 'abf_register_blocks_automatically');
+
+function abf_register_blocks_automatically() {
+    // Check if block registration function exists
+    if (!function_exists('register_block_type')) {
+        return;
+    }
+    
+    $blocks_dir = get_template_directory() . '/blocks';
+    
+    if (!is_dir($blocks_dir)) {
+        return;
+    }
+    
+    // Scan all block directories
+    $block_directories = glob($blocks_dir . '/*', GLOB_ONLYDIR);
+    
+    foreach ($block_directories as $block_dir) {
+        $block_name = basename($block_dir);
+        $block_json_path = $block_dir . '/block.json';
+        
+        // Register block if block.json exists
+        if (file_exists($block_json_path)) {
+            register_block_type($block_dir);
+        }
+    }
+}
+
+/**
+ * Automatically load all fields.php files from block directories
+ */
+add_action('acf/init', 'abf_load_block_fields_automatically');
+
+function abf_load_block_fields_automatically() {
+    if (!function_exists('acf_add_local_field_group')) {
+        return;
+    }
+    
+    $blocks_dir = get_template_directory() . '/blocks';
+    
+    if (!is_dir($blocks_dir)) {
+        return;
+    }
+    
+    // Scan all block directories
+    $block_directories = glob($blocks_dir . '/*', GLOB_ONLYDIR);
+    
+    foreach ($block_directories as $block_dir) {
+        $block_name = basename($block_dir);
+        $fields_path = $block_dir . '/fields.php';
+        
+        // Load fields if fields.php exists
+        if (file_exists($fields_path)) {
+            $field_group = require $fields_path;
+            
+            if (is_array($field_group)) {
+                acf_add_local_field_group($field_group);
+            }
+        }
+    }
+}

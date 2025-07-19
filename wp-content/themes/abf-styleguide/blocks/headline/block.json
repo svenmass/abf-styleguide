@@ -5,10 +5,13 @@
     "category": "abf-blocks",
     "icon": "heading",
     "keywords": ["headline", "title", "heading", "h1", "h2", "h3"],
+    "acf": {
+        "mode": "edit",
+        "renderTemplate": "template.php"
+    },
     "supports": {
         "jsx": true
     },
-    "mode": "edit",
     "example": {
         "attributes": {
             "mode": "preview",

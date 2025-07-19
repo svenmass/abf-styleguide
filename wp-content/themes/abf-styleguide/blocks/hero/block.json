@@ -5,10 +5,13 @@
     "category": "abf-blocks",
     "icon": "format-image",
     "keywords": ["hero", "header", "video", "background", "headline"],
+    "acf": {
+        "mode": "auto",
+        "renderTemplate": "template.php"
+    },
     "supports": {
         "jsx": true
     },
-    "mode": "auto",
     "example": {
         "attributes": {
             "mode": "preview",

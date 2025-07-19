@@ -1,0 +1,28 @@
+{
+    "name": "acf/parallax-content",
+    "title": "Parallax Content",
+    "description": "Ein bildschirmfüllender Block mit unbegrenzten Content-Elementen (Text links, weißes Layer rechts)",
+    "category": "abf-blocks",
+    "icon": "align-left",
+    "keywords": ["parallax", "content", "text", "media", "repeater"],
+    "acf": {
+        "mode": "auto",
+        "renderTemplate": "template.php"
+    },
+    "supports": {
+        "jsx": true
+    },
+    "example": {
+        "attributes": {
+            "mode": "preview",
+            "data": {
+                "parallax_content_elements": [
+                    {
+                        "headline_text": "Beispiel Headline",
+                        "richtext_content": "Dies ist ein Beispieltext für das Parallax Content Element."
+                    }
+                ]
+            }
+        }
+    }
+} 

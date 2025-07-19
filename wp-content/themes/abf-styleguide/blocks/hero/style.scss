@@ -1,0 +1,257 @@
+// =============================================================================
+// HERO BLOCK STYLES
+// =============================================================================
+
+// Import variables (falls separat kompiliert)
+// @import '../../assets/scss/_variables';
+
+// =============================================================================
+// EDITOR-SPECIFIC STYLES
+// =============================================================================
+
+// Editor-specific styles for Hero Block
+.wp-block-acf-hero {
+    .block-hero {
+        // Im Editor: begrenzte Höhe statt 100vh
+        height: 50vh;
+        min-height: 400px;
+        max-height: 600px;
+        
+        // Im Editor: 100% statt 100vw verwenden
+        width: 100% !important;
+        max-width: 100% !important;
+        
+        .container-home {
+            height: 100%;
+            max-height: unset;
+            
+            // Im Editor: 100% statt 100vw verwenden
+            width: 100% !important;
+            max-width: 100% !important;
+        }
+        
+        .hero-content {
+            // Im Editor: content unten positionieren
+            bottom: 50px !important;
+            top: auto !important;
+            
+            // Im Editor: Breite anpassen
+            width: 50% !important;
+            max-width: 50% !important;
+            left: 24px !important;
+            
+            // Weißer Hintergrund mit 40% Opacity auch im Editor
+            background: rgba(255, 255, 255, 0.4) !important;
+            padding: 24px !important;
+            border-radius: 8px !important;
+            backdrop-filter: blur(10px) !important;
+        }
+        
+        .hero-plus {
+            // Im Editor: Plus etwas kleiner
+            height: 30vh;
+            max-height: 200px;
+            
+            svg {
+                height: 30vh;
+                max-height: 200px;
+            }
+        }
+    }
+}
+
+// =============================================================================
+// FRONTEND STYLES
+// =============================================================================
+
+// Main Block Container
+.block-hero {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    max-width: 100vw;
+    max-height: 100vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-sizing: border-box;
+    
+    .container-home {
+        position: relative;
+        width: 100vw;
+        height: 100vh;
+        max-width: 100vw;
+        max-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        z-index: 2;
+        margin: 0 !important;
+        padding: 0 !important;
+        box-sizing: border-box;
+    }
+}
+
+// Hero Background
+.hero-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+.hero-background-image,
+.hero-background-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+}
+
+// Hero Logo
+.hero-logo {
+    position: absolute;
+    top: $spacing-md;
+    left: $spacing-md;
+    z-index: 3;
+    height: 50px;
+    width: auto;
+    
+    svg {
+        height: 50px;
+        width: auto;
+    }
+}
+
+// Hero Plus Icon
+.hero-plus {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    z-index: 3;
+    height: 40vh;
+    width: auto;
+    opacity: 0.7;
+    
+    svg {
+        height: 40vh;
+        width: auto;
+        max-height: 40vh;
+    }
+}
+
+// Hero Content
+.hero-content {
+    position: absolute;
+    top: 55vh;
+    left: $spacing-md;
+    transform: translateY(-50%);
+    z-index: 4;
+    text-align: left;
+    max-width: 90%;
+    
+    // Weißer Hintergrund mit 40% Opacity
+    background: rgba(255, 255, 255, 0.4);
+    padding: $spacing-lg;
+    border-radius: 8px;
+    backdrop-filter: blur(5px); // Zusätzlicher Glaseffekt
+}
+
+.hero-headline {
+    margin: 0 0 $spacing-md 0;
+    text-align: left;
+    font-family: $font-family-primary;
+    font-size: var(--font-size-3xl); // Responsive: 72px → 66px → 60px
+}
+
+.hero-subline {
+    margin: 0 0 $spacing-lg 0;
+    text-align: left;
+    font-family: $font-family-primary;
+    font-size: var(--font-size-h2); // Responsive: 24px → 22px → 20px
+}
+
+.hero-button-wrapper {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.hero-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: $font-family-primary;
+    font-weight: $font-weight-regular;
+    font-size: var(--font-size-body); // Responsive: 18px → 16px → 14px
+    line-height: $line-height-base;
+    padding: $button-padding-y $button-padding-x;
+    border: none;
+    border-radius: $button-border-radius;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: var(--color-primary, $color-primary);
+    color: white;
+    
+    &:hover,
+    &:focus {
+        text-decoration: none;
+        outline: none;
+    }
+}
+
+// =============================================================================
+// RESPONSIVE DESIGN
+// =============================================================================
+
+@media (max-width: $breakpoint-tablet) {
+    .hero-content {
+        max-width: 95%;
+        padding: $spacing-md;
+        top: 60vh;
+    }
+    
+    .hero-plus {
+        height: 30vh;
+        
+        svg {
+            height: 30vh;
+            max-height: 30vh;
+        }
+    }
+    
+    .hero-logo {
+        top: $spacing-sm;
+        left: $spacing-sm;
+        height: 40px;
+        
+        svg {
+            height: 40px;
+        }
+    }
+}
+
+@media (max-width: $breakpoint-mobile) {
+    .hero-content {
+        max-width: 90%;
+        padding: $spacing-sm;
+        top: 65vh;
+    }
+    
+    .hero-plus {
+        height: 25vh;
+        
+        svg {
+            height: 25vh;
+            max-height: 25vh;
+        }
+    }
+} 

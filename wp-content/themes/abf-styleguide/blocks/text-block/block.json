@@ -1,0 +1,24 @@
+{
+    "name": "acf/text-block",
+    "title": "Text Block",
+    "description": "Einfacher Text-Block mit Sticky-Verhalten und optionaler voller Höhe",
+    "category": "abf-blocks",
+    "icon": "editor-alignleft",
+    "keywords": ["text", "sticky", "content", "headline", "fullwidth"],
+    "acf": {
+        "mode": "auto",
+        "renderTemplate": "template.php"
+    },
+    "supports": {
+        "jsx": true
+    },
+    "example": {
+        "attributes": {
+            "mode": "preview",
+            "data": {
+                "tb_headline_text": "Beispiel Headline",
+                "tb_richtext_content": "Dies ist ein Beispieltext für den Text Block."
+            }
+        }
+    }
+} 
