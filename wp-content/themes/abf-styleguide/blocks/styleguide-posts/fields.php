@@ -59,15 +59,7 @@ return array(
             'label' => 'Schriftgröße',
             'name' => 'sp_headline_size',
             'type' => 'select',
-            'choices' => array(
-                '12' => '12px (Small)',
-                '18' => '18px (Body)',
-                '24' => '24px (H2)',
-                '36' => '36px (H1)',
-                '48' => '48px (XL)',
-                '60' => '60px (XXL)',
-                '72' => '72px (3XL)',
-            ),
+            'choices' => function_exists('abf_get_typography_font_sizes') ? abf_get_typography_font_sizes() : array('36' => '36px (H1)'),
             'default_value' => '36',
             'wrapper' => array('width' => '25'),
             'conditional_logic' => array(
@@ -85,13 +77,7 @@ return array(
             'label' => 'Schriftgewicht',
             'name' => 'sp_headline_weight',
             'type' => 'select',
-            'choices' => array(
-                '300' => 'Light (300)',
-                '400' => 'Regular (400)',
-                '500' => 'Medium (500)',
-                '600' => 'Semi-Bold (600)',
-                '700' => 'Bold (700)',
-            ),
+            'choices' => function_exists('abf_get_typography_font_weights') ? abf_get_typography_font_weights() : array('600' => 'Semi-Bold (600)'),
             'default_value' => '600',
             'wrapper' => array('width' => '25'),
             'conditional_logic' => array(

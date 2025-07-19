@@ -56,15 +56,7 @@ return array(
             'type' => 'select',
             'instructions' => 'Schriftgröße der Überschrift',
             'required' => 0,
-            'choices' => array(
-                '12' => '12px (Small)',
-                '18' => '18px (Body)',
-                '24' => '24px (H2)',
-                '36' => '36px (H1)',
-                '48' => '48px (XL)',
-                '60' => '60px (XXL)',
-                '72' => '72px (3XL)',
-            ),
+            'choices' => function_exists('abf_get_typography_font_sizes') ? abf_get_typography_font_sizes() : array('24' => '24px (H2)'),
             'default_value' => '24',
             'wrapper' => array(
                 'width' => '25',
@@ -77,13 +69,7 @@ return array(
             'type' => 'select',
             'instructions' => 'Schriftgewicht der Überschrift',
             'required' => 0,
-            'choices' => array(
-                '300' => 'Light (300)',
-                '400' => 'Regular (400)',
-                '500' => 'Medium (500)',
-                '600' => 'Semi-Bold (600)',
-                '700' => 'Bold (700)',
-            ),
+            'choices' => function_exists('abf_get_typography_font_weights') ? abf_get_typography_font_weights() : array('400' => 'Regular (400)'),
             'default_value' => '400',
             'wrapper' => array(
                 'width' => '25',
