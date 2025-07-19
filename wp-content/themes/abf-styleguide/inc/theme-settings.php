@@ -263,6 +263,165 @@ function abf_register_theme_settings_fields() {
                         ),
                     ),
                 ),
+                
+                // Typography Section
+                array(
+                    'key' => 'field_typography_section',
+                    'label' => 'Typography',
+                    'name' => 'typography_section',
+                    'type' => 'tab',
+                    'instructions' => '',
+                    'required' => 0,
+                    'conditional_logic' => 0,
+                    'wrapper' => array(
+                        'width' => '',
+                        'class' => '',
+                        'id' => '',
+                    ),
+                    'placement' => 'top',
+                    'endpoint' => 0,
+                ),
+                
+                // Font Sizes
+                array(
+                    'key' => 'field_font_sizes',
+                    'label' => 'Schriftgrößen',
+                    'name' => 'font_sizes',
+                    'type' => 'repeater',
+                    'instructions' => 'Definieren Sie hier die verfügbaren Schriftgrößen für alle Blöcke.',
+                    'required' => 0,
+                    'conditional_logic' => 0,
+                    'wrapper' => array(
+                        'width' => '',
+                        'class' => '',
+                        'id' => '',
+                    ),
+                    'collapsed' => '',
+                    'min' => 1,
+                    'max' => 20,
+                    'layout' => 'table',
+                    'button_label' => 'Schriftgröße hinzufügen',
+                    'sub_fields' => array(
+                        array(
+                            'key' => 'field_font_size_key',
+                            'label' => 'Schlüssel',
+                            'name' => 'key',
+                            'type' => 'text',
+                            'instructions' => 'Eindeutiger Schlüssel (z.B. small, body, h1, xl)',
+                            'required' => 1,
+                            'wrapper' => array('width' => '20'),
+                        ),
+                        array(
+                            'key' => 'field_font_size_label',
+                            'label' => 'Label',
+                            'name' => 'label',
+                            'type' => 'text',
+                            'instructions' => 'Anzeige-Name im Backend (z.B. "Small (12px)")',
+                            'required' => 1,
+                            'wrapper' => array('width' => '30'),
+                        ),
+                        array(
+                            'key' => 'field_font_size_desktop',
+                            'label' => 'Desktop',
+                            'name' => 'desktop',
+                            'type' => 'number',
+                            'instructions' => 'Größe in px für Desktop',
+                            'required' => 1,
+                            'min' => 8,
+                            'max' => 200,
+                            'step' => 1,
+                            'append' => 'px',
+                            'wrapper' => array('width' => '20'),
+                        ),
+                        array(
+                            'key' => 'field_font_size_tablet',
+                            'label' => 'Tablet',
+                            'name' => 'tablet',
+                            'type' => 'number',
+                            'instructions' => 'Größe in px für Tablet (optional - wird automatisch berechnet)',
+                            'required' => 0,
+                            'min' => 8,
+                            'max' => 200,
+                            'step' => 1,
+                            'append' => 'px',
+                            'wrapper' => array('width' => '15'),
+                        ),
+                        array(
+                            'key' => 'field_font_size_mobile',
+                            'label' => 'Mobile',
+                            'name' => 'mobile',
+                            'type' => 'number',
+                            'instructions' => 'Größe in px für Mobile (optional - wird automatisch berechnet)',
+                            'required' => 0,
+                            'min' => 8,
+                            'max' => 200,
+                            'step' => 1,
+                            'append' => 'px',
+                            'wrapper' => array('width' => '15'),
+                        ),
+                    ),
+                ),
+                
+                // Font Weights
+                array(
+                    'key' => 'field_font_weights',
+                    'label' => 'Schriftgewichte',
+                    'name' => 'font_weights',
+                    'type' => 'repeater',
+                    'instructions' => 'Definieren Sie hier die verfügbaren Schriftgewichte für alle Blöcke.',
+                    'required' => 0,
+                    'conditional_logic' => 0,
+                    'wrapper' => array(
+                        'width' => '',
+                        'class' => '',
+                        'id' => '',
+                    ),
+                    'collapsed' => '',
+                    'min' => 1,
+                    'max' => 10,
+                    'layout' => 'table',
+                    'button_label' => 'Schriftgewicht hinzufügen',
+                    'sub_fields' => array(
+                        array(
+                            'key' => 'field_font_weight_key',
+                            'label' => 'Schlüssel',
+                            'name' => 'key',
+                            'type' => 'text',
+                            'instructions' => 'Eindeutiger Schlüssel (z.B. light, regular, bold)',
+                            'required' => 1,
+                            'wrapper' => array('width' => '30'),
+                        ),
+                        array(
+                            'key' => 'field_font_weight_label',
+                            'label' => 'Label',
+                            'name' => 'label',
+                            'type' => 'text',
+                            'instructions' => 'Anzeige-Name im Backend (z.B. "Light (300)")',
+                            'required' => 1,
+                            'wrapper' => array('width' => '40'),
+                        ),
+                        array(
+                            'key' => 'field_font_weight_value',
+                            'label' => 'Wert',
+                            'name' => 'value',
+                            'type' => 'select',
+                            'instructions' => 'CSS font-weight Wert',
+                            'required' => 1,
+                            'choices' => array(
+                                '100' => '100 (Thin)',
+                                '200' => '200 (Extra Light)',
+                                '300' => '300 (Light)',
+                                '400' => '400 (Regular)',
+                                '500' => '500 (Medium)',
+                                '600' => '600 (Semi Bold)',
+                                '700' => '700 (Bold)',
+                                '800' => '800 (Extra Bold)',
+                                '900' => '900 (Black)',
+                            ),
+                            'wrapper' => array('width' => '30'),
+                        ),
+                    ),
+                ),
             ),
             'location' => array(
                 array(
@@ -303,6 +462,42 @@ function abf_save_colors_to_json($value, $post_id, $field) {
     return $value;
 }
 add_filter('acf/update_value', 'abf_save_colors_to_json', 10, 3);
+
+/**
+ * Save typography to JSON file when theme settings are updated
+ */
+function abf_save_typography_to_json($value, $post_id, $field) {
+    if ($field['name'] === 'font_sizes' || $field['name'] === 'font_weights') {
+        $typography_file = get_template_directory() . '/typography.json';
+        
+        // Get all typography data
+        $font_sizes = get_field('font_sizes', 'option') ?: array();
+        $font_weights = get_field('font_weights', 'option') ?: array();
+        
+        // If we're updating font_sizes, use the new value
+        if ($field['name'] === 'font_sizes') {
+            $font_sizes = $value;
+        }
+        // If we're updating font_weights, use the new value
+        if ($field['name'] === 'font_weights') {
+            $font_weights = $value;
+        }
+        
+        $typography_data = array(
+            'font_sizes' => $font_sizes,
+            'font_weights' => $font_weights,
+            'updated' => current_time('mysql'),
+        );
+        
+        file_put_contents($typography_file, json_encode($typography_data, JSON_PRETTY_PRINT));
+        
+        // Generate CSS file for frontend
+        abf_generate_typography_css();
+    }
+    
+    return $value;
+}
+add_filter('acf/update_value', 'abf_save_typography_to_json', 10, 3);
 
 /**
  * Alternative save function for backward compatibility
@@ -435,4 +630,183 @@ function abf_fix_svg_thumb_display() {
     </style>
     ';
 }
-add_action('admin_head', 'abf_fix_svg_thumb_display'); 
+add_action('admin_head', 'abf_fix_svg_thumb_display');
+
+// =============================================================================
+// TYPOGRAPHY HELPER FUNCTIONS
+// =============================================================================
+
+/**
+ * Generate CSS file from typography settings
+ */
+function abf_generate_typography_css() {
+    $font_sizes = get_field('font_sizes', 'option') ?: array();
+    $font_weights = get_field('font_weights', 'option') ?: array();
+    
+    // If no data, use defaults
+    if (empty($font_sizes)) {
+        $font_sizes = abf_get_default_font_sizes();
+    }
+    if (empty($font_weights)) {
+        $font_weights = abf_get_default_font_weights();
+    }
+    
+    $css = "/* Auto-generated Typography CSS from Theme Settings */\n";
+    $css .= ":root {\n";
+    
+    // Generate CSS Custom Properties for font sizes
+    foreach ($font_sizes as $size) {
+        if (empty($size['key']) || empty($size['desktop'])) continue;
+        $css .= "    --font-size-" . sanitize_title($size['key']) . ": " . intval($size['desktop']) . "px;\n";
+    }
+    
+    // Generate CSS Custom Properties for font weights
+    foreach ($font_weights as $weight) {
+        if (empty($weight['key']) || empty($weight['value'])) continue;
+        $css .= "    --font-weight-" . sanitize_title($weight['key']) . ": " . intval($weight['value']) . ";\n";
+    }
+    
+    $css .= "}\n\n";
+    
+    // Generate responsive font sizes
+    $css .= "/* Responsive Typography - Tablet */\n";
+    $css .= "@media (max-width: 991px) {\n";
+    $css .= "    :root {\n";
+    foreach ($font_sizes as $size) {
+        if (empty($size['key']) || empty($size['desktop'])) continue;
+        $tablet_size = !empty($size['tablet']) ? intval($size['tablet']) : round(intval($size['desktop']) * 0.85);
+        $css .= "        --font-size-" . sanitize_title($size['key']) . ": " . $tablet_size . "px;\n";
+    }
+    $css .= "    }\n}\n\n";
+    
+    $css .= "/* Responsive Typography - Mobile */\n";
+    $css .= "@media (max-width: 575px) {\n";
+    $css .= "    :root {\n";
+    foreach ($font_sizes as $size) {
+        if (empty($size['key']) || empty($size['desktop'])) continue;
+        $mobile_size = !empty($size['mobile']) ? intval($size['mobile']) : round(intval($size['desktop']) * 0.75);
+        $css .= "        --font-size-" . sanitize_title($size['key']) . ": " . $mobile_size . "px;\n";
+    }
+    $css .= "    }\n}\n\n";
+    
+    // Generate responsive overrides for inline styles
+    $css .= "/* Auto-responsive inline font-size overrides */\n";
+    foreach ($font_sizes as $size) {
+        if (empty($size['key']) || empty($size['desktop'])) continue;
+        $desktop = intval($size['desktop']);
+        $tablet = !empty($size['tablet']) ? intval($size['tablet']) : round($desktop * 0.85);
+        $mobile = !empty($size['mobile']) ? intval($size['mobile']) : round($desktop * 0.75);
+        
+        $css .= "[style*=\"font-size: {$desktop}px\"], [style*=\"font-size:{$desktop}px\"] {\n";
+        $css .= "    @media (max-width: 991px) { font-size: {$tablet}px !important; }\n";
+        $css .= "    @media (max-width: 575px) { font-size: {$mobile}px !important; }\n";
+        $css .= "}\n";
+    }
+    
+    // Save to CSS file
+    $css_file = get_template_directory() . '/assets/css/typography-generated.css';
+    file_put_contents($css_file, $css);
+}
+
+/**
+ * Get font sizes for ACF field choices
+ */
+function abf_get_typography_font_sizes() {
+    $font_sizes = get_field('font_sizes', 'option');
+    
+    if (empty($font_sizes)) {
+        $font_sizes = abf_get_default_font_sizes();
+    }
+    
+    $choices = array();
+    foreach ($font_sizes as $size) {
+        if (empty($size['key']) || empty($size['label']) || empty($size['desktop'])) continue;
+        $choices[$size['desktop']] = $size['label'];
+    }
+    
+    return $choices;
+}
+
+/**
+ * Get font weights for ACF field choices
+ */
+function abf_get_typography_font_weights() {
+    $font_weights = get_field('font_weights', 'option');
+    
+    if (empty($font_weights)) {
+        $font_weights = abf_get_default_font_weights();
+    }
+    
+    $choices = array();
+    foreach ($font_weights as $weight) {
+        if (empty($weight['key']) || empty($weight['label']) || empty($weight['value'])) continue;
+        $choices[$weight['value']] = $weight['label'];
+    }
+    
+    return $choices;
+}
+
+/**
+ * Get default font sizes if none are set
+ */
+function abf_get_default_font_sizes() {
+    return array(
+        array('key' => 'small', 'label' => 'Small (12px)', 'desktop' => 12, 'tablet' => 11, 'mobile' => 10),
+        array('key' => 'body', 'label' => 'Body (18px)', 'desktop' => 18, 'tablet' => 16, 'mobile' => 14),
+        array('key' => 'h2', 'label' => 'H2 (24px)', 'desktop' => 24, 'tablet' => 20, 'mobile' => 18),
+        array('key' => 'h1', 'label' => 'H1 (36px)', 'desktop' => 36, 'tablet' => 30, 'mobile' => 24),
+        array('key' => 'xl', 'label' => 'XL (48px)', 'desktop' => 48, 'tablet' => 40, 'mobile' => 32),
+        array('key' => 'xxl', 'label' => 'XXL (60px)', 'desktop' => 60, 'tablet' => 48, 'mobile' => 40),
+        array('key' => '3xl', 'label' => '3XL (72px)', 'desktop' => 72, 'tablet' => 54, 'mobile' => 45),
+    );
+}
+
+/**
+ * Get default font weights if none are set
+ */
+function abf_get_default_font_weights() {
+    return array(
+        array('key' => 'light', 'label' => 'Light (300)', 'value' => 300),
+        array('key' => 'regular', 'label' => 'Regular (400)', 'value' => 400),
+        array('key' => 'bold', 'label' => 'Bold (700)', 'value' => 700),
+    );
+}
+
+/**
+ * Initialize typography on theme activation
+ */
+function abf_init_typography() {
+    // Create default typography settings if they don't exist
+    $font_sizes = get_field('font_sizes', 'option');
+    $font_weights = get_field('font_weights', 'option');
+    
+    if (empty($font_sizes)) {
+        update_field('font_sizes', abf_get_default_font_sizes(), 'option');
+    }
+    
+    if (empty($font_weights)) {
+        update_field('font_weights', abf_get_default_font_weights(), 'option');
+    }
+    
+    // Generate initial CSS
+    abf_generate_typography_css();
+}
+add_action('after_switch_theme', 'abf_init_typography');
+
+/**
+ * Enqueue generated typography CSS
+ */
+function abf_enqueue_typography_css() {
+    $css_file = get_template_directory() . '/assets/css/typography-generated.css';
+    $css_url = get_template_directory_uri() . '/assets/css/typography-generated.css';
+    
+    if (file_exists($css_file)) {
+        wp_enqueue_style(
+            'abf-typography-generated',
+            $css_url,
+            array('abf-main-styles'),
+            filemtime($css_file)
+        );
+    }
+}
+add_action('wp_enqueue_scripts', 'abf_enqueue_typography_css'); 

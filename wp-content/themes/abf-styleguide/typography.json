@@ -1,0 +1,71 @@
+{
+    "font_sizes": [
+        {
+            "key": "small",
+            "label": "Small (12px)",
+            "desktop": 12,
+            "tablet": 11,
+            "mobile": 10
+        },
+        {
+            "key": "body",
+            "label": "Body (18px)",
+            "desktop": 18,
+            "tablet": 16,
+            "mobile": 14
+        },
+        {
+            "key": "h2",
+            "label": "H2 (24px)",
+            "desktop": 24,
+            "tablet": 20,
+            "mobile": 18
+        },
+        {
+            "key": "h1",
+            "label": "H1 (36px)",
+            "desktop": 36,
+            "tablet": 30,
+            "mobile": 24
+        },
+        {
+            "key": "xl",
+            "label": "XL (48px)",
+            "desktop": 48,
+            "tablet": 40,
+            "mobile": 32
+        },
+        {
+            "key": "xxl",
+            "label": "XXL (60px)",
+            "desktop": 60,
+            "tablet": 48,
+            "mobile": 40
+        },
+        {
+            "key": "3xl",
+            "label": "3XL (72px)",
+            "desktop": 72,
+            "tablet": 54,
+            "mobile": 45
+        }
+    ],
+    "font_weights": [
+        {
+            "key": "light",
+            "label": "Light (300)",
+            "value": "300"
+        },
+        {
+            "key": "regular",
+            "label": "Regular (400)",
+            "value": "400"
+        },
+        {
+            "key": "bold",
+            "label": "Bold (700)",
+            "value": "700"
+        }
+    ],
+    "updated": "2024-01-01 12:00:00"
+} 

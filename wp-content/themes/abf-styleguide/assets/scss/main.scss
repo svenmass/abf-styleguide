@@ -7,7 +7,8 @@
 
 // Import all SCSS modules
 @import 'typography';      
-@import 'typography-responsive';
+// Typography-responsive wird jetzt dynamisch generiert
+// @import 'typography-responsive';
 @import 'layout';
 @import 'components';
 @import 'cards';

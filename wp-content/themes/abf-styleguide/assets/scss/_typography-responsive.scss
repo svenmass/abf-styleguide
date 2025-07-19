@@ -77,63 +77,57 @@
 // .hero-subline { @include font-size-h2; }
 
 // =============================================================================
-// GLOBALE FONT-SIZE OVERRIDES
+// EINHEITLICHE RESPONSIVE SKALIERUNG FÜR ALLE BACKEND-EINSTELLUNGEN
 // =============================================================================
-// Automatische Responsive-Übernahme für alle Blöcke mit fixen Font-Sizes
-// Überschreibt inline styles mit CSS Custom Properties
+// Alle Backend font-size Werte werden einheitlich responsive skaliert
+// Egal in welchem Block sie vorkommen - IMMER dieselbe Skalierung
 
-// Überschreibt alle häufig verwendeten fixen Font-Sizes
-[style*="font-size: 72px"] { font-size: var(--font-size-3xl) !important; }
-[style*="font-size: 60px"] { font-size: var(--font-size-xxl) !important; }
-[style*="font-size: 48px"] { font-size: var(--font-size-xl) !important; }
-[style*="font-size: 36px"] { font-size: var(--font-size-h1) !important; }
-[style*="font-size: 24px"] { font-size: var(--font-size-h2) !important; }
-[style*="font-size: 18px"] { font-size: var(--font-size-body) !important; }
-[style*="font-size: 12px"] { font-size: var(--font-size-small) !important; }
-
-// Zusätzliche Sicherheit: Verschiedene Schreibweisen abfangen
-[style*="font-size:72px"] { font-size: var(--font-size-3xl) !important; }
-[style*="font-size:60px"] { font-size: var(--font-size-xxl) !important; }
-[style*="font-size:48px"] { font-size: var(--font-size-xl) !important; }
-[style*="font-size:36px"] { font-size: var(--font-size-h1) !important; }
-[style*="font-size:24px"] { font-size: var(--font-size-h2) !important; }
-[style*="font-size:18px"] { font-size: var(--font-size-body) !important; }
-[style*="font-size:12px"] { font-size: var(--font-size-small) !important; }
-
-// =============================================================================
-// BLOCK-SPEZIFISCHE OVERRIDES
-// =============================================================================
-// Zusätzliche Sicherheit für bekannte Block-Strukturen
-
-// Alle ACF-Blöcke: Automatische Responsive-Typografie
-[class*="wp-block-acf-"] {
-    // Headlines und Titel
-    .headline, .title, .text-element-headline, .parallax-headline {
-        &[style*="font-size: 72px"] { font-size: var(--font-size-3xl) !important; }
-        &[style*="font-size: 60px"] { font-size: var(--font-size-xxl) !important; }
-        &[style*="font-size: 48px"] { font-size: var(--font-size-xl) !important; }
-        &[style*="font-size: 36px"] { font-size: var(--font-size-h1) !important; }
-        &[style*="font-size: 24px"] { font-size: var(--font-size-h2) !important; }
-    }
-    
-    // Text-Inhalte
-    .text, .content, .text-element-text, .parallax-text {
-        &[style*="font-size: 18px"] { font-size: var(--font-size-body) !important; }
-        &[style*="font-size: 12px"] { font-size: var(--font-size-small) !important; }
-    }
+// 72px → 54px → 45px (75% → 62.5%)
+[style*="font-size: 72px"], [style*="font-size:72px"] {
+    @media (max-width: #{$breakpoint-desktop-small - 1px}) { font-size: 54px !important; }
+    @media (max-width: #{$breakpoint-mobile - 1px}) { font-size: 45px !important; }
 }
 
-// Styleguide-spezifische Blöcke
-.block-styleguide-text-element {
-    .styleguide-text-element-headline[style*="font-size:"],
-    .styleguide-text-element-text[style*="font-size:"] {
-        // Alle fixen Font-Sizes werden automatisch responsive
-        &[style*="font-size: 72px"] { font-size: var(--font-size-3xl) !important; }
-        &[style*="font-size: 60px"] { font-size: var(--font-size-xxl) !important; }
-        &[style*="font-size: 48px"] { font-size: var(--font-size-xl) !important; }
-        &[style*="font-size: 36px"] { font-size: var(--font-size-h1) !important; }
-        &[style*="font-size: 24px"] { font-size: var(--font-size-h2) !important; }
-        &[style*="font-size: 18px"] { font-size: var(--font-size-body) !important; }
-        &[style*="font-size: 12px"] { font-size: var(--font-size-small) !important; }
-    }
-} 
+// 60px → 48px → 40px (80% → 66.7%)
+[style*="font-size: 60px"], [style*="font-size:60px"] {
+    @media (max-width: #{$breakpoint-desktop-small - 1px}) { font-size: 48px !important; }
+    @media (max-width: #{$breakpoint-mobile - 1px}) { font-size: 40px !important; }
+}
+
+// 48px → 40px → 32px (83.3% → 66.7%)
+[style*="font-size: 48px"], [style*="font-size:48px"] {
+    @media (max-width: #{$breakpoint-desktop-small - 1px}) { font-size: 40px !important; }
+    @media (max-width: #{$breakpoint-mobile - 1px}) { font-size: 32px !important; }
+}
+
+// 36px → 30px → 24px (83.3% → 66.7%) - EINHEITLICH FÜR ALLE BLÖCKE
+[style*="font-size: 36px"], [style*="font-size:36px"] {
+    @media (max-width: #{$breakpoint-desktop-small - 1px}) { font-size: 30px !important; }
+    @media (max-width: #{$breakpoint-mobile - 1px}) { font-size: 24px !important; }
+}
+
+// 24px → 20px → 18px (83.3% → 75%)
+[style*="font-size: 24px"], [style*="font-size:24px"] {
+    @media (max-width: #{$breakpoint-desktop-small - 1px}) { font-size: 20px !important; }
+    @media (max-width: #{$breakpoint-mobile - 1px}) { font-size: 18px !important; }
+}
+
+// 18px → 16px → 14px (88.9% → 77.8%)
+[style*="font-size: 18px"], [style*="font-size:18px"] {
+    @media (max-width: #{$breakpoint-desktop-small - 1px}) { font-size: 16px !important; }
+    @media (max-width: #{$breakpoint-mobile - 1px}) { font-size: 14px !important; }
+}
+
+// 12px → 11px → 10px (91.7% → 83.3%)
+[style*="font-size: 12px"], [style*="font-size:12px"] {
+    @media (max-width: #{$breakpoint-desktop-small - 1px}) { font-size: 11px !important; }
+    @media (max-width: #{$breakpoint-mobile - 1px}) { font-size: 10px !important; }
+}
+
+// =============================================================================
+// ENDE DER EINHEITLICHEN RESPONSIVE SKALIERUNG
+// =============================================================================
+// 
+// Das war's! Alle Backend font-size Einstellungen werden jetzt einheitlich 
+// responsive skaliert - egal ob Hero, Parallax-Element, Text-Element oder 
+// andere Blöcke. IMMER dieselbe Skalierung für dieselbe Desktop-Größe. 
