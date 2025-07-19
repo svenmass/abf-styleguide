@@ -1,53 +1,60 @@
 {
     "font_sizes": [
         {
-            "key": "small",
-            "label": "Small (12px)",
-            "desktop": 12,
-            "tablet": 11,
-            "mobile": 10
-        },
-        {
-            "key": "body",
-            "label": "Body (18px)",
-            "desktop": 18,
-            "tablet": 16,
-            "mobile": 14
-        },
-        {
-            "key": "h2",
-            "label": "H2 (24px)",
-            "desktop": 24,
-            "tablet": 20,
-            "mobile": 18
-        },
-        {
-            "key": "h1",
-            "label": "H1 (36px)",
-            "desktop": 36,
-            "tablet": 30,
-            "mobile": 24
-        },
-        {
-            "key": "xl",
-            "label": "XL (48px)",
-            "desktop": 48,
-            "tablet": 40,
-            "mobile": 32
-        },
-        {
-            "key": "xxl",
-            "label": "XXL (60px)",
-            "desktop": 60,
-            "tablet": 48,
-            "mobile": 40
+            "key": "4xl",
+            "label": "72px - 4XL",
+            "desktop": "72",
+            "tablet": "60",
+            "mobile": "54"
         },
         {
             "key": "3xl",
-            "label": "3XL (72px)",
-            "desktop": 72,
-            "tablet": 54,
-            "mobile": 45
+            "label": "60px - 3XL",
+            "desktop": "60",
+            "tablet": "48",
+            "mobile": "40"
+        },
+        {
+            "key": "2xl",
+            "label": "48px - 2XL",
+            "desktop": "48",
+            "tablet": "40",
+            "mobile": "32"
+        },
+        {
+            "key": "xl",
+            "label": "36px - Standard H1",
+            "desktop": "36",
+            "tablet": "30",
+            "mobile": "24"
+        },
+        {
+            "key": "lg",
+            "label": "24px - Standard H2",
+            "desktop": "24",
+            "tablet": "20",
+            "mobile": "18"
+        },
+        {
+            "key": "md",
+            "label": "18px - Standard Body",
+            "desktop": "18",
+            "tablet": "16",
+            "mobile": "14"
+        },
+        {
+            "key": "sm",
+            "label": "16px - Small Body",
+            "desktop": "16",
+            "tablet": "14",
+            "mobile": "12"
+        },
+        {
+            "key": "xs",
+            "label": "12px - Small",
+            "desktop": "12",
+            "tablet": "10",
+            "mobile": "9"
         }
     ],
     "font_weights": [
@@ -62,10 +69,20 @@
             "value": "400"
         },
         {
+            "key": "medium",
+            "label": "Medium (500)",
+            "value": "500"
+        },
+        {
+            "key": "semibold",
+            "label": "Semibold (600)",
+            "value": "600"
+        },
+        {
             "key": "bold",
             "label": "Bold (700)",
             "value": "700"
         }
     ],
-    "updated": "2024-01-01 12:00:00"
-} 
+    "updated": "2025-07-19 16:34:32"
+}

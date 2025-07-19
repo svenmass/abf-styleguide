@@ -443,7 +443,7 @@ function abf_register_theme_settings_fields() {
         ));
     }
 }
-add_action('acf/init', 'abf_register_theme_settings_fields');
+add_action('acf/init', 'abf_register_theme_settings_fields', 5); // Higher priority
 
 /**
  * Save colors to JSON file when theme settings are updated
@@ -466,38 +466,48 @@ add_filter('acf/update_value', 'abf_save_colors_to_json', 10, 3);
 /**
  * Save typography to JSON file when theme settings are updated
  */
-function abf_save_typography_to_json($value, $post_id, $field) {
-    if ($field['name'] === 'font_sizes' || $field['name'] === 'font_weights') {
-        $typography_file = get_template_directory() . '/typography.json';
-        
-        // Get all typography data
-        $font_sizes = get_field('font_sizes', 'option') ?: array();
-        $font_weights = get_field('font_weights', 'option') ?: array();
-        
-        // If we're updating font_sizes, use the new value
-        if ($field['name'] === 'font_sizes') {
-            $font_sizes = $value;
-        }
-        // If we're updating font_weights, use the new value
-        if ($field['name'] === 'font_weights') {
-            $font_weights = $value;
-        }
-        
-        $typography_data = array(
-            'font_sizes' => $font_sizes,
-            'font_weights' => $font_weights,
-            'updated' => current_time('mysql'),
-        );
-        
-        file_put_contents($typography_file, json_encode($typography_data, JSON_PRETTY_PRINT));
-        
-        // Generate CSS file for frontend
-        abf_generate_typography_css();
+function abf_save_typography_to_json($post_id) {
+    // Only run for our options page
+    if ($post_id !== 'options') {
+        return;
     }
     
-    return $value;
+    $typography_file = get_template_directory() . '/typography.json';
+    
+    // Get all typography data - use fresh data from database
+    $font_sizes = get_field('font_sizes', 'option') ?: array();
+    $font_weights = get_field('font_weights', 'option') ?: array();
+    
+    // Fix: Handle string data from ACF
+    if (is_string($font_sizes) && !empty($font_sizes)) {
+        $font_sizes = json_decode($font_sizes, true) ?: maybe_unserialize($font_sizes);
+    }
+    if (is_string($font_weights) && !empty($font_weights)) {
+        $font_weights = json_decode($font_weights, true) ?: maybe_unserialize($font_weights);
+    }
+    
+    // Use defaults if empty or invalid
+    if (empty($font_sizes) || !is_array($font_sizes)) {
+        $font_sizes = abf_get_default_font_sizes();
+    }
+    if (empty($font_weights) || !is_array($font_weights)) {
+        $font_weights = abf_get_default_font_weights();
+    }
+    
+    $typography_data = array(
+        'font_sizes' => $font_sizes,
+        'font_weights' => $font_weights,
+        'updated' => current_time('mysql'),
+    );
+    
+    // Save to JSON file
+    file_put_contents($typography_file, json_encode($typography_data, JSON_PRETTY_PRINT));
+    
+    // Generate CSS file for frontend
+    abf_generate_typography_css();
 }
-add_filter('acf/update_value', 'abf_save_typography_to_json', 10, 3);
+// Re-enabled with higher priority to ensure ACF has saved data first
+add_action('acf/save_post', 'abf_save_typography_to_json', 20);
 
 /**
  * Alternative save function for backward compatibility
@@ -643,11 +653,19 @@ function abf_generate_typography_css() {
     $font_sizes = get_field('font_sizes', 'option') ?: array();
     $font_weights = get_field('font_weights', 'option') ?: array();
     
-    // If no data, use defaults
-    if (empty($font_sizes)) {
+    // Fix: Handle string data from ACF
+    if (is_string($font_sizes) && !empty($font_sizes)) {
+        $font_sizes = json_decode($font_sizes, true) ?: maybe_unserialize($font_sizes);
+    }
+    if (is_string($font_weights) && !empty($font_weights)) {
+        $font_weights = json_decode($font_weights, true) ?: maybe_unserialize($font_weights);
+    }
+    
+    // If no data or invalid, use defaults
+    if (empty($font_sizes) || !is_array($font_sizes)) {
         $font_sizes = abf_get_default_font_sizes();
     }
-    if (empty($font_weights)) {
+    if (empty($font_weights) || !is_array($font_weights)) {
         $font_weights = abf_get_default_font_weights();
     }
     
@@ -712,9 +730,29 @@ function abf_generate_typography_css() {
  * Get font sizes for ACF field choices
  */
 function abf_get_typography_font_sizes() {
+    // Try ACF first
     $font_sizes = get_field('font_sizes', 'option');
     
+    // Try direct WordPress option if ACF fails
     if (empty($font_sizes)) {
+        $font_sizes = get_option('options_font_sizes');
+    }
+    
+    // Try from JSON file if both fail
+    if (empty($font_sizes)) {
+        $typography_file = get_template_directory() . '/typography.json';
+        if (file_exists($typography_file)) {
+            $json_data = json_decode(file_get_contents($typography_file), true);
+            $font_sizes = $json_data['font_sizes'] ?? array();
+        }
+    }
+    
+    // Fix: Ensure we have an array, not a string
+    if (is_string($font_sizes) && !empty($font_sizes)) {
+        $font_sizes = json_decode($font_sizes, true) ?: maybe_unserialize($font_sizes);
+    }
+    
+    if (empty($font_sizes) || !is_array($font_sizes)) {
         $font_sizes = abf_get_default_font_sizes();
     }
     
@@ -731,9 +769,29 @@ function abf_get_typography_font_sizes() {
  * Get font weights for ACF field choices
  */
 function abf_get_typography_font_weights() {
+    // Try ACF first
     $font_weights = get_field('font_weights', 'option');
     
+    // Try direct WordPress option if ACF fails
     if (empty($font_weights)) {
+        $font_weights = get_option('options_font_weights');
+    }
+    
+    // Try from JSON file if both fail
+    if (empty($font_weights)) {
+        $typography_file = get_template_directory() . '/typography.json';
+        if (file_exists($typography_file)) {
+            $json_data = json_decode(file_get_contents($typography_file), true);
+            $font_weights = $json_data['font_weights'] ?? array();
+        }
+    }
+    
+    // Fix: Ensure we have an array, not a string
+    if (is_string($font_weights) && !empty($font_weights)) {
+        $font_weights = json_decode($font_weights, true) ?: maybe_unserialize($font_weights);
+    }
+    
+    if (empty($font_weights) || !is_array($font_weights)) {
         $font_weights = abf_get_default_font_weights();
     }
     
@@ -751,13 +809,14 @@ function abf_get_typography_font_weights() {
  */
 function abf_get_default_font_sizes() {
     return array(
-        array('key' => 'small', 'label' => 'Small (12px)', 'desktop' => 12, 'tablet' => 11, 'mobile' => 10),
-        array('key' => 'body', 'label' => 'Body (18px)', 'desktop' => 18, 'tablet' => 16, 'mobile' => 14),
-        array('key' => 'h2', 'label' => 'H2 (24px)', 'desktop' => 24, 'tablet' => 20, 'mobile' => 18),
-        array('key' => 'h1', 'label' => 'H1 (36px)', 'desktop' => 36, 'tablet' => 30, 'mobile' => 24),
-        array('key' => 'xl', 'label' => 'XL (48px)', 'desktop' => 48, 'tablet' => 40, 'mobile' => 32),
-        array('key' => 'xxl', 'label' => 'XXL (60px)', 'desktop' => 60, 'tablet' => 48, 'mobile' => 40),
-        array('key' => '3xl', 'label' => '3XL (72px)', 'desktop' => 72, 'tablet' => 54, 'mobile' => 45),
+        array('key' => '4xl', 'label' => '72px - 4XL', 'desktop' => '72', 'tablet' => '60', 'mobile' => '54'),
+        array('key' => '3xl', 'label' => '60px - 3XL', 'desktop' => '60', 'tablet' => '48', 'mobile' => '40'),
+        array('key' => '2xl', 'label' => '48px - 2XL', 'desktop' => '48', 'tablet' => '40', 'mobile' => '32'),
+        array('key' => 'xl', 'label' => '36px - Standard H1', 'desktop' => '36', 'tablet' => '30', 'mobile' => '24'),
+        array('key' => 'lg', 'label' => '24px - Standard H2', 'desktop' => '24', 'tablet' => '20', 'mobile' => '18'),
+        array('key' => 'md', 'label' => '18px - Standard Body', 'desktop' => '18', 'tablet' => '16', 'mobile' => '14'),
+        array('key' => 'sm', 'label' => '16px - Small Body', 'desktop' => '16', 'tablet' => '14', 'mobile' => '12'),
+        array('key' => 'xs', 'label' => '12px - Small', 'desktop' => '12', 'tablet' => '10', 'mobile' => '9'),
     );
 }
 
@@ -766,9 +825,11 @@ function abf_get_default_font_sizes() {
  */
 function abf_get_default_font_weights() {
     return array(
-        array('key' => 'light', 'label' => 'Light (300)', 'value' => 300),
-        array('key' => 'regular', 'label' => 'Regular (400)', 'value' => 400),
-        array('key' => 'bold', 'label' => 'Bold (700)', 'value' => 700),
+        array('key' => 'light', 'label' => 'Light (300)', 'value' => '300'),
+        array('key' => 'regular', 'label' => 'Regular (400)', 'value' => '400'),
+        array('key' => 'medium', 'label' => 'Medium (500)', 'value' => '500'),
+        array('key' => 'semibold', 'label' => 'Semibold (600)', 'value' => '600'),
+        array('key' => 'bold', 'label' => 'Bold (700)', 'value' => '700'),
     );
 }
 
@@ -792,6 +853,101 @@ function abf_init_typography() {
     abf_generate_typography_css();
 }
 add_action('after_switch_theme', 'abf_init_typography');
+
+/**
+ * Force typography initialization on admin init (for debugging)
+ */
+function abf_force_init_typography() {
+    if (isset($_GET['init_typography']) && current_user_can('manage_options')) {
+        echo "<h2>🔧 Force Typography Init</h2>";
+        
+        // Method 1: Try ACF update_field
+        $sizes_result = update_field('font_sizes', abf_get_default_font_sizes(), 'option');
+        $weights_result = update_field('font_weights', abf_get_default_font_weights(), 'option');
+        
+        echo "<p>ACF Font Sizes: " . ($sizes_result ? "✅" : "❌") . "</p>";
+        echo "<p>ACF Font Weights: " . ($weights_result ? "✅" : "❌") . "</p>";
+        
+        // Method 2: Direct WordPress options (fallback)
+        if (!$sizes_result || !$weights_result) {
+            echo "<h3>🔄 Trying direct WordPress options...</h3>";
+            
+            $direct_sizes = update_option('options_font_sizes', abf_get_default_font_sizes());
+            $direct_weights = update_option('options_font_weights', abf_get_default_font_weights());
+            
+            echo "<p>Direct Font Sizes: " . ($direct_sizes ? "✅" : "❌") . "</p>";
+            echo "<p>Direct Font Weights: " . ($direct_weights ? "✅" : "❌") . "</p>";
+        }
+        
+        // Method 3: Force JSON file creation
+        $typography_file = get_template_directory() . '/typography.json';
+        $typography_data = array(
+            'font_sizes' => abf_get_default_font_sizes(),
+            'font_weights' => abf_get_default_font_weights(),
+            'updated' => current_time('mysql'),
+        );
+        file_put_contents($typography_file, json_encode($typography_data, JSON_PRETTY_PRINT));
+        echo "<p>✅ typography.json forced</p>";
+        
+        // Method 4: Force ACF field refresh
+        echo "<h3>🔄 Force ACF Field Refresh...</h3>";
+        
+        // Clear ACF cache
+        if (function_exists('acf_get_store')) {
+            acf_get_store('fields')->reset();
+            acf_get_store('field-groups')->reset();
+            echo "<p>✅ ACF Cache cleared</p>";
+        }
+        
+        // Re-register field group
+        abf_register_theme_settings_fields();
+        echo "<p>✅ Field Group re-registered</p>";
+        
+        abf_generate_typography_css();
+        echo "<p>✅ CSS Generated</p>";
+        
+        echo "<p><strong>📋 Gespeicherte Daten prüfen:</strong></p>";
+        $check_sizes = get_field('font_sizes', 'option');
+        $check_weights = get_field('font_weights', 'option');
+        echo "<p>ACF Sizes Count: " . (is_array($check_sizes) ? count($check_sizes) : '0 - ' . gettype($check_sizes)) . "</p>";
+        echo "<p>ACF Weights Count: " . (is_array($check_weights) ? count($check_weights) : '0 - ' . gettype($check_weights)) . "</p>";
+        
+        echo "<p><a href='" . admin_url('admin.php?page=theme-settings') . "'>→ Theme Settings (sollte jetzt gefüllt sein)</a></p>";
+        exit;
+    }
+    
+    // Alternative: Force populate fields on Theme Settings page load
+    if (isset($_GET['populate_fields']) && current_user_can('manage_options')) {
+        // Populate fields directly via JavaScript/AJAX
+        echo "<script>
+            jQuery(document).ready(function($) {
+                console.log('Force populating ACF fields...');
+                
+                // Try to trigger ACF field refresh
+                if (typeof acf !== 'undefined') {
+                    // Force ACF to reload field data
+                    setTimeout(function() {
+                        window.location.reload();
+                    }, 1000);
+                }
+            });
+        </script>";
+        
+        // Also set via PHP
+        $sizes = abf_get_default_font_sizes();
+        $weights = abf_get_default_font_weights();
+        
+        update_field('font_sizes', $sizes, 'option');
+        update_field('font_weights', $weights, 'option');
+        
+        echo "<div style='background: #dff0d8; padding: 10px; margin: 20px; border: 1px solid #d6e9c6;'>
+            <p><strong>✅ Fields populated!</strong> Refreshing page...</p>
+        </div>";
+        
+        echo "<script>setTimeout(function() { window.location.href = '" . admin_url('admin.php?page=theme-settings') . "'; }, 2000);</script>";
+    }
+}
+add_action('admin_init', 'abf_force_init_typography');
 
 /**
  * Enqueue generated typography CSS
