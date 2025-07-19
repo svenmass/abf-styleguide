@@ -227,10 +227,11 @@ return array(
         ),
         array(
             'key' => 'field_hero_button_url',
-            'label' => 'Button URL',
+            'label' => 'Button Link',
             'name' => 'hero_button_url',
-            'type' => 'url',
-            'instructions' => 'Gib hier die Ziel-URL ein (optional, leer = kein Link)',
+            'type' => 'link',
+            'instructions' => 'Wähle ein Linkziel aus Seiten, Beiträgen oder externe URL. "#" für Anker-Links ist erlaubt.',
+            'return_format' => 'array',
             'required' => 0,
         ),
         array(

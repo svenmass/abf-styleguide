@@ -59,7 +59,17 @@ if (!function_exists('abf_get_content_color_value')) {
             
             $show_button = $element['show_button'] ?? false;
             $button_text = $element['button_text'] ?? '';
-            $button_url = $element['button_url'] ?? '';
+            $button_url_field = $element['button_url'] ?? '';
+            $button_url = '';
+            $button_target = '';
+            if (is_array($button_url_field) && !empty($button_url_field['url'])) {
+                $button_url = $button_url_field['url'];
+                $button_target = !empty($button_url_field['target']) ? $button_url_field['target'] : '_self';
+            } elseif (is_string($button_url_field) && !empty($button_url_field)) {
+                // Fallback für alte string-Werte
+                $button_url = $button_url_field;
+                $button_target = '_self';
+            }
             $button_bg_color = $element['button_bg_color'] ?? 'secondary';
             $button_text_color = $element['button_text_color'] ?? 'white';
             $button_hover_bg_color = $element['button_hover_bg_color'] ?? 'primary';
@@ -138,7 +148,7 @@ if (!function_exists('abf_get_content_color_value')) {
                             <?php endif; ?>
                             
                             <div class="parallax-content-button-wrapper">
-                                <a href="<?php echo esc_url($button_url); ?>" class="parallax-content-button"<?php echo $button_style_attr; ?>>
+                                <a href="<?php echo esc_url($button_url); ?>" target="<?php echo esc_attr($button_target); ?>" class="parallax-content-button"<?php echo $button_style_attr; ?>>
                                     <?php echo esc_html($button_text); ?>
                                 </a>
                             </div>

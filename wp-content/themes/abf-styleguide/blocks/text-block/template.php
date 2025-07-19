@@ -63,7 +63,17 @@ $richtext_content = get_field('tb_richtext_content') ?: '';
 
 $show_button = get_field('tb_show_button') ?: false;
 $button_text = get_field('tb_button_text') ?: '';
-$button_url = get_field('tb_button_url') ?: '';
+$button_url_field = get_field('tb_button_url') ?: '';
+$button_url = '';
+$button_target = '';
+if (is_array($button_url_field) && !empty($button_url_field['url'])) {
+    $button_url = $button_url_field['url'];
+    $button_target = !empty($button_url_field['target']) ? $button_url_field['target'] : '_self';
+} elseif (is_string($button_url_field) && !empty($button_url_field)) {
+    // Fallback für alte string-Werte
+    $button_url = $button_url_field;
+    $button_target = '_self';
+}
 $button_bg_color = get_field('tb_button_bg_color') ?: 'secondary';
 $button_text_color = get_field('tb_button_text_color') ?: 'white';
 $button_hover_bg_color = get_field('tb_button_hover_bg_color') ?: 'primary';
@@ -215,6 +225,7 @@ $inline_styles[] = "opacity: 1 !important";
                 ?>
                 <div class="text-block-button-wrapper">
                     <a href="<?php echo $href_attr; ?>" 
+                       target="<?php echo esc_attr($button_target); ?>"
                        class="text-block-button"
                        data-button-id="<?php echo esc_attr($block_id); ?>-btn"
                        data-hover-bg="<?php echo esc_attr(abf_get_text_block_color_value($button_hover_bg_color)); ?>"

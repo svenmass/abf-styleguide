@@ -310,10 +310,11 @@ return array(
         ),
         array(
             'key' => 'field_sbt_button_url',
-            'label' => 'Button URL',
+            'label' => 'Button Link',
             'name' => 'sbt_button_url',
-            'type' => 'url',
-            'instructions' => 'URL oder Modal-Trigger (#register-modal, #login-modal, #modal)',
+            'type' => 'link',
+            'instructions' => 'Wähle ein Linkziel aus Seiten, Beiträgen oder externe URL. "#" für Anker-Links ist erlaubt.',
+            'return_format' => 'array',
             'conditional_logic' => array(
                 array(
                     array(

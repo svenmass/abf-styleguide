@@ -24,7 +24,17 @@ $background_color = get_field('ste_background_color') ?: '';
 
 $show_button = get_field('ste_show_button') ?: false;
 $button_text = get_field('ste_button_text') ?: '';
-$button_url = get_field('ste_button_url') ?: '';
+$button_url_field = get_field('ste_button_url') ?: '';
+$button_url = '';
+$button_target = '';
+if (is_array($button_url_field) && !empty($button_url_field['url'])) {
+    $button_url = $button_url_field['url'];
+    $button_target = !empty($button_url_field['target']) ? $button_url_field['target'] : '_self';
+} elseif (is_string($button_url_field) && !empty($button_url_field)) {
+    // Fallback für alte string-Werte
+    $button_url = $button_url_field;
+    $button_target = '_self';
+}
 $button_bg_color = get_field('ste_button_bg_color') ?: 'primary';
 $button_text_color = get_field('ste_button_text_color') ?: 'white';
 $button_hover_bg_color = get_field('ste_button_hover_bg_color') ?: 'secondary';
@@ -104,6 +114,7 @@ if ($button_url) {
                     
                     <div class="styleguide-text-element-button-wrapper">
                         <a href="<?php echo $href_attr; ?>" 
+                           target="<?php echo esc_attr($button_target); ?>"
                            class="btn styleguide-text-element__button"
                            data-button-id="<?php echo esc_attr($block_id); ?>-btn"
                            data-hover-bg="<?php echo esc_attr(abf_get_styleguide_color_value($button_hover_bg_color)); ?>"
