@@ -9,7 +9,7 @@ set -e # Exit on any error
 SOURCE_THEME="themes/abf-styleguide"
 PRODUCTION_THEME="themes/abf-styleguide-production"
 THEME_NAME="ABF Styleguide"
-THEME_VERSION="1.0.0"
+THEME_VERSION="${THEME_VERSION:-1.0.0}"
 THEME_AUTHOR="Sven Massanneck"
 
 echo "🚀 Starting production cleanup for ABF Styleguide Theme..."
