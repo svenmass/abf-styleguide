@@ -3,7 +3,7 @@
 Theme Name: ABF Styleguide
 Description: Ein professionelles WordPress-Theme mit modularen ACF-Blöcken für moderne Websites. Features: Dynamische Farbpalette, responsive Design, 15+ vorgefertigte Blöcke, automatische Block-Registrierung, optimierte Performance.
 Author: Sven Massanneck
-Version: 1.6.3
+Version: 1.6.4
 Requires at least: 6.0
 Tested up to: 6.4
 Requires PHP: 8.0
@@ -29,7 +29,7 @@ if (!defined('ABSPATH')) {
 
 // This file loads the main stylesheet
 function abf_production_styles() {
-    wp_enqueue_style('abf-style', get_template_directory_uri() . '/assets/css/main.css', array(), '1.6.3');
+    wp_enqueue_style('abf-style', get_template_directory_uri() . '/assets/css/main.css', array(), '1.6.4');
 }
 add_action('wp_enqueue_scripts', 'abf_production_styles');
 ?>
