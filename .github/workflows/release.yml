@@ -37,8 +37,6 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: '18'
-        cache: 'npm'
-        cache-dependency-path: wp-content/themes/abf-styleguide/package-lock.json
 
     - name: 📦 Install Dependencies
       working-directory: wp-content/themes/abf-styleguide
@@ -59,24 +57,11 @@ jobs:
         echo "${{ steps.version.outputs.VERSION_NUMBER }}" > .theme-version
         
         # Make scripts executable
-        chmod +x production-cleanup.sh build-production-theme.sh
+        chmod +x production-cleanup.sh
         
-        # Run production build (skip interactive version selection)
-        echo "4" | ./build-production-theme.sh || {
-          echo "🔧 Build script failed, running manual build..."
-          
-          # Manual backup approach
-          export THEME_VERSION="${{ steps.version.outputs.VERSION_NUMBER }}"
-          ./production-cleanup.sh
-          
-          # Manual CSS compilation
-          cd themes/abf-styleguide-production
-          if [ -f "package.json" ]; then
-            npm ci
-            npm run build
-          fi
-          cd ../..
-        }
+        # Run manual build (simpler approach)
+        export THEME_VERSION="${{ steps.version.outputs.VERSION_NUMBER }}"
+        ./production-cleanup.sh
         
         echo "✅ Production build completed"
 
