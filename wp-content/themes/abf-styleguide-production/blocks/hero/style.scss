@@ -39,15 +39,28 @@
             width: 50% !important;
             max-width: 50% !important;
             left: 24px !important;
-            
-            // Heller Glaseffekt auch im Editor
-            background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.15)) !important;
             padding: 24px !important;
             border-radius: 20px !important;
-            border: 1px solid rgba(255,255,255,0.25) !important;
             backdrop-filter: blur(25px) saturate(180%) !important;
             -webkit-backdrop-filter: blur(25px) saturate(180%) !important;
+        }
+        
+        // 🌟 Heller Glaseffekt im Editor
+        .hero-content--light {
+            background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.15)) !important;
+            border: 1px solid rgba(255,255,255,0.25) !important;
             box-shadow: 0 8px 24px rgba(0,0,0,0.15) !important;
+        }
+        
+        // 🌑 Dunkler Glaseffekt im Editor  
+        .hero-content--dark {
+            background: linear-gradient(135deg, rgba(0,0,0,0.15), rgba(0,0,0,0.25)) !important;
+            border: 1px solid rgba(255,255,255,0.2) !important;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3) !important;
+            
+            * {
+                color: white !important;
+            }
         }
         
         .hero-plus {
@@ -150,7 +163,7 @@
     }
 }
 
-// Hero Content - NEUER MODERNER GLASEFFEKT
+// Hero Content - BASIS STYLES FÜR ALLE GLASEFFEKTE
 .hero-content {
     position: absolute;
     top: 55vh;
@@ -159,69 +172,116 @@
     z-index: 4;
     text-align: left;
     max-width: 90%;
-    
-    // 🎨 HELLER FIGMA GLASEFFEKT - ELEGANT & SUBTIL
-    background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.1));
+    padding: $spacing-lg;
     border-radius: 20px;
-    border: 1px solid rgba(255,255,255,0.3);
     backdrop-filter: blur(25px) saturate(180%);
     -webkit-backdrop-filter: blur(25px) saturate(180%);
-    box-shadow: 
-        0 10px 30px rgba(0,0,0,0.2),
-        0 1px 8px rgba(0,0,0,0.1),
-        inset 0 1px 0 rgba(255,255,255,0.2);
-    padding: $spacing-lg;
     
-    // 🚀 ZUSÄTZLICHE VERBESSERUNGEN
-    // Sanfte Animation beim Laden
+    // 🚀 GEMEINSAME VERBESSERUNGEN
     animation: glassSlideIn 0.8s ease-out;
-    
-    // Subtile Hover-Effekte
     transition: all 0.3s ease;
     
-         &:hover {
-         transform: translateY(-50%) scale(1.02);
-         box-shadow: 
-             0 15px 40px rgba(0,0,0,0.25),
-             0 5px 15px rgba(0,0,0,0.15),
-             inset 0 1px 0 rgba(255,255,255,0.3);
-         border: 1px solid rgba(255,255,255,0.4);
-         background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.15));
-     }
-    
-         // Moderner Glow-Effekt - hell und elegant
-     &::before {
-         content: '';
-         position: absolute;
-         top: -2px;
-         left: -2px;
-         right: -2px;
-         bottom: -2px;
-         background: linear-gradient(45deg, 
-             rgba(255,255,255,0.2), 
-             transparent, 
-             rgba(255,255,255,0.2)
-         );
-         border-radius: 22px;
-         z-index: -1;
-         opacity: 0;
-         transition: opacity 0.3s ease;
-     }
+    // Basis Glow-Effekt Structure
+    &::before {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        border-radius: 22px;
+        z-index: -1;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
     
     &:hover::before {
         opacity: 1;
     }
     
-         // Micro-Interaktionen für Text - optimiert für hellen Glaseffekt
-     * {
-         transition: color 0.3s ease, text-shadow 0.3s ease;
-         // Automatische Textfarbe basierend auf Theme-Einstellungen
-         text-shadow: 0 1px 3px rgba(0,0,0,0.3); // Subtile Text-Shadow
-     }
-     
-     &:hover * {
-         text-shadow: 0 2px 8px rgba(0,0,0,0.4), 0 0 10px rgba(255,255,255,0.2);
-     }
+    // Basis Text-Transitions
+    * {
+        transition: color 0.3s ease, text-shadow 0.3s ease;
+    }
+}
+
+// 🌟 HELLER GLASEFFEKT - ELEGANT & SUBTIL
+.hero-content--light {
+    background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.1));
+    border: 1px solid rgba(255,255,255,0.3);
+    box-shadow: 
+        0 10px 30px rgba(0,0,0,0.2),
+        0 1px 8px rgba(0,0,0,0.1),
+        inset 0 1px 0 rgba(255,255,255,0.2);
+    
+    &:hover {
+        transform: translateY(-50%) scale(1.02);
+        box-shadow: 
+            0 15px 40px rgba(0,0,0,0.25),
+            0 5px 15px rgba(0,0,0,0.15),
+            inset 0 1px 0 rgba(255,255,255,0.3);
+        border: 1px solid rgba(255,255,255,0.4);
+        background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.15));
+    }
+    
+    // Heller Glow-Effekt
+    &::before {
+        background: linear-gradient(45deg, 
+            rgba(255,255,255,0.2), 
+            transparent, 
+            rgba(255,255,255,0.2)
+        );
+    }
+    
+    // Text-Styling für hellen Glaseffekt
+    * {
+        text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+    
+    &:hover * {
+        text-shadow: 0 2px 8px rgba(0,0,0,0.4), 0 0 10px rgba(255,255,255,0.2);
+    }
+}
+
+// 🌑 DUNKLER GLASEFFEKT - KONTRASTREICH & DRAMATISCH
+.hero-content--dark {
+    background: linear-gradient(135deg, rgba(0,0,0,0.1), rgba(0,0,0,0.2));
+    border: 1px solid rgba(255,255,255,0.2);
+    box-shadow: 
+        0 15px 40px rgba(0,0,0,0.4),
+        0 5px 15px rgba(0,0,0,0.2),
+        inset 0 1px 0 rgba(255,255,255,0.1),
+        inset 0 0 20px rgba(255,255,255,0.05);
+    
+    &:hover {
+        transform: translateY(-50%) scale(1.02);
+        box-shadow: 
+            0 20px 50px rgba(0,0,0,0.5),
+            0 8px 25px rgba(0,0,0,0.3),
+            inset 0 1px 0 rgba(255,255,255,0.15),
+            inset 0 0 30px rgba(255,255,255,0.08);
+        border: 1px solid rgba(255,255,255,0.3);
+        background: linear-gradient(135deg, rgba(0,0,0,0.08), rgba(0,0,0,0.18));
+    }
+    
+    // Dunkler Glow-Effekt
+    &::before {
+        background: linear-gradient(45deg, 
+            rgba(255,255,255,0.15), 
+            transparent, 
+            rgba(255,255,255,0.15)
+        );
+    }
+    
+    // Text-Styling für dunklen Glaseffekt - weißer Text für Kontrast
+    * {
+        color: white;
+        text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+    }
+    
+    &:hover * {
+        text-shadow: 0 2px 8px rgba(0,0,0,0.8), 0 0 20px rgba(255,255,255,0.1);
+    }
 }
 
 // 🎬 SLIDE-IN ANIMATION

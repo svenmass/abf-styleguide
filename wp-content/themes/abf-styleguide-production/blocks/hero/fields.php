@@ -63,6 +63,22 @@ return array(
             ),
         ),
         
+        // 🎨 Glaseffekt Settings
+        array(
+            'key' => 'field_hero_glass_effect',
+            'label' => 'Glaseffekt Stil',
+            'name' => 'hero_glass_effect',
+            'type' => 'select',
+            'instructions' => 'Wähle zwischen hellem und dunklem Glaseffekt für den Hero-Content',
+            'required' => 1,
+            'choices' => array(
+                'light' => '🌟 Hell & Elegant (Weiße Töne)',
+                'dark' => '🌑 Dunkel & Kontrastreich (Schwarze Töne)',
+            ),
+            'default_value' => 'light',
+            'wrapper' => array('width' => '50'),
+        ),
+        
         // Headline Settings
         array(
             'key' => 'field_hero_headline',

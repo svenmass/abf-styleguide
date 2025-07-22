@@ -12,6 +12,7 @@ if (!defined('ABSPATH')) {
 $background_type = get_field('hero_background_type') ?: 'image';
 $background_image = get_field('hero_background_image');
 $background_video = get_field('hero_background_video');
+$glass_effect = get_field('hero_glass_effect') ?: 'light'; // 🎨 Glaseffekt-Stil
 $headline = get_field('hero_headline');
 $headline_tag = get_field('hero_headline_tag') ?: 'h1';
 $headline_weight = get_field('hero_headline_weight') ?: '700';
@@ -191,7 +192,7 @@ $block_id = 'hero-' . uniqid();
         </div>
 
         <!-- Content -->
-        <div class="hero-content">
+        <div class="hero-content hero-content--<?php echo esc_attr($glass_effect); ?>">
             <!-- Headline -->
             <?php if ($headline): ?>
                 <<?php echo esc_attr($headline_tag); ?> class="hero-headline" 
