@@ -225,10 +225,10 @@ class ABF_Theme_Updater {
                         progressBar.css('width', '100%');
                         if (response.success) {
                             notice.removeClass('notice-warning').addClass('notice-success');
-                            notice.html('<h3>✅ Update erfolgreich installiert!</h3><p>Das Theme wurde auf Version <strong>v' + response.data.version + '</strong> aktualisiert.</p><p><a href="' + location.href + '" class="button button-primary">🔄 Seite neu laden</a></p>');
+                            notice.html('<h3>✅ Update erfolgreich installiert!</h3><p>Das Theme wurde auf Version <strong>v' + (response.data.version || 'unbekannt') + '</strong> aktualisiert.</p><p><a href="' + location.href + '" class="button button-primary">🔄 Seite neu laden</a></p>');
                         } else {
                             progressBar.css({'background': '#d63638', 'width': '100%'});
-                            notice.find('.abf-update-progress p').html('❌ Update fehlgeschlagen: ' + (response.data.message || 'Unbekannter Fehler'));
+                            notice.find('.abf-update-progress p').html('❌ Update fehlgeschlagen: ' + (response.data && response.data.message ? response.data.message : 'Unbekannter Fehler'));
                             button.prop('disabled', false);
                         }
                     },
