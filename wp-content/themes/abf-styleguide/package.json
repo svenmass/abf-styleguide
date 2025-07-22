@@ -1,0 +1,20 @@
+{
+  "name": "abf-styleguide-theme",
+  "version": "1.0.0",
+  "description": "ABF Styleguide WordPress Theme",
+  "scripts": {
+    "build": "sass assets/scss/main.scss:assets/css/main.css --style=compressed",
+    "dev": "sass assets/scss/main.scss:assets/css/main.css --style=expanded --watch",
+    "watch": "sass assets/scss/main.scss:assets/css/main.css --style=expanded --watch"
+  },
+  "devDependencies": {
+    "sass": "^1.69.0"
+  },
+  "keywords": [
+    "wordpress",
+    "theme",
+    "styleguide"
+  ],
+  "author": "ABF",
+  "license": "GPL-2.0+"
+} 

@@ -334,10 +334,10 @@ return array(
             'label' => 'Fließtext',
             'name' => 'tb_richtext_content',
             'type' => 'wysiwyg',
-            'toolbar' => 'basic',
+            'toolbar' => 'abf_enhanced', // Use our custom toolbar
             'media_upload' => 0,
             'delay' => 0,
-            'instructions' => 'Haupttext des Blocks. Unterstützt grundlegende Formatierung.',
+            'instructions' => 'Haupttext des Blocks. Verwende die Farb- und Schriftgrößen-Buttons in der Toolbar für individuelle Formatierungen.',
         ),
         
         // Button

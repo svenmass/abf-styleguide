@@ -16,8 +16,60 @@ if (class_exists('ACF')) {
     require_once get_template_directory() . '/../plugins/advanced-custom-fields-pro/acf.php';
 }
 
+// TEMPORARY onClick Fix for Gutenberg Compatibility
+add_action('wp_enqueue_scripts', function() {
+    if (is_admin()) {
+        wp_add_inline_script('wp-blocks', '
+            // Fix onclick to onClick in admin
+            document.addEventListener("DOMContentLoaded", function() {
+                const observer = new MutationObserver(function(mutations) {
+                    mutations.forEach(function(mutation) {
+                        mutation.addedNodes.forEach(function(node) {
+                            if (node.nodeType === 1) {
+                                const elements = node.querySelectorAll("[onclick]");
+                                elements.forEach(function(el) {
+                                    const onclickValue = el.getAttribute("onclick");
+                                    if (onclickValue) {
+                                        el.removeAttribute("onclick");
+                                        el.setAttribute("onClick", onclickValue);
+                                    }
+                                });
+                            }
+                        });
+                    });
+                });
+                observer.observe(document.body, { childList: true, subtree: true });
+            });
+        ');
+    }
+});
+
+// ADDITIONAL PHP-based onClick Fix for Admin Area
+add_action('admin_enqueue_scripts', function() {
+    // Buffer all admin output and fix onclick
+    ob_start(function($buffer) {
+        // Only in Gutenberg editor context
+        if (strpos($buffer, 'wp-admin/post.php') !== false || 
+            strpos($buffer, 'wp-admin/post-new.php') !== false) {
+            // Replace onclick with onClick for React compatibility
+            $buffer = str_replace(' onclick=', ' onClick=', $buffer);
+        }
+        return $buffer;
+    });
+});
+
+// Clean buffer on admin footer
+add_action('admin_footer', function() {
+    if (ob_get_level() > 0) {
+        ob_end_flush();
+    }
+});
+
 // Load modular PHP files
 require_once get_template_directory() . '/inc/autoload.php';
+
+// Load WYSIWYG Toolbar enhancements
+require_once get_template_directory() . '/inc/wysiwyg-toolbar.php';
 
 // Increase upload limits for large files (videos, images)
 function abf_increase_upload_limits() {

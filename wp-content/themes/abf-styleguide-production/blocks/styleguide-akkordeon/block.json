@@ -1,0 +1,32 @@
+{
+    "name": "acf/styleguide-akkordeon",
+    "title": "Styleguide-Akkordeon",
+    "description": "Ein konfigurierbares Akkordeon-Element mit Headline, Text und aufklappbaren Elementen",
+    "category": "abf-blocks",
+    "icon": "list-view",
+    "keywords": ["akkordeon", "accordion", "faq", "aufklappbar", "toggle", "styleguide"],
+    "acf": {
+        "mode": "auto",
+        "renderTemplate": "template.php"
+    },
+    "supports": {
+        "jsx": true
+    },
+    "icon": "admin-generic",
+    "preview": "assets/images/block-previews/styleguide-akkordeon.png",
+    "example": {
+        "attributes": {
+            "mode": "preview",
+            "data": {
+                "sa_headline_text": "Häufig gestellte Fragen",
+                "sa_text_content": "Hier finden Sie Antworten auf die wichtigsten Fragen.",
+                "sa_accordion_items": [
+                    {
+                        "accordion_title": "Wie funktioniert das?",
+                        "accordion_content": "Das ist eine Beispielantwort auf die Frage."
+                    }
+                ]
+            }
+        }
+    }
+} 

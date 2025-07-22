@@ -1,0 +1,15 @@
+Block: headline - Preview: assets/images/block-previews/headline.png
+Block: hero - Preview: assets/images/block-previews/hero.png
+Block: parallax-content - Preview: assets/images/block-previews/parallax-content.png
+Block: parallax-element - Preview: assets/images/block-previews/parallax-element.png
+Block: parallax-grid - Preview: assets/images/block-previews/parallax-grid.png
+Block: styleguide-akkordeon - Preview: assets/images/block-previews/styleguide-akkordeon.png
+Block: styleguide-bild-text - Preview: assets/images/block-previews/styleguide-bild-text.png
+Block: styleguide-einzelbild - Preview: assets/images/block-previews/styleguide-einzelbild.png
+Block: styleguide-grid - Preview: assets/images/block-previews/styleguide-grid.png
+Block: styleguide-masonry - Preview: assets/images/block-previews/styleguide-masonry.png
+Block: styleguide-posts - Preview: assets/images/block-previews/styleguide-posts.png
+Block: styleguide-similar - Preview: assets/images/block-previews/styleguide-similar.png
+Block: styleguide-text-element - Preview: assets/images/block-previews/styleguide-text-element.png
+Block: styleguide-trennlinie - Preview: assets/images/block-previews/styleguide-trennlinie.png
+Block: text-block - Preview: assets/images/block-previews/text-block.png

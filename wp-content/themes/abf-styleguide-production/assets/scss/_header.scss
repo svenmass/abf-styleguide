@@ -1,0 +1,174 @@
+// =============================================================================
+// HEADER STYLES
+// =============================================================================
+
+// Utility-Klasse: Header nur auf Mobile/Tablet anzeigen
+.show-mobile-header {
+    display: block;
+    @media (min-width: $breakpoint-desktop-small) {
+        display: none;
+    }
+}
+
+.site-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: #fff;
+    z-index: 1000;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    
+    // Mobile: 50px + 12px + 12px = 74px
+    height: 74px;
+    
+    @media (min-width: $breakpoint-tablet) {
+        // Tablet: 50px + 16px + 16px = 82px
+        height: 82px;
+    }
+    
+    @media (min-width: $breakpoint-desktop-small) {
+        height: 98px;
+    }
+    
+    @media (min-width: $breakpoint-desktop) {
+        // Desktop Large: 50px + 32px + 32px = 114px
+        height: 114px;
+    }
+}
+
+.header-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+    width: 100%;
+    
+    // Mobile: spacing-xs (12px) auf allen Seiten
+    padding: $spacing-xs;
+    
+    @media (min-width: $breakpoint-tablet) {
+        // Tablet: spacing-sm (16px) auf allen Seiten
+        padding: $spacing-sm;
+    }
+    
+    @media (min-width: $breakpoint-desktop-small) {
+        // Desktop Small: spacing-md (24px) auf allen Seiten
+        padding: $spacing-md;
+    }
+    
+    @media (min-width: $breakpoint-desktop) {
+        // Desktop Large: spacing-lg (32px) auf allen Seiten
+        padding: $spacing-lg;
+    }
+}
+
+.header-logo {
+    display: flex;
+    align-items: center;
+    
+    .logo-link {
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        color: inherit;
+        
+        &:hover,
+        &:focus {
+            text-decoration: none;
+            color: inherit;
+        }
+    }
+    
+    .logo-desktop {
+        display: none;
+    }
+    .logo-mobile {
+        display: block;
+        height: 50px;
+        width: auto;
+        max-width: 100%;
+    }
+}
+
+// Burger Menu (Mobile only)
+.burger-menu-toggle {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition: all 0.3s ease;
+    z-index: 1001; // Höher als Navigation (999) für Overlay-Effekt
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    
+    // Only show on mobile
+    @media (min-width: $breakpoint-desktop-small) {
+        display: none;
+    }
+    
+    &:hover,
+    &:focus {
+        outline: none;
+        transform: scale(1.05);
+    }
+    
+    &:active {
+        transform: scale(0.95);
+    }
+    
+    // Burger lines
+    .burger-line {
+        width: 32px;
+        height: 2px;
+        background: var(--color-primary, #007cba);
+        margin: 3px 0;
+        transition: all 0.3s ease;
+        border-radius: 1px;
+    }
+    
+    // Active state (when menu is open) - Perfect X shape filling container
+    &.active {
+        .burger-line {
+            margin: 0;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            
+            &:nth-child(1) {
+                width: 34px;
+                transform: translate(-50%, -50%) rotate(45deg);
+            }
+            
+            &:nth-child(2) {
+                opacity: 0;
+            }
+            
+            &:nth-child(3) {
+                width: 34px;
+                transform: translate(-50%, -50%) rotate(-45deg);
+            }
+        }
+    }
+}
+
+// Adjust site content to account for fixed header
+.site-content:not(.fullscreen-content) {
+    // No margin on mobile/tablet since header is hidden
+    margin-top: 0;
+    
+    @media (min-width: $breakpoint-desktop-small) {
+        margin-top: 98px; // Desktop Small header height
+    }
+    
+    @media (min-width: $breakpoint-desktop) {
+        margin-top: 114px; // Desktop Large header height
+    }
+} 

@@ -1,0 +1,109 @@
+// =============================================================================
+// SCSS VARIABLES
+// =============================================================================
+
+// =============================================================================
+// TYPOGRAPHY
+// =============================================================================
+
+// Font Families
+$font-family-primary: 'Inter', sans-serif;
+
+// Font Weights
+$font-weight-light: 300;
+$font-weight-regular: 400;
+$font-weight-medium: 500;
+$font-weight-semibold: 600;
+$font-weight-bold: 700;
+
+// Font Sizes - Desktop (Default)
+$font-size-h1: 36px;
+$font-size-h2: 24px;
+$font-size-h3: 18px;
+$font-size-h4: 18px;
+$font-size-body: 18px;
+$font-size-small: 12px;
+$font-size-xl: 48px;
+$font-size-xxl: 60px;
+$font-size-3xl: 72px;
+
+// Line Heights
+$line-height-base: 1.4;
+$line-height-headline: 1.2;
+$letter-spacing-base: normal;
+
+// =============================================================================
+// COLORS
+// =============================================================================
+
+// Link Colors (fixed in SCSS)
+$link-color: #B62D1F;
+$link-color-hover: #74A68E;
+$link-weight: $font-weight-bold;
+$link-decoration: underline;
+
+// Fixed brand colors
+$color-inherit: #575756; // Standard text color  
+$color-primary: #66a98c; // Primary brand color
+$color-secondary: #c50d14; // Secondary brand color
+
+// Dynamic colors will be loaded from colors.json
+$color-success: #28a745;
+$color-danger: #dc3545;
+$color-warning: #ffc107;
+$color-info: #17a2b8;
+
+// =============================================================================
+// LAYOUT & CONTAINERS
+// =============================================================================
+
+// Container Widths
+$container-home: 100vw; // Fullwidth for home blocks
+$container-content: 960px; // Max-width for content blocks
+
+// =============================================================================
+// SPACING SYSTEM
+// =============================================================================
+
+// Base spacing unit
+$spacing-base: 4px;
+
+// Spacing sizes
+$spacing-xs: $spacing-base * 3;    // 12px (mobile)
+$spacing-sm: $spacing-base * 4;    // 16px (tablet)
+$spacing-md: $spacing-base * 6;    // 24px (desktop <1200)
+$spacing-lg: $spacing-base * 8;    // 32px (desktop >1200)
+
+// =============================================================================
+// BREAKPOINTS
+// =============================================================================
+
+// Mobile-first approach (but desktop-first for corporate design)
+$breakpoint-mobile: 576px;
+$breakpoint-tablet: 768px;
+$breakpoint-desktop-small: 992px;
+$breakpoint-desktop: 1200px;
+$breakpoint-large: 1201px;
+
+// =============================================================================
+// COMPONENTS
+// =============================================================================
+
+// Buttons
+$button-font-size: $font-size-body;
+$button-font-weight: $font-weight-regular;
+$button-padding-y: 12px;
+$button-padding-x: 32px;
+$button-border-radius: 10px;
+
+// =============================================================================
+// Z-INDEX
+// =============================================================================
+
+$z-index-dropdown: 1000;
+$z-index-sticky: 1020;
+$z-index-fixed: 1030;
+$z-index-modal-backdrop: 1040;
+$z-index-modal: 1050;
+$z-index-popover: 1060;
+$z-index-tooltip: 1070; 

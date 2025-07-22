@@ -1,0 +1,202 @@
+// =============================================================================
+// STYLEGUIDE GRID BLOCK
+// =============================================================================
+
+.styleguide-grid-block {
+    width: 100%;
+    max-width: $container-content;
+    margin: 0 auto;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+// =============================================================================
+// HEADLINE
+// =============================================================================
+
+.styleguide-grid-headline {
+    margin-bottom: $spacing-md;
+    font-family: $font-family-primary;
+    line-height: $line-height-base;
+    
+    @media (max-width: $breakpoint-tablet) {
+        margin-bottom: $spacing-sm;
+    }
+}
+
+// =============================================================================
+// GRID CONTAINER
+// =============================================================================
+
+.styleguide-grid-container {
+    display: grid;
+    gap: 1px; // 1px Gap zwischen den Elementen
+    justify-items: stretch;
+    align-items: stretch; // Gleiche Höhe für alle Items
+    background-color: #e0e0e0; // Hintergrundfarbe wird zu den "Linien"
+    border: 1px solid #e0e0e0; // Äußerer Rahmen
+    overflow: hidden; // Saubere Ecken
+    
+    // Responsive grid columns
+    grid-template-columns: repeat(2, 1fr); // Mobile: 2 Spalten
+    
+    @media (min-width: #{$breakpoint-mobile + 1px}) and (max-width: $breakpoint-tablet) {
+        grid-template-columns: repeat(3, 1fr); // Small tablet: 3 Spalten
+    }
+    
+    @media (min-width: #{$breakpoint-tablet + 1px}) and (max-width: $breakpoint-desktop-small) {
+        grid-template-columns: repeat(4, 1fr); // Large tablet: 4 Spalten
+    }
+    
+    @media (min-width: $breakpoint-desktop-small) {
+        grid-template-columns: repeat(4, 1fr); // Desktop: 5 Spalten
+    }
+    @media (min-width: $breakpoint-desktop) {
+        grid-template-columns: repeat(5, 1fr); // Desktop: 5 Spalten
+    }
+    // Keine auto-fit mehr - das verursacht Gaps
+    @media (min-width: #{$container-content + 200px}) {
+        grid-template-columns: repeat(6, 1fr); // Bleibt bei 6 Spalten
+    }
+}
+
+// =============================================================================
+// GRID ITEM
+// =============================================================================
+
+.styleguide-grid-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    text-align: center;
+    width: 100%;
+    min-height: 150px;
+    box-sizing: border-box;
+    padding: $spacing-sm;
+    position: relative;
+    background-color: white; // Weiße Hintergrundfarbe für die Boxen
+    
+    // Keine Borders mehr - das Gap und der Container-Hintergrund machen die Linien
+    
+    // Responsive item sizing
+    @media (max-width: $breakpoint-mobile) {
+        min-height: 120px;
+    }
+}
+
+// =============================================================================
+// SVG ICON
+// =============================================================================
+
+.styleguide-grid-icon {
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: $spacing-xs;
+    flex-shrink: 0;
+    
+    img {
+        max-width: 100%;
+        max-height: 100%;
+        width: auto;
+        height: auto;
+        object-fit: contain;
+        display: block;
+    }
+    
+    // Responsive icon sizing
+    @media (max-width: $breakpoint-mobile) {
+        width: 60px;
+        height: 60px;
+    }
+}
+
+// =============================================================================
+// ICON NAME
+// =============================================================================
+
+.styleguide-grid-name {
+    font-family: $font-family-primary;
+    font-size: $font-size-small;
+    font-weight: $font-weight-regular;
+    color: inherit;
+    line-height: $line-height-base;
+    margin-bottom: $spacing-xs;
+    word-break: break-word;
+    hyphens: auto;
+    
+    @media (max-width: $breakpoint-mobile) {
+        font-size: 12px;
+    }
+}
+
+// =============================================================================
+// DOWNLOAD LINK
+// =============================================================================
+
+.styleguide-grid-download {
+    margin-top: auto; // Push to bottom of flex container
+}
+
+.styleguide-grid-download-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-family: $font-family-primary;
+    font-size: 12px;
+    font-weight: $font-weight-semibold;
+    color: #74A68E;
+    text-decoration: none;
+    transition: color 0.3s ease;
+    
+    &:hover,
+    &:focus {
+        color: #5a8a70;
+        text-decoration: none;
+    }
+    
+    // Small download icon
+    &::after {
+        content: '⬇';
+        font-size: 10px;
+        opacity: 0.8;
+    }
+    
+    @media (max-width: $breakpoint-mobile) {
+        font-size: 11px;
+        
+        &::after {
+            font-size: 9px;
+        }
+    }
+}
+
+// =============================================================================
+// PLACEHOLDER (wenn keine Items)
+// =============================================================================
+
+.styleguide-grid-placeholder {
+    width: 100%;
+    min-height: 200px;
+    background: #f8f9fa;
+    border: 2px dashed #dee2e6;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    p {
+        margin: 0;
+        color: #666;
+        font-size: $font-size-body;
+        font-family: $font-family-primary;
+    }
+}
+
+// =============================================================================
+// RESPONSIVE BEHAVIOR
+// =============================================================================
+

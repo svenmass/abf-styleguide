@@ -1,0 +1,302 @@
+// =============================================================================
+// TYPOGRAPHY STYLES
+// =============================================================================
+
+// =============================================================================
+// BASE TYPOGRAPHY
+// =============================================================================
+
+body {
+    font-family: $font-family-primary;
+    font-weight: $font-weight-light;
+    font-size: $font-size-body;
+    line-height: $line-height-base;
+    letter-spacing: $letter-spacing-base;
+    color: inherit;
+}
+
+// =============================================================================
+// HEADINGS
+// =============================================================================
+
+h1, .h1 {
+    font-family: $font-family-primary;
+    font-weight: $font-weight-regular;
+    font-size: $font-size-h1;
+    line-height: $line-height-base;
+    margin: 0 0 $spacing-md 0;
+    
+    @media (max-width: $breakpoint-tablet) {
+        font-size: 28px;
+        margin-bottom: $spacing-sm;
+    }
+}
+
+h2, .h2 {
+    font-family: $font-family-primary;
+    font-weight: $font-weight-regular;
+    font-size: $font-size-h2;
+    line-height: $line-height-base;
+    margin: 0 0 $spacing-sm 0;
+    
+    @media (max-width: $breakpoint-tablet) {
+        font-size: 20px;
+        margin-bottom: $spacing-xs;
+    }
+}
+
+h3, .h3 {
+    font-family: $font-family-primary;
+    font-weight: $font-weight-bold;
+    font-size: $font-size-h3;
+    line-height: $line-height-base;
+    margin: 0 0 $spacing-sm 0;
+    
+    @media (max-width: $breakpoint-tablet) {
+        font-size: 16px;
+        margin-bottom: $spacing-xs;
+    }
+}
+
+h4, .h4 {
+    font-family: $font-family-primary;
+    font-weight: $font-weight-regular;
+    font-size: $font-size-h4;
+    line-height: $line-height-base;
+    margin: 0 0 $spacing-sm 0;
+    
+    @media (max-width: $breakpoint-tablet) {
+        font-size: 16px;
+        margin-bottom: $spacing-xs;
+    }
+}
+
+h5, .h5 {
+    font-family: $font-family-primary;
+    font-weight: $font-weight-regular;
+    font-size: $font-size-body;
+    line-height: $line-height-base;
+    margin: 0 0 $spacing-sm 0;
+}
+
+h6, .h6 {
+    font-family: $font-family-primary;
+    font-weight: $font-weight-regular;
+    font-size: $font-size-small;
+    line-height: $line-height-base;
+    margin: 0 0 $spacing-sm 0;
+}
+
+// =============================================================================
+// PARAGRAPHS
+// =============================================================================
+
+p {
+    font-family: $font-family-primary;
+    font-weight: $font-weight-light;
+    font-size: $font-size-body;
+    line-height: $line-height-base;
+    margin: 0 0 $spacing-sm 0;
+    
+    &:last-child {
+        margin-bottom: 0;
+    }
+}
+
+// =============================================================================
+// LINKS
+// =============================================================================
+
+a {
+    color: $link-color;
+    font-weight: $link-weight;
+    text-decoration: $link-decoration;
+    transition: color 0.3s ease;
+    
+    &:hover,
+    &:focus {
+        color: $link-color-hover;
+        text-decoration: $link-decoration;
+    }
+    
+
+}
+
+// =============================================================================
+// FILE DOWNLOAD LINKS
+// =============================================================================
+
+// Automatische Anwendung auf Links zu bestimmten Dateitypen
+// Ausnahme: Links innerhalb von styleguide-einzelbild-block
+a[href$=".pdf"]:not(.styleguide-einzelbild-image-link):not(.styleguide-masonry-image-link),
+a[href$=".PDF"]:not(.styleguide-einzelbild-image-link):not(.styleguide-masonry-image-link),
+a[href$=".png"]:not(.styleguide-einzelbild-image-link):not(.styleguide-masonry-image-link),
+a[href$=".PNG"]:not(.styleguide-einzelbild-image-link):not(.styleguide-masonry-image-link),
+a[href$=".jpg"]:not(.styleguide-einzelbild-image-link):not(.styleguide-masonry-image-link),
+a[href$=".JPG"]:not(.styleguide-einzelbild-image-link):not(.styleguide-masonry-image-link),
+a[href$=".jpeg"]:not(.styleguide-einzelbild-image-link):not(.styleguide-masonry-image-link),
+a[href$=".JPEG"]:not(.styleguide-einzelbild-image-link):not(.styleguide-masonry-image-link),
+a[href$=".dotx"]:not(.styleguide-einzelbild-image-link):not(.styleguide-masonry-image-link),
+a[href$=".DOTX"]:not(.styleguide-einzelbild-image-link):not(.styleguide-masonry-image-link),
+a[href$=".xls"]:not(.styleguide-einzelbild-image-link):not(.styleguide-masonry-image-link),
+a[href$=".XLS"]:not(.styleguide-einzelbild-image-link):not(.styleguide-masonry-image-link),
+a[href$=".xlsx"]:not(.styleguide-einzelbild-image-link):not(.styleguide-masonry-image-link),
+a[href$=".XLSX"]:not(.styleguide-einzelbild-image-link):not(.styleguide-masonry-image-link),
+a[href$=".zip"]:not(.styleguide-einzelbild-image-link):not(.styleguide-masonry-image-link),
+a[href$=".ZIP"]:not(.styleguide-einzelbild-image-link):not(.styleguide-masonry-image-link),
+a[href$=".svg"]:not(.styleguide-einzelbild-image-link):not(.styleguide-masonry-image-link),
+a[href$=".SVG"]:not(.styleguide-einzelbild-image-link):not(.styleguide-masonry-image-link) {
+    display: inline-flex;
+    align-items: center;
+    gap: $spacing-base;
+    font-family: $font-family-primary;
+    font-weight: $font-weight-semibold;
+    color: #74A68E;
+    text-decoration: none;
+    transition: color 0.3s ease;
+    
+    &::before {
+        content: '';
+        display: inline-block;
+        width: 24px;
+        height: 24px;
+        background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cg clip-path='url(%23clip0_197_9)'%3E%3Cpath d='M12 23C18.0751 23 23 18.0751 23 12C23 5.92487 18.0751 1 12 1C5.92487 1 1 5.92487 1 12C1 18.0751 5.92487 23 12 23Z' stroke='%23C6D6D1' stroke-width='2' stroke-miterlimit='10'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M7.8747 11.4148C7.59818 11.118 7.73517 10.8389 8.12839 10.8389H15.6858C16.1018 10.8389 16.216 11.0926 15.9623 11.4148L12.3904 15.7199C12.2026 15.9812 11.8399 16.0396 11.5786 15.8518C11.5278 15.8163 11.4822 15.7706 11.4466 15.7199L7.8747 11.4148Z' fill='%2374A68E'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M16.6748 19.1574H7.27562C6.79361 19.1574 6.40039 18.7668 6.40039 18.2822C6.40039 17.8002 6.79107 17.407 7.27562 17.407H16.7002C17.1822 17.407 17.5754 17.7977 17.5754 18.2822C17.5576 18.7668 17.1619 19.1524 16.6773 19.1574H16.6748Z' fill='%2374A68E'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M10.6173 11.6V7.13005C10.6096 6.38674 11.2084 5.77789 11.9542 5.77027C11.9618 5.77027 11.9694 5.77027 11.977 5.77027C12.7203 5.76266 13.3292 6.36137 13.3368 7.10721C13.3368 7.11483 13.3368 7.12244 13.3368 7.13005V11.6C13.3444 12.3434 12.7457 12.9522 11.9999 12.9598C11.9923 12.9598 11.9846 12.9598 11.977 12.9598C11.2261 12.9598 10.6198 12.351 10.6173 11.6Z' fill='%2374A68E'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_197_9'%3E%3Crect width='24' height='24' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E");
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        flex-shrink: 0;
+        transition: all 0.3s ease;
+    }
+    
+    // Meta-Informationen für [dokumenttype, größe in kB]
+    .file-meta {
+        font-weight: $font-weight-light;
+        color: #74A68E;
+        margin-left: $spacing-base;
+        transition: color 0.3s ease;
+    }
+    
+    &:hover,
+    &:focus {
+        color: #B62D1F;
+        
+        .file-meta {
+            color: #B62D1F;
+        }
+        
+        &::before {
+            background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cg clip-path='url(%23clip0_197_9)'%3E%3Cpath d='M12 23C18.0751 23 23 18.0751 23 12C23 5.92487 18.0751 1 12 1C5.92487 1 1 5.92487 1 12C1 18.0751 5.92487 23 12 23Z' stroke='%23C6D6D1' stroke-width='2' stroke-miterlimit='10'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M7.8747 11.4148C7.59818 11.118 7.73517 10.8389 8.12839 10.8389H15.6858C16.1018 10.8389 16.216 11.0926 15.9623 11.4148L12.3904 15.7199C12.2026 15.9812 11.8399 16.0396 11.5786 15.8518C11.5278 15.8163 11.4822 15.7706 11.4466 15.7199L7.8747 11.4148Z' fill='%23B62D1F'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M16.6748 19.1574H7.27562C6.79361 19.1574 6.40039 18.7668 6.40039 18.2822C6.40039 17.8002 6.79107 17.407 7.27562 17.407H16.7002C17.1822 17.407 17.5754 17.7977 17.5754 18.2822C17.5576 18.7668 17.1619 19.1524 16.6773 19.1574H16.6748Z' fill='%23B62D1F'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M10.6173 11.6V7.13005C10.6096 6.38674 11.2084 5.77789 11.9542 5.77027C11.9618 5.77027 11.9694 5.77027 11.977 5.77027C12.7203 5.76266 13.3292 6.36137 13.3368 7.10721C13.3368 7.11483 13.3368 7.12244 13.3368 7.13005V11.6C13.3444 12.3434 12.7457 12.9522 11.9999 12.9598C11.9923 12.9598 11.9846 12.9598 11.977 12.9598C11.2261 12.9598 10.6198 12.351 10.6173 11.6Z' fill='%23B62D1F'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_197_9'%3E%3Crect width='24' height='24' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E");
+        }
+    }
+}
+
+// =============================================================================
+// SMALL TEXT
+// =============================================================================
+
+small, .small {
+    font-family: $font-family-primary;
+    font-weight: $font-weight-light;
+    font-size: $font-size-small;
+    line-height: $line-height-base;
+}
+
+// =============================================================================
+// UTILITY CLASSES
+// =============================================================================
+
+.text-light {
+    font-weight: $font-weight-light;
+}
+
+.text-regular {
+    font-weight: $font-weight-regular;
+}
+
+.text-semibold {
+    font-weight: $font-weight-semibold;
+}
+.text-bold {
+    font-weight: $font-weight-bold;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-left {
+    text-align: left;
+}
+
+.text-right {
+    text-align: right;
+}
+
+// =============================================================================
+// GUTENBERG EDITOR STYLES
+// =============================================================================
+
+.wp-block {
+    font-family: $font-family-primary;
+    font-weight: $font-weight-light;
+    font-size: $font-size-body;
+    line-height: $line-height-base;
+}
+
+// Standard Gutenberg Blocks Container-Begrenzung (ohne responsive Spacing, da container-content bereits Padding hat)
+.wp-block:not(.wp-block-acf-hero):not(.wp-block-acf-parallax-grid):not(.wp-block-acf-parallax-element):not(.wp-block-acf-parallax-content):not(.wp-block-acf-text-block),
+.wp-block-paragraph,
+.wp-block-heading,
+.wp-block-list,
+.wp-block-quote,
+.wp-block-image,
+.wp-block-gallery,
+.wp-block-audio,
+.wp-block-video,
+.wp-block-file,
+.wp-block-code,
+.wp-block-preformatted,
+.wp-block-pullquote,
+.wp-block-table,
+.wp-block-verse,
+.wp-block-button,
+.wp-block-buttons,
+.wp-block-columns,
+.wp-block-column,
+.wp-block-group,
+.wp-block-separator,
+.wp-block-spacer,
+.wp-block-shortcode,
+.wp-block-embed {
+    max-width: $container-content;
+    margin-left: auto;
+    margin-right: auto;
+    
+    // Kein padding mehr nötig, da container-content bereits das richtige responsive Padding hat
+}
+
+.editor-styles-wrapper {
+    h1, .h1 {
+        @extend h1;
+    }
+    
+    h2, .h2 {
+        @extend h2;
+    }
+    
+    h3, .h3 {
+        @extend h3;
+    }
+    
+    h4, .h4 {
+        @extend h4;
+    }
+    
+    p {
+        @extend p;
+    }
+    
+    a {
+        @extend a;
+    }
+} 

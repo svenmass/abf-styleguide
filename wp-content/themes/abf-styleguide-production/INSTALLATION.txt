@@ -1,0 +1,26 @@
+=== INSTALLATION UND SETUP ===
+
+VORAUSSETZUNGEN:
+- WordPress 6.0+
+- PHP 8.0+
+- Advanced Custom Fields Pro Plugin
+
+INSTALLATION:
+1. ACF Pro Plugin installieren und aktivieren
+2. Theme-Ordner nach /wp-content/themes/ hochladen
+3. Theme im WordPress-Backend aktivieren
+4. Farben in colors.json anpassen (optional)
+
+ERSTE SCHRITTE:
+1. Neue Seite/Beitrag erstellen
+2. Gutenberg-Editor öffnen
+3. Block hinzufügen (+) klicken
+4. Kategorie "ABF Blocks" wählen
+5. Gewünschten Block auswählen und konfigurieren
+
+KONFIGURATION:
+- colors.json: Zentrale Farbkonfiguration
+- Alle Blöcke über ACF-Interface anpassbar
+- Responsive Breakpoints in SCSS definiert
+
+Bei Fragen: Support über den Theme-Autor verfügbar.

@@ -1,0 +1,18 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 2,
+    "name": "acf/parallax-grid",
+    "title": "Parallax Grid",
+    "description": "Ein bildschirmfüllender Block mit 6 Elementen in parallax Grid-Layout",
+    "category": "abf-blocks",
+    "icon": "grid-view",
+    "keywords": ["parallax", "grid", "gallery", "mosaic"],
+    "acf": {
+        "mode": "auto",
+        "renderTemplate": "template.php"
+    },
+    "supports": {
+        "align": ["full"],
+        "anchor": true
+    }
+} 

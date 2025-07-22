@@ -1,0 +1,88 @@
+{
+    "font_sizes": [
+        {
+            "key": "4xl",
+            "label": "72px - 4XL",
+            "desktop": "72",
+            "tablet": "60",
+            "mobile": "54"
+        },
+        {
+            "key": "3xl",
+            "label": "60px - 3XL",
+            "desktop": "60",
+            "tablet": "48",
+            "mobile": "40"
+        },
+        {
+            "key": "2xl",
+            "label": "48px - 2XL",
+            "desktop": "48",
+            "tablet": "40",
+            "mobile": "32"
+        },
+        {
+            "key": "xl",
+            "label": "36px - Standard H1",
+            "desktop": "36",
+            "tablet": "30",
+            "mobile": "24"
+        },
+        {
+            "key": "lg",
+            "label": "24px - Standard H2",
+            "desktop": "24",
+            "tablet": "20",
+            "mobile": "18"
+        },
+        {
+            "key": "md",
+            "label": "18px - Standard Body",
+            "desktop": "18",
+            "tablet": "16",
+            "mobile": "14"
+        },
+        {
+            "key": "sm",
+            "label": "16px - Small Body",
+            "desktop": "16",
+            "tablet": "14",
+            "mobile": "12"
+        },
+        {
+            "key": "xs",
+            "label": "12px - Small",
+            "desktop": "12",
+            "tablet": "10",
+            "mobile": "9"
+        }
+    ],
+    "font_weights": [
+        {
+            "key": "light",
+            "label": "Light (300)",
+            "value": "300"
+        },
+        {
+            "key": "regular",
+            "label": "Regular (400)",
+            "value": "400"
+        },
+        {
+            "key": "medium",
+            "label": "Medium (500)",
+            "value": "500"
+        },
+        {
+            "key": "semibold",
+            "label": "Semibold (600)",
+            "value": "600"
+        },
+        {
+            "key": "bold",
+            "label": "Bold (700)",
+            "value": "700"
+        }
+    ],
+    "updated": "2025-07-19 17:18:25"
+}

@@ -1,0 +1,102 @@
+// =============================================================================
+// TEMPLATE STYLES
+// =============================================================================
+
+// Fullscreen Template (ohne Header/Navigation)
+.fullscreen-template {
+    .fullscreen-site {
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100vw;
+        overflow-x: hidden;
+        box-sizing: border-box;
+    }
+    
+    .fullscreen-content {
+        margin: 0 !important;
+        padding: 0 !important;
+        box-sizing: border-box;
+        width: 100vw;
+        overflow-x: hidden;
+    }
+    
+    .fullscreen-main {
+        width: 100vw;
+        margin: 0 !important;
+        padding: 0 !important;
+        box-sizing: border-box;
+    }
+}
+
+// Styleguide Page Template (mit Header/Navigation)
+.styleguide-main {
+    padding: $spacing-lg 0;
+    
+    @media (min-width: $breakpoint-desktop-small) {
+        padding: $spacing-lg 0;
+    }
+    
+    .page-header {
+        margin-bottom: $spacing-lg;
+        text-align: center;
+        
+        .page-title {
+            max-width: $container-content;
+            text-align: left;
+            margin: 0;
+            font-size: 36px;
+            font-weight: 600;
+            margin-top: 100px;
+            color: var(--color-primary, #007cba);
+            
+            @media (max-width: #{$breakpoint-tablet - 1px}) {
+                font-size: 28px;
+            }
+        }
+    }
+}
+
+// General page and entry titles with top spacing
+.page-title,
+.entry-title {
+    margin-top: 200px;
+    
+    // Kein padding mehr nötig, da container-content bereits das richtige responsive Padding hat
+    
+    // Überschreibe den margin-top für Styleguide-Page (die hat bereits den Header)
+    .styleguide-main & {
+        margin-top: 0;
+    }
+}
+
+// Container adjustments for different templates
+.fullscreen-template {
+    .container-home,
+    .container-content {
+        width: 100vw;
+        max-width: 100vw;
+        margin: 0;
+        padding: 0;
+    }
+}
+
+// Ensure blocks work properly in fullscreen mode
+.fullscreen-template {
+    .block-hero,
+    .block-parallax-grid,
+    .block-parallax-element,
+    .block-parallax-content,
+    .block-text-block {
+        width: 100vw !important;
+        max-width: 100vw !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    
+    .container-home {
+        width: 100vw !important;
+        max-width: 100vw !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+} 

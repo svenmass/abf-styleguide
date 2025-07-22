@@ -1,0 +1,21 @@
+=== QUICK START GUIDE ===
+
+🚀 FASTEST WAY TO GET STARTED:
+
+1. Install ACF Pro Plugin
+2. Upload & activate theme
+3. Create new page
+4. Add ABF blocks from Gutenberg
+5. Configure blocks via ACF fields
+
+🎨 CUSTOMIZATION:
+
+- Colors: Edit colors.json file
+- Blocks: Configure via ACF interface
+- Layout: Use WordPress Full Site Editor
+
+📞 SUPPORT:
+
+Technical questions? Contact theme developer.
+
+That's it - your professional website is ready! 🎉

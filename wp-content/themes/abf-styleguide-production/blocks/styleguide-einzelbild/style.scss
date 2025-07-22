@@ -1,0 +1,267 @@
+// =============================================================================
+// STYLEGUIDE EINZELBILD BLOCK
+// =============================================================================
+
+.styleguide-einzelbild-block {
+    width: 100%;
+    max-width: $container-content;
+    margin: 0 auto;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.styleguide-einzelbild-container {
+    width: 100%;
+    position: relative;
+    box-sizing: border-box;
+}
+
+// =============================================================================
+// IMAGE WRAPPER (16:9 ASPECT RATIO)
+// =============================================================================
+
+.styleguide-einzelbild-image-wrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16/9; // Modern browsers
+    background: #f8f9fa;
+    overflow: hidden;
+    cursor: pointer;
+    box-sizing: border-box;
+    
+    // Fallback für ältere Browser
+    @supports not (aspect-ratio: 16/9) {
+        &::before {
+            content: '';
+            display: block;
+            padding-top: 56.25%; // 9/16 * 100% = 56.25%
+        }
+    }
+}
+
+.styleguide-einzelbild-image-link {
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.3s ease;
+    box-sizing: border-box;
+    
+    &:hover,
+    &:focus {
+        transform: scale(1.02);
+        text-decoration: none;
+        outline: none;
+    }
+    
+    // Fallback für ältere Browser (ohne aspect-ratio)
+    @supports not (aspect-ratio: 16/9) {
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+}
+
+.styleguide-einzelbild-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    transition: transform 0.3s ease;
+    box-sizing: border-box;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+// =============================================================================
+// HOVER OVERLAY
+// =============================================================================
+
+.styleguide-einzelbild-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    color: white;
+    text-align: center;
+    
+    .styleguide-einzelbild-image-link:hover &,
+    .styleguide-einzelbild-image-link:focus & {
+        opacity: 1;
+    }
+}
+
+.styleguide-einzelbild-overlay-icon {
+    width: 48px;
+    height: 48px;
+    margin-bottom: $spacing-sm;
+    
+    svg {
+        width: 100%;
+        height: 100%;
+        color: white;
+    }
+}
+
+.styleguide-einzelbild-overlay-text {
+    font-size: $font-size-body;
+    font-weight: $font-weight-medium;
+    font-family: $font-family-primary;
+    color: white;
+}
+
+// =============================================================================
+// CAPTION
+// =============================================================================
+
+.styleguide-einzelbild-caption {
+    margin-top: $spacing-sm;
+    font-size: $font-size-small;
+    color: #666;
+    text-align: center;
+    font-family: $font-family-primary;
+    line-height: 1.4;
+    
+    p {
+        margin: 0;
+        
+        &:not(:last-child) {
+            margin-bottom: $spacing-xs;
+        }
+    }
+}
+
+// =============================================================================
+// PLACEHOLDER (wenn kein Bild ausgewählt)
+// =============================================================================
+
+.styleguide-einzelbild-placeholder {
+    width: 100%;
+    aspect-ratio: 16/9;
+    background: #f8f9fa;
+    border: 2px dashed #dee2e6;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    p {
+        margin: 0;
+        color: #666;
+        font-size: $font-size-body;
+        font-family: $font-family-primary;
+    }
+    
+    // Fallback für ältere Browser
+    @supports not (aspect-ratio: 16/9) {
+        &::before {
+            content: '';
+            display: block;
+            padding-top: 56.25%;
+        }
+        
+        p {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+    }
+}
+
+// =============================================================================
+// PHOTOSWIPE INTEGRATION
+// =============================================================================
+
+// Verhindere automatische Download-Icon-Formatierung aus _typography.scss
+.styleguide-einzelbild-image-link {
+    // Überschreibe die automatische Download-Link-Formatierung
+    display: block !important;
+    
+    &::before {
+        display: none !important;
+        content: none !important;
+    }
+    
+    // Kein Download-Icon Styling für Lightbox-Links
+    &[href$=".jpg"],
+    &[href$=".JPG"],
+    &[href$=".jpeg"],
+    &[href$=".JPEG"],
+    &[href$=".png"],
+    &[href$=".PNG"],
+    &[href$=".svg"],
+    &[href$=".SVG"] {
+        display: block !important;
+        
+        &::before {
+            display: none !important;
+            content: none !important;
+        }
+    }
+}
+
+// PhotoSwipe Download Button Styling
+.pswp__button--download-button,
+.pswp__button[data-pswp-button="download-button"] {
+    color: white !important;
+    text-decoration: none !important;
+    font-family: $font-family-primary !important;
+    font-weight: $font-weight-medium !important;
+    
+    &::before {
+        display: none !important;
+    }
+    
+    &:hover {
+        background: rgba(0,0,0,0.7) !important;
+    }
+}
+
+// =============================================================================
+// RESPONSIVE BEHAVIOR
+// =============================================================================
+
+@media (max-width: $breakpoint-tablet) {
+    .styleguide-einzelbild-overlay-icon {
+        width: 36px;
+        height: 36px;
+    }
+    
+    .styleguide-einzelbild-overlay-text {
+        font-size: $font-size-small;
+    }
+    
+    .styleguide-einzelbild-caption {
+        font-size: $font-size-small;
+        margin-top: $spacing-xs;
+    }
+}
+
+@media (max-width: $breakpoint-mobile) {
+    .styleguide-einzelbild-overlay-icon {
+        width: 24px;
+        height: 24px;
+        margin-bottom: $spacing-xs;
+    }
+    
+    .styleguide-einzelbild-overlay-text {
+        font-size: $font-size-small;
+    }
+    
+    // Weniger hover-effect auf Mobile (Touch-Geräte)
+    .styleguide-einzelbild-image-link:hover {
+        transform: none;
+    }
+} 

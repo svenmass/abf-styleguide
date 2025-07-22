@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ABF Styleguide - Block Preview Gallery</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f0f0f1;
+            padding: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        .header h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .header p {
+            color: #666;
+        }
+        .block-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        .block-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        .block-card:hover {
+            transform: translateY(-4px);
+        }
+        .block-preview {
+            height: 200px;
+            overflow: hidden;
+        }
+        .block-preview iframe {
+            width: 100%;
+            height: 300px;
+            border: none;
+            transform: scale(0.67);
+            transform-origin: top left;
+        }
+        .block-info {
+            padding: 20px;
+        }
+        .block-info h3 {
+            margin: 0 0 10px;
+            color: #333;
+        }
+        .block-info p {
+            margin: 0;
+            color: #666;
+            font-size: 14px;
+        }
+        .actions {
+            padding: 0 20px 20px;
+        }
+        .btn {
+            display: inline-block;
+            background: #66a98c;
+            color: white;
+            padding: 8px 16px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 14px;
+            margin-right: 10px;
+        }
+        .btn:hover {
+            background: #5a9378;
+        }
+        .btn-secondary {
+            background: #666;
+        }
+        .btn-secondary:hover {
+            background: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>ABF Styleguide - Block Preview Gallery</h1>
+        <p>Alle verfügbaren Blöcke im Überblick. Klicke auf die Links, um Screenshots zu erstellen.</p>
+    </div>
+
+    <div class="block-grid">
+        <div class="block-card">
+            <div class="block-preview">
+                <iframe src="headline-preview.html"></iframe>
+            </div>
+            <div class="block-info">
+                <h3>Headline Block</h3>
+                <p>Block-Name: headline</p>
+            </div>
+            <div class="actions">
+                <a href="headline-preview.html" class="btn" target="_blank">Vollbild öffnen</a>
+                <a href="headline-preview.html" class="btn btn-secondary" target="_blank">Screenshot erstellen</a>
+            </div>
+        </div>
+        <div class="block-card">
+            <div class="block-preview">
+                <iframe src="hero-preview.html"></iframe>
+            </div>
+            <div class="block-info">
+                <h3>Hero Block</h3>
+                <p>Block-Name: hero</p>
+            </div>
+            <div class="actions">
+                <a href="hero-preview.html" class="btn" target="_blank">Vollbild öffnen</a>
+                <a href="hero-preview.html" class="btn btn-secondary" target="_blank">Screenshot erstellen</a>
+            </div>
+        </div>
+        <div class="block-card">
+            <div class="block-preview">
+                <iframe src="styleguide-text-element-preview.html"></iframe>
+            </div>
+            <div class="block-info">
+                <h3>Text-Element Block</h3>
+                <p>Block-Name: styleguide-text-element</p>
+            </div>
+            <div class="actions">
+                <a href="styleguide-text-element-preview.html" class="btn" target="_blank">Vollbild öffnen</a>
+                <a href="styleguide-text-element-preview.html" class="btn btn-secondary" target="_blank">Screenshot erstellen</a>
+            </div>
+        </div>
+        <div class="block-card">
+            <div class="block-preview">
+                <iframe src="styleguide-bild-text-preview.html"></iframe>
+            </div>
+            <div class="block-info">
+                <h3>Bild-Text Block</h3>
+                <p>Block-Name: styleguide-bild-text</p>
+            </div>
+            <div class="actions">
+                <a href="styleguide-bild-text-preview.html" class="btn" target="_blank">Vollbild öffnen</a>
+                <a href="styleguide-bild-text-preview.html" class="btn btn-secondary" target="_blank">Screenshot erstellen</a>
+            </div>
+        </div>
+        <div class="block-card">
+            <div class="block-preview">
+                <iframe src="styleguide-akkordeon-preview.html"></iframe>
+            </div>
+            <div class="block-info">
+                <h3>Akkordeon Block</h3>
+                <p>Block-Name: styleguide-akkordeon</p>
+            </div>
+            <div class="actions">
+                <a href="styleguide-akkordeon-preview.html" class="btn" target="_blank">Vollbild öffnen</a>
+                <a href="styleguide-akkordeon-preview.html" class="btn btn-secondary" target="_blank">Screenshot erstellen</a>
+            </div>
+        </div>
+        <div class="block-card">
+            <div class="block-preview">
+                <iframe src="styleguide-grid-preview.html"></iframe>
+            </div>
+            <div class="block-info">
+                <h3>Grid-Layout Block</h3>
+                <p>Block-Name: styleguide-grid</p>
+            </div>
+            <div class="actions">
+                <a href="styleguide-grid-preview.html" class="btn" target="_blank">Vollbild öffnen</a>
+                <a href="styleguide-grid-preview.html" class="btn btn-secondary" target="_blank">Screenshot erstellen</a>
+            </div>
+        </div>
+        <div class="block-card">
+            <div class="block-preview">
+                <iframe src="styleguide-masonry-preview.html"></iframe>
+            </div>
+            <div class="block-info">
+                <h3>Masonry-Layout Block</h3>
+                <p>Block-Name: styleguide-masonry</p>
+            </div>
+            <div class="actions">
+                <a href="styleguide-masonry-preview.html" class="btn" target="_blank">Vollbild öffnen</a>
+                <a href="styleguide-masonry-preview.html" class="btn btn-secondary" target="_blank">Screenshot erstellen</a>
+            </div>
+        </div>
+        <div class="block-card">
+            <div class="block-preview">
+                <iframe src="styleguide-trennlinie-preview.html"></iframe>
+            </div>
+            <div class="block-info">
+                <h3>Trennlinie Block</h3>
+                <p>Block-Name: styleguide-trennlinie</p>
+            </div>
+            <div class="actions">
+                <a href="styleguide-trennlinie-preview.html" class="btn" target="_blank">Vollbild öffnen</a>
+                <a href="styleguide-trennlinie-preview.html" class="btn btn-secondary" target="_blank">Screenshot erstellen</a>
+            </div>
+        </div>
+        <div class="block-card">
+            <div class="block-preview">
+                <iframe src="styleguide-einzelbild-preview.html"></iframe>
+            </div>
+            <div class="block-info">
+                <h3>Einzelbild Block</h3>
+                <p>Block-Name: styleguide-einzelbild</p>
+            </div>
+            <div class="actions">
+                <a href="styleguide-einzelbild-preview.html" class="btn" target="_blank">Vollbild öffnen</a>
+                <a href="styleguide-einzelbild-preview.html" class="btn btn-secondary" target="_blank">Screenshot erstellen</a>
+            </div>
+        </div>
+        <div class="block-card">
+            <div class="block-preview">
+                <iframe src="headline0-preview.html"></iframe>
+            </div>
+            <div class="block-info">
+                <h3>'Parallax Block</h3>
+                <p>Block-Name: headline0</p>
+            </div>
+            <div class="actions">
+                <a href="headline0-preview.html" class="btn" target="_blank">Vollbild öffnen</a>
+                <a href="headline0-preview.html" class="btn btn-secondary" target="_blank">Screenshot erstellen</a>
+            </div>
+        </div>
+        <div class="block-card">
+            <div class="block-preview">
+                <iframe src="headline1-preview.html"></iframe>
+            </div>
+            <div class="block-info">
+                <h3>Element' Block</h3>
+                <p>Block-Name: headline1</p>
+            </div>
+            <div class="actions">
+                <a href="headline1-preview.html" class="btn" target="_blank">Vollbild öffnen</a>
+                <a href="headline1-preview.html" class="btn btn-secondary" target="_blank">Screenshot erstellen</a>
+            </div>
+        </div>
+        <div class="block-card">
+            <div class="block-preview">
+                <iframe src="headline2-preview.html"></iframe>
+            </div>
+            <div class="block-info">
+                <h3>'Parallax Block</h3>
+                <p>Block-Name: headline2</p>
+            </div>
+            <div class="actions">
+                <a href="headline2-preview.html" class="btn" target="_blank">Vollbild öffnen</a>
+                <a href="headline2-preview.html" class="btn btn-secondary" target="_blank">Screenshot erstellen</a>
+            </div>
+        </div>
+        <div class="block-card">
+            <div class="block-preview">
+                <iframe src="headline3-preview.html"></iframe>
+            </div>
+            <div class="block-info">
+                <h3>Content' Block</h3>
+                <p>Block-Name: headline3</p>
+            </div>
+            <div class="actions">
+                <a href="headline3-preview.html" class="btn" target="_blank">Vollbild öffnen</a>
+                <a href="headline3-preview.html" class="btn btn-secondary" target="_blank">Screenshot erstellen</a>
+            </div>
+        </div>
+        <div class="block-card">
+            <div class="block-preview">
+                <iframe src="headline4-preview.html"></iframe>
+            </div>
+            <div class="block-info">
+                <h3>'Parallax Block</h3>
+                <p>Block-Name: headline4</p>
+            </div>
+            <div class="actions">
+                <a href="headline4-preview.html" class="btn" target="_blank">Vollbild öffnen</a>
+                <a href="headline4-preview.html" class="btn btn-secondary" target="_blank">Screenshot erstellen</a>
+            </div>
+        </div>
+        <div class="block-card">
+            <div class="block-preview">
+                <iframe src="headline5-preview.html"></iframe>
+            </div>
+            <div class="block-info">
+                <h3>Grid' Block</h3>
+                <p>Block-Name: headline5</p>
+            </div>
+            <div class="actions">
+                <a href="headline5-preview.html" class="btn" target="_blank">Vollbild öffnen</a>
+                <a href="headline5-preview.html" class="btn btn-secondary" target="_blank">Screenshot erstellen</a>
+            </div>
+        </div>
+    </div>
+
+    <div style="text-align: center; margin-top: 50px; padding-top: 30px; border-top: 1px solid #ddd;">
+        <h3>Screenshot-Anweisungen</h3>
+        <p>1. Öffne jeden Block im Vollbild</p>
+        <p>2. Erstelle Screenshots (empfohlen: 1200x800px)</p>
+        <p>3. Speichere als PNG in: assets/images/block-previews/</p>
+        <p>4. Verwende Dateinamen: [block-name].png</p>
+    </div>
+</body>
+</html>

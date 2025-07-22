@@ -1,0 +1,133 @@
+// =============================================================================
+// RESPONSIVE TYPOGRAPHY
+// =============================================================================
+// Globale CSS Custom Properties für responsive Font-Sizes
+// Alle Blöcke können diese verwenden, ohne eigene Media Queries zu benötigen
+
+:root {
+    // Desktop (Default) - CSS Custom Properties
+    --font-size-h1: #{$font-size-h1};
+    --font-size-h2: #{$font-size-h2};
+    --font-size-h3: #{$font-size-h3};
+    --font-size-h4: #{$font-size-h4};
+    --font-size-body: #{$font-size-body};
+    --font-size-small: #{$font-size-small};
+    --font-size-xl: #{$font-size-xl};
+    --font-size-xxl: #{$font-size-xxl};
+    --font-size-3xl: #{$font-size-3xl};
+}
+
+// Tablet (< 992px) - Überschreibt die CSS Custom Properties
+@media (max-width: #{$breakpoint-desktop-small - 1px}) {
+    :root {
+        --font-size-h1: 34px;
+        --font-size-h2: 22px;
+        --font-size-h3: 16px;
+        --font-size-h4: 16px;
+        --font-size-body: 16px;
+        --font-size-small: 12px;
+        --font-size-xl: 40px;
+        --font-size-xxl: 48px;
+        --font-size-3xl: 60px;
+    }
+}
+
+// Mobile (< 576px) - Überschreibt die CSS Custom Properties
+@media (max-width: #{$breakpoint-mobile - 1px}) {
+    :root {
+        --font-size-h1: 30px;
+        --font-size-h2: 20px;
+        --font-size-h3: 14px;
+        --font-size-h4: 14px;
+        --font-size-body: 14px;
+        --font-size-small: 10px;
+        --font-size-xl: 30px;
+        --font-size-xxl: 40px;
+        --font-size-3xl: 54px;
+    }
+}
+
+// =============================================================================
+// RESPONSIVE TYPOGRAPHY MIXINS
+// =============================================================================
+// Einfache Mixins für häufig verwendete Font-Sizes
+
+@mixin font-size-h1 {
+    font-size: var(--font-size-h1);
+}
+
+@mixin font-size-h2 {
+    font-size: var(--font-size-h2);
+}
+
+@mixin font-size-h3 {
+    font-size: var(--font-size-h3);
+}
+
+@mixin font-size-body {
+    font-size: var(--font-size-body);
+}
+
+@mixin font-size-3xl {
+    font-size: var(--font-size-3xl);
+}
+
+// Beispiel-Anwendung:
+// .hero-headline { @include font-size-3xl; }
+// .hero-subline { @include font-size-h2; }
+
+// =============================================================================
+// EINHEITLICHE RESPONSIVE SKALIERUNG FÜR ALLE BACKEND-EINSTELLUNGEN
+// =============================================================================
+// Alle Backend font-size Werte werden einheitlich responsive skaliert
+// Egal in welchem Block sie vorkommen - IMMER dieselbe Skalierung
+
+// 72px → 54px → 45px (75% → 62.5%)
+[style*="font-size: 72px"], [style*="font-size:72px"] {
+    @media (max-width: #{$breakpoint-desktop-small - 1px}) { font-size: 54px !important; }
+    @media (max-width: #{$breakpoint-mobile - 1px}) { font-size: 45px !important; }
+}
+
+// 60px → 48px → 40px (80% → 66.7%)
+[style*="font-size: 60px"], [style*="font-size:60px"] {
+    @media (max-width: #{$breakpoint-desktop-small - 1px}) { font-size: 48px !important; }
+    @media (max-width: #{$breakpoint-mobile - 1px}) { font-size: 40px !important; }
+}
+
+// 48px → 40px → 32px (83.3% → 66.7%)
+[style*="font-size: 48px"], [style*="font-size:48px"] {
+    @media (max-width: #{$breakpoint-desktop-small - 1px}) { font-size: 40px !important; }
+    @media (max-width: #{$breakpoint-mobile - 1px}) { font-size: 32px !important; }
+}
+
+// 36px → 30px → 24px (83.3% → 66.7%) - EINHEITLICH FÜR ALLE BLÖCKE
+[style*="font-size: 36px"], [style*="font-size:36px"] {
+    @media (max-width: #{$breakpoint-desktop-small - 1px}) { font-size: 30px !important; }
+    @media (max-width: #{$breakpoint-mobile - 1px}) { font-size: 24px !important; }
+}
+
+// 24px → 20px → 18px (83.3% → 75%)
+[style*="font-size: 24px"], [style*="font-size:24px"] {
+    @media (max-width: #{$breakpoint-desktop-small - 1px}) { font-size: 20px !important; }
+    @media (max-width: #{$breakpoint-mobile - 1px}) { font-size: 18px !important; }
+}
+
+// 18px → 16px → 14px (88.9% → 77.8%)
+[style*="font-size: 18px"], [style*="font-size:18px"] {
+    @media (max-width: #{$breakpoint-desktop-small - 1px}) { font-size: 16px !important; }
+    @media (max-width: #{$breakpoint-mobile - 1px}) { font-size: 14px !important; }
+}
+
+// 12px → 11px → 10px (91.7% → 83.3%)
+[style*="font-size: 12px"], [style*="font-size:12px"] {
+    @media (max-width: #{$breakpoint-desktop-small - 1px}) { font-size: 11px !important; }
+    @media (max-width: #{$breakpoint-mobile - 1px}) { font-size: 10px !important; }
+}
+
+// =============================================================================
+// ENDE DER EINHEITLICHEN RESPONSIVE SKALIERUNG
+// =============================================================================
+// 
+// Das war's! Alle Backend font-size Einstellungen werden jetzt einheitlich 
+// responsive skaliert - egal ob Hero, Parallax-Element, Text-Element oder 
+// andere Blöcke. IMMER dieselbe Skalierung für dieselbe Desktop-Größe. 

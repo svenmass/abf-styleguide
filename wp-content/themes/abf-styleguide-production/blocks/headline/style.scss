@@ -1,0 +1,24 @@
+// =============================================================================
+// HEADLINE BLOCK STYLES
+// =============================================================================
+
+.block-headline {
+    width: 100%;
+    
+    .headline-text {
+        font-family: $font-family-primary;
+        margin: 0;
+        
+        // Responsive font sizes
+        @media (max-width: $breakpoint-tablet) {
+            font-size: calc(var(--font-size) * 0.8) !important;
+        }
+        
+        @media (max-width: $breakpoint-mobile) {
+            font-size: calc(var(--font-size) * 0.7) !important;
+        }
+    }
+    
+    // Padding utilities werden bereits in _layout.scss definiert
+    // .p-xs, .p-sm, .p-md, .p-lg
+} 

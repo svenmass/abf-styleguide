@@ -1,0 +1,21 @@
+{
+    "name": "acf/styleguide-posts",
+    "title": "Styleguide Posts",
+    "description": "Zeigt Posts in einem Card-Grid an",
+    "category": "abf-styleguide",
+    "icon": "grid-view",
+    "keywords": ["posts", "cards", "grid"],
+    "acf": {
+        "mode": "preview",
+        "renderTemplate": "template.php"
+    },
+    "supports": {
+        "anchor": true,
+        "align": ["wide", "full"],
+        "jsx": true
+    },
+    "textdomain": "abf-styleguide",
+    "editorScript": "file:./index.js",
+    "editorStyle": "file:./editor.css",
+    "style": "file:./style.css"
+} 
