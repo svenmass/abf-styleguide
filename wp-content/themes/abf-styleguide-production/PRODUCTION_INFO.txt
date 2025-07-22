@@ -1,8 +1,8 @@
 === PRODUCTION VERSION CREATED ===
 
 Theme: ABF Styleguide
-Version: 1.0.0
-Created: Tue Jul 22 15:50:22 CEST 2025
+Version: 1.2.0
+Created: Tue Jul 22 16:32:35 CEST 2025
 Author: Sven Massanneck
 
 WHAT WAS CLEANED:
