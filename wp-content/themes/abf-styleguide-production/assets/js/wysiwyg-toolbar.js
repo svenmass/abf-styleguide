@@ -10,7 +10,6 @@
     
     // TinyMCE availability will be checked when needed - don't return early
     if (typeof tinymce === 'undefined') {
-        console.log('ABF WYSIWYG Toolbar: TinyMCE not yet available, waiting...');
     }
     
     // Store the data globally for TinyMCE plugins to access
@@ -21,13 +20,11 @@
         // Watch for new TinyMCE editors (important for ACF fields)
         if (typeof acf !== 'undefined') {
             acf.addAction('wysiwyg_tinymce_init', function(editor, id, field) {
-                console.log('ABF Toolbar: ACF WYSIWYG field initialized', id);
             });
         }
         
         // Also watch for standard WordPress TinyMCE initialization
         $(document).on('tinymce-editor-init', function(event, editor) {
-            console.log('ABF Toolbar: WordPress TinyMCE initialized', editor.id);
         });
     });
     

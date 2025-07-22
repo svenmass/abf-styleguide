@@ -34,7 +34,6 @@
      */
     function initNavigation() {
         // Navigation functionality can be added here
-        console.log('Navigation initialized');
     }
 
     /**
@@ -42,7 +41,6 @@
      */
     function initUserManagement() {
         // User management functionality can be added here
-        console.log('User management initialized');
     }
 
     /**
@@ -52,7 +50,6 @@
         // Initialize accordion functionality
         initAccordions();
         
-        console.log('Custom blocks initialized');
     }
     
     /**
@@ -62,7 +59,6 @@
         // Find all accordion containers
         const accordionContainers = document.querySelectorAll('.block-styleguide-akkordeon');
         
-        console.log('Found accordion containers:', accordionContainers.length);
         
         accordionContainers.forEach(container => {
             initAccordionContainer(container);
@@ -73,7 +69,6 @@
         // Find all accordion triggers within this container
         const triggers = container.querySelectorAll('[data-accordion-trigger]');
         
-        console.log('Found triggers:', triggers.length);
         
         triggers.forEach(trigger => {
             // Ensure initial state is set correctly
@@ -95,7 +90,6 @@
                 trigger.addEventListener('click', handleAccordionClick);
                 trigger.addEventListener('keydown', handleAccordionKeydown);
                 
-                console.log('Initialized accordion item:', accordionItem);
             }
         });
     }
@@ -103,20 +97,17 @@
     function handleAccordionClick(event) {
         event.preventDefault();
         
-        console.log('Accordion clicked');
         
         const trigger = event.currentTarget;
         const accordionItem = trigger.closest('[data-accordion-item]');
         const content = accordionItem.querySelector('[data-accordion-content]');
         
         if (!content) {
-            console.error('No content found for accordion item');
             return;
         }
         
         const isExpanded = trigger.getAttribute('aria-expanded') === 'true';
         
-        console.log('Current state:', isExpanded ? 'expanded' : 'collapsed');
         
         // Toggle the accordion state
         toggleAccordion(trigger, content, !isExpanded);
@@ -131,7 +122,6 @@
     }
     
     function toggleAccordion(trigger, content, shouldExpand) {
-        console.log('Toggling accordion:', shouldExpand ? 'open' : 'close');
         
         // Update ARIA attributes
         trigger.setAttribute('aria-expanded', shouldExpand);
@@ -145,12 +135,10 @@
     }
     
     function openAccordion(content) {
-        console.log('Opening accordion');
         
         // Set max-height to auto temporarily to measure actual height
         const contentInner = content.querySelector('.styleguide-akkordeon-item-content-inner');
         if (!contentInner) {
-            console.error('No content inner found');
             return;
         }
         
@@ -174,7 +162,6 @@
         // Set aria-hidden to false
         content.setAttribute('aria-hidden', 'false');
         
-        console.log('Accordion opened with height:', actualHeight);
         
         // Clean up max-height after animation completes
         setTimeout(() => {
@@ -185,7 +172,6 @@
     }
     
     function closeAccordion(content) {
-        console.log('Closing accordion');
         
         // Get current height
         const currentHeight = content.scrollHeight;
@@ -202,14 +188,12 @@
         // Set aria-hidden after animation starts
         content.setAttribute('aria-hidden', 'true');
         
-        console.log('Accordion closed');
     }
 
     /**
      * Global function for opening modals
      */
     window.abfOpenModal = function(modalType) {
-        console.log('Opening modal:', modalType);
         // Modal functionality can be implemented here
     };
     

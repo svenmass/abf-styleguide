@@ -1,8 +1,8 @@
 === ABF STYLEGUIDE THEME - CLIENT DELIVERY PACKAGE ===
 
-Package: abf-styleguide-theme-v1.0.0-2025-07-21.zip
-Size: 392K
-Created: Mon Jul 21 15:05:16 CEST 2025
+Package: abf-styleguide-theme-v1.0.0-2025-07-22.zip
+Size: 404K
+Created: Tue Jul 22 15:28:26 CEST 2025
 Theme Version: 1.0.0
 
 === PACKAGE CONTENTS ===

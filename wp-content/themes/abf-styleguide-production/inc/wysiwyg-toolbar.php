@@ -159,17 +159,16 @@ class ABF_WYSIWYG_Toolbar {
         wp_enqueue_script(
             'abf-wysiwyg-toolbar',
             get_template_directory_uri() . '/assets/js/wysiwyg-toolbar.js',
-            ['jquery'],
+            ['jquery', 'abf-toolbar-debug'],
             '1.0.0',
             true
         );
         
-        // Debug: Log data before localizing
         error_log('ABF Toolbar Colors count: ' . count($this->colors));
         error_log('ABF Toolbar Typography font_sizes count: ' . (isset($this->typography['font_sizes']) ? count($this->typography['font_sizes']) : 'not set'));
         
-        // Localize the script with our JSON data
-        wp_localize_script('abf-wysiwyg-toolbar', 'abfToolbarData', [
+        // Localize the script with our JSON data - ATTACH TO DEBUG SCRIPT
+        wp_localize_script('abf-toolbar-debug', 'abfToolbarData', [
             'colors' => $this->colors,
             'typography' => $this->typography,
             'nonce' => wp_create_nonce('abf_wysiwyg_nonce'),
