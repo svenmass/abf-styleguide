@@ -48,19 +48,38 @@ jobs:
           echo "⚠️ No package.json found, skipping"
         fi
 
+    - name: 🔍 Debug File Structure
+      run: |
+        echo "🔍 Repository structure:"
+        ls -la
+        echo "🔍 wp-content contents:"
+        ls -la wp-content/ || echo "wp-content not found!"
+        echo "🔍 Current working directory:"
+        pwd
+        
     - name: 🎯 Build Production Theme
       working-directory: wp-content
       run: |
         echo "🚀 Building production theme..."
+        echo "🔍 Current directory contents:"
+        ls -la
+        
+        # Check if scripts exist
+        if [ -f "production-cleanup.sh" ]; then
+          echo "✅ production-cleanup.sh found"
+          chmod +x production-cleanup.sh
+        else
+          echo "❌ production-cleanup.sh NOT FOUND!"
+          exit 1
+        fi
         
         # Set version in .theme-version file
         echo "${{ steps.version.outputs.VERSION_NUMBER }}" > .theme-version
+        echo "✅ Version set to: ${{ steps.version.outputs.VERSION_NUMBER }}"
         
-        # Make scripts executable
-        chmod +x production-cleanup.sh
-        
-        # Run manual build (simpler approach)
+        # Run manual build
         export THEME_VERSION="${{ steps.version.outputs.VERSION_NUMBER }}"
+        echo "🚀 Running production cleanup..."
         ./production-cleanup.sh
         
         echo "✅ Production build completed"
