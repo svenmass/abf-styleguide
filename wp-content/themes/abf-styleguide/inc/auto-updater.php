@@ -326,6 +326,42 @@ class ABF_Theme_Updater {
      }
      
      /**
+     * 🧹 Bereinige WordPress Update-Verzeichnisse (Fix für häufiges Problem)
+     */
+    private function cleanup_update_directories() {
+        $upgrade_temp_dir = WP_CONTENT_DIR . '/upgrade-temp-backup';
+        
+        if (is_dir($upgrade_temp_dir)) {
+            // Rekursiv alle Inhalte des Backup-Verzeichnisses löschen
+            $this->delete_directory_contents($upgrade_temp_dir);
+        }
+        
+        // WordPress Upgrader temp Verzeichnis auch bereinigen
+        $wp_upgrade_dir = WP_CONTENT_DIR . '/upgrade';
+        if (is_dir($wp_upgrade_dir)) {
+            $this->delete_directory_contents($wp_upgrade_dir);
+        }
+    }
+    
+    /**
+     * 🗑️ Lösche Verzeichnis-Inhalte rekursiv (aber behalte das Verzeichnis)
+     */
+    private function delete_directory_contents($dir) {
+        if (!is_dir($dir)) return;
+        
+        $files = array_diff(scandir($dir), array('.', '..'));
+        foreach ($files as $file) {
+            $path = $dir . '/' . $file;
+            if (is_dir($path)) {
+                $this->delete_directory_contents($path);
+                rmdir($path);
+            } else {
+                unlink($path);
+            }
+        }
+    }
+
+    /**
       * 🚀 Update installieren (AJAX)
       */
     public function install_update() {
@@ -334,6 +370,9 @@ class ABF_Theme_Updater {
         }
         
         check_ajax_referer('abf_install_update');
+        
+        // 🧹 AUTOMATISCHE BEREINIGUNG vor dem Update (Fix für upgrade-temp-backup Problem)
+        $this->cleanup_update_directories();
         
         $update_data = get_transient('abf_update_available');
         
