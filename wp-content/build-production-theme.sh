@@ -94,6 +94,22 @@ echo ""
 
 read -p "Auswahl (1-4): " choice
 
+# GitHub Release Option
+GITHUB_RELEASE=false
+if [ "$choice" != "4" ]; then
+    echo ""
+    echo "🚀 GitHub Release erstellen?"
+    echo "1) ✅ Ja - Tag & Release automatisch erstellen"
+    echo "2) ❌ Nein - Nur lokales Build"
+    echo ""
+    
+    read -p "Auswahl (1-2): " github_choice
+    if [ "$github_choice" = "1" ]; then
+        GITHUB_RELEASE=true
+        print_info "GitHub Release wird nach dem Build erstellt"
+    fi
+fi
+
 case $choice in
     1)
         update_type="patch"
@@ -187,13 +203,43 @@ fi
 
 cd ..
 
+# Step 3: GitHub Release (optional)
+if [ "$GITHUB_RELEASE" = true ]; then
+    print_step "STEP 3: GITHUB RELEASE"
+    
+    print_info "Erstelle GitHub Tag und Release..."
+    
+    # Check if git is available
+    if ! command -v git &> /dev/null; then
+        print_error "Git nicht verfügbar - GitHub Release übersprungen"
+    elif ! git rev-parse --git-dir &> /dev/null; then
+        print_error "Kein Git-Repository - GitHub Release übersprungen"
+    else
+        # Create and push tag
+        TAG_NAME="v$THEME_VERSION"
+        
+        print_info "Erstelle Git Tag: $TAG_NAME"
+        git tag "$TAG_NAME" -m "Release $TAG_NAME"
+        
+        print_info "Push Tag zu GitHub..."
+        if git push origin "$TAG_NAME"; then
+            print_success "GitHub Tag erfolgreich gepusht!"
+            print_info "🤖 GitHub Action wird automatisch das Release erstellen"
+            print_info "🌐 Releases: https://github.com/$(git config --get remote.origin.url | sed 's/.*:\(.*\).git/\1/')/releases"
+        else
+            print_error "Git Push fehlgeschlagen - Tag erstellt aber nicht gepusht"
+        fi
+    fi
+fi
+
 # Summary
 print_step "BUILD SUMMARY"
 
 echo "📊 Production Build Results:"
 echo "  🏷️  Theme Version: v${THEME_VERSION}"
-echo "  🎯 Source Theme: $SOURCE_THEME"
+echo "  🎯 Source Theme: $SOURCE_THEME"  
 echo "  ✨ Production Theme: $PRODUCTION_THEME"
+echo "  🚀 GitHub Release: $([ "$GITHUB_RELEASE" = true ] && echo "✅ Erstellt" || echo "➖ Übersprungen")"
 if [ -f "$PRODUCTION_THEME/assets/css/main.css" ]; then
     css_size=$(du -h "$PRODUCTION_THEME/assets/css/main.css" | cut -f1)
     echo "  🎨 CSS Compilation: ✅ Completed (${css_size})"
@@ -209,11 +255,28 @@ fi
 
 print_step "NEXT STEPS"
 
+if [ "$GITHUB_RELEASE" = true ]; then
+    echo "📋 Automatisches Update-System aktiviert:"
+    echo "  🤖 GitHub Action erstellt automatisch ZIP-Datei"
+    echo "  📡 Kunden erhalten Update-Benachrichtigung im WordPress Admin"
+    echo "  🔄 Ein-Klick Installation für Kunden verfügbar"
+    echo "  🌐 Release verfügbar unter: GitHub Releases"
+    echo ""
+fi
+
 echo "📋 To deploy your theme:"
 echo "  1. 🚀 Upload the $PRODUCTION_THEME folder to your live site"
-echo "  2. 🔄 Activate the theme in WordPress admin"
+echo "  2. 🔄 Activate the theme in WordPress admin" 
 echo "  3. 🧪 Test all blocks and functionality"
 echo "  4. ✅ You're ready to go!"
+
+if [ "$GITHUB_RELEASE" = true ]; then
+    echo ""
+    echo "💡 Automatische Updates:"
+    echo "  ✅ Kunden bekommen automatisch Update-Benachrichtigungen"
+    echo "  ✅ Ein-Klick Installation direkt aus WordPress Admin"
+    echo "  ✅ Vollständige Versionskontrolle über GitHub"
+fi
 
 echo ""
 echo "📅 Build completed: $(date)"

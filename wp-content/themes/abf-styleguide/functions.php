@@ -191,4 +191,9 @@ function abf_get_file_meta($file) {
     return "<span class=\"file-meta\">[{$file_extension}, {$file_size} kB]</span>";
 }
 
+/**
+ * 🚀 AUTOMATISCHE THEME-UPDATES
+ * Load Auto-Updater for GitHub Releases
+ */
+require_once get_template_directory() . '/inc/auto-updater.php';
 
