@@ -965,7 +965,7 @@ function abf_enqueue_typography_css() {
         wp_enqueue_style(
             'abf-typography-generated',
             $css_url,
-            array('abf-main-styles'),
+            array('abf-style'), // 🔧 FIXED: Correct dependency name (not 'abf-main-styles')
             filemtime($css_file)
         );
     }
