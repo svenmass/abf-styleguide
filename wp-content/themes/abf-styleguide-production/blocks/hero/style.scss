@@ -395,8 +395,8 @@
 
 @media (max-width: $breakpoint-tablet) {
     .hero-content {
-        // 🎯 TABLET: Adaptive Breite mit größerer Max-Width
-        max-width: 85%; // Etwas mehr Platz auf Tablet
+        // 🎯 TABLET: Adaptive Breite mit sicherem Abstand
+        max-width: calc(90% - #{$spacing-md}); // Sicherer Abstand rechts
         min-width: 280px; // Kleinere Min-Width für Tablets
         padding: $spacing-md;
         top: 60vh;
@@ -434,11 +434,13 @@
 @media (max-width: $breakpoint-mobile) {
     .hero-content {
         // 🎯 MOBILE: Maximale Breite-Nutzung bei kleinen Screens
-        max-width: 95%; // Fast komplette Bildschirmbreite nutzen
+        max-width: calc(100% - #{$spacing-md * 2}); // Rechts und links Abstand sicherstellen
         min-width: 240px; // Sehr kleine Min-Width für Mobile
         padding: $spacing-sm;
         top: 65vh;
         border-radius: 12px;
+        left: $spacing-md; // Linksbündig mit Abstand
+        right: $spacing-md; // Rechtsbündig mit Abstand
         
         // Minimaler Blur für sehr kleine Screens
         backdrop-filter: blur(15px) saturate(120%);

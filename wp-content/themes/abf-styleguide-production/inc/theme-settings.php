@@ -956,6 +956,11 @@ function abf_enqueue_typography_css() {
     $css_file = get_template_directory() . '/assets/css/typography-generated.css';
     $css_url = get_template_directory_uri() . '/assets/css/typography-generated.css';
     
+    // 🔧 Force CSS generation if file doesn't exist
+    if (!file_exists($css_file)) {
+        abf_generate_typography_css();
+    }
+    
     if (file_exists($css_file)) {
         wp_enqueue_style(
             'abf-typography-generated',
