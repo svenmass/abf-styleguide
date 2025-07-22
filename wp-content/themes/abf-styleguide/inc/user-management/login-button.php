@@ -15,7 +15,7 @@ function abf_add_login_button() {
         <div id="abf-login-button-container" style="position: fixed; top: 20px; right: 20px; z-index: 1000;">
             <?php if (!is_user_logged_in()): ?>
                 <button type="button" class="abf-login-trigger abf-btn" onClick="ABF_UserManagement.showModal()">
-                    Anmelden / Registrieren
+                    Login
                 </button>
             <?php else: ?>
                 <?php
@@ -57,7 +57,7 @@ function abf_add_login_button() {
         
         <style>
         .abf-login-trigger {
-            background: #007cba;
+            background: #575756 !important;
             color: white;
             border: none;
             padding: 12px 20px;
@@ -69,7 +69,7 @@ function abf_add_login_button() {
         }
         
         .abf-login-trigger:hover {
-            background: #005a87;
+            background: #66a98c !important;
         }
         
         .abf-user-info-box {
