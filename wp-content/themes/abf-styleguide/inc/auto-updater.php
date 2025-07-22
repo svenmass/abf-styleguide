@@ -302,16 +302,15 @@ class ABF_Theme_Updater {
                          _wpnonce: button.data('nonce')
                      },
                      success: function(response) {
-                         var data = JSON.parse(response);
-                         if (data.success) {
-                             progress.find('p').html('✅ ' + data.message);
-                             if (data.latest_version && data.current_version !== data.latest_version) {
+                         if (response.success) {
+                             progress.find('p').html('✅ ' + response.data.message);
+                             if (response.data.latest_version && response.data.current_version !== response.data.latest_version) {
                                  setTimeout(function() {
                                      location.reload();
                                  }, 2000);
                              }
                          } else {
-                             progress.find('p').html('❌ Fehler: ' + (data.error || 'Unbekannter Fehler'));
+                             progress.find('p').html('❌ Fehler: ' + (response.data.message || 'Unbekannter Fehler'));
                          }
                          button.prop('disabled', false);
                      },
@@ -365,38 +364,38 @@ class ABF_Theme_Updater {
          }
      }
      
-     /**
-      * 🚀 Manuelle Update-Prüfung (AJAX)
-      */
-     public function force_update_check() {
-         if (!current_user_can('update_themes')) {
-             wp_die(json_encode(array('error' => 'Keine Berechtigung')));
-         }
-         
-         // Cache löschen für sofortige Prüfung
-         delete_transient('abf_update_available');
-         delete_transient('abf_latest_release');
-         
-         // Sofortige Update-Prüfung
-         $this->check_for_update(false);
-         
-         $update_data = get_transient('abf_update_available');
-         
-         if ($update_data) {
-             wp_die(json_encode(array(
-                 'success' => true,
-                 'message' => 'Update gefunden!',
-                 'current_version' => $update_data['current_version'],
-                 'latest_version' => $update_data['latest_version']
-             )));
-         } else {
-             wp_die(json_encode(array(
-                 'success' => true,
-                 'message' => 'Keine Updates verfügbar. Sie haben bereits die neueste Version.',
-                 'current_version' => $this->theme_version
-             )));
-         }
-     }
+         /**
+     * 🚀 Manuelle Update-Prüfung (AJAX)
+     */
+    public function force_update_check() {
+        if (!current_user_can('update_themes')) {
+            wp_send_json_error(array('message' => 'Keine Berechtigung'));
+        }
+        
+        check_ajax_referer('abf_force_update_check');
+        
+        // Cache löschen für sofortige Prüfung
+        delete_transient('abf_update_available');
+        delete_transient('abf_latest_release');
+        
+        // Sofortige Update-Prüfung
+        $this->check_for_update(false);
+        
+        $update_data = get_transient('abf_update_available');
+        
+        if ($update_data) {
+            wp_send_json_success(array(
+                'message' => 'Update gefunden!',
+                'current_version' => $update_data['current_version'],
+                'latest_version' => $update_data['latest_version']
+            ));
+        } else {
+            wp_send_json_success(array(
+                'message' => 'Keine Updates verfügbar. Sie haben bereits die neueste Version.',
+                'current_version' => $this->theme_version
+            ));
+        }
+    }
  }
  
  // Initialisiere den Updater
