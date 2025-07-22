@@ -1,0 +1,168 @@
+name: 🚀 ABF Styleguide Theme Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version für manuelles Release (z.B. v1.2.0)'
+        required: true
+        default: 'v1.0.0'
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 📥 Checkout Repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: 🏷️ Get Version
+      id: version
+      run: |
+        if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+          VERSION="${{ github.event.inputs.version }}"
+        else
+          VERSION=${GITHUB_REF#refs/tags/}
+        fi
+        echo "VERSION=${VERSION}" >> $GITHUB_OUTPUT
+        echo "VERSION_NUMBER=${VERSION#v}" >> $GITHUB_OUTPUT
+        echo "🏷️ Building version: ${VERSION}"
+
+    - name: 🛠️ Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        cache-dependency-path: wp-content/themes/abf-styleguide/package-lock.json
+
+    - name: 📦 Install Dependencies
+      working-directory: wp-content/themes/abf-styleguide
+      run: |
+        if [ -f "package.json" ]; then
+          npm ci
+          echo "✅ Dependencies installed"
+        else
+          echo "⚠️ No package.json found, skipping"
+        fi
+
+    - name: 🎯 Build Production Theme
+      working-directory: wp-content
+      run: |
+        echo "🚀 Building production theme..."
+        
+        # Set version in .theme-version file
+        echo "${{ steps.version.outputs.VERSION_NUMBER }}" > .theme-version
+        
+        # Make scripts executable
+        chmod +x production-cleanup.sh build-production-theme.sh
+        
+        # Run production build (skip interactive version selection)
+        echo "4" | ./build-production-theme.sh || {
+          echo "🔧 Build script failed, running manual build..."
+          
+          # Manual backup approach
+          export THEME_VERSION="${{ steps.version.outputs.VERSION_NUMBER }}"
+          ./production-cleanup.sh
+          
+          # Manual CSS compilation
+          cd themes/abf-styleguide-production
+          if [ -f "package.json" ]; then
+            npm ci
+            npm run build
+          fi
+          cd ../..
+        }
+        
+        echo "✅ Production build completed"
+
+    - name: 📁 Create Theme ZIP
+      working-directory: wp-content
+      run: |
+        THEME_NAME="abf-styleguide"
+        VERSION="${{ steps.version.outputs.VERSION }}"
+        ZIP_NAME="${THEME_NAME}-${VERSION}.zip"
+        
+        echo "📦 Creating ZIP: ${ZIP_NAME}"
+        
+        # Create clean theme directory
+        mkdir -p release-temp
+        cp -r themes/abf-styleguide-production release-temp/abf-styleguide
+        
+        # Create ZIP from the clean directory
+        cd release-temp
+        zip -r "../${ZIP_NAME}" abf-styleguide/ -x "*.DS_Store*" "*node_modules*" "*.git*" "*.scss" "*package*.json"
+        cd ..
+        
+        # Cleanup
+        rm -rf release-temp
+        
+        # Verify ZIP
+        if [ -f "${ZIP_NAME}" ]; then
+          ZIP_SIZE=$(du -h "${ZIP_NAME}" | cut -f1)
+          echo "✅ ZIP created successfully: ${ZIP_NAME} (${ZIP_SIZE})"
+          echo "ZIP_FILE=${ZIP_NAME}" >> $GITHUB_ENV
+          echo "ZIP_SIZE=${ZIP_SIZE}" >> $GITHUB_ENV
+        else
+          echo "❌ ZIP creation failed"
+          exit 1
+        fi
+
+    - name: 📝 Generate Release Notes
+      id: release_notes
+      working-directory: wp-content
+      run: |
+        VERSION="${{ steps.version.outputs.VERSION }}"
+        
+        cat > release_notes.md << EOF
+        # 🎨 ABF Styleguide Theme ${VERSION}
+        
+        ## 📦 Was ist neu?
+        
+        ### ✨ Features & Verbesserungen:
+        - Production-optimierte Theme-Version
+        - Kompilierte und komprimierte Assets
+        - Alle Custom-Blocks enthalten
+        - WordPress-kompatible Installation
+        
+        ### 🛠️ Technische Details:
+        - **Theme-Version:** ${VERSION}
+        - **WordPress-kompatibel:** 6.0+
+        - **PHP-Version:** 8.0+
+        - **Enthält:** Alle ACF-Blocks, Styleguide, Assets
+        
+        ### 📋 Installation:
+        1. 📥 ZIP-Datei herunterladen
+        2. 🎯 WordPress Admin → Themes → Theme hochladen
+        3. 🔄 Theme aktivieren
+        4. ✅ Fertig!
+        
+        ### 🔧 Automatische Updates:
+        Dieses Theme unterstützt automatische Update-Benachrichtigungen.
+        
+        ---
+        
+        **💡 Benötigen Sie Hilfe?** Kontaktieren Sie uns für Support.
+        EOF
+
+    - name: 🚀 Create GitHub Release
+      uses: ncipollo/release-action@v1
+      with:
+        tag: ${{ steps.version.outputs.VERSION }}
+        name: "ABF Styleguide Theme ${{ steps.version.outputs.VERSION }}"
+        bodyFile: "wp-content/release_notes.md"
+        artifacts: "wp-content/${{ env.ZIP_FILE }}"
+        draft: false
+        prerelease: false
+        token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: ✅ Release Summary
+      run: |
+        echo "🎉 Release completed successfully!"
+        echo "📦 Version: ${{ steps.version.outputs.VERSION }}"
+        echo "💾 File: ${{ env.ZIP_FILE }} (${{ env.ZIP_SIZE }})"
+        echo "🌐 Available at: https://github.com/${{ github.repository }}/releases/tag/${{ steps.version.outputs.VERSION }}"
