@@ -30,6 +30,7 @@ class ABF_Theme_Updater {
         add_action('admin_init', array($this, 'init'));
         add_action('admin_notices', array($this, 'show_update_notice'));
         add_action('wp_ajax_abf_install_update', array($this, 'install_update'));
+        add_action('wp_ajax_abf_force_update_check', array($this, 'force_update_check')); // 🚀 Manuelle Prüfung
         add_filter('pre_set_site_transient_update_themes', array($this, 'check_for_update'));
     }
     
@@ -152,7 +153,13 @@ class ABF_Theme_Updater {
         
         $update_data = get_transient('abf_update_available');
         
+        // 🔍 Zeige "Jetzt prüfen" Button wenn kein Update verfügbar
         if (!$update_data) {
+            // Nur auf Theme-/Plugin-Update-Seiten oder Dashboard anzeigen
+            $screen = get_current_screen();
+            if ($screen && in_array($screen->id, array('dashboard', 'themes', 'update-core'))) {
+                $this->show_check_for_updates_notice();
+            }
             return;
         }
         
@@ -249,13 +256,79 @@ class ABF_Theme_Updater {
         .abf-update-notice details { margin: 15px 0; }
         .abf-update-notice summary { outline: none; }
         .abf-progress-bar { transition: width 0.3s ease; }
-        </style>
-        <?php
-    }
-    
-    /**
-     * 🚀 Update installieren (AJAX)
-     */
+                 </style>
+         <?php
+     }
+     
+     /**
+      * 🔍 Update-Prüfung Notice anzeigen
+      */
+     private function show_check_for_updates_notice() {
+         $current_version = $this->theme_version;
+         $nonce = wp_create_nonce('abf_force_update_check');
+         
+         ?>
+         <div class="notice notice-info is-dismissible abf-check-updates-notice" style="position: relative;">
+             <p>
+                 <strong>🎨 ABF Styleguide Theme</strong> (v<?php echo esc_html($current_version); ?>)
+                 <span style="margin-left: 15px;">
+                     <button type="button" class="button button-secondary abf-check-updates" 
+                             data-nonce="<?php echo esc_attr($nonce); ?>">
+                         🔍 Jetzt auf Updates prüfen
+                     </button>
+                 </span>
+             </p>
+             
+             <div class="abf-check-progress" style="display: none; margin-top: 10px;">
+                 <p><em>🔄 Prüfe GitHub auf neue Updates...</em></p>
+             </div>
+         </div>
+         
+         <script>
+         jQuery(document).ready(function($) {
+             $('.abf-check-updates').click(function() {
+                 var button = $(this);
+                 var notice = button.closest('.abf-check-updates-notice');
+                 var progress = notice.find('.abf-check-progress');
+                 
+                 button.prop('disabled', true);
+                 progress.show();
+                 
+                 $.ajax({
+                     url: ajaxurl,
+                     type: 'POST',
+                     data: {
+                         action: 'abf_force_update_check',
+                         _wpnonce: button.data('nonce')
+                     },
+                     success: function(response) {
+                         var data = JSON.parse(response);
+                         if (data.success) {
+                             progress.find('p').html('✅ ' + data.message);
+                             if (data.latest_version && data.current_version !== data.latest_version) {
+                                 setTimeout(function() {
+                                     location.reload();
+                                 }, 2000);
+                             }
+                         } else {
+                             progress.find('p').html('❌ Fehler: ' + (data.error || 'Unbekannter Fehler'));
+                         }
+                         button.prop('disabled', false);
+                     },
+                     error: function() {
+                         progress.find('p').html('❌ Verbindungsfehler bei der Update-Prüfung');
+                         button.prop('disabled', false);
+                     }
+                 });
+             });
+         });
+         </script>
+         <?php
+     }
+     
+     /**
+      * 🚀 Update installieren (AJAX)
+      */
     public function install_update() {
         if (!current_user_can('update_themes')) {
             wp_die(__('You do not have sufficient permissions to update themes.'));
@@ -288,10 +361,43 @@ class ABF_Theme_Updater {
             wp_send_json_success(array(
                 'message' => 'Theme erfolgreich aktualisiert!',
                 'version' => $new_version
-            ));
-        }
-    }
-}
-
-// Initialisiere den Updater
-new ABF_Theme_Updater(); 
+                         ));
+         }
+     }
+     
+     /**
+      * 🚀 Manuelle Update-Prüfung (AJAX)
+      */
+     public function force_update_check() {
+         if (!current_user_can('update_themes')) {
+             wp_die(json_encode(array('error' => 'Keine Berechtigung')));
+         }
+         
+         // Cache löschen für sofortige Prüfung
+         delete_transient('abf_update_available');
+         delete_transient('abf_latest_release');
+         
+         // Sofortige Update-Prüfung
+         $this->check_for_update(false);
+         
+         $update_data = get_transient('abf_update_available');
+         
+         if ($update_data) {
+             wp_die(json_encode(array(
+                 'success' => true,
+                 'message' => 'Update gefunden!',
+                 'current_version' => $update_data['current_version'],
+                 'latest_version' => $update_data['latest_version']
+             )));
+         } else {
+             wp_die(json_encode(array(
+                 'success' => true,
+                 'message' => 'Keine Updates verfügbar. Sie haben bereits die neueste Version.',
+                 'current_version' => $this->theme_version
+             )));
+         }
+     }
+ }
+ 
+ // Initialisiere den Updater
+ new ABF_Theme_Updater(); 
