@@ -35,14 +35,19 @@
             bottom: 50px !important;
             top: auto !important;
             
-            // Im Editor: Breite anpassen
-            width: 50% !important;
-            max-width: 50% !important;
+            // 🎯 ADAPTIVE BREITE: Content passt sich automatisch an
+            width: auto !important;
+            max-width: 65% !important; // Maximale Breite als Begrenzung
+            min-width: 320px !important; // Minimale Breite für sehr kurze Texte
             left: 24px !important;
             padding: 24px !important;
             border-radius: 20px !important;
             backdrop-filter: blur(25px) saturate(180%) !important;
             -webkit-backdrop-filter: blur(25px) saturate(180%) !important;
+            
+            // Automatischer Zeilenumbruch
+            white-space: normal !important;
+            word-wrap: break-word !important;
         }
         
         // 🌟 Heller Glaseffekt im Editor
@@ -171,11 +176,21 @@
     transform: translateY(-50%);
     z-index: 4;
     text-align: left;
-    max-width: 90%;
+    
+    // 🎯 ADAPTIVE BREITE: Content-basierte Größenanpassung
+    width: auto;
+    max-width: 65%; // Maximale Breite als Begrenzung  
+    min-width: 320px; // Minimale Breite für sehr kurze Texte
+    
     padding: $spacing-lg;
     border-radius: 20px;
     backdrop-filter: blur(25px) saturate(180%);
     -webkit-backdrop-filter: blur(25px) saturate(180%);
+    
+    // Automatischer Zeilenumbruch und Text-Handling
+    white-space: normal;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
     
     // 🚀 GEMEINSAME VERBESSERUNGEN
     animation: glassSlideIn 0.8s ease-out;
@@ -380,7 +395,9 @@
 
 @media (max-width: $breakpoint-tablet) {
     .hero-content {
-        max-width: 95%;
+        // 🎯 TABLET: Adaptive Breite mit größerer Max-Width
+        max-width: 85%; // Etwas mehr Platz auf Tablet
+        min-width: 280px; // Kleinere Min-Width für Tablets
         padding: $spacing-md;
         top: 60vh;
         border-radius: 16px;
@@ -416,7 +433,9 @@
 
 @media (max-width: $breakpoint-mobile) {
     .hero-content {
-        max-width: 90%;
+        // 🎯 MOBILE: Maximale Breite-Nutzung bei kleinen Screens
+        max-width: 95%; // Fast komplette Bildschirmbreite nutzen
+        min-width: 240px; // Sehr kleine Min-Width für Mobile
         padding: $spacing-sm;
         top: 65vh;
         border-radius: 12px;
