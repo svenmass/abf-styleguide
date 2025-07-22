@@ -7,6 +7,9 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+// Get color choices from the main function - EXAKT wie styleguide-text-element
+$color_choices = function_exists('abf_get_color_choices') ? abf_get_color_choices() : array();
+
 // Parallax Element Block Field Group
 return array(
     'key' => 'group_parallax_element',
@@ -99,7 +102,7 @@ return array(
             'label' => 'Hintergrundfarbe',
             'name' => 'background_color',
             'type' => 'select',
-            'choices' => abf_get_color_choices(),
+            'choices' => $color_choices,
             'default_value' => 'primary',
             'allow_null' => 0,
             'return_format' => 'value',
@@ -190,7 +193,7 @@ return array(
             'label' => 'Headline Farbe',
             'name' => 'headline_color',
             'type' => 'select',
-            'choices' => abf_get_color_choices(),
+            'choices' => $color_choices,
             'default_value' => 'white',
             'wrapper' => array('width' => '25'),
             'conditional_logic' => array(
@@ -204,16 +207,16 @@ return array(
             ),
         ),
         
-        // Richtext Content
+        // Richtext Content - Enhanced WYSIWYG wie styleguide-text-element
         array(
             'key' => 'field_pe_richtext_content',
             'label' => 'Text Inhalt',
             'name' => 'richtext_content',
             'type' => 'wysiwyg',
-            'toolbar' => 'basic',
+            'toolbar' => 'abf_enhanced', // Use our custom toolbar
             'media_upload' => 0,
             'delay' => 0,
-            'instructions' => 'Haupttext des Elements. Unterstützt grundlegende Formatierung.',
+            'instructions' => 'Haupttext des Elements (optional). Verwende die Farb- und Schriftgrößen-Buttons in der Toolbar für individuelle Formatierungen.',
         ),
         
         // Button
@@ -262,7 +265,7 @@ return array(
             'label' => 'Button Hintergrundfarbe',
             'name' => 'button_bg_color',
             'type' => 'select',
-            'choices' => abf_get_color_choices(),
+            'choices' => $color_choices,
             'default_value' => 'secondary',
             'conditional_logic' => array(
                 array(
@@ -279,7 +282,7 @@ return array(
             'label' => 'Button Textfarbe',
             'name' => 'button_text_color',
             'type' => 'select',
-            'choices' => abf_get_color_choices(),
+            'choices' => $color_choices,
             'default_value' => 'white',
             'conditional_logic' => array(
                 array(
@@ -296,7 +299,7 @@ return array(
             'label' => 'Button Hover Hintergrundfarbe',
             'name' => 'button_hover_bg_color',
             'type' => 'select',
-            'choices' => abf_get_color_choices(),
+            'choices' => $color_choices,
             'default_value' => 'primary',
             'conditional_logic' => array(
                 array(
@@ -313,7 +316,7 @@ return array(
             'label' => 'Button Hover Textfarbe',
             'name' => 'button_hover_text_color',
             'type' => 'select',
-            'choices' => abf_get_color_choices(),
+            'choices' => $color_choices,
             'default_value' => 'white',
             'conditional_logic' => array(
                 array(

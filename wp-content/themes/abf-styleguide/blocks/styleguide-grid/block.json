@@ -15,7 +15,7 @@
   },
   "textdomain": "abf-styleguide",
   "acf": {
-    "mode": "preview",
+    "mode": "edit",
     "renderTemplate": "template.php"
   }
 }

@@ -123,12 +123,7 @@ if ($enable_sticky) {
         <div class="parallax-element-e3-inner<?php echo ($show_button ? ($button_text ? ($button_url ? ' has-button' : '') : '') : ''); ?>">
             
             <?php if ($richtext_content): ?>
-                <?php
-                $richtext_styles = [];
-                if ($headline_color) $richtext_styles[] = "color: " . abf_get_element_color_value($headline_color);
-                $richtext_style_attr = !empty($richtext_styles) ? ' style="' . implode('; ', $richtext_styles) . '"' : '';
-                ?>
-                <div class="parallax-element-richtext"<?php echo $richtext_style_attr; ?>>
+                <div class="parallax-element-richtext">
                     <?php echo wp_kses_post($richtext_content); ?>
                 </div>
             <?php endif; ?>
