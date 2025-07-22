@@ -1,5 +1,4 @@
 name: 🚀 ABF Styleguide Theme Release
-
 on:
   push:
     tags:
@@ -7,166 +6,84 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: 'Version für manuelles Release (z.B. v1.2.0)'
+        description: 'Release Version (e.g., v1.0.0)'
         required: true
         default: 'v1.0.0'
 
 jobs:
   build-and-release:
     runs-on: ubuntu-latest
-    
     steps:
-    - name: 📥 Checkout Repository
+    - name: 🔄 Checkout Repository
       uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
-
-    - name: 🏷️ Get Version
+    
+    - name: 📝 Get Version
       id: version
       run: |
-        if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-          VERSION="${{ github.event.inputs.version }}"
+        if [ "${{ github.event_name }}" == "push" ]; then
+          echo "VERSION_NUMBER=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
         else
-          VERSION=${GITHUB_REF#refs/tags/}
+          echo "VERSION_NUMBER=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
         fi
-        echo "VERSION=${VERSION}" >> $GITHUB_OUTPUT
-        echo "VERSION_NUMBER=${VERSION#v}" >> $GITHUB_OUTPUT
-        echo "🏷️ Building version: ${VERSION}"
-
-    - name: 🛠️ Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '18'
-
-    - name: 📦 Install Dependencies
-      working-directory: wp-content/themes/abf-styleguide
+        echo "📋 Version: $(echo ${GITHUB_REF#refs/tags/ } || echo ${{ github.event.inputs.version }})"
+    
+    - name: 📦 Create Theme ZIP
       run: |
-        if [ -f "package.json" ]; then
-          npm ci
-          echo "✅ Dependencies installed"
-        else
-          echo "⚠️ No package.json found, skipping"
-        fi
-
-    - name: 🔍 Debug File Structure
-      run: |
-        echo "🔍 Repository structure:"
-        ls -la
-        echo "🔍 wp-content contents:"
-        ls -la wp-content/ || echo "wp-content not found!"
-        echo "🔍 Current working directory:"
-        pwd
+        echo "🚀 Creating theme ZIP..."
+        cd wp-content/themes
         
-    - name: 🎯 Build Production Theme
-      working-directory: wp-content
-      run: |
-        echo "🚀 Building production theme..."
-        echo "🔍 Current directory contents:"
-        ls -la
-        
-        # Check if scripts exist
-        if [ -f "production-cleanup.sh" ]; then
-          echo "✅ production-cleanup.sh found"
-          chmod +x production-cleanup.sh
-        else
-          echo "❌ production-cleanup.sh NOT FOUND!"
-          exit 1
+        # Copy development theme to production directory
+        if [ ! -d "abf-styleguide-production" ]; then
+          echo "📁 Creating production directory..."
+          cp -r abf-styleguide abf-styleguide-production
         fi
         
-        # Set version in .theme-version file
-        echo "${{ steps.version.outputs.VERSION_NUMBER }}" > .theme-version
-        echo "✅ Version set to: ${{ steps.version.outputs.VERSION_NUMBER }}"
+        # Create ZIP from production theme
+        zip -r "../../abf-styleguide-${{ steps.version.outputs.VERSION_NUMBER }}.zip" \
+          abf-styleguide-production/ \
+          -x "*.DS_Store*" "*node_modules*" "*.git*" "*.scss" "*package*.json" "*.md"
         
-        # Run manual build
-        export THEME_VERSION="${{ steps.version.outputs.VERSION_NUMBER }}"
-        echo "🚀 Running production cleanup..."
-        ./production-cleanup.sh
-        
-        echo "✅ Production build completed"
+        cd ../..
+        echo "✅ ZIP created: $(ls -lh abf-styleguide-${{ steps.version.outputs.VERSION_NUMBER }}.zip)"
 
-    - name: 📁 Create Theme ZIP
-      working-directory: wp-content
+    - name: 📋 Generate Release Notes
       run: |
-        THEME_NAME="abf-styleguide"
-        VERSION="${{ steps.version.outputs.VERSION }}"
-        ZIP_NAME="${THEME_NAME}-${VERSION}.zip"
-        
-        echo "📦 Creating ZIP: ${ZIP_NAME}"
-        
-        # Create clean theme directory
-        mkdir -p release-temp
-        cp -r themes/abf-styleguide-production release-temp/abf-styleguide
-        
-        # Create ZIP from the clean directory
-        cd release-temp
-        zip -r "../${ZIP_NAME}" abf-styleguide/ -x "*.DS_Store*" "*node_modules*" "*.git*" "*.scss" "*package*.json"
-        cd ..
-        
-        # Cleanup
-        rm -rf release-temp
-        
-        # Verify ZIP
-        if [ -f "${ZIP_NAME}" ]; then
-          ZIP_SIZE=$(du -h "${ZIP_NAME}" | cut -f1)
-          echo "✅ ZIP created successfully: ${ZIP_NAME} (${ZIP_SIZE})"
-          echo "ZIP_FILE=${ZIP_NAME}" >> $GITHUB_ENV
-          echo "ZIP_SIZE=${ZIP_SIZE}" >> $GITHUB_ENV
-        else
-          echo "❌ ZIP creation failed"
-          exit 1
-        fi
-
-    - name: 📝 Generate Release Notes
-      id: release_notes
-      working-directory: wp-content
-      run: |
-        VERSION="${{ steps.version.outputs.VERSION }}"
-        
         cat > release_notes.md << EOF
-        # 🎨 ABF Styleguide Theme ${VERSION}
-        
-        ## 📦 Was ist neu?
+        ## 🎨 ABF Styleguide Theme ${{ steps.version.outputs.VERSION_NUMBER }}
         
         ### ✨ Features & Verbesserungen:
-        - Production-optimierte Theme-Version
-        - Kompilierte und komprimierte Assets
-        - Alle Custom-Blocks enthalten
-        - WordPress-kompatible Installation
-        
-        ### 🛠️ Technische Details:
-        - **Theme-Version:** ${VERSION}
-        - **WordPress-kompatibel:** 6.0+
-        - **PHP-Version:** 8.0+
-        - **Enthält:** Alle ACF-Blocks, Styleguide, Assets
+        - Typography CSS System optimiert
+        - Mobile Responsive Design verbessert  
+        - Automatisches Update-System aktiviert
+        - Neue Glass-Effect Optionen im Hero Block
         
         ### 📋 Installation:
         1. 📥 ZIP-Datei herunterladen
-        2. 🎯 WordPress Admin → Themes → Theme hochladen
-        3. 🔄 Theme aktivieren
-        4. ✅ Fertig!
+        2. 🎯 WordPress Admin → Designs → Design hochladen
+        3. ✅ Theme aktivieren
         
-        ### 🔧 Automatische Updates:
-        Dieses Theme unterstützt automatische Update-Benachrichtigungen.
+        ### 🔄 Update:
+        - **Automatisch:** Über WordPress Admin (wenn Auto-Updater aktiv)
+        - **Manuell:** ZIP herunterladen und über WordPress installieren
         
-        ---
-        
-        **💡 Benötigen Sie Hilfe?** Kontaktieren Sie uns für Support.
+        **Entwickelt mit ❤️ für ABF Corporate Design**
         EOF
+        
+        echo "📋 Release notes created"
 
     - name: 🚀 Create GitHub Release
       uses: ncipollo/release-action@v1
       with:
-        tag: ${{ steps.version.outputs.VERSION }}
-        name: "ABF Styleguide Theme ${{ steps.version.outputs.VERSION }}"
-        bodyFile: "wp-content/release_notes.md"
-        artifacts: "wp-content/${{ env.ZIP_FILE }}"
-        draft: false
-        prerelease: false
+        artifacts: "abf-styleguide-${{ steps.version.outputs.VERSION_NUMBER }}.zip"
+        bodyFile: "release_notes.md"
+        tag: ${{ steps.version.outputs.VERSION_NUMBER }}
+        name: "ABF Styleguide Theme ${{ steps.version.outputs.VERSION_NUMBER }}"
         token: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: ✅ Release Summary
+    
+    - name: 🎉 Release Summary
       run: |
-        echo "🎉 Release completed successfully!"
-        echo "📦 Version: ${{ steps.version.outputs.VERSION }}"
-        echo "💾 File: ${{ env.ZIP_FILE }} (${{ env.ZIP_SIZE }})"
-        echo "🌐 Available at: https://github.com/${{ github.repository }}/releases/tag/${{ steps.version.outputs.VERSION }}"
+        echo "## 🎉 Release Summary"
+        echo "**Version:** ${{ steps.version.outputs.VERSION_NUMBER }}"
+        echo "**ZIP Size:** $(ls -lh abf-styleguide-${{ steps.version.outputs.VERSION_NUMBER }}.zip | awk '{print $5}')"
+        echo "**Release URL:** https://github.com/${{ github.repository }}/releases/tag/${{ steps.version.outputs.VERSION_NUMBER }}"
+        echo "✅ Release successfully created!"
