@@ -4,7 +4,7 @@
   "name": "acf/styleguide-grid",
   "title": "Styleguide Grid",
   "description": "150×150px Grid mit 80×80px SVG-Icons, Beschriftungen und Download-Links",
-  "category": "abf-styleguide",
+  "category": "abf-blocks",
   "icon": "grid-view",
   "keywords": ["grid", "svg", "icons", "download", "styleguide"],
   "supports": {

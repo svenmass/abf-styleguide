@@ -1,0 +1,25 @@
+{
+    "name": "acf/styleguide-header",
+    "title": "Styleguide-Header",
+    "description": "Ein Header-Element mit Text (40%) und Bild (60%) in fester Aufteilung ohne Schatten",
+    "category": "abf-blocks",
+    "icon": "heading",
+    "keywords": ["header", "bild", "text", "image", "layout", "styleguide", "40", "60"],
+    "acf": {
+        "mode": "auto",
+        "renderTemplate": "template.php"
+    },
+    "supports": {
+        "jsx": true
+    },
+    "example": {
+        "attributes": {
+            "mode": "preview",
+            "data": {
+                "sh_headline_text": "Header Beispiel",
+                "sh_text_content": "Dies ist ein Beispieltext für das Styleguide-Header-Element.",
+                "sh_image_position": "right"
+            }
+        }
+    }
+} 

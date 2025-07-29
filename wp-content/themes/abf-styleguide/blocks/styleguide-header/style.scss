@@ -1,0 +1,455 @@
+// =============================================================================
+// STYLEGUIDE HEADER BLOCK
+// =============================================================================
+
+.block-styleguide-header {
+    width: 100%;
+    max-width: $container-content;
+    margin: 0 auto;
+    padding: 0;
+    
+    .styleguide-header-container {
+        width: 100%;
+        overflow: hidden; // Verhindert Überlauf
+        
+        // 2-Spalten Grid Layout - fest 40/60
+        .styleguide-header-grid {
+            display: grid;
+            gap: $spacing-lg;
+            align-items: stretch; // Spalten gleiche Höhe
+            width: 100%;
+            box-sizing: border-box;
+            min-width: 0; // Wichtig für flexibles Grid
+            
+            @media (max-width: $breakpoint-tablet) {
+                // Mobile: Spalten untereinander, Bild immer oben
+                grid-template-columns: 1fr !important;
+                gap: $spacing-md;
+                
+                // Bild immer oben auf Mobile (unabhängig von Position)
+                .styleguide-header-image-column {
+                    order: 1;
+                }
+                
+                .styleguide-header-content-column {
+                    order: 2;
+                }
+            }
+        }
+        
+        // ✅ ANPASSUNG 1: Kein Gap wenn Hintergrundfarbe aktiv ist
+        &.has-background-color {
+            .styleguide-header-grid {
+                gap: 0; // Kein Gap zwischen Text und Bild
+                
+                @media (max-width: $breakpoint-tablet) {
+                    gap: $spacing-md; // Mobile behält Gap für bessere Lesbarkeit
+                }
+            }
+        }
+        
+        // Bild-Spalte (immer 60%)
+        .styleguide-header-image-column {
+            display: flex;
+            align-items: stretch;
+            justify-content: center;
+            width: 100%;
+            overflow: hidden;
+            min-width: 0; // Wichtig für flexibles Grid
+            
+            .styleguide-header-image-container {
+                width: 100%;
+                height: 100%;
+                position: relative;
+                overflow: hidden;
+                // KEIN border-radius - Anforderung erfüllt
+                
+                .styleguide-header-image {
+                    width: 100%;
+                    height: 100%;
+                    object-position: center center;
+                    transition: transform 0.3s ease;
+                    display: block;
+                }
+                
+                // Cover: Bild füllt Bereich komplett aus (Standard)
+                &.styleguide-header-image--cover {
+                    .styleguide-header-image {
+                        object-fit: cover;
+                        min-height: 100%;
+                    }
+                }
+                
+                // Contain: Bild vollständig sichtbar, oben ausgerichtet
+                &.styleguide-header-image--contain {
+                    .styleguide-header-image {
+                        object-fit: contain;
+                        object-position: center top;
+                        min-height: 100%;
+                    }
+                }
+                
+                @media (max-width: $breakpoint-tablet) {
+                    min-height: 250px;
+                }
+                
+                @media (max-width: $breakpoint-mobile) {
+                    min-height: 200px;
+                }
+            }
+        }
+        
+        // Text-Spalte (immer 40%)
+        .styleguide-header-content-column {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            overflow: hidden;
+            min-width: 0; // Wichtig für flexibles Grid
+            
+            .styleguide-header-content {
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                gap: $spacing-sm;
+                padding: $spacing-sm 0; // Vertikales Padding für bessere Ausrichtung
+                min-width: 0; // Wichtig für flexibles Grid
+                
+                // HINTERGRUND NUR UM TEXT-BEREICH - Anforderung erfüllt
+                // Wird über inline-styles aus template.php gesetzt
+                // KEIN border-radius oder box-shadow hier - clean look
+                
+                .sh-headline {
+                    margin: 0;
+                    padding: 0;
+                    line-height: 1.2;
+                    letter-spacing: $letter-spacing-base;
+                    font-family: $font-family-primary;
+                    word-wrap: break-word;
+                    overflow-wrap: break-word;
+                    hyphens: auto;
+                    -webkit-hyphens: auto;
+                    -moz-hyphens: auto;
+                    -ms-hyphens: auto;
+                    
+                    &:has(+ .sh-text-content),
+                    &:has(+ .sh-downloads),
+                    &:has(+ .sh-button-wrapper) {
+                        margin-bottom: $spacing-sm;
+                    }
+                }
+                
+                .sh-text-content {
+                    margin: 0;
+                    padding: 0;
+                    line-height: 1.4;
+                    letter-spacing: $letter-spacing-base;
+                    font-family: $font-family-primary;
+                    word-wrap: break-word;
+                    overflow-wrap: break-word;
+                    hyphens: auto;
+                    -webkit-hyphens: auto;
+                    -moz-hyphens: auto;
+                    -ms-hyphens: auto;
+                    
+                    &:has(+ .sh-downloads),
+                    &:has(+ .sh-button-wrapper) {
+                        margin-bottom: $spacing-sm;
+                    }
+                    
+                    // ✅ WYSIWYG-FREUNDLICHE STYLES: Keine !important, respektiert inline-Styles
+                    > div:not([style*="font-size"]):not([style*="color"]):not([data-abf-color]):not([data-abf-font-size]),
+                    > p:not([style*="font-size"]):not([style*="color"]):not([data-abf-color]):not([data-abf-font-size]) {
+                        font-size: inherit;
+                        font-weight: inherit;
+                        color: inherit;
+                        line-height: inherit;
+                        letter-spacing: inherit;
+                    }
+                    
+                    // Spans erben nur wenn sie keine WYSIWYG-Formatierung haben
+                    span:not([style]):not([data-abf-color]):not([data-abf-font-size]) {
+                        font-size: inherit;
+                        font-weight: inherit;
+                        color: inherit;
+                    }
+                    
+                    // Semantische Elemente behalten ihre Funktion
+                    strong, b {
+                        font-weight: bold;
+                        font-size: inherit;
+                        color: inherit;
+                    }
+                    
+                    em, i {
+                        font-style: italic;
+                        font-size: inherit;
+                        color: inherit;
+                    }
+                    
+                    // Links behalten Unterstreichung
+                    a {
+                        font-size: inherit;
+                        font-weight: inherit;
+                        color: inherit;
+                        text-decoration: underline;
+                        
+                        &:hover {
+                            text-decoration: none;
+                        }
+                    }
+                    
+                    // Listen-Styles
+                    ul, ol {
+                        font-size: inherit;
+                        font-weight: inherit;
+                        color: inherit;
+                        margin: $spacing-sm 0;
+                        padding-left: $spacing-md;
+                    }
+                    
+                    li {
+                        font-size: inherit;
+                        font-weight: inherit;
+                        color: inherit;
+                        margin-bottom: $spacing-xs;
+                    }
+                }
+                
+                // Downloads Styling
+                .sh-downloads {
+                    margin: $spacing-sm 0 0 0;
+                    
+                    .sh-downloads-title {
+                        margin: 0 0 1rem 0;
+                        font-size: 1.125rem;
+                        font-weight: 600;
+                        color: #333;
+                    }
+                    
+                    .sh-downloads-list {
+                        list-style: none;
+                        margin: 0;
+                        padding: 0;
+                    }
+                    
+                    .sh-download-item {
+                        margin-bottom: 0.75rem;
+                        
+                        &:last-child {
+                            margin-bottom: 0;
+                        }
+                    }
+                    
+                    .sh-download-link {
+                        display: flex;
+                        align-items: center;
+                        padding: 0.75rem 1rem;
+                        background: #f8f9fa;
+                        border: 1px solid #e9ecef;
+                        border-radius: 6px;
+                        text-decoration: none;
+                        color: #495057;
+                        transition: all 0.3s ease;
+                        
+                        &:hover {
+                            background: #e9ecef;
+                            border-color: #dee2e6;
+                            transform: translateY(-1px);
+                            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                        }
+                    }
+                    
+                    .sh-download-icon {
+                        margin-right: 0.75rem;
+                        font-size: 1.25rem;
+                        flex-shrink: 0;
+                    }
+                    
+                    .sh-download-info {
+                        flex: 1;
+                        min-width: 0;
+                    }
+                    
+                    .sh-download-title {
+                        display: block;
+                        font-weight: 500;
+                        color: #212529;
+                        margin-bottom: 0.25rem;
+                    }
+                    
+                    .sh-download-meta {
+                        display: flex;
+                        gap: 0.75rem;
+                        font-size: 0.875rem;
+                        color: #6c757d;
+                    }
+                    
+                    .sh-download-type {
+                        font-weight: 500;
+                        text-transform: uppercase;
+                    }
+                    
+                    .sh-download-size {
+                        &::before {
+                            content: "• ";
+                        }
+                    }
+                }
+                
+                // Button Styling
+                .sh-button-wrapper {
+                    margin: $spacing-sm 0 0 0;
+                    
+                    .sh-button {
+                        display: inline-flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-family: $font-family-primary;
+                        font-weight: $font-weight-regular;
+                        font-size: $font-size-body;
+                        line-height: 1.2;
+                        padding: $button-padding-y $button-padding-x;
+                        border: none;
+                        border-radius: $button-border-radius;
+                        text-decoration: none;
+                        cursor: pointer;
+                        transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+                        white-space: nowrap;
+                        
+                        &:hover,
+                        &:focus {
+                            text-decoration: none;
+                            outline: none;
+                            transform: translateY(-1px);
+                        }
+                        
+                        &:active {
+                            transform: translateY(0);
+                        }
+                    }
+                }
+            }
+        }
+        
+        // ✅ ANPASSUNG 2: Padding für Text-Bereich wenn Hintergrundfarbe aktiv ist
+        &.has-background-color {
+            .styleguide-header-content-column {
+                .styleguide-header-content {
+                    // Responsives Padding wie im bild-text Block
+                    padding: $spacing-sm;
+                    
+                    @media (min-width: $breakpoint-mobile) {
+                        padding: $spacing-md;
+                    }
+                    
+                    @media (min-width: $breakpoint-tablet) {
+                        padding: $spacing-md;
+                    }
+                    
+                    @media (min-width: $breakpoint-desktop) {
+                        padding: $spacing-lg;
+                    }
+                }
+            }
+        }
+    }
+    
+    // WICHTIG: Kein Styling für Container-Hintergrund, Border-radius oder Box-shadow
+    // Das war die Hauptanforderung - clean header look ohne Schatten/Radius
+}
+
+// =============================================================================
+// RESPONSIVE DESIGN
+// =============================================================================
+
+// Tablet und kleiner: Vereinfachtes Layout
+@media (max-width: $breakpoint-tablet) {
+    .block-styleguide-header {
+        .styleguide-header-container {
+            .styleguide-header-grid {
+                gap: $spacing-md;
+            }
+            
+            // Für Background-Color: Gap bleibt auf Mobile für Lesbarkeit
+            &.has-background-color .styleguide-header-grid {
+                gap: $spacing-md;
+            }
+            
+            .styleguide-header-content-column {
+                .styleguide-header-content {
+                    gap: $spacing-xs;
+                    padding: $spacing-xs 0;
+                    
+                    .sh-headline:has(+ .sh-text-content),
+                    .sh-headline:has(+ .sh-downloads),
+                    .sh-headline:has(+ .sh-button-wrapper) {
+                        margin-bottom: $spacing-xs;
+                    }
+                    
+                    .sh-text-content:has(+ .sh-downloads),
+                    .sh-text-content:has(+ .sh-button-wrapper) {
+                        margin-bottom: $spacing-xs;
+                    }
+                }
+            }
+            
+            // Background-Color Padding bleibt responsiv
+            &.has-background-color {
+                .styleguide-header-content-column {
+                    .styleguide-header-content {
+                        padding: $spacing-sm;
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Mobile: Kompaktes Layout
+@media (max-width: $breakpoint-mobile) {
+    .block-styleguide-header {
+        .styleguide-header-container {
+            .styleguide-header-grid {
+                gap: $spacing-sm;
+            }
+            
+            // Background-Color Gap auf Mobile
+            &.has-background-color .styleguide-header-grid {
+                gap: $spacing-sm;
+            }
+            
+            .styleguide-header-content-column {
+                .styleguide-header-content {
+                    gap: $spacing-xs;
+                    padding: $spacing-xs 0;
+                }
+            }
+            
+            // Background-Color Padding auf Mobile
+            &.has-background-color {
+                .styleguide-header-content-column {
+                    .styleguide-header-content {
+                        padding: $spacing-sm;
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Fallback für Browser ohne :has() Support
+@supports not (selector(:has(*))) {
+    .block-styleguide-header {
+        .styleguide-header-content {
+            .sh-headline,
+            .sh-text-content {
+                margin-bottom: $spacing-sm;
+                
+                @media (max-width: $breakpoint-tablet) {
+                    margin-bottom: $spacing-xs;
+                }
+            }
+        }
+    }
+} 
