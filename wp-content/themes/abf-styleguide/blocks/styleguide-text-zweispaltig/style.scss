@@ -1,207 +1,333 @@
-// themes/abf-styleguide/blocks/styleguide-text-zweispaltig/style.scss
 // =============================================================================
-// STYLEGUIDE TEXT ZWEISPALTIG BLOCK STYLES
-// =============================================================================
-
-// =============================================================================
-// MAIN BLOCK CONTAINER
+// STYLEGUIDE BILD-TEXT BLOCK
 // =============================================================================
 
-.styleguide-text-zweispaltig {
+.block-styleguide-bild-text {
     width: 100%;
+    max-width: $container-content;
+    margin: 0 auto;
+    padding: 0;
     
-    // Section Spacing
-    &.spacing-none {
-        margin: 0;
-    }
-    
-    &.spacing-small {
-        margin: $spacing-sm 0;
-    }
-    
-    &.spacing-default {
-        margin: $spacing-md 0;
-    }
-    
-    &.spacing-large {
-        margin: $spacing-lg 0;
-    }
-    
-    // Container width handling is done by container classes
-    
-    // Headline styling
-    .stz-headline {
-        margin: 0 0 $spacing-md 0;
-        font-family: $font-family-primary;
-        font-weight: $font-weight-semibold;
-        color: var(--color-inherit, #575756);
-        text-align: left;
+    .styleguide-bild-text-container {
+        width: 100%;
+        overflow: hidden; // Verhindert Überlauf
         
-        // Responsive font sizes will be handled by theme typography system
-        &:last-child {
-            margin-bottom: 0;
-        }
-    }
-}
-
-// =============================================================================
-// CONTENT WRAPPER & COLUMNS
-// =============================================================================
-
-.stz-content-wrapper {
-    display: flex;
-    gap: $spacing-md;
-    width: 100%;
-    align-items: flex-start; // Align tops of columns
-    
-    // 50/50 Column Layout
-    .stz-left-column,
-    .stz-right-column {
-        flex: 1; // Equal width columns
-        min-width: 0; // Prevent flex overflow
-    }
-    
-    // Text Content Styling
-    .stz-text-content {
-        // Reset any default margins/padding
-        > *:first-child {
-            margin-top: 0;
-        }
-        
-        > *:last-child {
-            margin-bottom: 0;
-        }
-        
-        // Standard paragraph spacing
-        p {
-            margin-bottom: 1rem;
-            line-height: $line-height-base;
-            
-            &:last-child {
-                margin-bottom: 0;
-            }
-        }
-        
-        // List styling
-        ul, ol {
-            margin-bottom: 1rem;
-            padding-left: 1.5rem;
-            
-            &:last-child {
-                margin-bottom: 0;
-            }
-        }
-        
-        // Heading spacing within content
-        h1, h2, h3, h4, h5, h6 {
-            margin: 1.5rem 0 0.75rem 0;
-            
-            &:first-child {
-                margin-top: 0;
-            }
-            
-            &:last-child {
-                margin-bottom: 0;
-            }
-        }
-        
-        // Link styling
-        a {
-            color: $link-color;
-            text-decoration: $link-decoration;
-            font-weight: $link-weight;
-            
-            &:hover {
-                color: $link-color-hover;
-            }
-        }
-    }
-}
-
-// =============================================================================
-// RESPONSIVE BEHAVIOR
-// =============================================================================
-
-// Tablet adjustments
-@media (max-width: 991px) {
-    .stz-content-wrapper {
-        gap: $spacing-sm; // Smaller gap on tablet
-    }
-}
-
-// Mobile - Stack columns
-@media (max-width: 767px) {
-    .stz-content-wrapper {
-        flex-direction: column;
-        gap: $spacing-sm;
-        
-        .stz-left-column,
-        .stz-right-column {
+        // 2-Spalten Grid Layout
+        .styleguide-bild-text-grid {
+            display: grid;
+            gap: $spacing-lg;
+            align-items: stretch; // Spalten gleiche Höhe
             width: 100%;
+            box-sizing: border-box;
+            min-width: 0; // Wichtig für flexibles Grid
+            
+            @media (max-width: $breakpoint-tablet) {
+                // Mobile: Spalten untereinander
+                grid-template-columns: 1fr !important;
+                gap: $spacing-md;
+                
+                // Bild immer oben auf Mobile
+                .styleguide-bild-text-image-column {
+                    order: 1;
+                }
+                
+                .styleguide-bild-text-content-column {
+                    order: 2;
+                }
+            }
+        }
+        
+        // Bild-Spalte
+        .styleguide-bild-text-image-column {
+            display: flex;
+            align-items: stretch;
+            justify-content: center;
+            width: 100%;
+            overflow: hidden;
+            min-width: 0; // Wichtig für flexibles Grid
+            
+            .styleguide-bild-text-image-container {
+                width: 100%;
+                height: 100%;
+                position: relative;
+                overflow: hidden;
+                // border-radius entfernt (Problem 3)
+                
+                .styleguide-bild-text-image {
+                    width: 100%;
+                    height: 100%;
+                    object-position: center center;
+                    transition: transform 0.3s ease;
+                    display: block;
+                }
+                
+                // Cover: Bild füllt Container komplett aus
+                &.styleguide-bild-text-image--cover {
+                    .styleguide-bild-text-image {
+                        object-fit: cover;
+                        min-height: 100%;
+                    }
+                }
+                
+                // Contain: Bild vollständig sichtbar, oben ausgerichtet
+                &.styleguide-bild-text-image--contain {
+                    .styleguide-bild-text-image {
+                        object-fit: contain;
+                        object-position: center top;
+                        min-height: 100%;
+                    }
+                }
+                
+                @media (max-width: $breakpoint-tablet) {
+                    min-height: 250px;
+                }
+                
+                @media (max-width: $breakpoint-mobile) {
+                    min-height: 200px;
+                }
+            }
+        }
+        
+        // Text-Spalte
+        .styleguide-bild-text-content-column {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            overflow: hidden;
+            min-width: 0; // Wichtig für flexibles Grid
+            
+            .styleguide-bild-text-content {
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                gap: $spacing-sm;
+                padding: $spacing-sm 0; // Vertikales Padding für bessere Ausrichtung
+                min-width: 0; // Wichtig für flexibles Grid
+                
+                .styleguide-bild-text-headline {
+                    margin: 0;
+                    padding: 0;
+                    line-height: 1.2; // $line-height-headline nicht verfügbar in diesem Kontext
+                    letter-spacing: $letter-spacing-base;
+                    font-family: $font-family-primary;
+                    word-wrap: break-word;
+                    overflow-wrap: break-word;
+                    hyphens: auto;
+                    -webkit-hyphens: auto;
+                    -moz-hyphens: auto;
+                    -ms-hyphens: auto;
+                    
+                    &:has(+ .styleguide-bild-text-text),
+                    &:has(+ .styleguide-bild-text-button-wrapper) {
+                        margin-bottom: $spacing-sm;
+                    }
+                }
+                
+                .styleguide-bild-text-text {
+                    margin: 0;
+                    padding: 0;
+                    line-height: 1.4; // $line-height-base nicht verfügbar in diesem Kontext
+                    letter-spacing: $letter-spacing-base;
+                    font-family: $font-family-primary;
+                    word-wrap: break-word;
+                    overflow-wrap: break-word;
+                    hyphens: auto;
+                    -webkit-hyphens: auto;
+                    -moz-hyphens: auto;
+                    -ms-hyphens: auto;
+                    
+                    &:has(+ .styleguide-bild-text-button-wrapper) {
+                        margin-bottom: $spacing-sm;
+                    }
+                    
+                    // ✅ WYSIWYG-FREUNDLICHE STYLES: Keine !important, respektiert inline-Styles
+                    // Nur Basis-Elemente ohne eigene Formatierung erben
+                    > div:not([style*="font-size"]):not([style*="color"]):not([data-abf-color]):not([data-abf-font-size]),
+                    > p:not([style*="font-size"]):not([style*="color"]):not([data-abf-color]):not([data-abf-font-size]) {
+                        font-size: inherit;
+                        font-weight: inherit;
+                        color: inherit;
+                        line-height: inherit;
+                        letter-spacing: inherit;
+                    }
+                    
+                    // Spans erben nur wenn sie keine WYSIWYG-Formatierung haben
+                    span:not([style]):not([data-abf-color]):not([data-abf-font-size]) {
+                        font-size: inherit;
+                        font-weight: inherit;
+                        color: inherit;
+                    }
+                    
+                    // Semantische Elemente behalten ihre Funktion
+                    strong, b {
+                        font-weight: bold; // Nicht überschreiben!
+                        font-size: inherit;
+                        color: inherit;
+                    }
+                    
+                    em, i {
+                        font-style: italic; // Nicht überschreiben!
+                        font-size: inherit;
+                        color: inherit;
+                    }
+                    
+                    // Links behalten Unterstreichung
+                    a {
+                        font-size: inherit;
+                        font-weight: inherit;
+                        color: inherit;
+                        text-decoration: underline;
+                        
+                        &:hover {
+                            text-decoration: none;
+                        }
+                    }
+                    
+                    // Listen-Styles
+                    ul, ol {
+                        font-size: inherit;
+                        font-weight: inherit;
+                        color: inherit;
+                        margin: $spacing-sm 0;
+                        padding-left: $spacing-md;
+                    }
+                    
+                    li {
+                        font-size: inherit;
+                        font-weight: inherit;
+                        color: inherit;
+                        margin-bottom: $spacing-xs;
+                    }
+                }
+                
+                .styleguide-bild-text-button-wrapper {
+                    margin: 0;
+                    padding: 0;
+                    
+                    .styleguide-bild-text__button {
+                        display: inline-flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-family: $font-family-primary;
+                        font-weight: $font-weight-regular;
+                        font-size: $font-size-body;
+                        line-height: 1.2;
+                        padding: $button-padding-y $button-padding-x;
+                        border: none;
+                        border-radius: $button-border-radius;
+                        text-decoration: none;
+                        cursor: pointer;
+                        transition: background-color 0.3s ease, color 0.3s ease;
+                        white-space: nowrap;
+                        
+                        &:hover,
+                        &:focus {
+                            text-decoration: none;
+                            outline: none;
+                        }
+                    }
+                }
+            }
         }
     }
     
-    .styleguide-text-zweispaltig {
-        // Adjust spacing on mobile
-        &.spacing-small {
-            margin: #{$spacing-sm * 0.75} 0;
+    // Styling für farbigen Container (wenn Hintergrundfarbe gewählt ist)
+    .styleguide-bild-text-container.has-background-color {
+        border-radius: 10px;
+        box-shadow: 0 3px 3px rgba(0, 0, 0, 0.25);
+        padding: $spacing-sm;
+        
+        @media (min-width: $breakpoint-mobile) {
+            padding: $spacing-md;
         }
         
-        &.spacing-default {
-            margin: #{$spacing-md * 0.75} 0;
+        @media (min-width: $breakpoint-tablet) {
+            padding: $spacing-md;
         }
         
-        &.spacing-large {
-            margin: #{$spacing-lg * 0.75} 0;
-        }
-        
-        .stz-headline {
-            margin-bottom: #{$spacing-md * 0.75};
+        @media (min-width: $breakpoint-desktop) {
+            padding: $spacing-lg;
         }
     }
 }
 
 // =============================================================================
-// EDITOR SPECIFIC STYLES
+// RESPONSIVE DESIGN
 // =============================================================================
 
-// Editor-specific improvements
-.wp-block-acf-styleguide-text-zweispaltig {
-    .stz-content-wrapper {
-        // Ensure proper spacing in editor
-        min-height: 100px;
-        
-        .stz-left-column,
-        .stz-right-column {
-            // Visual indication of columns in editor
-            position: relative;
+// Tablet und kleiner: Vereinfachtes Layout
+@media (max-width: $breakpoint-tablet) {
+    .block-styleguide-bild-text {
+        .styleguide-bild-text-container {
+            .styleguide-bild-text-grid {
+                gap: $spacing-md;
+            }
             
-            &:empty::after {
-                content: 'Text eingeben...';
-                color: #999;
-                font-style: italic;
-                position: absolute;
-                top: 0;
-                left: 0;
+            .styleguide-bild-text-content-column {
+                .styleguide-bild-text-content {
+                    gap: $spacing-xs;
+                    padding: $spacing-xs 0;
+                    
+                    .styleguide-bild-text-headline:has(+ .styleguide-bild-text-text),
+                    .styleguide-bild-text-headline:has(+ .styleguide-bild-text-button-wrapper) {
+                        margin-bottom: $spacing-xs;
+                    }
+                    
+                    .styleguide-bild-text-text:has(+ .styleguide-bild-text-button-wrapper) {
+                        margin-bottom: $spacing-xs;
+                    }
+                }
             }
         }
     }
 }
 
-// =============================================================================
-// PRINT STYLES
-// =============================================================================
-
-@media print {
-    .styleguide-text-zweispaltig {
-        .stz-content-wrapper {
-            // Ensure proper column layout in print
-            display: flex !important;
+// Mobile: Kompaktes Layout
+@media (max-width: $breakpoint-mobile) {
+    .block-styleguide-bild-text {
+        .styleguide-bild-text-container {
+            .styleguide-bild-text-grid {
+                gap: $spacing-sm;
+            }
             
-            .stz-left-column,
-            .stz-right-column {
-                flex: 1;
-                break-inside: avoid;
+            .styleguide-bild-text-content-column {
+                .styleguide-bild-text-content {
+                    gap: $spacing-xs;
+                    padding: $spacing-xs 0;
+                }
+            }
+        }
+    }
+}
+
+// Fallback für Browser ohne :has() Support
+@supports not (selector(:has(*))) {
+    .block-styleguide-bild-text {
+        .styleguide-bild-text-content {
+            .styleguide-bild-text-headline,
+            .styleguide-bild-text-text {
+                margin-bottom: $spacing-sm;
+                
+                @media (max-width: $breakpoint-tablet) {
+                    margin-bottom: $spacing-xs;
+                }
+            }
+        }
+        
+        // =============================================================================
+        // DOWNLOADS STYLING
+        // =============================================================================
+        .styleguide-bild-text-downloads {
+            margin-top: $spacing-sm;
+            margin-bottom: $spacing-sm;
+            
+            a {
+                display: block;
+                margin-bottom: $spacing-xs;
+                
+                &:last-child {
+                    margin-bottom: 0;
+                }
             }
         }
     }
