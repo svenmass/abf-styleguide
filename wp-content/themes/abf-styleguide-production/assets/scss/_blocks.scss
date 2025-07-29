@@ -173,14 +173,14 @@
     margin: 0 0 $spacing-md 0;
     text-align: left;
     font-family: $font-family-primary;
-    font-size: var(--font-size-3xl); // Responsive: 72px → 66px → 60px
+    font-size: var(--font-size-4xl, 72px); // Fallback für alte Browser
 }
 
 .hero-subline {
     margin: 0 0 $spacing-lg 0;
     text-align: left;
     font-family: $font-family-primary;
-    font-size: var(--font-size-h2); // Responsive: 24px → 22px → 20px
+    font-size: var(--font-size-lg, 24px); // Fallback für alte Browser
 }
 
 .hero-button-wrapper {
