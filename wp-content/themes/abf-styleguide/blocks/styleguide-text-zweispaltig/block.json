@@ -1,0 +1,25 @@
+{
+    "name": "acf/styleguide-text-zweispaltig",
+    "title": "Styleguide-Text-Zweispaltig",
+    "description": "Ein zweispaltiges Text-Element mit fester 50/50 Aufteilung",
+    "category": "abf-blocks",
+    "icon": "columns",
+    "keywords": ["text", "zweispaltig", "spalten", "layout", "styleguide"],
+    "acf": {
+        "mode": "auto",
+        "renderTemplate": "template.php"
+    },
+    "supports": {
+        "jsx": true
+    },
+    "example": {
+        "attributes": {
+            "mode": "preview",
+            "data": {
+                "stz_headline_text": "Beispiel Headline",
+                "stz_left_text": "Dies ist der linke Textbereich.",
+                "stz_right_text": "Dies ist der rechte Textbereich."
+            }
+        }
+    }
+} 

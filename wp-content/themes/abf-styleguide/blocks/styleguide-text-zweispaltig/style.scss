@@ -1,0 +1,208 @@
+// themes/abf-styleguide/blocks/styleguide-text-zweispaltig/style.scss
+// =============================================================================
+// STYLEGUIDE TEXT ZWEISPALTIG BLOCK STYLES
+// =============================================================================
+
+// =============================================================================
+// MAIN BLOCK CONTAINER
+// =============================================================================
+
+.styleguide-text-zweispaltig {
+    width: 100%;
+    
+    // Section Spacing
+    &.spacing-none {
+        margin: 0;
+    }
+    
+    &.spacing-small {
+        margin: $spacing-sm 0;
+    }
+    
+    &.spacing-default {
+        margin: $spacing-md 0;
+    }
+    
+    &.spacing-large {
+        margin: $spacing-lg 0;
+    }
+    
+    // Container width handling is done by container classes
+    
+    // Headline styling
+    .stz-headline {
+        margin: 0 0 $spacing-md 0;
+        font-family: $font-family-primary;
+        font-weight: $font-weight-semibold;
+        color: var(--color-inherit, #575756);
+        text-align: left;
+        
+        // Responsive font sizes will be handled by theme typography system
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+}
+
+// =============================================================================
+// CONTENT WRAPPER & COLUMNS
+// =============================================================================
+
+.stz-content-wrapper {
+    display: flex;
+    gap: $spacing-md;
+    width: 100%;
+    align-items: flex-start; // Align tops of columns
+    
+    // 50/50 Column Layout
+    .stz-left-column,
+    .stz-right-column {
+        flex: 1; // Equal width columns
+        min-width: 0; // Prevent flex overflow
+    }
+    
+    // Text Content Styling
+    .stz-text-content {
+        // Reset any default margins/padding
+        > *:first-child {
+            margin-top: 0;
+        }
+        
+        > *:last-child {
+            margin-bottom: 0;
+        }
+        
+        // Standard paragraph spacing
+        p {
+            margin-bottom: 1rem;
+            line-height: $line-height-base;
+            
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+        
+        // List styling
+        ul, ol {
+            margin-bottom: 1rem;
+            padding-left: 1.5rem;
+            
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+        
+        // Heading spacing within content
+        h1, h2, h3, h4, h5, h6 {
+            margin: 1.5rem 0 0.75rem 0;
+            
+            &:first-child {
+                margin-top: 0;
+            }
+            
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+        
+        // Link styling
+        a {
+            color: $link-color;
+            text-decoration: $link-decoration;
+            font-weight: $link-weight;
+            
+            &:hover {
+                color: $link-color-hover;
+            }
+        }
+    }
+}
+
+// =============================================================================
+// RESPONSIVE BEHAVIOR
+// =============================================================================
+
+// Tablet adjustments
+@media (max-width: 991px) {
+    .stz-content-wrapper {
+        gap: $spacing-sm; // Smaller gap on tablet
+    }
+}
+
+// Mobile - Stack columns
+@media (max-width: 767px) {
+    .stz-content-wrapper {
+        flex-direction: column;
+        gap: $spacing-sm;
+        
+        .stz-left-column,
+        .stz-right-column {
+            width: 100%;
+        }
+    }
+    
+    .styleguide-text-zweispaltig {
+        // Adjust spacing on mobile
+        &.spacing-small {
+            margin: #{$spacing-sm * 0.75} 0;
+        }
+        
+        &.spacing-default {
+            margin: #{$spacing-md * 0.75} 0;
+        }
+        
+        &.spacing-large {
+            margin: #{$spacing-lg * 0.75} 0;
+        }
+        
+        .stz-headline {
+            margin-bottom: #{$spacing-md * 0.75};
+        }
+    }
+}
+
+// =============================================================================
+// EDITOR SPECIFIC STYLES
+// =============================================================================
+
+// Editor-specific improvements
+.wp-block-acf-styleguide-text-zweispaltig {
+    .stz-content-wrapper {
+        // Ensure proper spacing in editor
+        min-height: 100px;
+        
+        .stz-left-column,
+        .stz-right-column {
+            // Visual indication of columns in editor
+            position: relative;
+            
+            &:empty::after {
+                content: 'Text eingeben...';
+                color: #999;
+                font-style: italic;
+                position: absolute;
+                top: 0;
+                left: 0;
+            }
+        }
+    }
+}
+
+// =============================================================================
+// PRINT STYLES
+// =============================================================================
+
+@media print {
+    .styleguide-text-zweispaltig {
+        .stz-content-wrapper {
+            // Ensure proper column layout in print
+            display: flex !important;
+            
+            .stz-left-column,
+            .stz-right-column {
+                flex: 1;
+                break-inside: avoid;
+            }
+        }
+    }
+} 
