@@ -102,15 +102,17 @@
         // Text-Spalte (immer 40%)
         .styleguide-header-content-column {
             display: flex;
-            align-items: center;
+            align-items: stretch; // ✅ NEUE ANFORDERUNG: Gleiche Höhe wie Bild
             width: 100%;
             overflow: hidden;
             min-width: 0; // Wichtig für flexibles Grid
             
             .styleguide-header-content {
                 width: 100%;
+                height: 100%; // ✅ NEUE ANFORDERUNG: Volle Höhe der Spalte ausfüllen
                 display: flex;
                 flex-direction: column;
+                justify-content: center; // ✅ NEUE ANFORDERUNG: Text vertikal zentrieren
                 gap: $spacing-sm;
                 padding: $spacing-sm 0; // Vertikales Padding für bessere Ausrichtung
                 min-width: 0; // Wichtig für flexibles Grid
