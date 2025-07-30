@@ -2,7 +2,7 @@
     "name": "acf/styleguide-posts",
     "title": "Styleguide Posts",
     "description": "Zeigt Posts in einem Card-Grid an",
-    "category": "abf-styleguide",
+    "category": "abf-blocks",
     "icon": "grid-view",
     "keywords": ["posts", "cards", "grid"],
     "acf": {

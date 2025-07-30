@@ -1,12 +1,12 @@
 {
   "$schema": "https://schemas.wp.org/trunk/block.json",
   "apiVersion": 3,
-  "name": "acf/styleguide-grid",
-  "title": "Styleguide Grid",
-  "description": "150×150px Grid mit 80×80px SVG-Icons, Beschriftungen und Download-Links",
+  "name": "acf/styleguide-masonry-verteiler",
+  "title": "Styleguide Masonry Verteiler",
+  "description": "Masonry-Layout mit manueller Format-Kontrolle, Bild/Farbflächen-Auswahl und Link-Integration",
   "category": "abf-blocks",
   "icon": "grid-view",
-  "keywords": ["grid", "svg", "icons", "download", "styleguide"],
+  "keywords": ["masonry", "verteiler", "grid", "layout", "format", "link", "styleguide"],
   "supports": {
     "anchor": true,
     "align": false,
@@ -17,4 +17,4 @@
     "mode": "auto",
     "renderTemplate": "template.php"
   }
-}
+} 
