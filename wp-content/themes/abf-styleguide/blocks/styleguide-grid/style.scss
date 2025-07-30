@@ -137,42 +137,11 @@
 // =============================================================================
 // DOWNLOAD LINK
 // =============================================================================
+// Download-Links verwenden automatisch das einheitliche System aus _typography.scss
+// Basierend auf href-Endungen (.pdf, .jpg, etc.) wird automatisch das SVG-Icon angezeigt
 
 .styleguide-grid-download {
     margin-top: auto; // Push to bottom of flex container
-}
-
-.styleguide-grid-download-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    font-family: $font-family-primary;
-    font-size: 12px;
-    font-weight: $font-weight-semibold;
-    color: #74A68E;
-    text-decoration: none;
-    transition: color 0.3s ease;
-    
-    &:hover,
-    &:focus {
-        color: #5a8a70;
-        text-decoration: none;
-    }
-    
-    // Small download icon
-    &::after {
-        content: '⬇';
-        font-size: 10px;
-        opacity: 0.8;
-    }
-    
-    @media (max-width: $breakpoint-mobile) {
-        font-size: 11px;
-        
-        &::after {
-            font-size: 9px;
-        }
-    }
 }
 
 // =============================================================================
