@@ -48,6 +48,26 @@ return array(
         ),
         
         // =============================================================================
+        // LIGHTBOX EINSTELLUNGEN  
+        // =============================================================================
+        array(
+            'key' => 'field_se_lightbox_tab',
+            'label' => 'Lightbox',
+            'name' => '',
+            'type' => 'tab',
+            'placement' => 'top',
+        ),
+        array(
+            'key' => 'field_se_enable_lightbox',
+            'label' => 'Lightbox aktivieren',
+            'name' => 'se_enable_lightbox',
+            'type' => 'true_false',
+            'default_value' => 1,
+            'ui' => 1,
+            'instructions' => 'Lightbox beim Klick auf das Bild anzeigen. Wenn deaktiviert, gibt es auch keinen Hover-Effekt.',
+        ),
+        
+        // =============================================================================
         // DOWNLOAD EINSTELLUNGEN  
         // =============================================================================
         array(
@@ -58,6 +78,24 @@ return array(
             'placement' => 'top',
         ),
         array(
+            'key' => 'field_se_download_info',
+            'label' => 'Download-Hinweis',
+            'name' => 'se_download_info',
+            'type' => 'message',
+            'message' => '<strong>📝 Hinweis:</strong><br>Download-Funktionen sind nur verfügbar, wenn die <strong>Lightbox aktiviert</strong> ist.<br><br>➡️ Aktivieren Sie die Lightbox im Tab "Lightbox", um Download-Optionen zu nutzen.',
+            'new_lines' => 'wpautop',
+            'esc_html' => 0,
+            'conditional_logic' => array(
+                array(
+                    array(
+                        'field' => 'field_se_enable_lightbox',
+                        'operator' => '!=',
+                        'value' => '1',
+                    ),
+                ),
+            ),
+        ),
+        array(
             'key' => 'field_se_show_download',
             'label' => 'Download-Button anzeigen',
             'name' => 'se_show_download',
@@ -65,6 +103,15 @@ return array(
             'default_value' => 1,
             'ui' => 1,
             'instructions' => 'Download-Button in der Lightbox anzeigen',
+            'conditional_logic' => array(
+                array(
+                    array(
+                        'field' => 'field_se_enable_lightbox',
+                        'operator' => '==',
+                        'value' => '1',
+                    ),
+                ),
+            ),
         ),
         array(
             'key' => 'field_se_download_text',
@@ -75,6 +122,11 @@ return array(
             'instructions' => 'Text für den Download-Button',
             'conditional_logic' => array(
                 array(
+                    array(
+                        'field' => 'field_se_enable_lightbox',
+                        'operator' => '==',
+                        'value' => '1',
+                    ),
                     array(
                         'field' => 'field_se_show_download',
                         'operator' => '==',
@@ -92,6 +144,11 @@ return array(
             'instructions' => 'Optional: Anderes Bild für den Download bereitstellen (z.B. höhere Auflösung)',
             'conditional_logic' => array(
                 array(
+                    array(
+                        'field' => 'field_se_enable_lightbox',
+                        'operator' => '==',
+                        'value' => '1',
+                    ),
                     array(
                         'field' => 'field_se_show_download',
                         'operator' => '==',

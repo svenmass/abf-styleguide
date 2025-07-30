@@ -20,15 +20,24 @@ if (!empty($block['align'])) {
     $class_name .= ' align' . $block['align'];
 }
 
+// Add lightbox class for styling
+if ($enable_lightbox) {
+    $class_name .= ' has-lightbox';
+} else {
+    $class_name .= ' no-lightbox';
+}
+
 // Get ACF fields
 $image = get_field('se_image');
 $alt_text = get_field('se_alt_text');
 $caption = get_field('se_caption');
+$enable_lightbox = get_field('se_enable_lightbox');
 $show_download = get_field('se_show_download');
 $download_text = get_field('se_download_text') ?: 'Bild herunterladen';
 $custom_download = get_field('se_custom_download');
 
 // Convert ACF boolean values to actual booleans
+$enable_lightbox = ($enable_lightbox == 1 || $enable_lightbox === true || $enable_lightbox === '1');
 $show_download = ($show_download == 1 || $show_download === true || $show_download === '1');
 
 // Early return if no image
@@ -56,34 +65,46 @@ $lightbox_id = 'lightbox-' . $block['id'];
         
         <!-- Image Container with 16:9 aspect ratio -->
         <div class="styleguide-einzelbild-image-wrapper">
-            <a href="<?php echo esc_url($image_url); ?>" 
-               class="styleguide-einzelbild-image-link"
-               data-pswp-width="<?php echo esc_attr($image['width']); ?>"
-               data-pswp-height="<?php echo esc_attr($image['height']); ?>"
-               data-gallery="<?php echo esc_attr($gallery_id); ?>"
-               <?php if ($show_download): ?>
-               data-download-url="<?php echo esc_url($download_url); ?>"
-               data-download-text="<?php echo esc_attr($download_text); ?>"
-               data-download-filename="<?php echo esc_attr($download_filename); ?>"
-               <?php endif; ?>>
-                
+            
+            <?php if ($enable_lightbox): ?>
+                <!-- Lightbox enabled: Image with clickable link -->
+                <a href="<?php echo esc_url($image_url); ?>" 
+                   class="styleguide-einzelbild-image-link"
+                   data-pswp-width="<?php echo esc_attr($image['width']); ?>"
+                   data-pswp-height="<?php echo esc_attr($image['height']); ?>"
+                   data-gallery="<?php echo esc_attr($gallery_id); ?>"
+                   <?php if ($show_download): ?>
+                   data-download-url="<?php echo esc_url($download_url); ?>"
+                   data-download-text="<?php echo esc_attr($download_text); ?>"
+                   data-download-filename="<?php echo esc_attr($download_filename); ?>"
+                   <?php endif; ?>>
+                    
+                    <img src="<?php echo esc_url($image_url); ?>" 
+                         alt="<?php echo esc_attr($image_alt); ?>" 
+                         title="<?php echo esc_attr($image_title); ?>"
+                         class="styleguide-einzelbild-image"
+                         loading="lazy">
+                    
+                    <!-- Hover Overlay -->
+                    <div class="styleguide-einzelbild-overlay">
+                        <div class="styleguide-einzelbild-overlay-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M21 9V7C21 5.9 20.1 5 19 5H5C3.9 5 3 5.9 3 7V9M21 9V17C21 18.1 20.1 19 19 19H5C3.9 19 3 18.1 3 17V9M21 9H3M9 12H15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <span class="styleguide-einzelbild-overlay-text">Vollbild anzeigen</span>
+                    </div>
+                    
+                </a>
+            <?php else: ?>
+                <!-- Lightbox disabled: Just the image -->
                 <img src="<?php echo esc_url($image_url); ?>" 
                      alt="<?php echo esc_attr($image_alt); ?>" 
                      title="<?php echo esc_attr($image_title); ?>"
                      class="styleguide-einzelbild-image"
                      loading="lazy">
-                
-                <!-- Hover Overlay -->
-                <div class="styleguide-einzelbild-overlay">
-                    <div class="styleguide-einzelbild-overlay-icon">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M21 9V7C21 5.9 20.1 5 19 5H5C3.9 5 3 5.9 3 7V9M21 9V17C21 18.1 20.1 19 19 19H5C3.9 19 3 18.1 3 17V9M21 9H3M9 12H15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </div>
-                    <span class="styleguide-einzelbild-overlay-text">Vollbild anzeigen</span>
-                </div>
-                
-            </a>
+            <?php endif; ?>
+            
         </div>
         
         <!-- Caption -->
@@ -97,10 +118,12 @@ $lightbox_id = 'lightbox-' . $block['id'];
 </div>
 
 <?php
-// Enqueue PhotoSwipe CSS (JavaScript will be loaded dynamically)
-wp_enqueue_style('photoswipe');
+// Only load PhotoSwipe if lightbox is enabled
+if ($enable_lightbox):
+    // Enqueue PhotoSwipe CSS (JavaScript will be loaded dynamically)
+    wp_enqueue_style('photoswipe');
 
-// Add inline script for this specific gallery
+    // Add inline script for this specific gallery
 ?>
 <script>
 // Preload PhotoSwipe and initialize when DOM is loaded
@@ -222,4 +245,5 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
-</script> 
+</script>
+<?php endif; // End of enable_lightbox conditional ?> 
