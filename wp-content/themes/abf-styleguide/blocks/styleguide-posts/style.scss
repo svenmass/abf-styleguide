@@ -1,0 +1,215 @@
+// =============================================================================
+// STYLEGUIDE POSTS BLOCK - ZUSATZELEMENTE
+// =============================================================================
+
+.styleguide-posts-block {
+    // Zusatzelemente in das bestehende Card-System integrieren
+    .card--extra-element {
+        // Basis-Card Styles bleiben gleich, nur spezielle Anpassungen
+        // OVERRIDE: Kein Border-Radius für diese Cards
+        border-radius: 0 !important;
+        
+        .card__extra-background {
+            // EINHEITLICHES 4:3 FORMAT für alle Bilder und Farbflächen
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+            border-radius: 0; // Kein Border-Radius für Cards
+            transition: transform 0.3s ease;
+            
+            // 4:3 Aspect Ratio - Zurück zum padding-bottom Trick für bessere Kompatibilität
+            &::before {
+                content: '';
+                display: block;
+                padding-bottom: 75%; // 4:3 = 75% (3/4 = 0.75)
+                width: 100%;
+            }
+            
+            // Hover-Effekt wie bei normalen Cards
+            &:hover {
+                transform: translateY(-2px);
+            }
+        }
+        
+        .card__extra-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            padding: $spacing-md;
+            box-sizing: border-box;
+            
+            // Text-Position: Space Between (Standard)
+            &--space_between {
+                flex-direction: column;
+                justify-content: space-between;
+                align-items: flex-start;
+                
+                .card__extra-icon {
+                    align-self: flex-start; // Icon links oben
+                }
+                
+                .card__extra-text {
+                    align-self: flex-start; // Text links unten
+                }
+            }
+            
+            // Text-Position: Bottom
+            &--bottom {
+                flex-direction: column;
+                justify-content: flex-end;
+                align-items: flex-start;
+                
+                .card__extra-icon {
+                    position: absolute;
+                    top: $spacing-md;
+                    left: $spacing-md; // Icon links oben
+                }
+                
+                .card__extra-text {
+                    // Text am unteren Rand
+                }
+            }
+            
+            @media (max-width: $breakpoint-tablet) {
+                padding: $spacing-sm;
+                
+                &--bottom .card__extra-icon {
+                    top: $spacing-sm;
+                    left: $spacing-sm; // Icon links oben auch bei Mobile
+                }
+            }
+            
+            @media (max-width: $breakpoint-mobile) {
+                padding: $spacing-sm;
+            }
+        }
+        
+        .card__extra-icon {
+            // Icon-Größe und Styles
+            width: 80px;
+            height: 80px;
+            flex-shrink: 0;
+            
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+                // filter: brightness(0) invert(1) !important; // Icons immer weiß, überschreibt Textfarbe
+            }
+            
+            @media (max-width: $breakpoint-mobile) {
+                width: 28px;
+                height: 28px;
+            }
+        }
+        
+        .card__extra-text {
+            // Standardwerte - werden durch Inline-Styles überschrieben
+            color: white;
+            font-family: $font-family-primary;
+            font-weight: 600; // Semi-Bold
+            font-size: $font-size-h3; // Fallback
+            line-height: 1.2;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2); // Bessere Lesbarkeit
+            max-width: 70%; // Platz für Icon lassen
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            
+            @media (max-width: $breakpoint-tablet) {
+                font-size: $font-size-body;
+            }
+            
+            @media (max-width: $breakpoint-mobile) {
+                font-size: $font-size-small;
+                max-width: 80%;
+            }
+        }
+        
+        // Hover-Effekte für bessere Interaktion
+        .card__link:hover {
+            .card__extra-background {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            }
+            
+            .card__extra-text {
+                text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            }
+            
+            .card__extra-icon img {
+                transform: scale(1.1);
+                transition: transform 0.3s ease;
+            }
+        }
+        
+        // Focus-Styles für Accessibility
+        .card__link:focus {
+            outline: 2px solid rgba(255, 255, 255, 0.8);
+            outline-offset: 4px;
+            
+            .card__extra-background {
+                box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3);
+            }
+        }
+    }
+    
+    // Grid-Integration: Zusatzelemente sehen genauso aus wie normale Cards
+    .cards-grid {
+        .card--extra-element {
+            // Erbt automatisch Grid-Layout von .card
+            // Zusatzelemente werden nahtlos integriert
+        }
+    }
+}
+
+// =============================================================================
+// RESPONSIVE ANPASSUNGEN
+// =============================================================================
+
+// Tablet-spezifische Anpassungen
+@media (max-width: $breakpoint-tablet) {
+    .styleguide-posts-block {
+        .card--extra-element {
+            .card__extra-content {
+                padding: $spacing-sm;
+                
+                &--space_between {
+                    gap: $spacing-xs;
+                }
+            }
+            
+            .card__extra-text {
+                font-size: $font-size-body;
+            }
+        }
+    }
+}
+
+// Mobile-spezifische Anpassungen  
+@media (max-width: $breakpoint-mobile) {
+    .styleguide-posts-block {
+        .card--extra-element {
+            .card__extra-background {
+                border-radius: 0; // Kein Border-Radius auch bei Mobile
+                // Höhe wird automatisch durch 4:3 Ratio bestimmt
+            }
+            
+            .card__extra-content {
+                padding: $spacing-sm;
+            }
+            
+            .card__extra-text {
+                font-size: $font-size-small;
+                line-height: 1.3;
+            }
+            
+            .card__extra-icon {
+                width: 24px;
+                height: 24px;
+            }
+        }
+    }
+} 

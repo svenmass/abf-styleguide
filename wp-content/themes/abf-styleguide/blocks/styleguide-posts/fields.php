@@ -303,6 +303,151 @@ return array(
             'instructions' => 'Haupt-Kategorie anzeigen',
         ),
         
+        // =============================================================================
+        // ZUSATZELEMENTE EINSTELLUNGEN
+        // =============================================================================
+        array(
+            'key' => 'field_sp_extras_tab',
+            'label' => 'Zusatzelemente',
+            'name' => '',
+            'type' => 'tab',
+            'placement' => 'top',
+        ),
+        array(
+            'key' => 'field_sp_extra_elements',
+            'label' => 'Zusatzelemente',
+            'name' => 'sp_extra_elements',
+            'type' => 'repeater',
+            'instructions' => 'Zusätzliche Elemente die zwischen den Posts angezeigt werden. Diese haben die gleichen Maße wie die Post-Cards.',
+            'required' => 0,
+            'conditional_logic' => 0,
+            'wrapper' => array(
+                'width' => '',
+                'class' => '',
+                'id' => '',
+            ),
+            'collapsed' => 'field_sp_extra_title',
+            'min' => 0,
+            'max' => 10,
+            'layout' => 'block',
+            'button_label' => 'Zusatzelement hinzufügen',
+            'sub_fields' => array(
+                array(
+                    'key' => 'field_sp_extra_title',
+                    'label' => 'Titel/Text',
+                    'name' => 'title',
+                    'type' => 'text',
+                    'instructions' => 'Text der in der Farbfläche angezeigt wird',
+                    'required' => 1,
+                    'default_value' => '',
+                    'placeholder' => 'z.B. "Jetzt entdecken"',
+                    'wrapper' => array(
+                        'width' => '50',
+                        'class' => '',
+                        'id' => '',
+                    ),
+                ),
+                array(
+                    'key' => 'field_sp_extra_link',
+                    'label' => 'Link',
+                    'name' => 'link',
+                    'type' => 'link',
+                    'instructions' => 'Verlinkung zu Seite oder Beitrag',
+                    'required' => 1,
+                    'wrapper' => array(
+                        'width' => '50',
+                        'class' => '',
+                        'id' => '',
+                    ),
+                ),
+                array(
+                    'key' => 'field_sp_extra_background_color',
+                    'label' => 'Hintergrundfarbe',
+                    'name' => 'background_color',
+                    'type' => 'select',
+                    'choices' => $color_choices,
+                    'default_value' => 'primary',
+                    'wrapper' => array(
+                        'width' => '50',
+                        'class' => '',
+                        'id' => '',
+                    ),
+                    'instructions' => 'Hintergrundfarbe der Farbfläche (identische Maße wie Post-Bilder)',
+                ),
+                array(
+                    'key' => 'field_sp_extra_icon',
+                    'label' => 'Icon',
+                    'name' => 'icon',
+                    'type' => 'image',
+                    'instructions' => 'Icon das rechts oben mit Padding angezeigt wird (SVG empfohlen)',
+                    'required' => 0,
+                    'return_format' => 'array',
+                    'preview_size' => 'thumbnail',
+                    'library' => 'all',
+                    'wrapper' => array(
+                        'width' => '50',
+                        'class' => '',
+                        'id' => '',
+                    ),
+                ),
+                array(
+                    'key' => 'field_sp_extra_text_position',
+                    'label' => 'Text-Position',
+                    'name' => 'text_position',
+                    'type' => 'select',
+                    'choices' => array(
+                        'bottom' => 'Unten (align bottom)',
+                        'space_between' => 'Space Between (Icon oben, Text unten)',
+                    ),
+                    'default_value' => 'space_between',
+                    'wrapper' => array(
+                        'width' => '33.33',
+                        'class' => '',
+                        'id' => '',
+                    ),
+                    'instructions' => 'Position des Textes in der Farbfläche',
+                ),
+                array(
+                    'key' => 'field_sp_extra_text_color',
+                    'label' => 'Textfarbe',
+                    'name' => 'text_color',
+                    'type' => 'select',
+                    'choices' => array_merge(
+                        array('white' => 'Weiß (Standard)'),
+                        $color_choices
+                    ),
+                    'default_value' => 'white',
+                    'wrapper' => array(
+                        'width' => '33.33',
+                        'class' => '',
+                        'id' => '',
+                    ),
+                    'instructions' => 'Farbe des Textes',
+                ),
+                array(
+                    'key' => 'field_sp_extra_text_size',
+                    'label' => 'Textgröße',
+                    'name' => 'text_size',
+                    'type' => 'select',
+                    'choices' => function_exists('abf_get_typography_font_sizes') 
+                        ? abf_get_typography_font_sizes() 
+                        : array(
+                            '14' => '14px (Klein)',
+                            '16' => '16px (Normal)', 
+                            '18' => '18px (Groß)',
+                            '20' => '20px (Sehr groß)'
+                        ),
+                    'default_value' => '18',
+                    'wrapper' => array(
+                        'width' => '33.33',
+                        'class' => '',
+                        'id' => '',
+                    ),
+                    'instructions' => 'Schriftgröße des Textes',
+                ),
+            ),
+        ),
+        
     ),
     'location' => array(
         array(

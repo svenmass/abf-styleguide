@@ -1,0 +1,20 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "acf/styleguide-masonry-verteiler",
+  "title": "Styleguide Masonry Verteiler",
+  "description": "Masonry-Layout mit manueller Format-Kontrolle, Bild/Farbflächen-Auswahl und Link-Integration",
+  "category": "abf-blocks",
+  "icon": "grid-view",
+  "keywords": ["masonry", "verteiler", "grid", "layout", "format", "link", "styleguide"],
+  "supports": {
+    "anchor": true,
+    "align": false,
+    "jsx": true
+  },
+  "textdomain": "abf-styleguide",
+  "acf": {
+    "mode": "auto",
+    "renderTemplate": "template.php"
+  }
+} 
