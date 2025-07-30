@@ -322,20 +322,22 @@
             margin-top: $spacing-sm;
             margin-bottom: $spacing-sm;
             
-            a {
-                // Download-Links verwenden das einheitliche Typography-System
-                // display: block wird nur angewendet, wenn es KEIN Download-Link ist
-                margin-bottom: $spacing-xs;
+            ul {
+                list-style: none;
+                margin: 0;
+                padding: 0;
                 
-                &:last-child {
-                    margin-bottom: 0;
-                }
-                
-                // Für Links ohne Datei-Endung (normale Links) trotzdem block
-                &:not([href$=".pdf"]):not([href$=".PDF"]):not([href$=".zip"]):not([href$=".ZIP"]):not([href$=".jpg"]):not([href$=".JPG"]):not([href$=".jpeg"]):not([href$=".JPEG"]):not([href$=".png"]):not([href$=".PNG"]):not([href$=".svg"]):not([href$=".SVG"]):not([href$=".xls"]):not([href$=".XLS"]):not([href$=".xlsx"]):not([href$=".XLSX"]):not([href$=".dotx"]):not([href$=".DOTX"]) {
-                    display: block;
+                li {
+                    margin-bottom: $spacing-xs;
+                    
+                    &:last-child {
+                        margin-bottom: 0;
+                    }
                 }
             }
+            
+            // Download-Links verwenden automatisch das einheitliche Typography-System
+            // Keine zusätzlichen Styles nötig - typography.scss regelt alles
         }
     }
 } 
