@@ -190,22 +190,17 @@ if (function_exists('abf_get_color_value')) {
                     
                     if (empty($file_url)) continue;
                     ?>
-                    <li class="stz-download-item">
-                        <a href="<?php echo esc_url($file_url); ?>" class="stz-download-link" target="_blank" rel="noopener">
-                            <span class="stz-download-icon">📄</span>
-                            <span class="stz-download-info">
-                                <span class="stz-download-title"><?php echo esc_html($title); ?></span>
-                                <?php if ($file_type || $file_size): ?>
-                                    <span class="stz-download-meta">
-                                        <?php if ($file_type): ?>
-                                            <span class="stz-download-type"><?php echo esc_html($file_type); ?></span>
-                                        <?php endif; ?>
-                                        <?php if ($file_size): ?>
-                                            <span class="stz-download-size"><?php echo esc_html($file_size); ?></span>
-                                        <?php endif; ?>
-                                    </span>
-                                <?php endif; ?>
-                            </span>
+                    <li>
+                        <a href="<?php echo esc_url($file_url); ?>" target="_blank" rel="noopener">
+                            <?php echo esc_html($title); ?>
+                            <?php if ($file_type || $file_size): ?>
+                                <span class="file-meta">[<?php 
+                                    $meta_parts = array();
+                                    if ($file_type) $meta_parts[] = $file_type;
+                                    if ($file_size) $meta_parts[] = $file_size;
+                                    echo esc_html(implode(', ', $meta_parts));
+                                ?>]</span>
+                            <?php endif; ?>
                         </a>
                     </li>
                 <?php endforeach; ?>

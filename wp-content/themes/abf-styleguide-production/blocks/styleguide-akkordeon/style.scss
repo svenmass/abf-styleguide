@@ -3,6 +3,8 @@
 // =============================================================================
 
 .block-styleguide-akkordeon {
+    // Responsive Spacing für alle Styleguide-Blöcke
+    @include styleguide-block-spacing;
     // Container verwendet container-content Breite ohne eigenes Spacing
     width: 100%;
     

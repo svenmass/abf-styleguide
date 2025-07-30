@@ -207,22 +207,17 @@ if (function_exists('abf_get_color_value') && !empty($background_color)) {
                                         
                                         if (empty($file_url)) continue;
                                         ?>
-                                        <li class="sh-download-item">
-                                            <a href="<?php echo esc_url($file_url); ?>" class="sh-download-link" target="_blank" rel="noopener">
-                                                <span class="sh-download-icon">📄</span>
-                                                <span class="sh-download-info">
-                                                    <span class="sh-download-title"><?php echo esc_html($title); ?></span>
-                                                    <?php if ($file_type || $file_size): ?>
-                                                        <span class="sh-download-meta">
-                                                            <?php if ($file_type): ?>
-                                                                <span class="sh-download-type"><?php echo esc_html($file_type); ?></span>
-                                                            <?php endif; ?>
-                                                            <?php if ($file_size): ?>
-                                                                <span class="sh-download-size"><?php echo esc_html($file_size); ?></span>
-                                                            <?php endif; ?>
-                                                        </span>
-                                                    <?php endif; ?>
-                                                </span>
+                                        <li>
+                                            <a href="<?php echo esc_url($file_url); ?>" target="_blank" rel="noopener">
+                                                <?php echo esc_html($title); ?>
+                                                <?php if ($file_type || $file_size): ?>
+                                                    <span class="file-meta">[<?php 
+                                                        $meta_parts = array();
+                                                        if ($file_type) $meta_parts[] = $file_type;
+                                                        if ($file_size) $meta_parts[] = $file_size;
+                                                        echo esc_html(implode(', ', $meta_parts));
+                                                    ?>]</span>
+                                                <?php endif; ?>
                                             </a>
                                         </li>
                                     <?php endforeach; ?>
@@ -287,22 +282,17 @@ if (function_exists('abf_get_color_value') && !empty($background_color)) {
                                         
                                         if (empty($file_url)) continue;
                                         ?>
-                                        <li class="sh-download-item">
-                                            <a href="<?php echo esc_url($file_url); ?>" class="sh-download-link" target="_blank" rel="noopener">
-                                                <span class="sh-download-icon">📄</span>
-                                                <span class="sh-download-info">
-                                                    <span class="sh-download-title"><?php echo esc_html($title); ?></span>
-                                                    <?php if ($file_type || $file_size): ?>
-                                                        <span class="sh-download-meta">
-                                                            <?php if ($file_type): ?>
-                                                                <span class="sh-download-type"><?php echo esc_html($file_type); ?></span>
-                                                            <?php endif; ?>
-                                                            <?php if ($file_size): ?>
-                                                                <span class="sh-download-size"><?php echo esc_html($file_size); ?></span>
-                                                            <?php endif; ?>
-                                                        </span>
-                                                    <?php endif; ?>
-                                                </span>
+                                        <li>
+                                            <a href="<?php echo esc_url($file_url); ?>" target="_blank" rel="noopener">
+                                                <?php echo esc_html($title); ?>
+                                                <?php if ($file_type || $file_size): ?>
+                                                    <span class="file-meta">[<?php 
+                                                        $meta_parts = array();
+                                                        if ($file_type) $meta_parts[] = $file_type;
+                                                        if ($file_size) $meta_parts[] = $file_size;
+                                                        echo esc_html(implode(', ', $meta_parts));
+                                                    ?>]</span>
+                                                <?php endif; ?>
                                             </a>
                                         </li>
                                     <?php endforeach; ?>

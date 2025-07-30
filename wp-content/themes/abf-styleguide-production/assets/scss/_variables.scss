@@ -71,8 +71,46 @@ $spacing-base: 4px;
 // Spacing sizes
 $spacing-xs: $spacing-base * 3;    // 12px (mobile)
 $spacing-sm: $spacing-base * 4;    // 16px (tablet)
-$spacing-md: $spacing-base * 6;    // 24px (desktop <1200)
+$spacing-md: $spacing-base * 6;    // 24px (desktop <1200)  
 $spacing-lg: $spacing-base * 8;    // 32px (desktop >1200)
+$spacing-xl: $spacing-base * 12;   // 48px (tablet spacing)
+$spacing-xxl: $spacing-base * 16;  // 64px (desktop spacing)
+
+// =============================================================================
+// MIXINS
+// =============================================================================
+
+// Responsive Spacing Mixin für alle Styleguide-Blöcke
+@mixin styleguide-block-spacing {
+    // Mobile: 24px Abstand
+    margin: $spacing-md 0;
+    
+    // Tablet: 48px Abstand  
+    @media (min-width: $breakpoint-tablet) and (max-width: #{$breakpoint-desktop - 1px}) {
+        margin: $spacing-xl 0;
+    }
+    
+    // Desktop: 64px Abstand
+    @media (min-width: $breakpoint-desktop) {
+        margin: $spacing-xxl 0;
+    }
+}
+
+// Container-zentrierte Variante
+@mixin styleguide-block-spacing-centered {
+    // Mobile: 24px Abstand, zentriert
+    margin: $spacing-md auto;
+    
+    // Tablet: 48px Abstand, zentriert
+    @media (min-width: $breakpoint-tablet) and (max-width: #{$breakpoint-desktop - 1px}) {
+        margin: $spacing-xl auto;
+    }
+    
+    // Desktop: 64px Abstand, zentriert
+    @media (min-width: $breakpoint-desktop) {
+        margin: $spacing-xxl auto;
+    }
+}
 
 // =============================================================================
 // BREAKPOINTS

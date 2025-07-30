@@ -1,0 +1,78 @@
+/* Auto-generated Typography CSS from Theme Settings */
+:root {
+    --font-size-4xl: 72px;
+    --font-size-3xl: 60px;
+    --font-size-2xl: 48px;
+    --font-size-xl: 36px;
+    --font-size-lg: 24px;
+    --font-size-md: 18px;
+    --font-size-sm: 16px;
+    --font-size-xs: 12px;
+    --font-weight-light: 300;
+    --font-weight-regular: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+}
+
+/* Responsive Typography - Tablet */
+@media (max-width: 991px) {
+    :root {
+        --font-size-4xl: 60px;
+        --font-size-3xl: 48px;
+        --font-size-2xl: 40px;
+        --font-size-xl: 30px;
+        --font-size-lg: 20px;
+        --font-size-md: 16px;
+        --font-size-sm: 14px;
+        --font-size-xs: 10px;
+    }
+}
+
+/* Responsive Typography - Mobile */
+@media (max-width: 575px) {
+    :root {
+        --font-size-4xl: 54px;
+        --font-size-3xl: 40px;
+        --font-size-2xl: 32px;
+        --font-size-xl: 24px;
+        --font-size-lg: 18px;
+        --font-size-md: 14px;
+        --font-size-sm: 12px;
+        --font-size-xs: 9px;
+    }
+}
+
+/* Auto-responsive inline font-size overrides */
+[style*="font-size: 72px"], [style*="font-size:72px"] {
+    @media (max-width: 991px) { font-size: 60px !important; }
+    @media (max-width: 575px) { font-size: 54px !important; }
+}
+[style*="font-size: 60px"], [style*="font-size:60px"] {
+    @media (max-width: 991px) { font-size: 48px !important; }
+    @media (max-width: 575px) { font-size: 40px !important; }
+}
+[style*="font-size: 48px"], [style*="font-size:48px"] {
+    @media (max-width: 991px) { font-size: 40px !important; }
+    @media (max-width: 575px) { font-size: 32px !important; }
+}
+[style*="font-size: 36px"], [style*="font-size:36px"] {
+    @media (max-width: 991px) { font-size: 30px !important; }
+    @media (max-width: 575px) { font-size: 24px !important; }
+}
+[style*="font-size: 24px"], [style*="font-size:24px"] {
+    @media (max-width: 991px) { font-size: 20px !important; }
+    @media (max-width: 575px) { font-size: 18px !important; }
+}
+[style*="font-size: 18px"], [style*="font-size:18px"] {
+    @media (max-width: 991px) { font-size: 16px !important; }
+    @media (max-width: 575px) { font-size: 14px !important; }
+}
+[style*="font-size: 16px"], [style*="font-size:16px"] {
+    @media (max-width: 991px) { font-size: 14px !important; }
+    @media (max-width: 575px) { font-size: 12px !important; }
+}
+[style*="font-size: 12px"], [style*="font-size:12px"] {
+    @media (max-width: 991px) { font-size: 10px !important; }
+    @media (max-width: 575px) { font-size: 9px !important; }
+}

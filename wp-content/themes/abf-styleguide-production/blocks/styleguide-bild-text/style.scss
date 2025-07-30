@@ -3,9 +3,10 @@
 // =============================================================================
 
 .block-styleguide-bild-text {
+    // Responsive Spacing für alle Styleguide-Blöcke
+    @include styleguide-block-spacing-centered;
     width: 100%;
     max-width: $container-content;
-    margin: 0 auto;
     padding: 0;
     
     .styleguide-bild-text-container {
@@ -321,8 +322,9 @@
             margin-top: $spacing-sm;
             margin-bottom: $spacing-sm;
             
+            // Download-Links verwenden automatisch das einheitliche Typography-System
+            // Keine besonderen Styles nötig - typography.scss regelt alles (inkl. WEBP!)
             a {
-                display: block;
                 margin-bottom: $spacing-xs;
                 
                 &:last-child {

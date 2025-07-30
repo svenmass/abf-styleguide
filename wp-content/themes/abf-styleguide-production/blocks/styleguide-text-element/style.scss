@@ -3,9 +3,10 @@
 // =============================================================================
 
 .block-styleguide-text-element {
+    // Responsive Spacing für alle Styleguide-Blöcke
+    @include styleguide-block-spacing-centered;
     width: 100%;
     max-width: $container-content; // 840px from variables.scss
-    margin: 0 auto;
     padding: 0;
     
     .styleguide-text-element-container {

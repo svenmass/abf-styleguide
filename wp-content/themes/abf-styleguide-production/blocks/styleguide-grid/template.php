@@ -99,8 +99,7 @@ $headline_class_string = 'styleguide-grid-headline';
                         <a href="<?php echo esc_url($download_url); ?>" 
                            download="<?php echo esc_attr($download_filename); ?>" 
                            target="_blank" 
-                           rel="noopener"
-                           class="styleguide-grid-download-link">
+                           rel="noopener">
                             <?php echo esc_html($download_text); ?>
                         </a>
                     </div>

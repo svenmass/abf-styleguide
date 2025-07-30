@@ -1,6 +1,6 @@
 // Styleguide Masonry Block Styles
 .styleguide-masonry-block {
-    margin-bottom: 2rem;
+    @include styleguide-block-spacing;
     
     // Headline
     .styleguide-masonry-headline {
