@@ -64,6 +64,9 @@ class ABF_Quality_Assurance {
             case 'acf':
                 $this->runACFChecks();
                 break;
+            case 'security':
+                $this->runSecurityPerformanceChecks();
+                break;
             default:
                 $this->runQuickChecks();
         }
@@ -94,6 +97,9 @@ class ABF_Quality_Assurance {
                 case '--acf':
                 case '-a':
                     return 'acf';
+                case '--security':
+                case '-s':
+                    return 'security';
             }
         }
         
@@ -124,6 +130,7 @@ class ABF_Quality_Assurance {
         echo "  --full, -f     Vollständige Analyse\n";
         echo "  --css, -c      Nur CSS/BEM Prüfung\n";
         echo "  --acf, -a      Nur ACF Fields Prüfung\n";
+        echo "  --security, -s Nur Security+Performance Prüfung\n";
         echo "  --help, -h     Diese Hilfe anzeigen\n\n";
         echo "📊 BERICHTE:\n";
         echo "  HTML Reports: tools/quality-reports/\n";
@@ -143,6 +150,7 @@ class ABF_Quality_Assurance {
         
         $this->runCSSChecks();
         $this->runACFChecks();
+        $this->runSecurityPerformanceChecks();
         $this->checkBasicStructure();
     }
     
@@ -155,8 +163,9 @@ class ABF_Quality_Assurance {
         
         $this->runCSSChecks();
         $this->runACFChecks();
+        $this->runSecurityPerformanceChecks();
         $this->checkBasicStructure();
-        echo "ℹ️  Weitere Linter werden in Chat 3+ implementiert...\n\n";
+        echo "ℹ️  Component Reusability Linter wird in Chat 4 implementiert...\n\n";
     }
     
     /**
@@ -199,6 +208,28 @@ class ABF_Quality_Assurance {
             $this->printACFResults($acf_results);
         } else {
             echo "⚠️  ACF Linter noch nicht implementiert\n";
+            echo "📝 Wird in diesem Chat erstellt...\n\n";
+        }
+    }
+    
+    /**
+     * 🔒 Security + Performance Prüfungen
+     */
+    private function runSecurityPerformanceChecks() {
+        echo "🔒 SECURITY + PERFORMANCE PRÜFUNG\n";
+        echo "────────────────────────────────\n";
+        
+        $linter_path = __DIR__ . '/linters/security-performance-linter.php';
+        
+        if (file_exists($linter_path)) {
+            include $linter_path;
+            $security_linter = new ABF_Security_Performance_Linter($this->theme_path);
+            $security_results = $security_linter->analyze();
+            $this->results['security'] = $security_results;
+            
+            $this->printSecurityResults($security_results);
+        } else {
+            echo "⚠️  Security+Performance Linter noch nicht implementiert\n";
             echo "📝 Wird in diesem Chat erstellt...\n\n";
         }
     }
@@ -258,6 +289,30 @@ class ABF_Quality_Assurance {
         echo "📊 Typography System: " . ($results['typography_score'] ?? 'N/A') . "%\n";
         echo "📊 Color Integration: " . ($results['color_score'] ?? 'N/A') . "%\n";
         echo "📊 Structure Pattern: " . ($results['structure_score'] ?? 'N/A') . "%\n";
+        
+        if (!empty($results['issues'])) {
+            echo "\n⚠️  Gefundene Probleme:\n";
+            foreach (array_slice($results['issues'], 0, 8) as $issue) {
+                echo "   • {$issue}\n";
+            }
+            if (count($results['issues']) > 8) {
+                echo "   • ... und " . (count($results['issues']) - 8) . " weitere\n";
+            }
+        }
+        
+        echo "\n";
+    }
+    
+    /**
+     * 🔒 Security + Performance Ergebnisse ausgeben
+     */
+    private function printSecurityResults($results) {
+        if (!$results) return;
+        
+        echo "📊 Security Score: " . ($results['security_score'] ?? 'N/A') . "%\n";
+        echo "📊 Performance Score: " . ($results['performance_score'] ?? 'N/A') . "%\n";
+        echo "📊 WP Standards: " . ($results['wp_standards_score'] ?? 'N/A') . "%\n";
+        echo "📊 PHP Compatibility: " . ($results['php_compatibility_score'] ?? 'N/A') . "%\n";
         
         if (!empty($results['issues'])) {
             echo "\n⚠️  Gefundene Probleme:\n";
