@@ -29,6 +29,4 @@ get_header(); ?>
         endwhile;
         ?>
     </div>
-</main>
-
-<?php get_footer('styleguide'); ?> 
+</main> 
