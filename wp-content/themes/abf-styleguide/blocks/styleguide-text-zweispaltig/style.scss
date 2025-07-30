@@ -3,7 +3,7 @@
 // =============================================
 
 .styleguide-text-zweispaltig {
-    margin: $spacing-lg 0;
+    @include styleguide-block-spacing;
 
     // Container mit Hintergrundfarbe
     &.has-background {

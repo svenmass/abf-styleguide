@@ -3,8 +3,8 @@
 // =============================================================================
 
 .block-styleguide-akkordeon {
-    // Einheitliches Spacing für alle Styleguide-Blöcke
-    margin: $spacing-lg 0;
+    // Responsive Spacing für alle Styleguide-Blöcke
+    @include styleguide-block-spacing;
     // Container verwendet container-content Breite ohne eigenes Spacing
     width: 100%;
     

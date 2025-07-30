@@ -3,8 +3,8 @@
 // =============================================================================
 
 .styleguide-einzelbild-block {
-    // Einheitliches Spacing für alle Styleguide-Blöcke
-    margin: $spacing-lg auto;
+    // Responsive Spacing für alle Styleguide-Blöcke
+    @include styleguide-block-spacing-centered;
     width: 100%;
     max-width: $container-content;
     padding: 0;

@@ -3,8 +3,8 @@
 // =============================================================================
 
 .styleguide-posts-block {
-    // Einheitliches Spacing für alle Styleguide-Blöcke
-    margin: $spacing-lg 0;
+    // Responsive Spacing für alle Styleguide-Blöcke
+    @include styleguide-block-spacing;
     // Zusatzelemente in das bestehende Card-System integrieren
     .card--extra-element {
         // Basis-Card Styles bleiben gleich, nur spezielle Anpassungen

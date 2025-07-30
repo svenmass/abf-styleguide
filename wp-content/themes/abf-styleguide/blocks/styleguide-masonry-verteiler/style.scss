@@ -1,6 +1,6 @@
 // Styleguide Masonry Verteiler Block Styles
 .styleguide-masonry-verteiler-block {
-    margin: $spacing-lg 0;
+    @include styleguide-block-spacing;
     
     // Headline
     .styleguide-masonry-verteiler-headline {

@@ -1,6 +1,6 @@
 // Styleguide Masonry Block Styles
 .styleguide-masonry-block {
-    margin: $spacing-lg 0;
+    @include styleguide-block-spacing;
     
     // Headline
     .styleguide-masonry-headline {
