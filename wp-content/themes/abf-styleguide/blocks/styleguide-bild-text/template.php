@@ -126,11 +126,11 @@ $text_column_fr = $image_position === 'left' ? $right_fr : $left_fr;
                             <div class="styleguide-bild-text-downloads">
                                 <?php foreach ($downloads as $download): ?>
                                     <?php if ($download['download_title'] && $download['download_link']): ?>
-                                        <a href="<?php echo esc_url($download['download_link']['url']); ?>" 
-                                           target="_blank" 
-                                           rel="noopener">
+                                        <a href="<?php echo esc_url($download['download_link']['url']); ?>" download>
                                             <?php echo esc_html($download['download_title']); ?>
-                                            <?php echo abf_get_file_meta($download['download_link']); ?>
+                                            <?php if ($download['download_link']['filesize']): ?>
+                                                <?php echo abf_get_file_meta($download['download_link']); ?>
+                                            <?php endif; ?>
                                         </a>
                                     <?php endif; ?>
                                 <?php endforeach; ?>
@@ -189,11 +189,11 @@ $text_column_fr = $image_position === 'left' ? $right_fr : $left_fr;
                             <div class="styleguide-bild-text-downloads">
                                 <?php foreach ($downloads as $download): ?>
                                     <?php if ($download['download_title'] && $download['download_link']): ?>
-                                        <a href="<?php echo esc_url($download['download_link']['url']); ?>" 
-                                           target="_blank" 
-                                           rel="noopener">
+                                        <a href="<?php echo esc_url($download['download_link']['url']); ?>" download>
                                             <?php echo esc_html($download['download_title']); ?>
-                                            <?php echo abf_get_file_meta($download['download_link']); ?>
+                                            <?php if ($download['download_link']['filesize']): ?>
+                                                <?php echo abf_get_file_meta($download['download_link']); ?>
+                                            <?php endif; ?>
                                         </a>
                                     <?php endif; ?>
                                 <?php endforeach; ?>

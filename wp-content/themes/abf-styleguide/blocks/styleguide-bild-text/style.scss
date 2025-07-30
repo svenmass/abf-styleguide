@@ -322,13 +322,49 @@
             margin-top: $spacing-sm;
             margin-bottom: $spacing-sm;
             
-            // Download-Links verwenden automatisch das einheitliche Typography-System
-            // Wichtig: KEINE display-Regeln setzen, damit typography.scss greifen kann!
+            // Download-Links verwenden das einheitliche Typography-System
+            // ABER: Globale Link-Farben überschreiben - deshalb höhere Spezifität nötig!
             a {
                 margin-bottom: $spacing-xs;
                 
                 &:last-child {
                     margin-bottom: 0;
+                }
+                
+                // Erzwinge Typography-System Farben mit höherer Spezifität
+                &[href$=".pdf"], &[href$=".PDF"], &[href$=".zip"], &[href$=".ZIP"], 
+                &[href$=".jpg"], &[href$=".JPG"], &[href$=".jpeg"], &[href$=".JPEG"], 
+                &[href$=".png"], &[href$=".PNG"], &[href$=".svg"], &[href$=".SVG"], 
+                &[href$=".xls"], &[href$=".XLS"], &[href$=".xlsx"], &[href$=".XLSX"], 
+                &[href$=".dotx"], &[href$=".DOTX"] {
+                    // Typography-System Farben (grün → rot) statt globale Link-Farben (rot → grün)
+                    color: #74A68E !important;
+                    
+                    &:hover, &:focus {
+                        color: #B62D1F !important;
+                    }
+                    
+                    // Sicherstellen, dass das SVG-Icon angezeigt wird
+                    display: inline-flex !important;
+                    align-items: center !important;
+                    gap: 4px !important;
+                    
+                    &::before {
+                        content: '';
+                        display: inline-block !important;
+                        width: 24px !important;
+                        height: 24px !important;
+                        background-image: url("data:image/svg+xml,%3Csvg width='20' height='24' viewBox='0 0 20 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cg clip-path='url(%23clip0_290_9)'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M2.63781 10.1193C2.14292 9.5872 2.38809 9.08691 3.09184 9.08691H16.6174C17.362 9.08691 17.5663 9.54172 17.1123 10.1193L10.7195 17.8373C10.3836 18.3058 9.73429 18.4104 9.26664 18.0738C9.17584 18.0102 9.09411 17.9283 9.03055 17.8373L2.63781 10.1193Z' fill='%2374A68E'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M18.3927 24.0001H1.5664C0.703746 24.0001 0 23.2997 0 22.4355C0 21.5714 0.699206 20.8665 1.5664 20.8665H18.4336C19.2963 20.8665 20 21.5669 20 22.4355C19.9682 23.3042 19.2599 23.9955 18.3927 24.0046V24.0001Z' fill='%2374A68E'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M7.54596 10.4515V2.43788C7.53688 1.1053 8.60384 0.0137728 9.93869 0.000128653C9.95231 0.000128653 9.96593 0.000128653 9.97955 0.000128653C11.3099 -0.0135155 12.3995 1.05982 12.4132 2.39694C12.4132 2.41059 12.4132 2.42423 12.4132 2.43788V10.4515C12.4268 11.7841 11.3553 12.8756 10.0204 12.8893C10.0068 12.8893 9.99317 12.8893 9.97955 12.8893C8.63563 12.8893 7.5505 11.7977 7.54596 10.4515Z' fill='%2374A68E'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_290_9'%3E%3Crect width='20' height='24' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E") !important;
+                        background-size: contain !important;
+                        background-repeat: no-repeat !important;
+                        background-position: center !important;
+                        flex-shrink: 0 !important;
+                        transition: all 0.3s ease !important;
+                    }
+                    
+                    &:hover::before, &:focus::before {
+                        background-image: url("data:image/svg+xml,%3Csvg width='20' height='24' viewBox='0 0 20 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cg clip-path='url(%23clip0_290_9)'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M2.63781 10.1193C2.14292 9.5872 2.38809 9.08691 3.09184 9.08691H16.6174C17.362 9.08691 17.5663 9.54172 17.1123 10.1193L10.7195 17.8373C10.3836 18.3058 9.73429 18.4104 9.26664 18.0738C9.17584 18.0102 9.09411 17.9283 9.03055 17.8373L2.63781 10.1193Z' fill='%23B62D1F'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M18.3927 24.0001H1.5664C0.703746 24.0001 0 23.2997 0 22.4355C0 21.5714 0.699206 20.8665 1.5664 20.8665H18.4336C19.2963 20.8665 20 21.5669 20 22.4355C19.9682 23.3042 19.2599 23.9955 18.3927 24.0046V24.0001Z' fill='%23B62D1F'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M7.54596 10.4515V2.43788C7.53688 1.1053 8.60384 0.0137728 9.93869 0.000128653C9.95231 0.000128653 9.96593 0.000128653 9.97955 0.000128653C11.3099 -0.0135155 12.3995 1.05982 12.4132 2.39694C12.4132 2.41059 12.4132 2.42423 12.4132 2.43788V10.4515C12.4268 11.7841 11.3553 12.8756 10.0204 12.8893C10.0068 12.8893 9.99317 12.8893 9.97955 12.8893C8.63563 12.8893 7.5505 11.7977 7.54596 10.4515Z' fill='%23B62D1F'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_290_9'%3E%3Crect width='20' height='24' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E") !important;
+                    }
                 }
             }
         }
