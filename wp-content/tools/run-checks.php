@@ -61,6 +61,9 @@ class ABF_Quality_Assurance {
             case 'css':
                 $this->runCSSChecks();
                 break;
+            case 'acf':
+                $this->runACFChecks();
+                break;
             default:
                 $this->runQuickChecks();
         }
@@ -88,6 +91,9 @@ class ABF_Quality_Assurance {
                 case '--css':
                 case '-c':
                     return 'css';
+                case '--acf':
+                case '-a':
+                    return 'acf';
             }
         }
         
@@ -117,6 +123,7 @@ class ABF_Quality_Assurance {
         echo "  --quick, -q    Schnelle Prüfung (Standard)\n";
         echo "  --full, -f     Vollständige Analyse\n";
         echo "  --css, -c      Nur CSS/BEM Prüfung\n";
+        echo "  --acf, -a      Nur ACF Fields Prüfung\n";
         echo "  --help, -h     Diese Hilfe anzeigen\n\n";
         echo "📊 BERICHTE:\n";
         echo "  HTML Reports: tools/quality-reports/\n";
@@ -135,6 +142,7 @@ class ABF_Quality_Assurance {
         echo "─────────────────────────────\n\n";
         
         $this->runCSSChecks();
+        $this->runACFChecks();
         $this->checkBasicStructure();
     }
     
@@ -146,8 +154,9 @@ class ABF_Quality_Assurance {
         echo "─────────────────────────────────\n\n";
         
         $this->runCSSChecks();
+        $this->runACFChecks();
         $this->checkBasicStructure();
-        echo "ℹ️  Weitere Linter werden in den nächsten Chats implementiert...\n\n";
+        echo "ℹ️  Weitere Linter werden in Chat 3+ implementiert...\n\n";
     }
     
     /**
@@ -168,6 +177,28 @@ class ABF_Quality_Assurance {
             $this->printCSSResults($css_results);
         } else {
             echo "⚠️  CSS Linter noch nicht implementiert\n";
+            echo "📝 Wird in diesem Chat erstellt...\n\n";
+        }
+    }
+    
+    /**
+     * 🔧 ACF Fields Prüfungen
+     */
+    private function runACFChecks() {
+        echo "🔧 ACF FIELDS CONSISTENCY PRÜFUNG\n";
+        echo "─────────────────────────────────\n";
+        
+        $linter_path = __DIR__ . '/linters/acf-consistency-linter.php';
+        
+        if (file_exists($linter_path)) {
+            include $linter_path;
+            $acf_linter = new ABF_ACF_Consistency_Linter($this->theme_path);
+            $acf_results = $acf_linter->analyze();
+            $this->results['acf'] = $acf_results;
+            
+            $this->printACFResults($acf_results);
+        } else {
+            echo "⚠️  ACF Linter noch nicht implementiert\n";
             echo "📝 Wird in diesem Chat erstellt...\n\n";
         }
     }
@@ -211,6 +242,30 @@ class ABF_Quality_Assurance {
             echo "\n⚠️  Gefundene Probleme:\n";
             foreach ($results['issues'] as $issue) {
                 echo "   • {$issue}\n";
+            }
+        }
+        
+        echo "\n";
+    }
+    
+    /**
+     * 📊 ACF Ergebnisse ausgeben
+     */
+    private function printACFResults($results) {
+        if (!$results) return;
+        
+        echo "📊 Naming Convention: " . ($results['naming_score'] ?? 'N/A') . "%\n";
+        echo "📊 Typography System: " . ($results['typography_score'] ?? 'N/A') . "%\n";
+        echo "📊 Color Integration: " . ($results['color_score'] ?? 'N/A') . "%\n";
+        echo "📊 Structure Pattern: " . ($results['structure_score'] ?? 'N/A') . "%\n";
+        
+        if (!empty($results['issues'])) {
+            echo "\n⚠️  Gefundene Probleme:\n";
+            foreach (array_slice($results['issues'], 0, 8) as $issue) {
+                echo "   • {$issue}\n";
+            }
+            if (count($results['issues']) > 8) {
+                echo "   • ... und " . (count($results['issues']) - 8) . " weitere\n";
             }
         }
         

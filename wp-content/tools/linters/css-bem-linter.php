@@ -19,11 +19,11 @@ class ABF_CSS_BEM_Linter {
     private $css_files = [];
     private $analysis_results = [];
     
-    // BEM Pattern Regex
+    // BEM Pattern Regex (verbessert für Zahlen in Modifiern)
     private $bem_patterns = [
         'block' => '/^[a-z][a-z0-9]*(-[a-z0-9]+)*$/',
         'element' => '/^[a-z][a-z0-9]*(-[a-z0-9]+)*__[a-z][a-z0-9]*(-[a-z0-9]+)*$/',
-        'modifier' => '/^[a-z][a-z0-9]*(-[a-z0-9]+)*((__[a-z][a-z0-9]*(-[a-z0-9]+)*)?--[a-z][a-z0-9]*(-[a-z0-9]+)*)$/'
+        'modifier' => '/^[a-z][a-z0-9]*(-[a-z0-9]+)*((__[a-z][a-z0-9]*(-[a-z0-9]+)*)?--[a-z0-9-]+)$/'
     ];
     
     // Responsive Breakpoints Pattern
@@ -279,7 +279,10 @@ class ABF_CSS_BEM_Linter {
         $special_patterns = [
             'wp-', 'admin-', 'screen-reader-text', 'sr-only',
             'alignleft', 'alignright', 'aligncenter',
-            'container', 'row', 'col-'
+            'container', 'row', 'col-',
+            // Dateiendungen (alle gültig für File-Type Selektoren)
+            'JPG', 'JPEG', 'PNG', 'SVG', 'PDF', 'DOC', 'DOCX', 
+            'XLS', 'XLSX', 'PPT', 'PPTX', 'DOTX', 'GIF', 'WEBP', 'ZIP'
         ];
         
         foreach ($special_patterns as $pattern) {
