@@ -31,7 +31,12 @@ class ABF_Theme_Updater {
         add_action('admin_notices', array($this, 'show_update_notice'));
         add_action('wp_ajax_abf_install_update', array($this, 'install_update'));
         add_action('wp_ajax_abf_force_update_check', array($this, 'force_update_check')); // 🚀 Manuelle Prüfung
-        add_filter('pre_set_site_transient_update_themes', array($this, 'check_for_update'));
+        
+        // Deaktiviere WordPress-eigenes Update-System für unser Theme
+        add_filter('pre_set_site_transient_update_themes', array($this, 'disable_wp_theme_updates'));
+        
+        // Verstecke unser Theme aus der Standard-Update-Liste
+        add_filter('site_transient_update_themes', array($this, 'hide_theme_from_updates'));
     }
     
     /**
@@ -92,7 +97,7 @@ class ABF_Theme_Updater {
     }
     
     /**
-     * 🔄 Prüfe auf Theme-Updates
+     * 🔄 Prüfe auf Theme-Updates (nur für interne Verwendung)
      */
     public function check_for_update($transient = false) {
         $release_data = $this->get_latest_release();
@@ -109,7 +114,7 @@ class ABF_Theme_Updater {
         
         // Vergleiche Versionen
         if (version_compare($current_version, $latest_version, '<')) {
-            // Update verfügbar
+            // Update verfügbar - speichere nur für unsere eigene Verwendung
             set_transient('abf_update_available', array(
                 'current_version' => $current_version,
                 'latest_version' => $latest_version,
@@ -117,21 +122,37 @@ class ABF_Theme_Updater {
                 'changelog' => $release_data['body'] ?? 'Neue Version verfügbar',
                 'release_date' => $release_data['published_at'] ?? '',
             ), DAY_IN_SECONDS);
-            
-            // WordPress Update-System benachrichtigen
-            if ($transient !== false) {
-                $transient->response[$this->theme_slug] = array(
-                    'theme' => $this->theme_slug,
-                    'new_version' => $latest_version,
-                    'url' => $release_data['html_url'] ?? '',
-                    'package' => $this->get_download_url($release_data)
-                );
-            }
         } else {
             // Kein Update verfügbar - Transient löschen
             delete_transient('abf_update_available');
         }
         
+        // NICHT an WordPress Update-System weiterleiten
+        return $transient;
+    }
+    
+    /**
+     * 🚫 Deaktiviere WordPress-eigenes Update-System für unser Theme
+     */
+    public function disable_wp_theme_updates($transient) {
+        // Wenn unser Theme in der Update-Liste ist, entferne es
+        if (isset($transient->response[$this->theme_slug])) {
+            unset($transient->response[$this->theme_slug]);
+        }
+        
+        // Prüfe trotzdem auf Updates (für unsere eigene Notice)
+        $this->check_for_update(false);
+        
+        return $transient;
+    }
+    
+    /**
+     * 👻 Verstecke unser Theme aus Standard-Update-Transients
+     */
+    public function hide_theme_from_updates($transient) {
+        if (isset($transient->response[$this->theme_slug])) {
+            unset($transient->response[$this->theme_slug]);
+        }
         return $transient;
     }
     
@@ -183,6 +204,11 @@ class ABF_Theme_Updater {
                 <strong>Aktuelle Version:</strong> v<?php echo esc_html($current); ?><br>
                 <strong>Neue Version:</strong> v<?php echo esc_html($latest); ?>
             </p>
+            <div class="notice-info" style="background: #e7f3ff; padding: 10px; margin: 10px 0; border-left: 4px solid #0073aa;">
+                <p><strong>⚠️ Wichtiger Hinweis:</strong> Verwende bitte nur den "Jetzt installieren" Button unten. 
+                Das WordPress-eigene Update-System wurde für dieses Theme deaktiviert, 
+                da es mit GitHub-Releases nicht kompatibel ist.</p>
+            </div>
             
             <?php if (!empty($update_data['changelog'])): ?>
                 <details style="margin: 10px 0;">
