@@ -39,11 +39,3 @@ get_header();
     </div>
 </main>
 
-<?php 
-// Load appropriate footer based on page type  
-if (function_exists('abf_is_styleguide_page') && abf_is_styleguide_page()) {
-    get_footer('styleguide');
-} else {
-    get_footer();
-}
-?> 
