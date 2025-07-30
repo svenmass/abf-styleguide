@@ -322,22 +322,15 @@
             margin-top: $spacing-sm;
             margin-bottom: $spacing-sm;
             
-            ul {
-                list-style: none;
-                margin: 0;
-                padding: 0;
+            // Download-Links verwenden automatisch das einheitliche Typography-System
+            // Wichtig: KEINE display-Regeln setzen, damit typography.scss greifen kann!
+            a {
+                margin-bottom: $spacing-xs;
                 
-                li {
-                    margin-bottom: $spacing-xs;
-                    
-                    &:last-child {
-                        margin-bottom: 0;
-                    }
+                &:last-child {
+                    margin-bottom: 0;
                 }
             }
-            
-            // Download-Links verwenden automatisch das einheitliche Typography-System
-            // Keine zusätzlichen Styles nötig - typography.scss regelt alles
         }
     }
 } 
