@@ -323,11 +323,17 @@
             margin-bottom: $spacing-sm;
             
             a {
-                display: block;
+                // Download-Links verwenden das einheitliche Typography-System
+                // display: block wird nur angewendet, wenn es KEIN Download-Link ist
                 margin-bottom: $spacing-xs;
                 
                 &:last-child {
                     margin-bottom: 0;
+                }
+                
+                // Für Links ohne Datei-Endung (normale Links) trotzdem block
+                &:not([href$=".pdf"]):not([href$=".PDF"]):not([href$=".zip"]):not([href$=".ZIP"]):not([href$=".jpg"]):not([href$=".JPG"]):not([href$=".jpeg"]):not([href$=".JPEG"]):not([href$=".png"]):not([href$=".PNG"]):not([href$=".svg"]):not([href$=".SVG"]):not([href$=".xls"]):not([href$=".XLS"]):not([href$=".xlsx"]):not([href$=".XLSX"]):not([href$=".dotx"]):not([href$=".DOTX"]) {
+                    display: block;
                 }
             }
         }

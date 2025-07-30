@@ -127,10 +127,11 @@ $text_column_fr = $image_position === 'left' ? $right_fr : $left_fr;
                                 <?php foreach ($downloads as $download): ?>
                                     <?php if ($download['download_title'] && $download['download_link']): ?>
                                         <a href="<?php echo esc_url($download['download_link']['url']); ?>" 
-                                           download>
+                                           target="_blank" 
+                                           rel="noopener">
                                             <?php echo esc_html($download['download_title']); ?>
                                             <?php if ($download['download_link']['filesize']): ?>
-                                                <?php echo abf_get_file_meta($download['download_link']); ?>
+                                                <span class="file-meta"><?php echo abf_get_file_meta($download['download_link']); ?></span>
                                             <?php endif; ?>
                                         </a>
                                     <?php endif; ?>
@@ -191,10 +192,11 @@ $text_column_fr = $image_position === 'left' ? $right_fr : $left_fr;
                                 <?php foreach ($downloads as $download): ?>
                                     <?php if ($download['download_title'] && $download['download_link']): ?>
                                         <a href="<?php echo esc_url($download['download_link']['url']); ?>" 
-                                           download>
+                                           target="_blank" 
+                                           rel="noopener">
                                             <?php echo esc_html($download['download_title']); ?>
                                             <?php if ($download['download_link']['filesize']): ?>
-                                                <?php echo abf_get_file_meta($download['download_link']); ?>
+                                                <span class="file-meta"><?php echo abf_get_file_meta($download['download_link']); ?></span>
                                             <?php endif; ?>
                                         </a>
                                     <?php endif; ?>
