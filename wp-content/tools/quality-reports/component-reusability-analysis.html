@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔄 Component Reusability Report - ABF Styleguide</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif; margin: 0; padding: 20px; background: #f5f5f5; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); overflow: hidden; }
+        .header { background: linear-gradient(135deg, #6f42c1 0%, #007bff 100%); color: white; padding: 30px; text-align: center; }
+        .metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; padding: 30px; }
+        .metric { background: #f8f9fa; border-radius: 8px; padding: 20px; text-align: center; border-left: 4px solid #6f42c1; }
+        .metric.good { border-left-color: #28a745; }
+        .metric.warning { border-left-color: #ffc107; }
+        .metric.danger { border-left-color: #dc3545; }
+        .metric h3 { margin: 0 0 10px 0; color: #333; }
+        .metric .score { font-size: 2.5em; font-weight: bold; color: #6f42c1; }
+        .metric.good .score { color: #28a745; }
+        .metric.warning .score { color: #ffc107; }
+        .metric.danger .score { color: #dc3545; }
+        .issues { padding: 0 30px 30px; }
+        .issue-list { background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 5px; padding: 15px; max-height: 600px; overflow-y: auto; }
+        .issue-item { margin: 5px 0; padding: 8px; background: white; border-radius: 4px; border-left: 3px solid #6f42c1; font-size: 14px; }
+        .timestamp { text-align: center; padding: 20px; color: #666; border-top: 1px solid #eee; }
+        .maintainability { background: linear-gradient(135deg, #17a2b8, #20c997); color: white; border-radius: 8px; padding: 20px; margin: 20px 30px; text-align: center; }
+        .maintainability h3 { margin: 0 0 10px 0; }
+        .maintainability .index { font-size: 3em; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🔄 Component Reusability Analyse</h1>
+            <p>Code-Qualität und Wiederverwendbarkeits-Assessment</p>
+        </header>
+        
+        <div class="maintainability">
+            <h3>📊 Maintainability Index</h3>
+            <div class="index">20%</div>
+            <p>Gesamtbewertung der Code-Wartbarkeit</p>
+        </div>
+        
+        <div class="metrics">
+            <div class="metric warning">
+                <h3>🔄 Reusability Score</h3>
+                <div class="score">65%</div>
+            </div>
+            <div class="metric danger">
+                <h3>🧠 Code Quality</h3>
+                <div class="score">0%</div>
+            </div>
+            <div class="metric danger">
+                <h3>🔧 Component Consistency</h3>
+                <div class="score">55%</div>
+            </div>
+        </div>
+        
+        <div class="issues">
+            <h2>⚠️ Gefundene Issues & Opportunities (15)</h2>
+            <div class="issue-list"><div class="issue-item">📄 Duplicate: duplicate_html found in 2 files</div><div class="issue-item">📄 Duplicate: duplicate_html found in 2 files</div><div class="issue-item">📄 Duplicate: duplicate_html found in 2 files</div><div class="issue-item">📄 Duplicate: duplicate_html found in 2 files</div><div class="issue-item">📄 Duplicate: duplicate_html found in 2 files</div><div class="issue-item">🔄 Duplicate: duplicate_function found in 2 files</div><div class="issue-item">🔄 Duplicate: duplicate_function found in 2 files</div><div class="issue-item">🔄 Duplicate: duplicate_function found in 2 files</div><div class="issue-item">🎨 Duplicate: duplicate_css found in 2 files</div><div class="issue-item">🎨 Duplicate: duplicate_css found in 2 files</div><div class="issue-item">🎨 Duplicate: duplicate_css found in 2 files</div><div class="issue-item">🎨 Duplicate: duplicate_css found in 2 files</div><div class="issue-item">🎨 Duplicate: duplicate_css found in 2 files</div><div class="issue-item">🎨 Duplicate: duplicate_css found in 6 files</div><div class="issue-item">🎨 Duplicate: duplicate_css found in 2 files</div>
+            </div>
+        </div>
+        
+        <div class="timestamp">
+            <p>📊 Analysierte Dateien: 103 | ⏰ Generiert: 2025-07-30 12:47:29</p>
+        </div>
+    </div>
+</body>
+</html>

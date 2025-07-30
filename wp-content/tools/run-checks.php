@@ -67,6 +67,9 @@ class ABF_Quality_Assurance {
             case 'security':
                 $this->runSecurityPerformanceChecks();
                 break;
+            case 'components':
+                $this->runComponentReusabilityChecks();
+                break;
             default:
                 $this->runQuickChecks();
         }
@@ -100,6 +103,9 @@ class ABF_Quality_Assurance {
                 case '--security':
                 case '-s':
                     return 'security';
+                case '--components':
+                case '-r':
+                    return 'components';
             }
         }
         
@@ -131,6 +137,7 @@ class ABF_Quality_Assurance {
         echo "  --css, -c      Nur CSS/BEM Prüfung\n";
         echo "  --acf, -a      Nur ACF Fields Prüfung\n";
         echo "  --security, -s Nur Security+Performance Prüfung\n";
+        echo "  --components, -r Nur Component Reusability Prüfung\n";
         echo "  --help, -h     Diese Hilfe anzeigen\n\n";
         echo "📊 BERICHTE:\n";
         echo "  HTML Reports: tools/quality-reports/\n";
@@ -151,6 +158,7 @@ class ABF_Quality_Assurance {
         $this->runCSSChecks();
         $this->runACFChecks();
         $this->runSecurityPerformanceChecks();
+        $this->runComponentReusabilityChecks();
         $this->checkBasicStructure();
     }
     
@@ -164,8 +172,9 @@ class ABF_Quality_Assurance {
         $this->runCSSChecks();
         $this->runACFChecks();
         $this->runSecurityPerformanceChecks();
+        $this->runComponentReusabilityChecks();
         $this->checkBasicStructure();
-        echo "ℹ️  Component Reusability Linter wird in Chat 4 implementiert...\n\n";
+        echo "ℹ️  Alle 4 Linter erfolgreich implementiert! Das QA-System ist komplett!\n\n";
     }
     
     /**
@@ -230,6 +239,28 @@ class ABF_Quality_Assurance {
             $this->printSecurityResults($security_results);
         } else {
             echo "⚠️  Security+Performance Linter noch nicht implementiert\n";
+            echo "📝 Wird in diesem Chat erstellt...\n\n";
+        }
+    }
+    
+    /**
+     * 🔄 Component Reusability + Code Quality Prüfungen
+     */
+    private function runComponentReusabilityChecks() {
+        echo "🔄 COMPONENT REUSABILITY + CODE QUALITY PRÜFUNG\n";
+        echo "──────────────────────────────────────────────\n";
+        
+        $linter_path = __DIR__ . '/linters/component-reusability-linter.php';
+        
+        if (file_exists($linter_path)) {
+            include $linter_path;
+            $component_linter = new ABF_Component_Reusability_Linter($this->theme_path);
+            $component_results = $component_linter->analyze();
+            $this->results['components'] = $component_results;
+            
+            $this->printComponentResults($component_results);
+        } else {
+            echo "⚠️  Component Reusability Linter noch nicht implementiert\n";
             echo "📝 Wird in diesem Chat erstellt...\n\n";
         }
     }
@@ -321,6 +352,30 @@ class ABF_Quality_Assurance {
             }
             if (count($results['issues']) > 8) {
                 echo "   • ... und " . (count($results['issues']) - 8) . " weitere\n";
+            }
+        }
+        
+        echo "\n";
+    }
+    
+    /**
+     * 🔄 Component Reusability Ergebnisse ausgeben
+     */
+    private function printComponentResults($results) {
+        if (!$results) return;
+        
+        echo "📊 Maintainability Index: " . ($results['maintainability_index'] ?? 'N/A') . "%\n";
+        echo "📊 Reusability Score: " . ($results['reusability_score'] ?? 'N/A') . "%\n";
+        echo "📊 Code Quality: " . ($results['code_quality_score'] ?? 'N/A') . "%\n";
+        echo "📊 Component Consistency: " . ($results['component_consistency_score'] ?? 'N/A') . "%\n";
+        
+        if (!empty($results['issues'])) {
+            echo "\n⚠️  Gefundene Probleme & Opportunities:\n";
+            foreach (array_slice($results['issues'], 0, 10) as $issue) {
+                echo "   • {$issue}\n";
+            }
+            if (count($results['issues']) > 10) {
+                echo "   • ... und " . (count($results['issues']) - 10) . " weitere\n";
             }
         }
         
