@@ -43,6 +43,15 @@ class ABF_Theme_Updater {
             wp_schedule_event(time(), 'daily', 'abf_check_theme_update');
         }
         add_action('abf_check_theme_update', array($this, 'check_for_update_cron'));
+        
+        // Wöchentliche proaktive Bereinigung von Update-Verzeichnissen
+        if (!wp_next_scheduled('abf_cleanup_update_directories')) {
+            wp_schedule_event(time(), 'weekly', 'abf_cleanup_update_directories');
+        }
+        add_action('abf_cleanup_update_directories', array($this, 'scheduled_cleanup'));
+        
+        // Bereinigung beim WordPress-Login (für Admins) - einmal täglich
+        add_action('wp_login', array($this, 'login_cleanup'), 10, 2);
     }
     
     /**
@@ -327,20 +336,24 @@ class ABF_Theme_Updater {
      
      /**
      * 🧹 Bereinige WordPress Update-Verzeichnisse (Fix für häufiges Problem)
+     * Robuste Methode die auch bei Berechtigungsproblemen funktioniert
      */
     private function cleanup_update_directories() {
-        $upgrade_temp_dir = WP_CONTENT_DIR . '/upgrade-temp-backup';
+        $directories = array(
+            WP_CONTENT_DIR . '/upgrade-temp-backup',
+            WP_CONTENT_DIR . '/upgrade',
+            WP_CONTENT_DIR . '/upgrader-temp-backup', // Alternative Namen
+            get_temp_dir() . 'wp-upgrade-temp-backup'
+        );
         
-        if (is_dir($upgrade_temp_dir)) {
-            // Rekursiv alle Inhalte des Backup-Verzeichnisses löschen
-            $this->delete_directory_contents($upgrade_temp_dir);
+        foreach ($directories as $dir) {
+            if (is_dir($dir)) {
+                $this->force_delete_directory($dir, true);
+            }
         }
         
-        // WordPress Upgrader temp Verzeichnis auch bereinigen
-        $wp_upgrade_dir = WP_CONTENT_DIR . '/upgrade';
-        if (is_dir($wp_upgrade_dir)) {
-            $this->delete_directory_contents($wp_upgrade_dir);
-        }
+        // Zusätzlich: Alte temporäre Theme-Dateien bereinigen
+        $this->cleanup_temp_theme_files();
     }
     
     /**
@@ -360,6 +373,191 @@ class ABF_Theme_Updater {
             }
         }
     }
+    
+    /**
+     * 💪 Robuste Verzeichnis-Löschung mit mehreren Fallback-Strategien
+     * Funktioniert auch bei Berechtigungsproblemen und blockierten Dateien
+     */
+    private function force_delete_directory($dir, $keep_directory = false) {
+        if (!is_dir($dir)) return true;
+        
+        // Strategie 1: Standard PHP-Löschung
+        if ($this->try_standard_delete($dir, $keep_directory)) {
+            return true;
+        }
+        
+        // Strategie 2: Berechtigungen ändern und erneut versuchen
+        if ($this->try_permission_fix_delete($dir, $keep_directory)) {
+            return true;
+        }
+        
+        // Strategie 3: WordPress-eigene Filesystem-Funktionen verwenden
+        if ($this->try_wp_filesystem_delete($dir, $keep_directory)) {
+            return true;
+        }
+        
+        // Fallback: Nur Inhalt löschen, was möglich ist
+        $this->cleanup_what_possible($dir);
+        
+        return false;
+    }
+    
+    /**
+     * 🔧 Standard-Löschung versuchen
+     */
+    private function try_standard_delete($dir, $keep_directory = false) {
+        try {
+            if ($keep_directory) {
+                $this->delete_directory_contents($dir);
+                return true;
+            } else {
+                return $this->recursive_remove_directory($dir);
+            }
+        } catch (Exception $e) {
+            error_log('ABF Auto-Updater: Standard delete failed: ' . $e->getMessage());
+            return false;
+        }
+    }
+    
+    /**
+     * 🔐 Berechtigungen ändern und Löschung versuchen
+     */
+    private function try_permission_fix_delete($dir, $keep_directory = false) {
+        try {
+            // Berechtigungen rekursiv ändern
+            $this->chmod_recursive($dir, 0755);
+            
+            if ($keep_directory) {
+                $this->delete_directory_contents($dir);
+                return true;
+            } else {
+                return $this->recursive_remove_directory($dir);
+            }
+        } catch (Exception $e) {
+            error_log('ABF Auto-Updater: Permission fix delete failed: ' . $e->getMessage());
+            return false;
+        }
+    }
+    
+    /**
+     * 📁 WordPress Filesystem API verwenden
+     */
+    private function try_wp_filesystem_delete($dir, $keep_directory = false) {
+        if (!function_exists('WP_Filesystem')) {
+            require_once ABSPATH . 'wp-admin/includes/file.php';
+        }
+        
+        if (!WP_Filesystem()) {
+            return false;
+        }
+        
+        global $wp_filesystem;
+        
+        try {
+            if ($keep_directory) {
+                $files = $wp_filesystem->dirlist($dir, false, true);
+                if ($files) {
+                    foreach ($files as $file) {
+                        $wp_filesystem->delete($dir . '/' . $file['name'], true);
+                    }
+                }
+                return true;
+            } else {
+                return $wp_filesystem->delete($dir, true);
+            }
+        } catch (Exception $e) {
+            error_log('ABF Auto-Updater: WP Filesystem delete failed: ' . $e->getMessage());
+            return false;
+        }
+    }
+    
+    /**
+     * 🧹 Bereinige was möglich ist (letzter Ausweg)
+     */
+    private function cleanup_what_possible($dir) {
+        $files = @scandir($dir);
+        if ($files) {
+            foreach ($files as $file) {
+                if ($file === '.' || $file === '..') continue;
+                
+                $path = $dir . '/' . $file;
+                if (is_file($path) && is_writable($path)) {
+                    @unlink($path);
+                } elseif (is_dir($path) && is_writable($path)) {
+                    $this->cleanup_what_possible($path);
+                    @rmdir($path);
+                }
+            }
+        }
+    }
+    
+    /**
+     * 🗂️ Rekursive Verzeichnis-Entfernung
+     */
+    private function recursive_remove_directory($dir) {
+        if (!is_dir($dir)) return true;
+        
+        $files = array_diff(scandir($dir), array('.', '..'));
+        foreach ($files as $file) {
+            $path = $dir . '/' . $file;
+            if (is_dir($path)) {
+                $this->recursive_remove_directory($path);
+            } else {
+                unlink($path);
+            }
+        }
+        return rmdir($dir);
+    }
+    
+    /**
+     * 🔒 Berechtigungen rekursiv ändern
+     */
+    private function chmod_recursive($dir, $permissions) {
+        if (!is_dir($dir)) return false;
+        
+        @chmod($dir, $permissions);
+        
+        $files = @scandir($dir);
+        if ($files) {
+            foreach ($files as $file) {
+                if ($file === '.' || $file === '..') continue;
+                
+                $path = $dir . '/' . $file;
+                if (is_dir($path)) {
+                    $this->chmod_recursive($path, $permissions);
+                } else {
+                    @chmod($path, 0644);
+                }
+            }
+        }
+        return true;
+    }
+    
+    /**
+     * 🧹 Bereinige temporäre Theme-Dateien
+     */
+    private function cleanup_temp_theme_files() {
+        $temp_dirs = array(
+            get_temp_dir(),
+            WP_CONTENT_DIR . '/uploads',
+            WP_CONTENT_DIR . '/cache'
+        );
+        
+        foreach ($temp_dirs as $temp_dir) {
+            if (!is_dir($temp_dir)) continue;
+            
+            $files = @glob($temp_dir . '/*abf-styleguide*');
+            if ($files) {
+                foreach ($files as $file) {
+                    if (is_file($file)) {
+                        @unlink($file);
+                    } elseif (is_dir($file)) {
+                        $this->force_delete_directory($file, false);
+                    }
+                }
+            }
+        }
+    }
 
     /**
       * 🚀 Update installieren (AJAX)
@@ -371,8 +569,10 @@ class ABF_Theme_Updater {
         
         check_ajax_referer('abf_install_update');
         
-        // 🧹 AUTOMATISCHE BEREINIGUNG vor dem Update (Fix für upgrade-temp-backup Problem)
+        // 🧹 EXTENSIVE BEREINIGUNG vor dem Update (mehrfach für Sicherheit)
         $this->cleanup_update_directories();
+        sleep(1); // Kurze Pause für Filesystem
+        $this->cleanup_update_directories(); // Zweite Bereinigung
         
         $update_data = get_transient('abf_update_available');
         
@@ -387,20 +587,41 @@ class ABF_Theme_Updater {
         include_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
         include_once ABSPATH . 'wp-admin/includes/theme.php';
         
-        $upgrader = new Theme_Upgrader();
-        $result = $upgrader->install($download_url);
-        
-        if (is_wp_error($result)) {
-            wp_send_json_error(array('message' => $result->get_error_message()));
-        } else {
-            // Update erfolgreich - Transient löschen
+        try {
+            $upgrader = new Theme_Upgrader();
+            $result = $upgrader->install($download_url);
+            
+            if (is_wp_error($result)) {
+                // Bei Fehler: Nochmalige Bereinigung und zweiter Versuch
+                error_log('ABF Auto-Updater: First attempt failed, trying cleanup and retry');
+                $this->cleanup_update_directories();
+                sleep(2);
+                
+                $result = $upgrader->install($download_url);
+                
+                if (is_wp_error($result)) {
+                    wp_send_json_error(array(
+                        'message' => 'Update fehlgeschlagen: ' . $result->get_error_message(),
+                        'details' => 'Auch nach Bereinigung und erneutem Versuch'
+                    ));
+                }
+            }
+            
+            // Update erfolgreich - Transient löschen und final cleanup
             delete_transient('abf_update_available');
+            $this->cleanup_update_directories(); // Aufräumen nach erfolgreichem Update
             
             wp_send_json_success(array(
                 'message' => 'Theme erfolgreich aktualisiert!',
                 'version' => $new_version
-                         ));
-         }
+            ));
+            
+        } catch (Exception $e) {
+            error_log('ABF Auto-Updater: Exception during update: ' . $e->getMessage());
+            wp_send_json_error(array(
+                'message' => 'Update-Fehler: ' . $e->getMessage()
+            ));
+        }
      }
      
          /**
@@ -434,6 +655,33 @@ class ABF_Theme_Updater {
                 'current_version' => $this->theme_version
             ));
         }
+    }
+    
+    /**
+     * 🕐 Geplante Bereinigung (Cron-Job)
+     */
+    public function scheduled_cleanup() {
+        error_log('ABF Auto-Updater: Running scheduled cleanup');
+        $this->cleanup_update_directories();
+    }
+    
+    /**
+     * 🔐 Bereinigung beim Admin-Login (einmal täglich)
+     */
+    public function login_cleanup($user_login, $user) {
+        if (!user_can($user, 'update_themes')) {
+            return;
+        }
+        
+        // Nur einmal täglich pro Benutzer
+        $last_cleanup = get_user_meta($user->ID, 'abf_last_login_cleanup', true);
+        if ($last_cleanup && (time() - $last_cleanup) < DAY_IN_SECONDS) {
+            return;
+        }
+        
+        $this->cleanup_update_directories();
+        update_user_meta($user->ID, 'abf_last_login_cleanup', time());
+        error_log('ABF Auto-Updater: Login cleanup performed for user: ' . $user_login);
     }
  }
  
