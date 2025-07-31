@@ -42,7 +42,7 @@ class ABF_Page_Protection {
     }
     
     /**
-     * Check if current page is auth-related (login, register, password reset)
+     * Check if current page is auth-related (login, register, password reset) or legal pages
      */
     private function is_auth_related_page() {
         global $pagenow;
@@ -54,6 +54,11 @@ class ABF_Page_Protection {
         
         // Custom auth pages (if any)
         if (is_page(array('login', 'register', 'password-reset'))) {
+            return true;
+        }
+        
+        // Legal pages that should be accessible without registration
+        if (is_page(array('impressum', 'datenschutz', 'imprint', 'privacy'))) {
             return true;
         }
         

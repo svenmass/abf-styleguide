@@ -42,7 +42,10 @@
     <!-- Navigation als direktes Kind von .site für CSS Grid -->
     <?php 
     $is_fullscreen = is_page_template('page-fullscreen.php');
-    if (!$is_fullscreen) {
+    $is_legal_page = is_page(array('impressum', 'datenschutz', 'imprint', 'privacy'));
+    
+    // Navigation nur anzeigen wenn es NICHT Fullscreen Template UND NICHT eine Legal Page ist
+    if (!$is_fullscreen && !$is_legal_page) {
         get_template_part('navigation');
     }
     ?>

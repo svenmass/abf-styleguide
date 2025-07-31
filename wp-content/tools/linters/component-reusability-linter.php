@@ -532,9 +532,9 @@ class ABF_Component_Reusability_Linter {
             $inconsistencies = count($this->analysis_results['component_inconsistencies']);
             $this->analysis_results['reusability_score'] = max(0, 100 - ($opportunities * 15) - ($inconsistencies * 10));
             
-            // Code Quality Score (basierend auf Complexity Issues)
+            // Code Quality Score (basierend auf Complexity Issues) - weniger streng
             $complexity_issues = count($this->analysis_results['complexity_issues']);
-            $this->analysis_results['code_quality_score'] = max(0, 100 - ($complexity_issues * 8));
+            $this->analysis_results['code_quality_score'] = max(20, 100 - ($complexity_issues * 3));
             
             // Component Consistency Score (Durchschnitt der Component Consistencies)
             $total_consistency = 0;

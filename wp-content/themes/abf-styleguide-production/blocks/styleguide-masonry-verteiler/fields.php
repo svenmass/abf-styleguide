@@ -282,6 +282,32 @@ return array(
                     ),
                 ),
                 
+                // Image Shadow/Gradient Option
+                array(
+                    'key' => 'field_smv_image_shadow',
+                    'label' => 'Schatten-Verlauf',
+                    'name' => 'image_shadow',
+                    'type' => 'true_false',
+                    'instructions' => 'Dunkler Verlauf am unteren Bildrand für bessere Textlesbarkeit',
+                    'required' => 0,
+                    'default_value' => 1, // Standard: AN für Abwärtskompatibilität
+                    'ui' => 1,
+                    'ui_on_text' => 'An',
+                    'ui_off_text' => 'Aus',
+                    'conditional_logic' => array(
+                        array(
+                            array(
+                                'field' => 'field_smv_content_type',
+                                'operator' => '==',
+                                'value' => 'image',
+                            ),
+                        ),
+                    ),
+                    'wrapper' => array(
+                        'width' => '50',
+                    ),
+                ),
+                
                 // Alt Text Override
                 array(
                     'key' => 'field_smv_alt_text',

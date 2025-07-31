@@ -31,12 +31,7 @@ class ABF_Theme_Updater {
         add_action('admin_notices', array($this, 'show_update_notice'));
         add_action('wp_ajax_abf_install_update', array($this, 'install_update'));
         add_action('wp_ajax_abf_force_update_check', array($this, 'force_update_check')); // 🚀 Manuelle Prüfung
-        
-        // Deaktiviere WordPress-eigenes Update-System für unser Theme
-        add_filter('pre_set_site_transient_update_themes', array($this, 'disable_wp_theme_updates'));
-        
-        // Verstecke unser Theme aus der Standard-Update-Liste
-        add_filter('site_transient_update_themes', array($this, 'hide_theme_from_updates'));
+        add_filter('pre_set_site_transient_update_themes', array($this, 'check_for_update'));
     }
     
     /**
@@ -97,7 +92,7 @@ class ABF_Theme_Updater {
     }
     
     /**
-     * 🔄 Prüfe auf Theme-Updates (nur für interne Verwendung)
+     * 🔄 Prüfe auf Theme-Updates
      */
     public function check_for_update($transient = false) {
         $release_data = $this->get_latest_release();
@@ -114,45 +109,29 @@ class ABF_Theme_Updater {
         
         // Vergleiche Versionen
         if (version_compare($current_version, $latest_version, '<')) {
-            // Update verfügbar - speichere nur für unsere eigene Verwendung
+            // Update verfügbar
             set_transient('abf_update_available', array(
                 'current_version' => $current_version,
                 'latest_version' => $latest_version,
                 'download_url' => $this->get_download_url($release_data),
-                'changelog' => $release_data['body'] ?? 'Neue Version verfügbar',
+                'changelog' => $release_data['body'] ?? 'Neue Version verfügbar',  
                 'release_date' => $release_data['published_at'] ?? '',
             ), DAY_IN_SECONDS);
+            
+            // WordPress Update-System benachrichtigen
+            if ($transient !== false) {
+                $transient->response[$this->theme_slug] = array(
+                    'theme' => $this->theme_slug,
+                    'new_version' => $latest_version,
+                    'url' => $release_data['html_url'] ?? '',
+                    'package' => $this->get_download_url($release_data)
+                );
+            }
         } else {
             // Kein Update verfügbar - Transient löschen
             delete_transient('abf_update_available');
         }
         
-        // NICHT an WordPress Update-System weiterleiten
-        return $transient;
-    }
-    
-    /**
-     * 🚫 Deaktiviere WordPress-eigenes Update-System für unser Theme
-     */
-    public function disable_wp_theme_updates($transient) {
-        // Wenn unser Theme in der Update-Liste ist, entferne es
-        if (isset($transient->response[$this->theme_slug])) {
-            unset($transient->response[$this->theme_slug]);
-        }
-        
-        // Prüfe trotzdem auf Updates (für unsere eigene Notice)
-        $this->check_for_update(false);
-        
-        return $transient;
-    }
-    
-    /**
-     * 👻 Verstecke unser Theme aus Standard-Update-Transients
-     */
-    public function hide_theme_from_updates($transient) {
-        if (isset($transient->response[$this->theme_slug])) {
-            unset($transient->response[$this->theme_slug]);
-        }
         return $transient;
     }
     
@@ -205,9 +184,8 @@ class ABF_Theme_Updater {
                 <strong>Neue Version:</strong> v<?php echo esc_html($latest); ?>
             </p>
             <div class="notice-info" style="background: #e7f3ff; padding: 10px; margin: 10px 0; border-left: 4px solid #0073aa;">
-                <p><strong>⚠️ Wichtiger Hinweis:</strong> Verwende bitte nur den "Jetzt installieren" Button unten. 
-                Das WordPress-eigene Update-System wurde für dieses Theme deaktiviert, 
-                da es mit GitHub-Releases nicht kompatibel ist.</p>
+                <p><strong>💡 Tipp:</strong> Du kannst sowohl den "Jetzt installieren" Button unten verwenden, 
+                als auch das WordPress-eigene Update-System unter Design → Themes.</p>
             </div>
             
             <?php if (!empty($update_data['changelog'])): ?>
@@ -238,52 +216,88 @@ class ABF_Theme_Updater {
         </div>
         
         <script>
-        jQuery(document).ready(function($) {
-            $('.abf-install-update').click(function() {
-                var button = $(this);
-                var notice = button.closest('.abf-update-notice');
-                var progress = notice.find('.abf-update-progress');
-                var progressBar = notice.find('.abf-progress-bar');
+        // Robust jQuery loading with fallback
+        (function() {
+            function initUpdateScript() {
+                if (typeof jQuery === 'undefined') {
+                    console.error('ABF Update: jQuery not available');
+                    return;
+                }
                 
-                button.prop('disabled', true);
-                progress.show();
-                progressBar.css('width', '20%');
-                
-                $.ajax({
-                    url: ajaxurl,
-                    type: 'POST',
-                    data: {
-                        action: 'abf_install_update',
-                        _wpnonce: button.data('nonce')
-                    },
-                    success: function(response) {
-                        progressBar.css('width', '100%');
-                        if (response.success) {
-                            notice.removeClass('notice-warning').addClass('notice-success');
-                            notice.html('<h3>✅ Update erfolgreich installiert!</h3><p>Das Theme wurde auf Version <strong>v' + (response.data.version || 'unbekannt') + '</strong> aktualisiert.</p><p><a href="' + location.href + '" class="button button-primary">🔄 Seite neu laden</a></p>');
-                        } else {
-                            progressBar.css({'background': '#d63638', 'width': '100%'});
-                            notice.find('.abf-update-progress p').html('❌ Update fehlgeschlagen: ' + (response.data && response.data.message ? response.data.message : 'Unbekannter Fehler'));
-                            button.prop('disabled', false);
-                        }
-                    },
-                    error: function() {
-                        progressBar.css({'background': '#d63638', 'width': '100%'});
-                        notice.find('.abf-update-progress p').html('❌ Verbindungsfehler beim Update');
-                        button.prop('disabled', false);
-                    }
+                jQuery(document).ready(function($) {
+                    // Define AJAX URL with fallback
+                    var ajax_url = typeof ajaxurl !== 'undefined' ? ajaxurl : '<?php echo admin_url('admin-ajax.php'); ?>';
+                    
+                    $('.abf-install-update').click(function() {
+                        var button = $(this);
+                        var notice = button.closest('.abf-update-notice');
+                        var progress = notice.find('.abf-update-progress');
+                        var progressBar = notice.find('.abf-progress-bar');
+                        
+                        console.log('ABF Update: Starting update process');
+                        
+                        button.prop('disabled', true);
+                        progress.show();
+                        progressBar.css('width', '20%');
+                        
+                        $.ajax({
+                            url: ajax_url,
+                            type: 'POST',
+                            timeout: 120000, // 2 minutes timeout
+                            data: {
+                                action: 'abf_install_update',
+                                _wpnonce: button.data('nonce')
+                            },
+                            success: function(response) {
+                                console.log('ABF Update: AJAX Response:', response);
+                                progressBar.css('width', '100%');
+                                if (response.success) {
+                                    notice.removeClass('notice-warning').addClass('notice-success');
+                                    notice.html('<h3>✅ Update erfolgreich installiert!</h3><p>Das Theme wurde auf Version <strong>v' + (response.data.version || 'unbekannt') + '</strong> aktualisiert.</p><p><a href="' + location.href + '" class="button button-primary">🔄 Seite neu laden</a></p>');
+                                } else {
+                                    progressBar.css({'background': '#d63638', 'width': '100%'});
+                                    var errorMsg = 'Unbekannter Fehler';
+                                    if (response.data && response.data.message) {
+                                        errorMsg = response.data.message;
+                                    }
+                                    notice.find('.abf-update-progress p').html('❌ Update fehlgeschlagen: ' + errorMsg);
+                                    button.prop('disabled', false);
+                                    console.error('ABF Update Error:', response);
+                                }
+                            },
+                            error: function(xhr, status, error) {
+                                console.error('ABF Update AJAX Error:', {xhr: xhr, status: status, error: error});
+                                progressBar.css({'background': '#d63638', 'width': '100%'});
+                                var errorText = 'Verbindungsfehler beim Update';
+                                if (status === 'timeout') {
+                                    errorText = 'Update-Timeout - versuche es später erneut';
+                                } else if (xhr.responseText) {
+                                    errorText = 'Server-Fehler: ' + xhr.status;
+                                }
+                                notice.find('.abf-update-progress p').html('❌ ' + errorText);
+                                button.prop('disabled', false);
+                            }
+                        });
+                    });
+                    
+                    $('.abf-dismiss-notice').click(function() {
+                        $(this).closest('.notice').slideUp();
+                        // Transient für 1 Tag pausieren
+                        $.post(ajax_url, {
+                            action: 'abf_dismiss_update_notice',
+                            _wpnonce: '<?php echo wp_create_nonce('abf_dismiss_notice'); ?>'
+                        });
+                    });
                 });
-            });
+            }
             
-            $('.abf-dismiss-notice').click(function() {
-                $(this).closest('.notice').slideUp();
-                // Transient für 1 Tag pausieren
-                $.post(ajaxurl, {
-                    action: 'abf_dismiss_update_notice',
-                    _wpnonce: '<?php echo wp_create_nonce('abf_dismiss_notice'); ?>'
-                });
-            });
-        });
+            // Initialize when ready
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initUpdateScript);
+            } else {
+                initUpdateScript();
+            }
+        })();
         </script>
         
         <style>
@@ -319,44 +333,72 @@ class ABF_Theme_Updater {
              </div>
          </div>
          
-         <script>
-         jQuery(document).ready(function($) {
-             $('.abf-check-updates').click(function() {
-                 var button = $(this);
-                 var notice = button.closest('.abf-check-updates-notice');
-                 var progress = notice.find('.abf-check-progress');
-                 
-                 button.prop('disabled', true);
-                 progress.show();
-                 
-                 $.ajax({
-                     url: ajaxurl,
-                     type: 'POST',
-                     data: {
-                         action: 'abf_force_update_check',
-                         _wpnonce: button.data('nonce')
-                     },
-                     success: function(response) {
-                         if (response.success) {
-                             progress.find('p').html('✅ ' + response.data.message);
-                             if (response.data.latest_version && response.data.current_version !== response.data.latest_version) {
-                                 setTimeout(function() {
-                                     location.reload();
-                                 }, 2000);
-                             }
-                         } else {
-                             progress.find('p').html('❌ Fehler: ' + (response.data.message || 'Unbekannter Fehler'));
-                         }
-                         button.prop('disabled', false);
-                     },
-                     error: function() {
-                         progress.find('p').html('❌ Verbindungsfehler bei der Update-Prüfung');
-                         button.prop('disabled', false);
-                     }
-                 });
-             });
-         });
-         </script>
+                 <script>
+        // Robust jQuery loading for update check
+        (function() {
+            function initCheckScript() {
+                if (typeof jQuery === 'undefined') {
+                    console.error('ABF Update Check: jQuery not available');
+                    return;
+                }
+                
+                jQuery(document).ready(function($) {
+                    var ajax_url = typeof ajaxurl !== 'undefined' ? ajaxurl : '<?php echo admin_url('admin-ajax.php'); ?>';
+                    
+                    $('.abf-check-updates').click(function() {
+                        var button = $(this);
+                        var notice = button.closest('.abf-check-updates-notice');
+                        var progress = notice.find('.abf-check-progress');
+                        
+                        console.log('ABF Update Check: Starting check');
+                        
+                        button.prop('disabled', true);
+                        progress.show();
+                        
+                        $.ajax({
+                            url: ajax_url,
+                            type: 'POST',
+                            timeout: 30000, // 30 seconds timeout
+                            data: {
+                                action: 'abf_force_update_check',
+                                _wpnonce: button.data('nonce')
+                            },
+                            success: function(response) {
+                                console.log('ABF Update Check Response:', response);
+                                if (response.success) {
+                                    progress.find('p').html('✅ ' + response.data.message);
+                                    if (response.data.latest_version && response.data.current_version !== response.data.latest_version) {
+                                        setTimeout(function() {
+                                            location.reload();
+                                        }, 2000);
+                                    }
+                                } else {
+                                    progress.find('p').html('❌ Fehler: ' + (response.data.message || 'Unbekannter Fehler'));
+                                }
+                                button.prop('disabled', false);
+                            },
+                            error: function(xhr, status, error) {
+                                console.error('ABF Update Check Error:', {xhr: xhr, status: status, error: error});
+                                var errorText = 'Verbindungsfehler bei der Update-Prüfung';
+                                if (status === 'timeout') {
+                                    errorText = 'Timeout - GitHub möglicherweise nicht erreichbar';
+                                }
+                                progress.find('p').html('❌ ' + errorText);
+                                button.prop('disabled', false);
+                            }
+                        });
+                    });
+                });
+            }
+            
+            // Initialize when ready
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initCheckScript);
+            } else {
+                initCheckScript();
+            }
+        })();
+        </script>
          <?php
      }
      

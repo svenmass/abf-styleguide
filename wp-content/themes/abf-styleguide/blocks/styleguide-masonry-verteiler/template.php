@@ -107,6 +107,13 @@ foreach ($masonry_elements as $index => $element) {
                     $text_size = $element['text_size'] ?: '18';
                     $element_link = $element['element_link'];
                     $alt_text = $element['alt_text'] ?: '';
+                    // ACF True/False Feld richtig auslesen - für Abwärtskompatibilität Standard = true
+                    if (array_key_exists('image_shadow', $element)) {
+                        // Bei ACF True/False: true/1/'1' = AN, false/0/'0'/null = AUS
+                        $image_shadow = ($element['image_shadow'] === true || $element['image_shadow'] === 1 || $element['image_shadow'] === '1');
+                    } else {
+                        $image_shadow = true; // Abwärtskompatibilität: Standard AN
+                    }
                     
                     // Prepare link data
                     $link_url = '';
@@ -126,6 +133,13 @@ foreach ($masonry_elements as $index => $element) {
                     if ($link_url) {
                         $element_classes[] = 'masonry-element--linked';
                     }
+                    
+                    // Add shadow class for images with shadow enabled
+                    if ($content_type === 'image' && $image_shadow) {
+                        $element_classes[] = 'masonry-element--with-shadow';
+                    }
+                    
+
                     
                     $element_class_string = implode(' ', $element_classes);
                     

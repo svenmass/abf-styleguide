@@ -209,13 +209,13 @@ document.addEventListener('DOMContentLoaded', function() {
                                 order: 8,
                                 isButton: true,
                                 tagName: 'a',
-                                html: '<?php echo esc_js($download_text); ?>',
+                                html: '<svg width="20" height="24" viewBox="0 0 20 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#download-clip-einzelbild)"><path fill-rule="evenodd" clip-rule="evenodd" d="M2.63781 10.1193C2.14292 9.5872 2.38809 9.08691 3.09184 9.08691H16.6174C17.362 9.08691 17.5663 9.54172 17.1123 10.1193L10.7195 17.8373C10.3836 18.3058 9.73429 18.4104 9.26664 18.0738C9.17584 18.0102 9.09411 17.9283 9.03055 17.8373L2.63781 10.1193Z" fill="#C6D6D1"/><path fill-rule="evenodd" clip-rule="evenodd" d="M18.3927 24.0001H1.5664C0.703746 24.0001 0 23.2997 0 22.4355C0 21.5714 0.699206 20.8665 1.5664 20.8665H18.4336C19.2963 20.8665 20 21.5669 20 22.4355C19.9682 23.3042 19.2599 23.9955 18.3927 24.0046V24.0001Z" fill="#C6D6D1"/><path fill-rule="evenodd" clip-rule="evenodd" d="M7.54596 10.4515V2.43788C7.53688 1.1053 8.60384 0.0137728 9.93869 0.000128653C9.95231 0.000128653 9.96593 0.000128653 9.97955 0.000128653C11.3099 -0.0135155 12.3995 1.05982 12.4132 2.39694C12.4132 2.41059 12.4132 2.42423 12.4132 2.43788V10.4515C12.4268 11.7841 11.3553 12.8756 10.0204 12.8893C10.0068 12.8893 9.99317 12.8893 9.97955 12.8893C8.63563 12.8893 7.5505 11.7977 7.54596 10.4515Z" fill="#C6D6D1"/></g><defs><clipPath id="download-clip-einzelbild"><rect width="20" height="24" fill="white"/></clipPath></defs></svg>',
                                 onInit: (el, pswp) => {
                                     el.setAttribute('href', '<?php echo esc_js($download_url); ?>');
                                     el.setAttribute('download', '<?php echo esc_js($download_filename); ?>');
                                     el.setAttribute('target', '_blank');
                                     el.setAttribute('rel', 'noopener');
-                                    el.style.cssText = 'color: white; background: rgba(0,0,0,0.5); padding: 8px 12px; border-radius: 4px; margin-right: 8px; text-decoration: none; font-size: 14px;';
+                                    el.style.cssText = 'color: white; background: rgba(0,0,0,0.5); padding: 8px 12px; border-radius: 4px; margin-right: 8px; text-decoration: none; font-size: 14px; display: flex; align-items: center; justify-content: center;';
                                 }
                             });
                         });

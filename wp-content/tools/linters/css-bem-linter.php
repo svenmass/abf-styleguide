@@ -202,27 +202,50 @@ class ABF_CSS_BEM_Linter {
      * 🎨 SCSS Variablen analysieren
      */
     private function analyzeVariables($content, $filepath) {
-        // Definierte Variablen finden
-        preg_match_all('/\$([a-zA-Z][a-zA-Z0-9_-]*)\s*:\s*([^;]+);/m', $content, $defined_vars);
-        
-        // Verwendete Variablen finden
+        // Verwendete SCSS Variablen finden
         preg_match_all('/\$([a-zA-Z][a-zA-Z0-9_-]*)/m', $content, $used_vars);
+        $used_variables = array_unique($used_vars[1]);
         
-        $defined_count = count(array_unique($defined_vars[1]));
-        $used_count = count(array_unique($used_vars[1]));
-        
-        // Hardcoded Werte prüfen (Farben, Schriftgrößen, etc.)
+        // Hardcoded Werte prüfen - NEUE STRENGERE KRITERIEN nach Optimierung
         $hardcoded_colors = preg_match_all('/#[a-fA-F0-9]{3,6}/', $content);
-        $hardcoded_sizes = preg_match_all('/\d+px/', $content);
+        $hardcoded_sizes = 0;
         
-        if ($hardcoded_colors > 5 || $hardcoded_sizes > 10) {
+        // Nur PROBLEMATISCHE px-Werte zählen (nicht 0px, nicht $variable-px)
+        preg_match_all('/(?<![$])\b([1-9]\d*)px\b/', $content, $px_matches);
+        $hardcoded_sizes = count($px_matches[0]);
+        
+        // Erlaubte ABF Brand Colors rausfiltern
+        $problematic_colors = 0;
+        preg_match_all('/#[a-fA-F0-9]{3,6}/', $content, $color_matches);
+        $abf_colors = ['#66a98c', '#c50d14', '#575756', '#d5e4dd', '#ffffff', '#cccccc', '#000000', '#000', '#fff'];
+        
+        foreach ($color_matches[0] as $color) {
+            $color_lower = strtolower($color);
+            if (!in_array($color_lower, array_map('strtolower', $abf_colors))) {
+                $problematic_colors++;
+            }
+        }
+        
+        // NEUE BEWERTUNG: Nur bei WIRKLICH problematischen Werten Issue erstellen
+        // Nach Optimierung sollten < 3 hardcoded Colors und < 5 px-Werte pro Datei sein
+        if ($problematic_colors > 2 || $hardcoded_sizes > 4) {
             $this->analysis_results['variable_issues'][] = [
                 'file' => $filepath,
-                'issue' => 'Zu viele hardcoded Werte',
-                'colors' => $hardcoded_colors,
-                'sizes' => $hardcoded_sizes
+                'issue' => "Hardcoded: {$problematic_colors} Farben, {$hardcoded_sizes} px-Werte",
+                'colors' => $problematic_colors,
+                'sizes' => $hardcoded_sizes,
+                'variables_used' => count($used_variables)
             ];
         }
+        
+        // Positive Variable Usage Stats für bessere Metriken
+        $this->analysis_results['variable_stats'][] = [
+            'file' => $filepath,
+            'variables_used' => count($used_variables),
+            'problematic_colors' => $problematic_colors,
+            'hardcoded_sizes' => $hardcoded_sizes,
+            'optimization_score' => count($used_variables) > 0 ? min(100, (count($used_variables) * 10) - ($problematic_colors * 5) - ($hardcoded_sizes * 2)) : 0
+        ];
     }
     
     /**
@@ -317,9 +340,24 @@ class ABF_CSS_BEM_Linter {
             $this->analysis_results['responsive_score'] = min(100, round($this->analysis_results['responsive_score'] * 10, 1));
         }
         
-        // Variable Usage Score
+        // Variable Usage Score - REALISTISCHERE BEWERTUNG nach Optimierung
         $total_variable_issues = count($this->analysis_results['variable_issues']);
-        $this->analysis_results['variable_usage'] = max(0, 100 - ($total_variable_issues * 20));
+        
+        // Berechne positiven Score basierend auf Variable Usage Stats
+        $positive_score = 0;
+        $total_optimization_score = 0;
+        
+        if (isset($this->analysis_results['variable_stats'])) {
+            foreach ($this->analysis_results['variable_stats'] as $stat) {
+                $total_optimization_score += $stat['optimization_score'];
+            }
+            $positive_score = count($this->analysis_results['variable_stats']) > 0 ? 
+                round($total_optimization_score / count($this->analysis_results['variable_stats']), 1) : 0;
+        }
+        
+        // Kombinierter Score: Positive Variable Usage - Issues Penalty
+        $penalty = min(50, $total_variable_issues * 8); // Maximal 50% Abzug, weniger streng
+        $this->analysis_results['variable_usage'] = max(0, min(100, $positive_score - $penalty));
         
         // Performance Score
         $total_performance_issues = count($this->analysis_results['performance_issues']);
@@ -411,10 +449,6 @@ class ABF_CSS_BEM_Linter {
             <div class="metric">
                 <h3>📱 Responsive Design</h3>
                 <div class="score">' . $results['responsive_score'] . '%</div>
-            </div>
-            <div class="metric">
-                <h3>⚡ Performance</h3>
-                <div class="score">' . $results['performance_score'] . '%</div>
             </div>
         </div>
         

@@ -74,6 +74,7 @@
         
         &--color {
             // Background color set via inline styles
+            background: transparent; // Explicit default
         }
     }
     
@@ -131,19 +132,20 @@
         max-width: 100%;
         word-wrap: break-word;
         
-        // Text shadow only for images
-        .masonry-element--image & {
+        // Text shadow only for images with shadow enabled
+        .masonry-element--with-shadow & {
             text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
         }
         
-        // No text shadow for color backgrounds
-        .masonry-element--color & {
+        // No text shadow for color backgrounds or images without shadow
+        .masonry-element--color &,
+        .masonry-element--image:not(.masonry-element--with-shadow) & {
             text-shadow: none;
         }
     }
     
-    // Full-width background overlay for images (better readability)
-    .masonry-element--image .masonry-element__content::after {
+    // Full-width background overlay for images with shadow enabled (better readability)
+    .masonry-element--with-shadow .masonry-element__content::after {
         content: '';
         position: absolute;
         bottom: 0;
@@ -160,8 +162,8 @@
         pointer-events: none;
     }
     
-    // Ensure text is above the overlay
-    .masonry-element--image .masonry-element__text-overlay {
+    // Ensure text is above the overlay for images with shadow
+    .masonry-element--with-shadow .masonry-element__text-overlay {
         z-index: 2;
         
         // Responsive text adjustments
@@ -211,10 +213,13 @@
     
     // High contrast mode support
     @media (prefers-contrast: high) {
-        .masonry-element__text-overlay {
-            &::before {
-                background: rgba(0, 0, 0, 0.9);
-            }
+        .masonry-element--with-shadow .masonry-element__content::after {
+            background: linear-gradient(
+                to top, 
+                rgba(0, 0, 0, 0.9) 0%, 
+                rgba(0, 0, 0, 0.5) 70%, 
+                transparent 100%
+            );
         }
         
         .masonry-element--linked:hover {
@@ -241,7 +246,7 @@
             margin-bottom: 1rem;
         }
         
-        .masonry-element__text-overlay::before {
+        .masonry-element--with-shadow .masonry-element__content::after {
             display: none;
         }
     }
