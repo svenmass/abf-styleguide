@@ -186,6 +186,7 @@ class ABF_Theme_Updater {
             <div class="notice-info" style="background: #e7f3ff; padding: 10px; margin: 10px 0; border-left: 4px solid #0073aa;">
                 <p><strong>💡 Tipp:</strong> Du kannst sowohl den "Jetzt installieren" Button unten verwenden, 
                 als auch das WordPress-eigene Update-System unter Design → Themes.</p>
+                <p><strong>🛡️ Sicherheit:</strong> Deine individuellen Farb- und Typografie-Einstellungen werden automatisch gesichert und nach dem Update wiederhergestellt!</p>
             </div>
             
             <?php if (!empty($update_data['changelog'])): ?>
@@ -637,6 +638,9 @@ class ABF_Theme_Updater {
         
         check_ajax_referer('abf_install_update');
         
+        // 💾 USER-SETTINGS SICHERN vor dem Update
+        $user_settings_backup = $this->backup_user_settings();
+        
         // 🧹 EXTENSIVE BEREINIGUNG vor dem Update (mehrfach für Sicherheit)
         $this->cleanup_update_directories();
         sleep(1); // Kurze Pause für Filesystem
@@ -668,26 +672,43 @@ class ABF_Theme_Updater {
                 $result = $upgrader->install($download_url);
                 
                 if (is_wp_error($result)) {
+                    // Bei gescheitertem Update: Versuche User-Settings trotzdem zu retten
+                    $this->restore_user_settings($user_settings_backup);
+                    
                     wp_send_json_error(array(
                         'message' => 'Update fehlgeschlagen: ' . $result->get_error_message(),
-                        'details' => 'Auch nach Bereinigung und erneutem Versuch'
+                        'details' => 'Auch nach Bereinigung und erneutem Versuch. User-Settings wurden soweit möglich beibehalten.'
                     ));
                 }
             }
             
-            // Update erfolgreich - Transient löschen und final cleanup
+            // Update erfolgreich - User-Settings wiederherstellen
+            $restore_status = $this->restore_user_settings($user_settings_backup);
+            
+            // Transient löschen und final cleanup
             delete_transient('abf_update_available');
             $this->cleanup_update_directories(); // Aufräumen nach erfolgreichem Update
             
+            $success_message = 'Theme erfolgreich aktualisiert!';
+            if ($restore_status['colors_restored'] || $restore_status['typography_restored']) {
+                $success_message .= ' Deine individuellen Einstellungen wurden beibehalten.';
+            }
+            
             wp_send_json_success(array(
-                'message' => 'Theme erfolgreich aktualisiert!',
-                'version' => $new_version
+                'message' => $success_message,
+                'version' => $new_version,
+                'restored_settings' => $restore_status
             ));
             
         } catch (Exception $e) {
+            // Bei Exception: User-Settings wiederherstellen falls möglich
+            if (isset($user_settings_backup)) {
+                $this->restore_user_settings($user_settings_backup);
+            }
+            
             error_log('ABF Auto-Updater: Exception during update: ' . $e->getMessage());
             wp_send_json_error(array(
-                'message' => 'Update-Fehler: ' . $e->getMessage()
+                'message' => 'Update-Fehler: ' . $e->getMessage() . '. User-Settings wurden soweit möglich beibehalten.'
             ));
         }
      }
@@ -750,6 +771,175 @@ class ABF_Theme_Updater {
         $this->cleanup_update_directories();
         update_user_meta($user->ID, 'abf_last_login_cleanup', time());
         error_log('ABF Auto-Updater: Login cleanup performed for user: ' . $user_login);
+    }
+    
+    /**
+     * 💾 User-Settings vor Update sichern
+     */
+    private function backup_user_settings() {
+        $backup_data = array(
+            'timestamp' => current_time('mysql'),
+            'colors' => null,
+            'typography' => null,
+            'acf_colors' => null,
+            'acf_typography' => null,
+            'backup_path' => null
+        );
+        
+        // 1. colors.json sichern
+        $colors_file = get_template_directory() . '/colors.json';
+        if (file_exists($colors_file)) {
+            $colors_content = file_get_contents($colors_file);
+            if ($colors_content) {
+                $backup_data['colors'] = $colors_content;
+                error_log('ABF Auto-Updater: Colors backup created');
+            }
+        }
+        
+        // 2. typography.json sichern (falls vorhanden)
+        $typography_file = get_template_directory() . '/typography.json';
+        if (file_exists($typography_file)) {
+            $typography_content = file_get_contents($typography_file);
+            if ($typography_content) {
+                $backup_data['typography'] = $typography_content;
+                error_log('ABF Auto-Updater: Typography backup created');
+            }
+        }
+        
+        // 3. ACF Options aus Datenbank sichern
+        $backup_data['acf_colors'] = get_field('colors', 'option');
+        $backup_data['acf_typography'] = array(
+            'font_sizes' => get_field('font_sizes', 'option'),
+            'font_weights' => get_field('font_weights', 'option')
+        );
+        
+        // 4. Backup-Datei erstellen (in uploads-Verzeichnis für Sicherheit)
+        $uploads_dir = wp_upload_dir();
+        $backup_dir = $uploads_dir['basedir'] . '/abf-theme-backups';
+        
+        if (!file_exists($backup_dir)) {
+            wp_mkdir_p($backup_dir);
+        }
+        
+        $backup_filename = 'user-settings-backup-' . date('Y-m-d-H-i-s') . '.json';
+        $backup_path = $backup_dir . '/' . $backup_filename;
+        
+        if (file_put_contents($backup_path, json_encode($backup_data, JSON_PRETTY_PRINT))) {
+            $backup_data['backup_path'] = $backup_path;
+            error_log('ABF Auto-Updater: Settings backup saved to: ' . $backup_path);
+        } else {
+            error_log('ABF Auto-Updater: Failed to save backup file');
+        }
+        
+        return $backup_data;
+    }
+    
+    /**
+     * 🔄 User-Settings nach Update wiederherstellen
+     */
+    private function restore_user_settings($backup_data) {
+        $restore_status = array(
+            'colors_restored' => false,
+            'typography_restored' => false,
+            'acf_restored' => false,
+            'errors' => array()
+        );
+        
+        if (!$backup_data || !is_array($backup_data)) {
+            $restore_status['errors'][] = 'Keine Backup-Daten verfügbar';
+            return $restore_status;
+        }
+        
+        // 1. colors.json wiederherstellen
+        if (!empty($backup_data['colors'])) {
+            $colors_file = get_template_directory() . '/colors.json';
+            if (file_put_contents($colors_file, $backup_data['colors'])) {
+                $restore_status['colors_restored'] = true;
+                error_log('ABF Auto-Updater: Colors restored successfully');
+            } else {
+                $restore_status['errors'][] = 'Fehler beim Wiederherstellen der colors.json';
+            }
+        }
+        
+        // 2. typography.json wiederherstellen
+        if (!empty($backup_data['typography'])) {
+            $typography_file = get_template_directory() . '/typography.json';
+            if (file_put_contents($typography_file, $backup_data['typography'])) {
+                $restore_status['typography_restored'] = true;
+                error_log('ABF Auto-Updater: Typography restored successfully');
+            } else {
+                $restore_status['errors'][] = 'Fehler beim Wiederherstellen der typography.json';
+            }
+        }
+        
+        // 3. ACF Options wiederherstellen
+        $acf_errors = 0;
+        
+        if (!empty($backup_data['acf_colors'])) {
+            if (update_field('colors', $backup_data['acf_colors'], 'option')) {
+                error_log('ABF Auto-Updater: ACF colors restored');
+            } else {
+                $acf_errors++;
+            }
+        }
+        
+        if (!empty($backup_data['acf_typography']) && is_array($backup_data['acf_typography'])) {
+            if (!empty($backup_data['acf_typography']['font_sizes'])) {
+                if (!update_field('font_sizes', $backup_data['acf_typography']['font_sizes'], 'option')) {
+                    $acf_errors++;
+                }
+            }
+            if (!empty($backup_data['acf_typography']['font_weights'])) {
+                if (!update_field('font_weights', $backup_data['acf_typography']['font_weights'], 'option')) {
+                    $acf_errors++;
+                }
+            }
+        }
+        
+        if ($acf_errors === 0) {
+            $restore_status['acf_restored'] = true;
+            error_log('ABF Auto-Updater: ACF options restored successfully');
+        } else {
+            $restore_status['errors'][] = 'Fehler beim Wiederherstellen der ACF-Optionen (' . $acf_errors . ' Fehler)';
+        }
+        
+        // 4. Alte Backup-Dateien bereinigen (behalte nur die letzten 5)
+        $this->cleanup_old_backups();
+        
+        if (!empty($restore_status['errors'])) {
+            error_log('ABF Auto-Updater: Restore completed with errors: ' . implode(', ', $restore_status['errors']));
+        }
+        
+        return $restore_status;
+    }
+    
+    /**
+     * 🧹 Alte Backup-Dateien bereinigen
+     */
+    private function cleanup_old_backups() {
+        $uploads_dir = wp_upload_dir();
+        $backup_dir = $uploads_dir['basedir'] . '/abf-theme-backups';
+        
+        if (!is_dir($backup_dir)) {
+            return;
+        }
+        
+        $backup_files = glob($backup_dir . '/user-settings-backup-*.json');
+        
+        if (count($backup_files) > 5) {
+            // Sortiere nach Änderungsdatum (älteste zuerst)
+            usort($backup_files, function($a, $b) {
+                return filemtime($a) - filemtime($b);
+            });
+            
+            // Lösche die ältesten, behalte nur die letzten 5
+            $files_to_delete = array_slice($backup_files, 0, -5);
+            foreach ($files_to_delete as $file) {
+                @unlink($file);
+            }
+            
+            error_log('ABF Auto-Updater: Cleaned up ' . count($files_to_delete) . ' old backup files');
+        }
     }
  }
  
