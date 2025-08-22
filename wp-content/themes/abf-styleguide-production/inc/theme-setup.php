@@ -82,6 +82,10 @@ function abf_enqueue_scripts() {
     
     // Enqueue scripts
     wp_enqueue_script('abf-script', get_template_directory_uri() . '/assets/js/main.js', array(), '1.0.0', true);
+    // Styleguide Palette JS
+    $palette_js = get_template_directory() . '/assets/js/styleguide-palette.js';
+    $palette_ver = file_exists($palette_js) ? filemtime($palette_js) : '1.0.0';
+    wp_enqueue_script('abf-styleguide-palette', get_template_directory_uri() . '/assets/js/styleguide-palette.js', array(), $palette_ver, true);
 }
 add_action('wp_enqueue_scripts', 'abf_enqueue_scripts');
 

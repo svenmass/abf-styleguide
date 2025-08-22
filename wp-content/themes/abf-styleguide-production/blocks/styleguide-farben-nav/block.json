@@ -1,0 +1,25 @@
+{
+    "name": "acf/styleguide-farben",
+    "title": "Styleguide-Farben",
+    "description": "Palette-Navigation: Kacheln aller Farben (2:1, oben 100%, unten 4x 25%)",
+    "category": "abf-blocks",
+    "icon": "art",
+    "keywords": ["farben", "palette", "styleguide"],
+    "acf": {
+        "mode": "auto",
+        "renderTemplate": "template.php"
+    },
+    "supports": {
+        "jsx": true
+    },
+    "example": {
+        "attributes": {
+            "mode": "preview",
+            "data": {
+                "palette_ref": 0
+            }
+        }
+    }
+}
+
+

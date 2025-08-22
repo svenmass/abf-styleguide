@@ -59,7 +59,11 @@
         {
             "name": "Sand (Apotheke)",
             "value": "#c39a47"
+        },
+        {
+            "name": "Dunkelblau 80%",
+            "value": "#a8c2ce"
         }
     ],
-    "updated": "2025-07-22 17:36:47"
+    "updated": "2025-08-22 19:47:15"
 }

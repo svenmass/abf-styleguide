@@ -1,6 +1,6 @@
 <?php
 /**
- * Theme Settings
+ * Theme Settings and Utilities
  */
 
 if (!defined('ABSPATH')) {
@@ -513,10 +513,14 @@ add_action('acf/save_post', 'abf_save_typography_to_json', 20);
  * Alternative save function for backward compatibility
  */
 function abf_styleguide_save_colors_to_json() {
-    $colors = get_field('colors', 'option');
+    if (!function_exists('get_field')) {
+        return;
+    }
+
+    $colors = get_field('abf_colors', 'option');
     $colors_array = array();
 
-    if ($colors) {
+    if ($colors && is_array($colors)) {
         foreach ($colors as $color) {
             $colors_array[] = array(
                 'name' => $color['name'] ?? $color['color_name'] ?? '',
@@ -529,8 +533,16 @@ function abf_styleguide_save_colors_to_json() {
         'colors' => $colors_array,
         'updated' => current_time('mysql'),
     );
-    
-    file_put_contents(get_template_directory() . '/colors.json', json_encode($colors_data, JSON_PRETTY_PRINT));
+
+    // Schreibe BENUTZER-Datei in uploads/abf/colors.json (niemals ins Theme-Verzeichnis)
+    if (function_exists('wp_upload_dir')) {
+        $upload = wp_upload_dir();
+        $abf_dir = trailingslashit($upload['basedir']) . 'abf';
+        if (!is_dir($abf_dir)) {
+            wp_mkdir_p($abf_dir);
+        }
+        @file_put_contents(trailingslashit($abf_dir) . 'colors.json', json_encode($colors_data, JSON_PRETTY_PRINT));
+    }
 }
 add_action('acf/save_post', 'abf_styleguide_save_colors_to_json', 20);
 
@@ -538,20 +550,35 @@ add_action('acf/save_post', 'abf_styleguide_save_colors_to_json', 20);
  * Get colors from JSON file
  */
 function abf_get_colors() {
-    $colors_file = get_template_directory() . '/colors.json';
-    
-    if (file_exists($colors_file)) {
-        $colors = json_decode(file_get_contents($colors_file), true);
-        
-        // Handle both old and new JSON structure
-        if (isset($colors['colors'])) {
-            return $colors['colors'];
-        } elseif (is_array($colors)) {
-            // Old structure: direct array
-            return $colors;
+    $paths = array();
+
+    // 1) Benutzerdatei (uploads)
+    if (function_exists('wp_upload_dir')) {
+        $upload = wp_upload_dir();
+        $paths[] = trailingslashit($upload['basedir']) . 'abf/colors.json';
+    }
+
+    // 2) Child/Stylesheet-Theme (z. B. Production)
+    $paths[] = get_stylesheet_directory() . '/colors.json';
+
+    // 3) Parent/Template-Theme (Default)
+    $paths[] = get_template_directory() . '/colors.json';
+
+    foreach ($paths as $file) {
+        if (file_exists($file) && is_readable($file)) {
+            $json = file_get_contents($file);
+            if ($json !== false) {
+                $data = json_decode($json, true);
+                if (isset($data['colors']) && is_array($data['colors'])) {
+                    return $data['colors'];
+                }
+                if (is_array($data)) {
+                    return $data;
+                }
+            }
         }
     }
-    
+
     return array();
 }
 

@@ -1,0 +1,42 @@
+.block-styleguide-farben {
+	.sg-farben-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+		gap: var(--space-16, 16px);
+	}
+
+	.sg-farben-card {
+		display: block;
+		text-decoration: none;
+		color: inherit;
+		outline-offset: 2px;
+		/* 2:1 Karte */
+		aspect-ratio: 2 / 1;
+		background: var(--color-white, #fff);
+		box-shadow: 0 0 0 1px rgba(0,0,0,.06) inset;
+		position: relative;
+		transition: transform .15s ease, box-shadow .15s ease;
+	}
+	.sg-farben-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,.12); }
+
+	.sg-card-top {
+		height: 50%;
+		width: 100%;
+		display: flex;
+		align-items: center;
+	}
+
+	.sg-card-bottom {
+		display: grid;
+		grid-template-columns: repeat(4, 1fr);
+		height: 50%;
+		span { display: block; }
+	}
+
+	.sg-card-label {
+		font-size: .9rem;
+		font-weight: 700;
+	}
+}
+
+
