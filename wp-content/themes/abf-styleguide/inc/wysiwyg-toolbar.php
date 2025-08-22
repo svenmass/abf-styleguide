@@ -37,10 +37,11 @@ class ABF_WYSIWYG_Toolbar {
             $colors_json = file_get_contents($colors_file);
             if ($colors_json !== false) {
                 $colors_data = json_decode($colors_json, true);
-                if ($colors_data && isset($colors_data['colors'])) {
+                if (is_array($colors_data) && isset($colors_data['colors']) && is_array($colors_data['colors'])) {
                     $this->colors = $colors_data['colors'];
                     error_log('ABF Toolbar: Loaded ' . count($this->colors) . ' colors from JSON');
                 } else {
+                    $this->colors = array();
                     error_log('ABF Toolbar: Colors JSON decode failed or no colors array found');
                 }
             } else {
@@ -55,10 +56,12 @@ class ABF_WYSIWYG_Toolbar {
             $typography_json = file_get_contents($typography_file);
             if ($typography_json !== false) {
                 $typography_data = json_decode($typography_json, true);
-                if ($typography_data) {
+                if (is_array($typography_data)) {
                     $this->typography = $typography_data;
-                    error_log('ABF Toolbar: Loaded typography data with ' . (isset($typography_data['font_sizes']) ? count($typography_data['font_sizes']) : 0) . ' font sizes');
+                    $sizes_count = (isset($typography_data['font_sizes']) && is_array($typography_data['font_sizes'])) ? count($typography_data['font_sizes']) : 0;
+                    error_log('ABF Toolbar: Loaded typography data with ' . $sizes_count . ' font sizes');
                 } else {
+                    $this->typography = array();
                     error_log('ABF Toolbar: Typography JSON decode failed');
                 }
             } else {
@@ -165,8 +168,8 @@ class ABF_WYSIWYG_Toolbar {
         );
         
         // Debug: Log data before localizing
-        error_log('ABF Toolbar Colors count: ' . count($this->colors));
-        error_log('ABF Toolbar Typography font_sizes count: ' . (isset($this->typography['font_sizes']) ? count($this->typography['font_sizes']) : 'not set'));
+        error_log('ABF Toolbar Colors count: ' . (is_array($this->colors) ? count($this->colors) : 0));
+        error_log('ABF Toolbar Typography font_sizes count: ' . ((isset($this->typography['font_sizes']) && is_array($this->typography['font_sizes'])) ? count($this->typography['font_sizes']) : 0));
         
         // Localize the script with our JSON data - ATTACH TO DEBUG SCRIPT
         wp_localize_script('abf-toolbar-debug', 'abfToolbarData', [

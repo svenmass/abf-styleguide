@@ -4,7 +4,7 @@ Tags: blocks, custom-blocks, acf, responsive-design
 Requires at least: 6.0
 Tested up to: 6.4
 Requires PHP: 8.0
-Stable tag: 1.0.10
+Stable tag: 1.0.11
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -58,7 +58,7 @@ Für Support und Anpassungen wenden Sie sich an den Theme-Autor.
 
 == Changelog ==
 
-= 1.0.10 =
+= 1.0.11 =
 * Initial production release
 * 15+ ACF-Blöcke verfügbar
 * Automatische Block-Registrierung

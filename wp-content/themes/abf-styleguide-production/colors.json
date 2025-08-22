@@ -5,24 +5,32 @@
             "value": "#66a98c"
         },
         {
+            "name": "ABF Gr\u00fcn 80%",
+            "value": "#8fb7a3"
+        },
+        {
+            "name": "ABF Gr\u00fcn 40%",
+            "value": "#c7dbd1"
+        },
+        {
+            "name": "ABF Gr\u00fcn 30% ",
+            "value": "#d5e4dd"
+        },
+        {
             "name": "ABF Rot",
             "value": "#c50d14"
         },
         {
-            "name": "ABF Gr\u00fcn 30%",
-            "value": "#d5e4dd"
-        },
-        {
-            "name": "Wei\u00df (Basisfarbe)",
-            "value": "#ffffff"
-        },
-        {
-            "name": "Antrazit (Text)",
-            "value": "#575756"
-        },
-        {
-            "name": "Hellgrau (Basisfarbe)",
+            "name": "Hellgrau",
             "value": "#cccccc"
+        },
+        {
+            "name": "Hellgrau 25%",
+            "value": "#f2f2f2"
+        },
+        {
+            "name": "Anthrazit",
+            "value": "#575756"
         },
         {
             "name": "Hellblau (Apotheke)",
@@ -57,13 +65,25 @@
             "value": "#8c2761"
         },
         {
+            "name": "Aubergine 40%",
+            "value": "#cdacbf"
+        },
+        {
             "name": "Sand (Apotheke)",
             "value": "#c39a47"
+        },
+        {
+            "name": "Weiss (Apotheke)",
+            "value": "#ffffff"
+        },
+        {
+            "name": "Gr\u00fcn (Pharmazie)",
+            "value": "#00a6a1"
         },
         {
             "name": "Dunkelblau 80%",
             "value": "#a8c2ce"
         }
     ],
-    "updated": "2025-08-22 19:47:15"
+    "updated": "2025-08-22 18:42:40"
 }
