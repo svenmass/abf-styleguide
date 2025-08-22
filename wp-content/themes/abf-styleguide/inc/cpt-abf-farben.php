@@ -88,6 +88,7 @@ function abf_register_acf_palette_fields() {
 						'type' => 'message',
 						'esc_html' => 0,
 						'message' => '<div class="abf-color-preview" data-preview></div>',
+						'wrapper' => array('class' => 'is-hidden'),
 					),
 					array(
 						'key' => 'field_color_slug',
@@ -95,6 +96,11 @@ function abf_register_acf_palette_fields() {
 						'name' => 'slug',
 						'type' => 'text',
 						'instructions' => 'Automatisch aus Bezeichnung. Zum Überschreiben leer lassen oder anpassen.',
+						'conditional_logic' => array(
+							array(
+								array('field' => 'field_color_advanced','operator' => '==','value' => 1),
+							),
+						),
 					),
 					array(
 						'key' => 'field_color_hex_100',
@@ -117,6 +123,11 @@ function abf_register_acf_palette_fields() {
 						),
 						'allow_null' => 1,
 						'default_value' => 'auto',
+						'conditional_logic' => array(
+							array(
+								array('field' => 'field_color_advanced','operator' => '==','value' => 1),
+							),
+						),
 					),
 					array(
 						'key' => 'field_color_cmyk_100',
@@ -139,6 +150,11 @@ function abf_register_acf_palette_fields() {
 						'name' => 'hex_80',
 						'type' => 'text',
 						'pattern' => '^#([A-Fa-f0-9]{6})$',
+						'conditional_logic' => array(
+							array(
+								array('field' => 'field_color_advanced','operator' => '==','value' => 1),
+							),
+						),
 					),
 					array(
 						'key' => 'field_color_hex_60',
@@ -146,6 +162,11 @@ function abf_register_acf_palette_fields() {
 						'name' => 'hex_60',
 						'type' => 'text',
 						'pattern' => '^#([A-Fa-f0-9]{6})$',
+						'conditional_logic' => array(
+							array(
+								array('field' => 'field_color_advanced','operator' => '==','value' => 1),
+							),
+						),
 					),
 					array(
 						'key' => 'field_color_hex_40',
@@ -153,6 +174,11 @@ function abf_register_acf_palette_fields() {
 						'name' => 'hex_40',
 						'type' => 'text',
 						'pattern' => '^#([A-Fa-f0-9]{6})$',
+						'conditional_logic' => array(
+							array(
+								array('field' => 'field_color_advanced','operator' => '==','value' => 1),
+							),
+						),
 					),
 					array(
 						'key' => 'field_color_hex_25',
@@ -160,6 +186,11 @@ function abf_register_acf_palette_fields() {
 						'name' => 'hex_25',
 						'type' => 'text',
 						'pattern' => '^#([A-Fa-f0-9]{6})$',
+						'conditional_logic' => array(
+							array(
+								array('field' => 'field_color_advanced','operator' => '==','value' => 1),
+							),
+						),
 					),
 					array(
 						'key' => 'field_color_rgb_80',
@@ -167,6 +198,11 @@ function abf_register_acf_palette_fields() {
 						'name' => 'rgb_80',
 						'type' => 'text',
 						'placeholder' => 'R|G|B',
+						'conditional_logic' => array(
+							array(
+								array('field' => 'field_color_advanced','operator' => '==','value' => 1),
+							),
+						),
 					),
 					array(
 						'key' => 'field_color_rgb_60',
@@ -174,6 +210,11 @@ function abf_register_acf_palette_fields() {
 						'name' => 'rgb_60',
 						'type' => 'text',
 						'placeholder' => 'R|G|B',
+						'conditional_logic' => array(
+							array(
+								array('field' => 'field_color_advanced','operator' => '==','value' => 1),
+							),
+						),
 					),
 					array(
 						'key' => 'field_color_rgb_40',
@@ -181,6 +222,11 @@ function abf_register_acf_palette_fields() {
 						'name' => 'rgb_40',
 						'type' => 'text',
 						'placeholder' => 'R|G|B',
+						'conditional_logic' => array(
+							array(
+								array('field' => 'field_color_advanced','operator' => '==','value' => 1),
+							),
+						),
 					),
 					array(
 						'key' => 'field_color_rgb_25',
@@ -188,6 +234,11 @@ function abf_register_acf_palette_fields() {
 						'name' => 'rgb_25',
 						'type' => 'text',
 						'placeholder' => 'R|G|B',
+						'conditional_logic' => array(
+							array(
+								array('field' => 'field_color_advanced','operator' => '==','value' => 1),
+							),
+						),
 					),
 					array(
 						'key' => 'field_color_cmyk_80',
@@ -196,6 +247,11 @@ function abf_register_acf_palette_fields() {
 						'type' => 'text',
 						'placeholder' => 'C|M|Y|K',
 						'pattern' => '^\d{1,3}\|\d{1,3}\|\d{1,3}\|\d{1,3}$',
+						'conditional_logic' => array(
+							array(
+								array('field' => 'field_color_advanced','operator' => '==','value' => 1),
+							),
+						),
 					),
 					array(
 						'key' => 'field_color_cmyk_60',
@@ -204,6 +260,11 @@ function abf_register_acf_palette_fields() {
 						'type' => 'text',
 						'placeholder' => 'C|M|Y|K',
 						'pattern' => '^\d{1,3}\|\d{1,3}\|\d{1,3}\|\d{1,3}$',
+						'conditional_logic' => array(
+							array(
+								array('field' => 'field_color_advanced','operator' => '==','value' => 1),
+							),
+						),
 					),
 					array(
 						'key' => 'field_color_cmyk_40',
@@ -212,6 +273,11 @@ function abf_register_acf_palette_fields() {
 						'type' => 'text',
 						'placeholder' => 'C|M|Y|K',
 						'pattern' => '^\d{1,3}\|\d{1,3}\|\d{1,3}\|\d{1,3}$',
+						'conditional_logic' => array(
+							array(
+								array('field' => 'field_color_advanced','operator' => '==','value' => 1),
+							),
+						),
 					),
 					array(
 						'key' => 'field_color_cmyk_25',
@@ -220,6 +286,11 @@ function abf_register_acf_palette_fields() {
 						'type' => 'text',
 						'placeholder' => 'C|M|Y|K',
 						'pattern' => '^\d{1,3}\|\d{1,3}\|\d{1,3}\|\d{1,3}$',
+						'conditional_logic' => array(
+							array(
+								array('field' => 'field_color_advanced','operator' => '==','value' => 1),
+							),
+						),
 					),
 					array(
 						'key' => 'field_color_text_color_80',
@@ -232,6 +303,11 @@ function abf_register_acf_palette_fields() {
 							'white' => 'Weiß',
 						),
 						'allow_null' => 1,
+						'conditional_logic' => array(
+							array(
+								array('field' => 'field_color_advanced','operator' => '==','value' => 1),
+							),
+						),
 					),
 					array(
 						'key' => 'field_color_text_color_60',
@@ -244,6 +320,11 @@ function abf_register_acf_palette_fields() {
 							'white' => 'Weiß',
 						),
 						'allow_null' => 1,
+						'conditional_logic' => array(
+							array(
+								array('field' => 'field_color_advanced','operator' => '==','value' => 1),
+							),
+						),
 					),
 					array(
 						'key' => 'field_color_text_color_40',
@@ -256,6 +337,11 @@ function abf_register_acf_palette_fields() {
 							'white' => 'Weiß',
 						),
 						'allow_null' => 1,
+						'conditional_logic' => array(
+							array(
+								array('field' => 'field_color_advanced','operator' => '==','value' => 1),
+							),
+						),
 					),
 					array(
 						'key' => 'field_color_text_color_25',
@@ -268,6 +354,19 @@ function abf_register_acf_palette_fields() {
 							'white' => 'Weiß',
 						),
 						'allow_null' => 1,
+						'conditional_logic' => array(
+							array(
+								array('field' => 'field_color_advanced','operator' => '==','value' => 1),
+							),
+						),
+					),
+					array(
+						'key' => 'field_color_advanced',
+						'label' => 'Weitere Einstellungen anzeigen',
+						'name' => 'field_color_advanced_toggle',
+						'type' => 'true_false',
+						'ui' => 1,
+						'default_value' => 0,
 					),
 					array(
 						'key' => 'field_color_notes',
