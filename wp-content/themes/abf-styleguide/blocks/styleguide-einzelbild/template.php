@@ -20,18 +20,17 @@ if (!empty($block['align'])) {
     $class_name .= ' align' . $block['align'];
 }
 
-// Add lightbox class for styling
-if ($enable_lightbox) {
-    $class_name .= ' has-lightbox';
-} else {
-    $class_name .= ' no-lightbox';
-}
-
 // Get ACF fields
 $image = get_field('se_image');
 $alt_text = get_field('se_alt_text');
 $caption = get_field('se_caption');
 $enable_lightbox = get_field('se_enable_lightbox');
+// Add lightbox class for styling (after reading ACF field)
+if ($enable_lightbox) {
+    $class_name .= ' has-lightbox';
+} else {
+    $class_name .= ' no-lightbox';
+}
 $show_download = get_field('se_show_download');
 $download_text = get_field('se_download_text') ?: 'Bild herunterladen';
 $custom_download = get_field('se_custom_download');

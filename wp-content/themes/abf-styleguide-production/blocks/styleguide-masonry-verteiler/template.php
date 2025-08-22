@@ -37,7 +37,10 @@ if (!$masonry_elements || !is_array($masonry_elements)) {
 // Prepare headline classes
 $headline_class_string = 'styleguide-masonry-verteiler-headline';
 
-// Calculate Masonry Layout - 3 columns system
+// Hybrid-System: Desktop behält PHP-Spalten (für exakte Reihenfolge), 
+// Tablet/Mobile verwenden CSS-Columns (für responsive Verteilung)
+
+// Calculate Masonry Layout - 3 columns system für Desktop
 $columns = 3;
 $column_data = array();
 $column_heights = array(0, 0, 0); // Track height of each column
@@ -47,7 +50,7 @@ for ($i = 0; $i < $columns; $i++) {
     $column_data[$i] = array();
 }
 
-// Distribute elements across columns
+// Distribute elements across columns (für Desktop-Darstellung)
 foreach ($masonry_elements as $index => $element) {
     $format = $element['element_format'] ?: 'landscape';
     $height_units = ($format === 'portrait') ? 2 : 1; // Portrait takes 2 units, landscape takes 1
@@ -88,7 +91,7 @@ foreach ($masonry_elements as $index => $element) {
         </<?php echo esc_html($headline_tag); ?>>
     <?php endif; ?>
     
-    <div class="styleguide-masonry-verteiler-container">
+    <div class="styleguide-masonry-verteiler-container desktop-columns">
         <?php foreach ($column_data as $column_index => $column_elements): ?>
             <div class="masonry-column masonry-column-<?php echo ($column_index + 1); ?>">
                 
@@ -138,8 +141,6 @@ foreach ($masonry_elements as $index => $element) {
                     if ($content_type === 'image' && $image_shadow) {
                         $element_classes[] = 'masonry-element--with-shadow';
                     }
-                    
-
                     
                     $element_class_string = implode(' ', $element_classes);
                     
@@ -208,7 +209,7 @@ foreach ($masonry_elements as $index => $element) {
                                      alt="<?php echo esc_attr($image_alt); ?>"
                                      class="masonry-element__image"
                                      <?php if ($image_srcset): echo $image_srcset; endif; ?>
-                                     sizes="(max-width: 768px) 100vw, 33vw"
+                                     sizes="(max-width: 768px) 50vw, (max-width: 480px) 100vw, 33vw"
                                      loading="lazy">
                             <?php endif; ?>
                             
@@ -229,6 +230,99 @@ foreach ($masonry_elements as $index => $element) {
                 <?php endforeach; ?>
                 
             </div>
+        <?php endforeach; ?>
+    </div>
+    
+    <!-- Mobile/Tablet: CSS-Columns für responsive Verteilung -->
+    <div class="styleguide-masonry-verteiler-container mobile-columns">
+        <?php foreach ($masonry_elements as $index => $element): 
+            $format = $element['element_format'] ?: 'landscape';
+            
+            // Get element data (vereinfacht, da identisch zu oben)
+            $content_type = $element['content_type'] ?: 'image';
+            $element_image = $element['element_image'];
+            $element_color = $element['element_color'] ?: 'primary';
+            $element_text = $element['element_text'] ?: '';
+            $text_color = $element['text_color'] ?: 'white';
+            $text_size = $element['text_size'] ?: '18';
+            $element_link = $element['element_link'];
+            $alt_text = $element['alt_text'] ?: '';
+            
+            // ACF True/False Feld richtig auslesen
+            if (array_key_exists('image_shadow', $element)) {
+                $image_shadow = ($element['image_shadow'] === true || $element['image_shadow'] === 1 || $element['image_shadow'] === '1');
+            } else {
+                $image_shadow = true;
+            }
+            
+            // Prepare link data
+            $link_url = '';
+            $link_target = '_self';
+            if ($element_link && is_object($element_link)) {
+                $link_url = get_permalink($element_link->ID);
+                $link_target = '_self';
+            }
+            
+            // Prepare classes
+            $element_classes = array(
+                'masonry-element',
+                'masonry-element--' . $format,
+                'masonry-element--' . $content_type
+            );
+            
+            if ($link_url) {
+                $element_classes[] = 'masonry-element--linked';
+            }
+            
+            if ($content_type === 'image' && $image_shadow) {
+                $element_classes[] = 'masonry-element--with-shadow';
+            }
+            
+            $element_class_string = implode(' ', $element_classes);
+            
+            // Prepare styles (vereinfacht)
+            $background_style = '';
+            $image_src = '';
+            $image_alt = '';
+            
+            if ($content_type === 'image' && $element_image && is_array($element_image)) {
+                $image_src = $element_image['url'];
+                $image_alt = $alt_text ?: $element_image['alt'] ?: '';
+            } elseif ($content_type === 'color') {
+                $color_value = function_exists('abf_get_styleguide_color_value') 
+                    ? abf_get_styleguide_color_value($element_color) 
+                    : '#' . $element_color;
+                $background_style = 'background-color: ' . $color_value . ';';
+            }
+            
+            $text_color_value = ($text_color === 'white') ? 'white' : 
+                (function_exists('abf_get_styleguide_color_value') ? abf_get_styleguide_color_value($text_color) : 'white');
+            
+            $text_style = $element_text ? 'color: ' . $text_color_value . '; font-size: ' . intval($text_size) . 'px;' : '';
+        ?>
+        
+        <div class="<?php echo esc_attr($element_class_string); ?>">
+            <?php if ($link_url): ?>
+                <a href="<?php echo esc_url($link_url); ?>" class="masonry-element__link" target="<?php echo esc_attr($link_target); ?>">
+            <?php endif; ?>
+            
+                <div class="masonry-element__content" <?php if ($background_style): ?>style="<?php echo esc_attr($background_style); ?>"<?php endif; ?>>
+                    <?php if ($content_type === 'image' && $image_src): ?>
+                        <img src="<?php echo esc_url($image_src); ?>" alt="<?php echo esc_attr($image_alt); ?>" class="masonry-element__image" loading="lazy">
+                    <?php endif; ?>
+                    
+                    <?php if ($element_text): ?>
+                        <div class="masonry-element__text-overlay" style="<?php echo esc_attr($text_style); ?>">
+                            <?php echo esc_html($element_text); ?>
+                        </div>
+                    <?php endif; ?>
+                </div>
+            
+            <?php if ($link_url): ?>
+                </a>
+            <?php endif; ?>
+        </div>
+        
         <?php endforeach; ?>
     </div>
     

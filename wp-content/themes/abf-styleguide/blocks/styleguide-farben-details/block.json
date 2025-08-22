@@ -1,0 +1,21 @@
+{
+    "name": "acf/styleguide-farben-details",
+    "title": "Styleguide-Farben-Details",
+    "description": "Detaildarstellung einer gewählten Palette mit Berechnungen und WCAG-Kontrast",
+    "category": "abf-blocks",
+    "icon": "admin-appearance",
+    "keywords": ["farben", "palette", "details", "wcag"],
+    "acf": {
+        "mode": "auto",
+        "renderTemplate": "template.php"
+    },
+    "supports": { "jsx": true },
+    "example": {
+        "attributes": {
+            "mode": "preview",
+            "data": { "palette_ref": 0 }
+        }
+    }
+}
+
+

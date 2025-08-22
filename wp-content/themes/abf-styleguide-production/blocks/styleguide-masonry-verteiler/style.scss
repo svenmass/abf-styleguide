@@ -13,36 +13,58 @@
         }
     }
     
-    // Masonry Container - 3 Column Grid (gaplos)
+    // Hybrid-System: Desktop PHP-Spalten (exakte Reihenfolge), Mobile CSS-Columns (responsive)
     .styleguide-masonry-verteiler-container {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 0;
         width: 100%;
         
-        @media (max-width: 768px) {
-            grid-template-columns: repeat(2, 1fr);
+        // Desktop: PHP-generierte Spalten (behält Backend-Reihenfolge)
+        &.desktop-columns {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0;
+            
+            @media (max-width: 768px) {
+                display: none; // Verstecke Desktop-Version auf Tablet/Mobile
+            }
         }
         
-        @media (max-width: 480px) {
-            grid-template-columns: 1fr;
+        // Mobile/Tablet: CSS-Columns (responsive Verteilung)
+        &.mobile-columns {
+            display: none; // Standardmäßig versteckt
+            columns: 2;
+            column-gap: 0;
+            
+            @media (max-width: 768px) {
+                display: block; // Zeige Mobile-Version auf Tablet/Mobile
+            }
+            
+            @media (max-width: 480px) {
+                columns: 1;
+            }
         }
     }
     
-    // Column Layout (gaplos)
+    // Column Layout (für Desktop-Version)
     .masonry-column {
         display: flex;
         flex-direction: column;
         gap: 0;
     }
     
-    // Masonry Elements
+    // Masonry Elements (Hybrid-System)
     .masonry-element {
         position: relative;
         width: 100%;
+        margin-bottom: 0; // Gaplos
         overflow: hidden;
         border-radius: 0px;
         transition: transform 0.3s ease, box-shadow 0.3s ease;
+        
+        // Nur in CSS-Columns-Version: Verhindert Teilung zwischen Spalten
+        .mobile-columns & {
+            break-inside: avoid;
+            display: block;
+        }
         
         // Aspect Ratios
         &--landscape {

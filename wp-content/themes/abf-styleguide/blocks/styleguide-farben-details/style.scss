@@ -1,0 +1,37 @@
+.block-styleguide-farben-details {
+	.sg-color-section { margin-bottom: var(--space-32, 32px); }
+	.sg-color-heading { margin: 0 0 var(--space-12, 12px) 0; }
+	.sg-section-sep { height: 1px; background: rgba(0,0,0,.1); margin: 4px 0 8px; }
+	.sg-gap16 { height: 16px; }
+
+	.sg-color-grid { display: grid; grid-template-columns: 20% 20% 60%; column-gap: 4px; row-gap: 0; align-items: stretch; }
+	.sg-col { margin: 0; padding: 0; }
+	.sg-col-preview, .sg-col-steps, .sg-right { height: 100%; }
+	.sg-col-preview { min-height: 180px; position: relative; }
+	.sg-col-preview.has-text-white { color: #fff; }
+	.sg-col-preview.has-text-black { color: #000; }
+	.sg-copy-hex { position: absolute; left: 8px; bottom: 8px; display: inline-flex; gap: 8px; align-items: center; background: transparent; color: inherit; border: 0; padding: 0; cursor: pointer; transition: transform .1s ease; }
+	.sg-copy-hex.is-copied { transform: scale(1.05); }
+	.sg-copy-hex .sg-copy-icon { display: inline-flex; }
+	.sg-copy-hex .sg-copy-icon svg { width: 24px; height: 24px; }
+
+	.sg-col-steps { display: grid; grid-template-rows: repeat(5, 1fr); gap: 4px; }
+	.sg-step { background: var(--step-color); border: 0; padding: calc(var(--spacing-md, 16px)); text-align: left; height: 100%; display: flex; align-items: center; justify-content: space-between; transition: transform .12s ease, box-shadow .12s ease; }
+	.sg-step:hover { transform: translateX(2px); box-shadow: inset 0 0 0 1px rgba(0,0,0,.15); }
+	.sg-step .sg-step-label { font-weight: 600; }
+	.sg-step .sg-step-icon { display: inline-flex; }
+	.sg-step .sg-step-icon svg { width: 24px; height: 24px; }
+
+	.sg-right { padding-left: calc(var(--spacing-sm, 8px)); display: flex; flex-direction: column; }
+	.sg-row1 { display: grid; grid-template-columns: auto 1fr; gap: 6px 12px; align-items: baseline; }
+	.sg-row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+	.sg-row1 .label, .sg-row2 .label { font-size: var(--font-size-small, 14px); color: #575756; }
+	.sg-row1 .value { font-size: var(--font-size-small, 14px); font-weight: 600; }
+	.sg-row2 .value { font-size: var(--font-size-body, 18px); font-weight: 600; }
+
+	@media (max-width: 576px) {
+		.sg-color-grid { grid-template-columns: 1fr; column-gap: 0; }
+	}
+}
+
+

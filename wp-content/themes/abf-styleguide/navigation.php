@@ -12,7 +12,9 @@ if (!defined('ABSPATH')) {
     <div class="navigation__container">
         <!-- Logo in Navigation -->
         <div class="navigation__logo">
-            <?php abf_output_logo('desktop', 'navigation__logo-desktop'); ?>
+            <a href="<?php echo esc_url(home_url('/')); ?>" class="navigation__logo-link" aria-label="Zur Startseite">
+                <?php abf_output_logo('desktop', 'navigation__logo-desktop'); ?>
+            </a>
         </div>
         
         <div class="navigation__header">
