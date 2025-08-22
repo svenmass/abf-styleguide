@@ -419,4 +419,41 @@ add_action('manage_abf_palette_posts_custom_column', function ($col, $post_id) {
     echo '</div>';
 }, 10, 2);
 
+/**
+ * Fallback-Preview direkt unter "HEX 100%" rendern (falls Message-Feld nicht greift)
+ */
+add_action('acf/render_field/name=hex_100', function ($field) {
+    // Wir rendern nur einmal je Repeater-Zeile
+    $hex100 = isset($field['value']) ? $field['value'] : '';
+    if (!$hex100 || !function_exists('abf_palette_compute_shades')) {
+        echo '<div class="abf-color-preview" style="margin-top:6px;color:#666">Vorschau erscheint nach Eingabe von HEX 100%.</div>';
+        return;
+    }
+
+    // Zugriff auf weitere Zeilenwerte
+    $row = array(
+        'hex_100' => $hex100,
+        'hex_80' => function_exists('get_sub_field') ? get_sub_field('hex_80') : '',
+        'hex_60' => function_exists('get_sub_field') ? get_sub_field('hex_60') : '',
+        'hex_40' => function_exists('get_sub_field') ? get_sub_field('hex_40') : '',
+        'hex_25' => function_exists('get_sub_field') ? get_sub_field('hex_25') : '',
+        'cmyk_100' => function_exists('get_sub_field') ? get_sub_field('cmyk_100') : '',
+        'text_color_100' => function_exists('get_sub_field') ? (get_sub_field('text_color_100') ?: 'auto') : 'auto',
+        'text_color_80' => function_exists('get_sub_field') ? (get_sub_field('text_color_80') ?: 'auto') : 'auto',
+        'text_color_60' => function_exists('get_sub_field') ? (get_sub_field('text_color_60') ?: 'auto') : 'auto',
+        'text_color_40' => function_exists('get_sub_field') ? (get_sub_field('text_color_40') ?: 'auto') : 'auto',
+        'text_color_25' => function_exists('get_sub_field') ? (get_sub_field('text_color_25') ?: 'auto') : 'auto',
+    );
+
+    $sh = abf_palette_compute_shades($row);
+    $steps = array('100','80','60','40','25');
+    echo '<div class="abf-color-preview" style="display:flex;gap:4px;align-items:center;margin:6px 0">';
+    foreach ($steps as $s) {
+        $hex = isset($sh[$s]['hex']) ? $sh[$s]['hex'] : '';
+        echo '<span class="sw" style="width:18px;height:18px;border:1px solid #ddd;background:' . esc_attr($hex) . '"></span>';
+    }
+    echo '<span class="tx" style="font-size:12px;color:#666;margin-left:6px">' . esc_html($hex100) . '</span>';
+    echo '</div>';
+}, 20);
+
 
