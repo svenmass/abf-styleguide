@@ -395,6 +395,44 @@ add_filter('acf/prepare_field/name=color_preview', function ($field) {
     return $field;
 });
 
+// Render-Variante: dynamische Vorschau im Message-Feld
+add_action('acf/render_field/name=color_preview', function ($field) {
+    $hex100 = function_exists('get_sub_field') ? get_sub_field('hex_100') : '';
+    if (!$hex100 || !function_exists('abf_palette_compute_shades')) {
+        echo '<div class="abf-color-preview" style="margin:6px 0;color:#666">Bitte HEX 100% angeben.</div>';
+        return;
+    }
+    $row = array(
+        'hex_100' => $hex100,
+        'hex_80' => get_sub_field('hex_80'),
+        'hex_60' => get_sub_field('hex_60'),
+        'hex_40' => get_sub_field('hex_40'),
+        'hex_25' => get_sub_field('hex_25'),
+        'cmyk_100' => get_sub_field('cmyk_100'),
+        'text_color_100' => get_sub_field('text_color_100') ?: 'auto',
+        'text_color_80' => get_sub_field('text_color_80') ?: 'auto',
+        'text_color_60' => get_sub_field('text_color_60') ?: 'auto',
+        'text_color_40' => get_sub_field('text_color_40') ?: 'auto',
+        'text_color_25' => get_sub_field('text_color_25') ?: 'auto',
+    );
+    $sh = abf_palette_compute_shades($row);
+    $steps = array('100','80','60','40','25');
+    echo '<div class="abf-color-preview" style="display:flex;gap:6px;align-items:center;margin:6px 0;flex-wrap:wrap">';
+    foreach ($steps as $s) {
+        $hex = isset($sh[$s]['hex']) ? $sh[$s]['hex'] : '';
+        $txt = isset($sh[$s]['text_color']) ? $sh[$s]['text_color'] : 'auto';
+        $ratio = ($txt === 'white') ? ($sh[$s]['contrast_white'] ?? 0) : ($sh[$s]['contrast_black'] ?? 0);
+        $aa = ($ratio >= 4.5) ? '✓' : '✕';
+        $title = $s . '% ' . $hex . ' · ' . ($txt === 'white' ? 'Weiß' : 'Schwarz') . ' · ' . number_format((float)$ratio,1) . ':1';
+        echo '<span title="' . esc_attr($title) . '" style="display:inline-flex;flex-direction:column;align-items:center;gap:2px">';
+        echo '<span class="sw" style="width:24px;height:16px;border:1px solid #ddd;background:' . esc_attr($hex) . '"></span>';
+        echo '<span style="font-size:10px;color:#666">' . esc_html($s) . '% ' . esc_html($aa) . '</span>';
+        echo '</span>';
+    }
+    echo '<span class="tx" style="font-size:12px;color:#666;margin-left:6px">' . esc_html($hex100) . '</span>';
+    echo '</div>';
+}, 10, 1);
+
 /**
  * CPT Liste: Spalten mit Vorschau
  */
@@ -418,6 +456,17 @@ add_action('manage_abf_palette_posts_custom_column', function ($col, $post_id) {
     }
     echo '</div>';
 }, 10, 2);
+
+/**
+ * Repeater-Zeilenüberschrift verbessern (Bezeichnung — HEX100)
+ */
+add_filter('acf/fields/repeater/row_title/name=colors', function ($title, $field, $row, $i) {
+    $label = isset($row['label']) ? $row['label'] : '';
+    $hex = isset($row['hex_100']) ? $row['hex_100'] : '';
+    $title = trim($label) ? $label : $title;
+    if ($hex) { $title .= ' — ' . strtoupper($hex); }
+    return $title;
+}, 10, 4);
 
 /**
  * Fallback-Preview direkt unter "HEX 100%" rendern (falls Message-Feld nicht greift)
