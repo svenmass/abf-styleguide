@@ -82,6 +82,14 @@ function abf_register_acf_palette_fields() {
 						'required' => 1,
 					),
 					array(
+						'key' => 'field_color_preview',
+						'label' => 'Vorschau',
+						'name' => 'color_preview',
+						'type' => 'message',
+						'esc_html' => 0,
+						'message' => '<div class="abf-color-preview" data-preview></div>',
+					),
+					array(
 						'key' => 'field_color_slug',
 						'label' => 'Slug (Anker)',
 						'name' => 'slug',
@@ -338,5 +346,77 @@ function abf_palette_generate_color_slugs($post_id) {
 	update_field('colors', $rows, $post_id);
 }
 add_action('acf/save_post', 'abf_palette_generate_color_slugs', 20);
+
+/**
+ * Admin Preview: Render compact swatches for each repeater row
+ */
+add_action('admin_head', function () {
+    echo '<style>
+    .abf-color-preview{display:flex;gap:4px;align-items:center;margin:6px 0}
+    .abf-color-preview .sw{width:18px;height:18px;border:1px solid #ddd}
+    .abf-color-preview .tx{font-size:12px;color:#666;margin-left:6px}
+    </style>';
+});
+
+add_filter('acf/prepare_field/name=color_preview', function ($field) {
+    // Hole aktuelle Zeilendaten sicher
+    $hex100 = get_sub_field('hex_100');
+    if (!$hex100 || !function_exists('abf_hex_to_rgb')) {
+        $field['message'] = '<div class="abf-color-preview">Bitte HEX 100% angeben.</div>';
+        return $field;
+    }
+
+    $row = array(
+        'hex_100' => $hex100,
+        'hex_80' => get_sub_field('hex_80'),
+        'hex_60' => get_sub_field('hex_60'),
+        'hex_40' => get_sub_field('hex_40'),
+        'hex_25' => get_sub_field('hex_25'),
+        'cmyk_100' => get_sub_field('cmyk_100'),
+        'text_color_100' => get_sub_field('text_color_100') ?: 'auto',
+        'text_color_80' => get_sub_field('text_color_80') ?: 'auto',
+        'text_color_60' => get_sub_field('text_color_60') ?: 'auto',
+        'text_color_40' => get_sub_field('text_color_40') ?: 'auto',
+        'text_color_25' => get_sub_field('text_color_25') ?: 'auto',
+    );
+
+    if (function_exists('abf_palette_compute_shades')) {
+        $sh = abf_palette_compute_shades($row);
+        $steps = array('100','80','60','40','25');
+        $html = '<div class="abf-color-preview">';
+        foreach ($steps as $s) {
+            $hex = isset($sh[$s]['hex']) ? $sh[$s]['hex'] : '';
+            $html .= '<span class="sw" style="background:' . esc_attr($hex) . '"></span>';
+        }
+        $html .= '<span class="tx">' . esc_html($hex100) . '</span>';
+        $html .= '</div>';
+        $field['message'] = $html;
+    }
+    return $field;
+});
+
+/**
+ * CPT Liste: Spalten mit Vorschau
+ */
+add_filter('manage_edit-abf_palette_columns', function ($cols) {
+    $cols['abf_colors_preview'] = __('Farben', 'abf-styleguide');
+    return $cols;
+});
+
+add_action('manage_abf_palette_posts_custom_column', function ($col, $post_id) {
+    if ($col !== 'abf_colors_preview') { return; }
+    $rows = get_field('colors', $post_id);
+    if (!$rows || !is_array($rows)) { return; }
+    $first = $rows[0] ?? null;
+    if (!$first || !isset($first['hex_100'])) { return; }
+    $shades = function_exists('abf_palette_compute_shades') ? abf_palette_compute_shades($first) : array();
+    $steps = array('100','80','60','40','25');
+    echo '<div style="display:flex;gap:4px;align-items:center">';
+    foreach ($steps as $s) {
+        $hex = isset($shades[$s]['hex']) ? $shades[$s]['hex'] : '';
+        echo '<span style="width:14px;height:14px;border:1px solid #ddd;background:' . esc_attr($hex) . '"></span>';
+    }
+    echo '</div>';
+}, 10, 2);
 
 
