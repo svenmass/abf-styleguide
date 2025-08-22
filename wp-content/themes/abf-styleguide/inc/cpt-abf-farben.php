@@ -369,10 +369,7 @@ function abf_register_acf_palette_fields() {
 						'default_value' => 0,
 					),
 					array(
-						'key' => 'field_color_notes',
-						'label' => 'Notizen',
-						'name' => 'notes',
-						'type' => 'textarea',
+						// Notizen entfernt
 					),
 				),
 			),
