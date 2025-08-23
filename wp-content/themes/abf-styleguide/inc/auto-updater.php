@@ -660,8 +660,21 @@ class ABF_Theme_Updater {
         include_once ABSPATH . 'wp-admin/includes/theme.php';
         
         try {
-            $upgrader = new Theme_Upgrader();
+            // Ensure destination can be replaced
+            include_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
+            $skin = new Theme_Upgrader_Skin(array(
+                'clear_destination' => true,
+                'title' => 'ABF Styleguide Theme Update',
+            ));
+            $upgrader = new Theme_Upgrader($skin);
+            // Force clear_destination via options filter during this install only
+            $force_clear = function($options) {
+                $options['clear_destination'] = true;
+                return $options;
+            };
+            add_filter('upgrader_package_options', $force_clear);
             $result = $upgrader->install($download_url);
+            remove_filter('upgrader_package_options', $force_clear);
             
             if (is_wp_error($result)) {
                 // Bei Fehler: Nochmalige Bereinigung und zweiter Versuch
@@ -876,7 +889,15 @@ class ABF_Theme_Updater {
         $acf_errors = 0;
         
         if (!empty($backup_data['acf_colors'])) {
-            if (update_field('colors', $backup_data['acf_colors'], 'option')) {
+            $ok = false;
+            if (function_exists('update_field')) {
+                $ok = update_field('colors', $backup_data['acf_colors'], 'option');
+            }
+            if (!$ok) {
+                // Fallback: store directly in wp_options for ACF to pick up later
+                $ok = update_option('options_colors', $backup_data['acf_colors']);
+            }
+            if ($ok) {
                 error_log('ABF Auto-Updater: ACF colors restored');
             } else {
                 $acf_errors++;
@@ -885,14 +906,24 @@ class ABF_Theme_Updater {
         
         if (!empty($backup_data['acf_typography']) && is_array($backup_data['acf_typography'])) {
             if (!empty($backup_data['acf_typography']['font_sizes'])) {
-                if (!update_field('font_sizes', $backup_data['acf_typography']['font_sizes'], 'option')) {
-                    $acf_errors++;
+                $ok = false;
+                if (function_exists('update_field')) {
+                    $ok = update_field('font_sizes', $backup_data['acf_typography']['font_sizes'], 'option');
                 }
+                if (!$ok) {
+                    $ok = update_option('options_font_sizes', $backup_data['acf_typography']['font_sizes']);
+                }
+                if (!$ok) { $acf_errors++; }
             }
             if (!empty($backup_data['acf_typography']['font_weights'])) {
-                if (!update_field('font_weights', $backup_data['acf_typography']['font_weights'], 'option')) {
-                    $acf_errors++;
+                $ok = false;
+                if (function_exists('update_field')) {
+                    $ok = update_field('font_weights', $backup_data['acf_typography']['font_weights'], 'option');
                 }
+                if (!$ok) {
+                    $ok = update_option('options_font_weights', $backup_data['acf_typography']['font_weights']);
+                }
+                if (!$ok) { $acf_errors++; }
             }
         }
         
