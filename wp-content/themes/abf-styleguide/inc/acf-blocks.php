@@ -125,22 +125,23 @@ add_filter('block_categories_all', 'abf_block_categories', 10, 2);
  * Add ACF color palette to editor
  */
 function abf_add_color_palette() {
-    $colors_file = get_template_directory() . '/colors.json';
-    
-    if (file_exists($colors_file)) {
-        $colors = json_decode(file_get_contents($colors_file), true);
-        
-        if ($colors && isset($colors['colors'])) {
-            $color_palette = array();
-            
-            foreach ($colors['colors'] as $color) {
+    // Nutze zentrale Logik (uploads -> stylesheet -> template)
+    if (!function_exists('abf_get_colors')) { return; }
+    $palette = abf_get_colors();
+    if (is_array($palette) && !empty($palette)) {
+        $color_palette = array();
+        foreach ($palette as $color) {
+            $name = isset($color['name']) ? $color['name'] : '';
+            $value = isset($color['value']) ? $color['value'] : '';
+            if ($name && $value) {
                 $color_palette[] = array(
-                    'name' => $color['name'],
-                    'slug' => sanitize_title($color['name']),
-                    'color' => $color['value'],
+                    'name' => $name,
+                    'slug' => sanitize_title($name),
+                    'color' => $value,
                 );
             }
-            
+        }
+        if (!empty($color_palette)) {
             add_theme_support('editor-color-palette', $color_palette);
         }
     }
