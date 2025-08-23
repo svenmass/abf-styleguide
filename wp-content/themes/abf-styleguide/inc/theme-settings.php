@@ -449,16 +449,38 @@ add_action('acf/init', 'abf_register_theme_settings_fields', 5); // Higher prior
  * Save colors to JSON file when theme settings are updated
  */
 function abf_save_colors_to_json($value, $post_id, $field) {
-    if ($field['name'] === 'colors') {
-        $colors_file = get_template_directory() . '/colors.json';
-        $colors_data = array(
-            'colors' => $value,
-            'updated' => current_time('mysql'),
-        );
-        
-        file_put_contents($colors_file, json_encode($colors_data, JSON_PRETTY_PRINT));
+    if ($field['name'] !== 'colors') {
+        return $value;
     }
-    
+
+    // Normalize to array of { name, value }
+    $colors_array = array();
+    if (is_array($value)) {
+        foreach ($value as $row) {
+            if (!empty($row['name']) && !empty($row['value'])) {
+                $colors_array[] = array(
+                    'name' => $row['name'],
+                    'value' => $row['value'],
+                );
+            }
+        }
+    }
+
+    $colors_data = array(
+        'colors' => $colors_array,
+        'updated' => current_time('mysql'),
+    );
+
+    // Save to uploads/abf/colors.json (never override theme file)
+    if (function_exists('wp_upload_dir')) {
+        $upload = wp_upload_dir();
+        $abf_dir = trailingslashit($upload['basedir']) . 'abf';
+        if (!is_dir($abf_dir)) {
+            wp_mkdir_p($abf_dir);
+        }
+        @file_put_contents(trailingslashit($abf_dir) . 'colors.json', json_encode($colors_data, JSON_PRETTY_PRINT));
+    }
+
     return $value;
 }
 add_filter('acf/update_value', 'abf_save_colors_to_json', 10, 3);
@@ -517,15 +539,17 @@ function abf_styleguide_save_colors_to_json() {
         return;
     }
 
-    $colors = get_field('abf_colors', 'option');
+    // Always use current ACF options data
+    $colors = get_field('colors', 'option');
     $colors_array = array();
-
-    if ($colors && is_array($colors)) {
-        foreach ($colors as $color) {
-            $colors_array[] = array(
-                'name' => $color['name'] ?? $color['color_name'] ?? '',
-                'value' => $color['value'] ?? $color['color_value'] ?? '',
-            );
+    if (is_array($colors)) {
+        foreach ($colors as $row) {
+            if (!empty($row['name']) && !empty($row['value'])) {
+                $colors_array[] = array(
+                    'name' => $row['name'],
+                    'value' => $row['value'],
+                );
+            }
         }
     }
 
@@ -534,7 +558,6 @@ function abf_styleguide_save_colors_to_json() {
         'updated' => current_time('mysql'),
     );
 
-    // Schreibe BENUTZER-Datei in uploads/abf/colors.json (niemals ins Theme-Verzeichnis)
     if (function_exists('wp_upload_dir')) {
         $upload = wp_upload_dir();
         $abf_dir = trailingslashit($upload['basedir']) . 'abf';
@@ -565,18 +588,37 @@ function abf_get_colors() {
     $paths[] = get_template_directory() . '/colors.json';
 
     foreach ($paths as $file) {
-        if (file_exists($file) && is_readable($file)) {
-            $json = file_get_contents($file);
-            if ($json !== false) {
-                $data = json_decode($json, true);
-                if (isset($data['colors']) && is_array($data['colors'])) {
-                    return $data['colors'];
-                }
-                if (is_array($data)) {
-                    return $data;
+        if (!file_exists($file) || !is_readable($file)) {
+            continue;
+        }
+        $json = file_get_contents($file);
+        if ($json === false) {
+            continue;
+        }
+        $data = json_decode($json, true);
+        // Primary format: { colors: [ {name, value}, ... ] }
+        if (isset($data['colors']) && is_array($data['colors'])) {
+            return $data['colors'];
+        }
+        // Legacy format: [ { name, value }, ... ] (top-level array)
+        if (is_array($data) && isset($data[0]) && is_array($data[0]) && (isset($data[0]['name']) || isset($data[0]['color_name']))) {
+            return $data;
+        }
+        // Otherwise ignore invalid structure and try next path
+    }
+
+    // Fallback: read directly from ACF options if JSON missing/invalid
+    if (function_exists('get_field')) {
+        $acf_colors = get_field('colors', 'option');
+        $result = array();
+        if (is_array($acf_colors)) {
+            foreach ($acf_colors as $row) {
+                if (!empty($row['name']) && !empty($row['value'])) {
+                    $result[] = array('name' => $row['name'], 'value' => $row['value']);
                 }
             }
         }
+        return $result;
     }
 
     return array();

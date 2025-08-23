@@ -31,24 +31,31 @@ class ABF_WYSIWYG_Toolbar {
     private function load_json_data() {
         $colors_file = get_template_directory() . '/colors.json';
         $typography_file = get_template_directory() . '/typography.json';
-        
-        // Load colors
-        if (file_exists($colors_file)) {
+
+        // First, try centralized getter (handles uploads/ACF fallback)
+        if (function_exists('abf_get_colors')) {
+            $this->colors = abf_get_colors();
+            if (!is_array($this->colors)) {
+                $this->colors = array();
+            }
+            error_log('ABF Toolbar: Colors via abf_get_colors(): ' . count($this->colors));
+        }
+
+        // Fallback to theme JSON if still empty
+        if (empty($this->colors) && file_exists($colors_file)) {
             $colors_json = file_get_contents($colors_file);
             if ($colors_json !== false) {
                 $colors_data = json_decode($colors_json, true);
                 if (is_array($colors_data) && isset($colors_data['colors']) && is_array($colors_data['colors'])) {
                     $this->colors = $colors_data['colors'];
-                    error_log('ABF Toolbar: Loaded ' . count($this->colors) . ' colors from JSON');
+                    error_log('ABF Toolbar: Loaded ' . count($this->colors) . ' colors from theme JSON');
                 } else {
                     $this->colors = array();
-                    error_log('ABF Toolbar: Colors JSON decode failed or no colors array found');
+                    error_log('ABF Toolbar: Colors JSON invalid or missing colors array');
                 }
             } else {
                 error_log('ABF Toolbar: Could not read colors file');
             }
-        } else {
-            error_log('ABF Toolbar: Colors file does not exist: ' . $colors_file);
         }
         
         // Load typography
