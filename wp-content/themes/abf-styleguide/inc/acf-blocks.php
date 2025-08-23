@@ -146,7 +146,7 @@ function abf_add_color_palette() {
         }
     }
 }
-add_action('after_setup_theme', 'abf_add_color_palette');
+add_action('after_setup_theme', 'abf_add_color_palette', 99);
 
 /**
  * Enqueue block editor styles

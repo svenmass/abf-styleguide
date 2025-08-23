@@ -144,8 +144,8 @@ class ABF_WYSIWYG_Toolbar {
         
         // Check if we're on a page that might have WYSIWYG fields
         global $pagenow;
-        // Nur echte Editor-Seiten
-        $allowed_pages = ['post.php', 'post-new.php'];
+        // Editor + ACF Options (Theme Settings)
+        $allowed_pages = ['post.php', 'post-new.php', 'admin.php'];
         if (!in_array($pagenow, $allowed_pages)) {
             return;
         }
