@@ -144,7 +144,8 @@ class ABF_WYSIWYG_Toolbar {
         
         // Check if we're on a page that might have WYSIWYG fields
         global $pagenow;
-        $allowed_pages = ['post.php', 'post-new.php', 'admin.php'];
+        // Nur echte Editor-Seiten
+        $allowed_pages = ['post.php', 'post-new.php'];
         if (!in_array($pagenow, $allowed_pages)) {
             return;
         }
@@ -177,7 +178,7 @@ class ABF_WYSIWYG_Toolbar {
             'typography' => $this->typography,
             'nonce' => wp_create_nonce('abf_wysiwyg_nonce'),
             'templateUri' => get_template_directory_uri(),
-            'debug' => true // Enable debug mode
+            'debug' => false // Disable debug logging in admin console
         ]);
         
         // Generate frontend CSS for custom attributes
